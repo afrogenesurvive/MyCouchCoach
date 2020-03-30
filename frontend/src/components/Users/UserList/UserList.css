@@ -1,0 +1,44 @@
+
+.user__list1_detail {
+    width: 95%;
+    max-height: 90%;
+    margin: 2rem auto;
+    /* margin-left: 5rem; */
+    list-style: none;
+    padding: 0;
+    overflow: scroll;
+    /* columns: 2; */
+    /* break-inside: avoid; */
+  }
+
+.user__list1_master {
+    width: 95%;
+    max-height: 90%;
+    margin: 0 auto;
+    /* margin-left: 5rem; */
+    list-style: none;
+    padding: 0;
+    overflow: scroll;
+    /* columns: 2; */
+    /* break-inside: avoid; */
+  }
+
+.user__list1:first-child {
+    margin-top: 0;
+}
+
+.userAttendanceList {
+  width: 10%;
+  list-style: none;
+  overflow: scroll;
+}
+.userAttachmentList {
+  width: 90%;
+  list-style: none;
+  overflow: scroll;
+}
+.userLeaveList {
+  width: 90%;
+  list-style: none;
+  overflow: scroll;
+}

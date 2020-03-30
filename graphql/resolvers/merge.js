@@ -290,7 +290,7 @@ const transformPromo = promo => {
 
 
 exports.transformUser = transformUser;
-exports.transformProduct = transformProduct;
+exports.transformLesson = transformLesson;
 exports.transformOrder = transformOrder;
 exports.transformReview = transformReview;
 exports.transformComment = transformComment;

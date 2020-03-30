@@ -1,0 +1,21 @@
+.profileCard {
+  height: 20rem;
+  width: 6rem;
+  margin: 5rem auto;
+
+}
+
+.bold {
+  font-weight: bold;
+}
+.ul {
+  text-decoration: underline;
+}
+
+.detailCardRow {
+  margin: 1.5rem auto;
+}
+
+.detailCardCol {
+  margin: .5rem auto;
+}

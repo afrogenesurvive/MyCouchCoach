@@ -15,13 +15,14 @@ module.exports = {
     if (!isEqual) {
       throw new Error('Password is incorrect!');
     }
-    const token = jwt.sign({ userId: user.id },'CoronaWorkLife',{expiresIn: '5h'});
+    const token = jwt.sign({ userId: user.id },'CoronaWorkLife',{expiresIn: '4h'});
 
     const userLoggedIn = await User.findOneAndUpdate({_id: user.id},{loggedIn: true},{new: true, useFindAndModify: false})
+    console.log("userLoggedIn", JSON.stringify(userLoggedIn.loggedIn));
     // pocketVariables.token = token;
     // pocketVariables.userId = user.id;
 
-    return { activityId: user.id, role: "User", token: token, tokenExpiration: 4 };
+    return { activityId: userLoggedIn.id, role: "User", token: token, tokenExpiration: 4 };
   },
   logout: async ({ args }) => {
 

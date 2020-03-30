@@ -18,6 +18,8 @@ const userSchema = new Schema({
     city: {type:String},
     country: {type:String},
     postalCode: {type:String},
+    primary: {type: Boolean},
+    _id : false
   }],
   contact: {
     phone: {type: String},
@@ -28,11 +30,13 @@ const userSchema = new Schema({
   profileImages: [{
     name: {type:String},
     type: {type: String},
-    path: {type: String}
+    path: {type: String},
+    _id : false
   }],
   socialMedia: [{
     platform: {type:String},
-    handle: {type:String}
+    handle: {type:String},
+    _id : false
   }],
   interests: [{type: String}],
   perks: [{type: Schema.Types.ObjectId,ref: 'Perk'}],
@@ -40,7 +44,7 @@ const userSchema = new Schema({
   friends:[{type: Schema.Types.ObjectId,ref: 'User'}],
   points: {type: Number},
   tags: [{type: String}],
-  loggedin: {type: Boolean},
+  loggedIn: {type: Boolean},
   clientConnected: {type: Boolean},
   verfication:{
     verified:{type: Boolean},
@@ -50,6 +54,7 @@ const userSchema = new Schema({
   activity:[{
     date: {type: Date},
     request: {type: String},
+    _id : false
   }],
   likedLessons: [{type: Schema.Types.ObjectId,ref: 'Lesson'}],
   bookedLessons: [{
@@ -83,7 +88,8 @@ const userSchema = new Schema({
     description: {type: String},
     body: {type: String},
     valid: {type: Boolean},
-    primary: {type: Boolean}
+    primary: {type: Boolean},
+    _id : false
   }]
 },
   { timestamps: true }

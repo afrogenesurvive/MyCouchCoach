@@ -11,7 +11,7 @@ module.exports = buildSchema(`
     dob: String
     public: Boolean
     age: Int
-    addresses: [Address]
+    addresses: [ProfileAddress]
     contact: Contact
     bio: String
     profileImages: [Image]
@@ -22,13 +22,13 @@ module.exports = buildSchema(`
     friends: [User]
     points: Float
     tags: [String]
-    loggedin: Boolean
+    loggedIn: Boolean
     clientConnected: Boolean
     verfication: Verification
     likedLessons: [Lesson]
-    bookedLessons: [Lesson]
-    attendedLessons: [Lesson]
-    taughtLessons: [Lesson]
+    bookedLessons: [LessonRef]
+    attendedLessons: [LessonRef]
+    taughtLessons: [LessonRef]
     wishlist: [WishlistItem]
     cart: [CartItem]
     orders: [Order]
@@ -46,6 +46,16 @@ module.exports = buildSchema(`
     city: String
     country: String
     postalCode: String
+  }
+  type ProfileAddress {
+    type: String
+    number: Int
+    street: String
+    town: String
+    city: String
+    country: String
+    postalCode: String
+    primary: Boolean
   }
   type Contact {
     phone: String
@@ -76,6 +86,10 @@ module.exports = buildSchema(`
     time: String
     request: String
   }
+  type LessonRef {
+    date: String
+    ref: Lesson
+  }
   type WishlistItem {
     date: String
     ref: Lesson
@@ -83,7 +97,8 @@ module.exports = buildSchema(`
   }
   type CartItem {
     dateAdded: String
-    ref: Lesson
+    sessionDate: String
+    lesson: Lesson
   }
   type PaymentInfoItem {
     date: String
@@ -107,7 +122,9 @@ module.exports = buildSchema(`
     addressCity: String
     addressCountry: String
     addressPostalCode: String
+    addressPrimary: Boolean
     contactPhone: String
+    contactPhone2: String
     contactEmail: String
     bio: String
     profileImageName: String
@@ -117,7 +134,7 @@ module.exports = buildSchema(`
     socialMediaHandle: String
     interest: String
     interests: String
-    point: Float
+    points: Float
     tag: String
     tags: String
     loggedIn: Boolean
@@ -142,6 +159,7 @@ module.exports = buildSchema(`
   }
 
   type Lesson {
+    _id: ID!
     title: String
     subtitle: String
     type: String
@@ -478,7 +496,7 @@ module.exports = buildSchema(`
   type RootMutation {
 
     createUser(userInput: UserInput!): User
-    updateUser(activityId: ID!, userId: ID!, userInput: UserInput!): User
+    updateUserBasic(activityId: ID!, userId: ID!, userInput: UserInput!): User
     updateUserByField(activityId: ID!, userId: ID!, field: String!, query: String!): User
     addUserObjectByField(activityId: ID!, userId: ID!, field: String!, userInput: UserInput!): User
 

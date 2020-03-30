@@ -1,0 +1,14 @@
+.alertBox {
+  margin: 1rem auto;
+    width: 20rem;
+    max-height: 7.5rem;
+    position: fixed;
+    z-index: 10000;
+    top: -.7rem;
+    left: 10rem;
+    overflow-x: scroll;
+}
+
+.alertBoxText {
+  color: black;
+}

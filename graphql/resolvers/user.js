@@ -13,7 +13,9 @@ const { pocketVariables } = require('../../helpers/pocketVars');
 
 
 module.exports = {
-  users: async (args, req) => {
+  getAllUsers: async (args, req) => {
+
+    console.log("Resolver: getAllUsers...");
 
     if (!req.isAuth) {
       throw new Error('Unauthenticated!');
@@ -242,7 +244,8 @@ module.exports = {
       throw err;
     }
   },
-  updateUser: async (args, req) => {
+  updateUserBasic: async (args, req) => {
+    console.log("Resolver: updateUserBasic...");
     if (!req.isAuth) {
       throw new Error('Unauthenticated!');
     }
@@ -254,27 +257,26 @@ module.exports = {
         name: args.userInput.name,
         username: args.userInput.username,
         dob: args.userInput.dob,
+        age: args.userInput.age,
         contact: {
           email: args.userInput.contactEmail,
-          phone: args.userInput.contactPhone
-        },
-        address: {
-          number: args.userInput.addressNumber,
-          street: args.userInput.addressStreet,
-          town: args.userInput.addressTown,
-          city: args.userInput.addressCity,
-          country: args.userInput.addressCountry,
-          postalCode: args.userInput.addressPostalCode,
+          phone: args.userInput.contactPhone,
+          phone2: args.userInput.contactPhone2
         },
         bio: args.userInput.bio
         },{new: true, useFindAndModify: false})
-        .populate('models')
-        .populate('viewedShows')
-        .populate('viewedcontent')
-        .populate('likedcontent')
-        .populate('comments')
+        .populate('perks')
+        .populate('promos')
+        .populate('friends')
+        .populate('likedLessons')
+        .populate('bookedLessons.ref')
+        .populate('attendedLessons.ref')
+        .populate('taughtLessons.ref')
+        .populate('wishlist.ref')
+        .populate('cart.lesson')
+        .populate('comments.')
         .populate('messages')
-        .populate('transactions');
+        .populate('orders');
 
         return {
           ...user._doc,
@@ -283,25 +285,14 @@ module.exports = {
           role: user.role,
           username: user.username,
           dob: user.dob,
-          contact: {
-            email: user.contact.email,
-            phone: user.contact.phone
-          },
-          address: {
-            number: user.address.number,
-            street: user.address.street,
-            town: user.address.town,
-            city: user.address.city,
-            country: user.address.country,
-            postalCode: user.address.postalCode
-          },
           bio: user.bio,
         };
     } catch (err) {
       throw err;
     }
   },
-  updateUserField: async (args, req) => {
+  updateUserByField: async (args, req) => {
+    console.log("Resolver: updateUserField...");
 
     if (!req.isAuth) {
       throw new Error('Unauthenticated!');
@@ -310,117 +301,101 @@ module.exports = {
 
       const resolverField = args.field;
       const resolverQuery = args.query;
-
       const query = {[resolverField]:resolverQuery};
       const user = await User.findOneAndUpdate({_id:args.userId},query,{new: true, useFindAndModify: false})
-      .populate('models')
-      .populate('viewedShows')
-      .populate('viewedcontent')
-      .populate('likedcontent')
-      .populate('comments')
+      .populate('perks')
+      .populate('promos')
+      .populate('friends')
+      .populate('likedLessons')
+      .populate('bookedLessons.ref')
+      .populate('attendedLessons.ref')
+      .populate('taughtLessons.ref')
+      .populate('wishlist.ref')
+      .populate('cart.lesson')
+      .populate('comments.')
       .populate('messages')
-      .populate('transactions');
+      .populate('orders');
 
       return {
         ...user._doc,
         _id: user.id,
         name: user.name,
         username: user.username,
-        dob: user.dob,
-        contact: {
-          email: user.contact.email,
-          phone: user.contact.phone
-        },
-        address: {
-          number: user.address.number,
-          street: user.address.street,
-          town: user.address.town,
-          city: user.address.city,
-          country: user.address.country,
-          postalCode: user.address.postalCode
-        },
-        bio: user.bio,
       };
     } catch (err) {
       throw err;
     }
   },
-  addUserTags: async (args, req) => {
+  addUserAddress: async (args, req) => {
+    console.log("Resolver: addUserAddress...");
 
     if (!req.isAuth) {
       throw new Error('Unauthenticated!');
     }
     try {
-      const tags = args.userInput.tags;
-      const splitTags = tags.split(",");
-      const user = await User.findOneAndUpdate({_id:args.userId},{$addToSet: { tags: {$each: splitTags} }},{new: true, useFindAndModify: false})
-      .populate('models')
-      .populate('viewedShows')
-      .populate('viewedcontent')
-      .populate('likedcontent')
-      .populate('comments')
-      .populate('messages')
-      .populate('transactions');
 
-        return {
-          ...user._doc,
-          _id: user.id,
-          email: user.contact.email ,
-          name: user.name,
-        };
-    } catch (err) {
-      throw err;
-    }
-  },
-  addUserProfileImage: async (args, req) => {
-
-    if (!req.isAuth) {
-      throw new Error('Unauthenticated!');
-    }
-    try {
-      const profileImage = {
-        name: args.userInput.profileImageName,
-        type: args.userInput.profileImageType,
-        path: args.userInput.profileImagePath
+      const address = {
+        type: args.userInput.addressType,
+        number: args.userInput.addressNumber,
+        street: args.userInput.addressStreet,
+        town: args.userInput.addressTown,
+        city: args.userInput.addressCity,
+        country: args.userInput.addressCountry,
+        postalCode: args.userInput.addressPostalCode,
+        primary: false
       };
-      const user = await User.findOneAndUpdate({_id:args.userId},{$addToSet: { profileImages: profileImage }},{new: true, useFindAndModify: false})
-      .populate('models')
-      .populate('viewedShows')
-      .populate('viewedcontent')
-      .populate('likedcontent')
-      .populate('comments')
-      .populate('messages')
-      .populate('transactions');
 
-        return {
-          ...user._doc,
-          _id: user.id,
-          email: user.contact.email,
-          name: user.name,
-        };
+      const user = await User.findOneAndUpdate({_id:args.userId},{$addToSet: {addresses: address}},{new: true, useFindAndModify: false})
+      .populate('perks')
+      .populate('promos')
+      .populate('friends')
+      .populate('likedLessons')
+      .populate('bookedLessons.ref')
+      .populate('attendedLessons.ref')
+      .populate('taughtLessons.ref')
+      .populate('wishlist.ref')
+      .populate('cart.lesson')
+      .populate('comments.')
+      .populate('messages')
+      .populate('orders');
+
+      return {
+        ...user._doc,
+        _id: user.id,
+        name: user.name,
+        username: user.username,
+      };
     } catch (err) {
       throw err;
     }
   },
-  addUserTokens: async (args, req) => {
-
+  addUserPoints: async (args, req) => {
+    console.log("Resolver: addUserPoints...");
     if (!req.isAuth) {
       throw new Error('Unauthenticated!');
     }
-    // admin or own profile check here
     try {
+      const activityUser = await User.findById({_id: args.activityId});
+      if (activityUser.role !== "Admin") {
+        throw new Error("How'd you find this!? Silly User. Tokens are for Admin");
+      }
       const prevAmountUser = await User.findById({_id: args.userId});
-      const prevAmount = prevAmountUser.tokens;
-      const amountToAdd = args.userInput.tokens;
+      const prevAmount = prevAmountUser.points;
+      const amountToAdd = args.userInput.points;
       let newAmount = prevAmount + amountToAdd;
-      const user = await User.findOneAndUpdate({_id:args.userId},{ tokens: newAmount },{new: true, useFindAndModify: false})
-      .populate('models')
-      .populate('viewedShows')
-      .populate('viewedcontent')
-      .populate('likedcontent')
-      .populate('comments')
+      const user = await User.findOneAndUpdate({_id:args.userId},{ points: newAmount },{new: true, useFindAndModify: false})
+      .populate('perks')
+      .populate('promos')
+      .populate('friends')
+      .populate('likedLessons')
+      .populate('bookedLessons.ref')
+      .populate('attendedLessons.ref')
+      .populate('taughtLessons.ref')
+      .populate('wishlist.ref')
+      .populate('cart.lesson')
+      .populate('comments.')
       .populate('messages')
-      .populate('transactions');
+      .populate('orders');
 
         return {
           ...user._doc,
@@ -432,14 +407,27 @@ module.exports = {
       throw err;
     }
   },
-  deleteUserTransaction: async (args, req) => {
-
+  deleteUserAddress: async (args, req) => {
+    console.log("Resolver: deleteUserAddress...");
     if (!req.isAuth) {
       throw new Error('Unauthenticated!');
     }
     try {
-        const transaction = await Transaction.findById({_id: args.transactionId});
-        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { 'transactions': transaction }},{new: true, useFindAndModify: false});
+      const activityUser = await User.findById({_id: args.activityId});
+      if (activityUser.role !== "Admin" && args.activityId !== args.userId) {
+        throw new Error("Yaah.. No! Only the owner or Admin can delete a User Address");
+      };
+        const address = {
+          type: args.userInput.addressType,
+          number: args.userInput.addressNumber,
+          street: args.userInput.addressStreet,
+          town: args.userInput.addressTown,
+          city: args.userInput.addressCity,
+          country: args.userInput.addressCountry,
+          postalCode: args.userInput.addressPostalCode,
+          primary: args.userInput.addressPrimary
+        };
+        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { 'addresses': address }},{new: true, useFindAndModify: false});
 
         return {
           ...user._doc,
@@ -452,7 +440,7 @@ module.exports = {
     }
   },
   deleteUser: async (args, req) => {
-
+    console.log("Resolver: deleteUser...");
     if (!req.isAuth) {
       throw new Error('Unauthenticated!');
     }
@@ -462,42 +450,29 @@ module.exports = {
           ...user._doc,
           _id: user.id,
           name: user.name,
-          username: user.username,
-          dob: user.dob,
-          role: user.role,
-          contact: {
-            email: user.contact.email,
-            phone: user.contact.phone
-          },
-          addresses: [{
-            number: user.address.number,
-            street: user.address.street,
-            town: user.address.town,
-            city: user.address.city,
-            country: user.address.country,
-            postalCode: user.address.postalCode
-          }],
-          bio: user.bio,
+          username: user.username
         };
     } catch (err) {
       throw err;
     }
   },
   createUser: async (args, req) => {
+    console.log("Resolver: createUser...");
 
     try {
+
       const existingUserName = await User.findOne({ username: args.userInput.username});
       if (existingUserName) {
         throw new Error('User w/ that username exists already.');
       }
       const hashedPassword = await bcrypt.hash(args.userInput.password, 12);
       const today = new Date();
-      let dob = args.userInput.dob;
-      let ageDifMs = Date.now() - birthday.getTime();
+      let age = 0;
+      let dob = new Date(args.userInput.dob);
+      let ageDifMs = Date.now() - dob.getTime();
       let ageDate = new Date(ageDifMs);
-      let age =  Math.abs(ageDate.getUTCFullYear() - 1970);
-      console.log("age",age);
-}
+      age =  Math.abs(ageDate.getUTCFullYear() - 1970);
+
       const user = new User({
         password: hashedPassword,
         name: args.userInput.name,
@@ -508,7 +483,8 @@ module.exports = {
         public: args.userInput.public,
         contact: {
           email: args.userInput.contactEmail,
-          phone: args.userInput.contactPhone
+          phone: args.userInput.contactPhone,
+          phone2: args.userInput.contactPhone2
         },
         addresses: [{
           type: args.userInput.addressType,
@@ -517,7 +493,8 @@ module.exports = {
           town: args.userInput.addressTown,
           city: args.userInput.addressCity,
           country: args.userInput.addressCountry,
-          postalCode: args.userInput.addressPostalCode
+          postalCode: args.userInput.addressPostalCode,
+          primary: true
         }],
         bio: args.userInput.bio,
         profileImages: [{
@@ -530,11 +507,8 @@ module.exports = {
           handle: "",
         }],
         interests: [""],
-        perks: [{
-          date: 0,
-          name: "",
-          description: "",
-        }],
+        perks: [],
+        promos: [],
         friends: [],
         points: 0,
         tags: [""],
@@ -545,7 +519,7 @@ module.exports = {
         },
         activity: [{
           date: today,
-          request: "initial activity... rpofile created..."
+          request: "initial activity... profile created..."
         }],
         likedLessons: [],
         bookedLessons: [],
@@ -556,7 +530,7 @@ module.exports = {
         comments: [],
         messages: [],
         orders: [],
-        billing: [{
+        paymentInfo: [{
           date: "",
           type: "",
           description: "",
@@ -578,15 +552,17 @@ module.exports = {
         dob: result.dob,
         content: {
           email: result.contact.email,
-          phone: result.contact.phone
+          phone: result.contact.phone,
+          phone2: result.contact.phone2
         },
         addresses: [{
-          number: result.address.number,
-          street: result.address.street,
-          town: result.address.town,
-          city: result.address.city,
-          country: result.address.country,
-          postalCode: result.address.postalCode
+          type: result.addresses[0].type,
+          number: result.addresses[0].number,
+          street: result.addresses[0].street,
+          town: result.addresses[0].town,
+          city: result.addresses[0].city,
+          country: result.addresses[0].country,
+          postalCode: result.addresses[0].postalCode
         }],
         bio: result.bio
       };

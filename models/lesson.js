@@ -14,20 +14,23 @@ const lessonSchema = new Schema({
   duration: {type: String},
   schedule: [{
     date: {type: Date},
-    time: {type: String}
+    time: {type: String},
+    _id : false
   }],
   instructors: [{type: Schema.Types.ObjectId,ref: 'User'}],
   gallery: [{
     name: {type: String},
     type: {type: String},
-    path: {type: String}
+    path: {type: String},
+    _id : false
   }],
   requiremnts: [{type: String}],
   materials: [{type: String}],
   files: [{
     name: {type: String},
     type: {type: String},
-    path: {type: String}
+    path: {type: String},
+    _id : false
   }],
   reviews: [{type: Schema.Types.ObjectId,ref: 'Review'}],
   tags: [{type: String}],
@@ -43,6 +46,7 @@ const lessonSchema = new Schema({
     attendedAmount: {type: Number},
     inProgress: {type: Boolean},
     full: {type: Boolean},
+    _id : false
   }],
   promos: {type: Schema.Types.ObjectId,ref: 'Promo'}
 },

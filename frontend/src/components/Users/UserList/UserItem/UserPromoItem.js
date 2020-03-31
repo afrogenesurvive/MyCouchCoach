@@ -1,31 +1,30 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card'
+import Card from 'react-bootstrap/Card';
+import Image from 'react-bootstrap/Image';
 
 import './UserItem.css';
 
-const userComplaintItem = props => (
-  <li key={props.authId} className="users__list-item_detail users__list-item_detail3">
+const userPerkItem = props => (
+  <li key={props.authId} className="users__list-item_detail1 users__list-item_detail">
     <div>
 
     <Card className="card">
       <Card.Body>
-        <Card.Title>
-          Complaint
-        </Card.Title>
-
 
         <ul className="cardUl">
           <li className="cardLi">
+          <Image src={props.imageLink} className="profileImageImg" fluid />
+
           <p className="userItemHeading"> date:</p>
           <p className="userItemText">
           {props.date}
           </p>
           </li>
           <li>
-          <p className="userItemHeading"> type:</p>
+          <p className="userItemHeading"> name:</p>
           <p className="userItemText">
-          {props.type}
+          {props.name}
           </p>
           </li>
           <li>
@@ -34,17 +33,11 @@ const userComplaintItem = props => (
           {props.description}
           </p>
           </li>
-          <li>
-          <p className="userItemHeading"> complainantId:</p>
-          <p className="userItemText">
-          {props.complainant._id}
-          </p>
-          </li>
         </ul>
 
         <Card.Link href="">
         { props.canDelete === true && (
-          <Button variant="danger" onClick={props.onDelete.bind(this, props.complaint)}>
+          <Button variant="danger" onClick={props.onDelete.bind(this, props.perk)}>
             Delete
           </Button>
         )}
@@ -56,4 +49,4 @@ const userComplaintItem = props => (
   </li>
 );
 
-export default userComplaintItem;
+export default userPerkItem;

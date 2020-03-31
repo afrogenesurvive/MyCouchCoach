@@ -8,7 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import './CreateUserForm.css';
 
-const UpdateUserForm = (props) => {
+const UpdateUserBasicForm = (props) => {
 
   const {...user} = props.user;
   const [dob, setDob] = useState(new Date());
@@ -48,7 +48,7 @@ return (
 }
 <Form.Group as={Col} controlId="formGridUsername">
   <Form.Label>Username</Form.Label>
-  <Form.Control type="text" placeholder="Name" />
+  <Form.Control type="text" placeholder={user.username} />
 </Form.Group>
 </Form.Row>
 
@@ -56,6 +56,10 @@ return (
 <Form.Group as={Col} controlId="formGridPhone">
   <Form.Label>Phone</Form.Label>
   <Form.Control type="number" placeholder={user.contact.phone}/>
+</Form.Group>
+<Form.Group as={Col} controlId="formGridPhone2">
+  <Form.Label>Phone2</Form.Label>
+  <Form.Control type="number" placeholder={user.contact.phone2}/>
 </Form.Group>
 </Form.Row>
 
@@ -67,43 +71,6 @@ return (
 
 </Form.Row>
 
-<Form.Row>
-<Form.Group as={Col} controlId="formGridAddressNumber">
-  <Form.Label>Street No.</Form.Label>
-  <Form.Control type="number" placeholder={user.address.number}/>
-</Form.Group>
-
-<Form.Group as={Col} controlId="formGridAddressStreet">
-  <Form.Label>Street Name</Form.Label>
-  <Form.Control type="text" placeholder={user.address.street}/>
-</Form.Group>
-</Form.Row>
-
-<Form.Row>
-<Form.Group as={Col} controlId="formGridAddressTown">
-  <Form.Label>Town</Form.Label>
-  <Form.Control type="text" placeholder={user.address.town}/>
-</Form.Group>
-
-<Form.Group as={Col} controlId="formGridAddressCity">
-  <Form.Label>City</Form.Label>
-  <Form.Control type="text" placeholder={user.address.city}/>
-</Form.Group>
-</Form.Row>
-
-<Form.Row>
-<Form.Group as={Col} controlId="formGridAddressCountry">
-  <Form.Label>Country</Form.Label>
-  <Form.Control type="text" placeholder={user.address.country}/>
-</Form.Group>
-</Form.Row>
-
-<Form.Row>
-<Form.Group as={Col} controlId="formGridAddressPostalCode">
-  <Form.Label>postalCode</Form.Label>
-  <Form.Control type="text" placeholder={user.address.postalCode}/>
-</Form.Group>
-</Form.Row>
 
 <Form.Row>
 <Form.Group as={Col} controlId="formGridBio">
@@ -133,4 +100,4 @@ return (
 
 )};
 
-export default UpdateUserForm;
+export default UpdateUserBasicForm;

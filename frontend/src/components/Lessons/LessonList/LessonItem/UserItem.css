@@ -1,0 +1,94 @@
+.users__list-item_detail {
+  margin: 1rem 0;
+  padding: .5rem;
+  /* border: 1px solid #5101d1; */
+  box-shadow: 5px 5px 3px 2px #888888;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  float: left;
+}
+.users__list-item_detail1 {
+  width: 25rem;
+}
+.users__list-item_detail2 {
+  width: 5rems;
+  /* text-align: center; */
+}
+.users__list-item_detail3 {
+  width: 15rem;
+}
+.users__list-item_detail4 {
+  width: 20rem;
+  margin: 1.5rem;
+}
+
+.users__list-item_master {
+  margin: 1rem 0;
+  padding: .5rem;
+  border: 1px solid #5101d1;
+  /* box-shadow: 5px 5px 3px 2px #888888; */
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* width: 30vw; */
+}
+
+.listButton {
+  float: right;
+  margin: .5rem 1rem
+}
+
+.users__list-item h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #5101d1;
+}
+
+.users__list-item h2 {
+    margin: 0;
+    font-size: 1rem;
+    color: #7c7c7c;
+}
+
+.users__list-item p {
+    margin: 0;
+}
+
+.userItemHeading, .itemHeading {
+  display: inline-block;
+  margin: 0 1rem;
+}
+.userItemText, .itemText{
+  display: inline-block;
+  margin: 0 1rem;
+}
+
+.card {
+  /* width: 20rem; */
+}
+
+.cardUl {
+  list-style-type: none;
+  padding: 0;
+  margin-bottom: 1rem;
+}
+.cardLi {
+  padding: 0;
+}
+
+.tag_card_body {
+  /* padding: 0; */
+  /* text-align: center; */
+}
+.card-body {
+  padding: 0;
+  /* text-align: center; */
+}
+
+.profileImageImg {
+  height: 20rem;
+  width: 20rem;
+}

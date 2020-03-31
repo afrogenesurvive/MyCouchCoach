@@ -35,6 +35,7 @@ module.exports = buildSchema(`
     paymentInfo: [PaymentInfoItem]
     activity:[Activity]
     comments: [Comment]
+    Reviews: [Review]
     messages: [Message]
   }
 
@@ -394,6 +395,7 @@ module.exports = buildSchema(`
     valid: Boolean
     lessons: [Lesson]
     description: String
+    code: String
     imageLink: String
   }
   input PromoInput {
@@ -404,6 +406,7 @@ module.exports = buildSchema(`
     endDate: String
     valid: Boolean
     description: String
+    code: String
     imageLink: String
   }
 

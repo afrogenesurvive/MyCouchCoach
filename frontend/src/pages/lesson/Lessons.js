@@ -12,9 +12,9 @@ import Nav from 'react-bootstrap/Nav';
 import Card from 'react-bootstrap/Card';
 
 import AuthContext from '../../context/auth-context';
-import UserList from '../../components/Users/UserList/UserList';
-import SearchUserList from '../../components/Users/UserList/SearchUserList';
-import UserDetail from '../../components/Users/UserDetail';
+import LessonList from '../../components/Lessons/LessonList/LessonList';
+import SearchLessonList from '../../components/Lessons/UserList/SearchLessonList';
+import LessonDetail from '../../components/Lessons/LessonDetail';
 
 import Spinner from '../../components/Spinner/Spinner';
 import SidebarPage from '../Sidebar';
@@ -22,13 +22,14 @@ import SidebarControl from '../../components/SidebarControl';
 import AlertBox from '../../components/AlertBox';
 import LoadingOverlay from '../../components/LoadingOverlay';
 import AttachmentViewer from '../../components/AttachmentViewer';
-import UserDetailViewer from '../../components/UserDetailViewer';
+import LessonDetailViewer from '../../components/LessonDetailViewer';
 
-import SearchUserForm from '../../components/Forms/user/SearchUserForm';
+import SearchLessonForm from '../../components/Forms/lesson/SearchLessonForm';
+import CreateLessonForm from '../../components/Forms/lesson/CreateLessonForm';
 
 import './Users.css';
 
-class UsersPage extends Component {
+class LessonsPage extends Component {
   state = {
     creating: false,
     updating: false,
@@ -36,15 +37,17 @@ class UsersPage extends Component {
     searching: false,
     user: null,
     users: [],
-    searchUsers: [],
+    lesson: null,
+    lessons: [],
+    searchLessons: [],
     isLoading: false,
     isSorting: false,
-    selectedUser: null,
-    userUpdateField: null,
-    userSearchField: null,
-    userSearchQuery: null,
+    selectedLesson: null,
+    lessonUpdateField: null,
+    lessonSearchField: null,
+    lessonSearchQuery: null,
     canDelete: null,
-    canReport: false,
+    canReport: null,
     userAlert: null,
     overlay: false,
     overlayStatus: "test",
@@ -67,11 +70,11 @@ class UsersPage extends Component {
       this.setState({canDelete: true})
     }
 
-    if (JSON.stringify(this.context.selectedUser) !== "{}") {
-      this.setState({ selectedUser: this.context.selectedUser })
+    if (this.context.selectedLesson) {
+      this.setState({ selectedLesson: this.context.selectedLesson })
     }
 
-    this.fetchUsers();
+    this.fetchLessons();
   }
 
 
@@ -125,8 +128,46 @@ class UsersPage extends Component {
       })
       .then(resData => {
         const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        const searchUsers = resData.data.;
-        this.setState({ searchUsers: searchUsers, userAlert: responseAlert})
+        const searchLessons = resData.data.;
+        this.setState({ searchUsers: searchLessons, userAlert: responseAlert})
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
+  }
+
+  startCreateLesson = () => {
+    this.setState({creating: true})
+  }
+
+  createLessonHandler = () => {
+    this.setState({creating: false})
+    let activityId = this.context.activityId;
+    const token = this.context.token;
+
+
+    const requestBody = {
+      query: `
+
+      `}
+
+    fetch('http://localhost:7077/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+        this.setState({ searchUsers: resData.data., userAlert: responseAlert})
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -137,10 +178,9 @@ class UsersPage extends Component {
     this.setState({ creating: false, updating: false, deleting: false, searching: false});
   };
 
-  fetchUsers() {
-
+  fetchLessons() {
     const activityId = this.context.activityId;
-    this.setState({ isLoading: true, userAlert: "Fetching User Master List..." });
+    this.setState({ isLoading: true, userAlert: "Fetching Lesson Master List..." });
     const requestBody = {
       query: `
 
@@ -163,8 +203,8 @@ class UsersPage extends Component {
       })
       .then(resData => {
         const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, users: resData.data., isLoading: false});
-        this.context.users = this.state.users;
+        this.setState({userAlert: responseAlert, lessons: resData.data., isLoading: false});
+        this.context.lessons = this.state.lessons;
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -174,33 +214,27 @@ class UsersPage extends Component {
       });
   }
 
-  deleteListUser = (userId) => {
-    console.log("delete listed user", userId);
+  deleteListLesson = (lessonId) => {
+    console.log("delete listed lesson", lessonId);
   }
 
-  reportUser = (userId) => {
-    console.log("reporting user", userId);
+  reportLesson = (lessonId) => {
+    console.log("reporting lesson", lessonId);
   }
 
-  selectUserReceiver = (user) => {
-    console.log("selected user..",user._id");
-    this.context.receiver = user;
-    this.context.selectedUser = user;
-  }
 
-showDetailHandler = userId => {
-
+showDetailHandler = lessonId => {
   this.setState(prevState => {
-    const selectedUser = prevState.users.find(e => e._id === userId);
-    this.context.selectedUser = selectedUser;
-    this.setState({selectedUser: selectedUser, showDetail: true});
-    return { selectedUser: selectedUser };
+    const selectedLesson = prevState.lessons.find(e => e._id === lessonId);
+    this.context.selectedLesson = selectedLesson;
+    this.setState({selectedLesson: selectedLesson, showDetail: true});
+    return { selectedLesson: selectedLesson };
   });
 };
 
-selectUserNoDetail = (user) => {
-  this.setState({selectedUser: user});
-  this.context.selectedUser = user;
+selectLessonNoDetail = (lesson) => {
+  this.setState({selectedLesson: lesson});
+  this.context.selectedLesson = lesson;
 }
 
 hideDetailHandler = () => {
@@ -208,9 +242,7 @@ hideDetailHandler = () => {
 }
 
   onViewAttachment = (attachment) => {
-
       this.setState({showAttachment: true})
-
       const file = "https://ent-emr-bucket.s3-us-east-2.amazonaws.com/"+attachment.path+"/"+attachment.name;
       const type = attachment.format;
 
@@ -218,7 +250,6 @@ hideDetailHandler = () => {
   }
 
   closeAttachmentView = () => {
-
       this.setState({showAttachment: false})
   }
 
@@ -260,13 +291,13 @@ hideDetailHandler = () => {
       />
 
       {this.state.showDetail === true && (
-        <UserDetailViewer
-          user={this.state.selectedUser}
-          onHideUserDetail={this.hideDetailHandler}
+        <LessonDetailViewer
+          lesson={this.state.selectedLesson}
+          onHideLessonDetail={this.hideDetailHandler}
           canDelete={this.state.canDelete}
-          onDelete={this.deleteListUser}
+          onDelete={this.deleteListLesson}
           canReport={this.state.canReport}
-          onReport={this.reportUser}
+          onReport={this.reportLesson}
         />
       )}
       <SidebarControl
@@ -301,6 +332,9 @@ hideDetailHandler = () => {
                       <Nav.Item>
                         <Nav.Link eventKey="SearchInput">Search</Nav.Link>
                       </Nav.Item>
+                      <Nav.Item>
+                        <Nav.Link eventKey="Create">+ Lesson</Nav.Link>
+                      </Nav.Item>
                     </Nav>
                   </Col>
 
@@ -313,14 +347,13 @@ hideDetailHandler = () => {
                          {this.state.isLoading ? (
                            <Spinner />
                          ) : (
-                           <UserList
+                           <LessonList
                             canReport={this.state.canReport}
-                            onReport={this.reportUser}
-                             users={this.state.users}
+                            onReport={this.reportLesson}
+                             lessons={this.state.lessons}
                              authId={this.context.activityId}
                              onViewDetail={this.showDetailHandler}
-                             onSelectNoDetail={this.selectUserNoDetail}
-                             onSelectMessageReceiver={this.selectUserReceiver}
+                             onSelectNoDetail={this.selectLessonNoDetail}
                            />
                          )}
                         </Row>
@@ -334,14 +367,13 @@ hideDetailHandler = () => {
                         <Tabs defaultActiveKey="Field" id="uncontrolled-tab-example">
 
                         <Tab eventKey="Field" title="Search by Field:">
-                          <SearchUserForm
-                          authUserId={this.context.userId}
+                          <SearchLessonForm
+                          authId={this.context.activityId}
                           canCancel
                             canConfirm
                             onCancel={this.modalCancelHandler}
                             onConfirm={this.modalConfirmSearchHandler}
                             confirmText="Search"
-                            user={this.context.selectedUser}
                           />
                         </Tab>
                         </Tabs>
@@ -353,23 +385,40 @@ hideDetailHandler = () => {
                             <Card.Body className="searchCardBody">
                               <Card.Title>This Search</Card.Title>
                               <Card.Text>
-                                Field: {this.state.userSearchField}  ,   Query: {this.state.userSearchQuery}
+                                Field: {this.state.lessonSearchField}  ,   Query: {this.state.lessonSearchQuery}
                               </Card.Text>
                             </Card.Body>
                           </Card>
                         </Row>
                         <Row className="searchListRow1">
 
-                        {this.state.searchUsers !== [] && (
-                          <SearchUserList
-                            searchUsers={this.state.searchUsers}
-                            authUserId={this.context.userId}
+                        {this.state.searchLessons !== [] && (
+                          <SearchLessonList
+                            searchLessons={this.state.searchLessons}
+                            authId={this.context.activityId}
                             onViewDetail={this.showDetailHandler}
                           />
                         )}
                         </Row>
 
                         </Container>
+                      </Tab.Pane>
+
+                      <Tab.Pane eventKey="Create">
+                        <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.startCreateLesson}>+ Lesson</Button>
+
+                        <Row className="userListRow">
+                          {this.state.creating === true && (
+                            <CreateLessonForm
+                              authId={this.context.activityId}
+                              creator={this.context.user}
+                              canCancel
+                                canConfirm
+                                onCancel={this.modalCancelHandler}
+                                onConfirm={this.createLessonHandler}
+                            />
+                          )}
+                        </Row>
                       </Tab.Pane>
                     </Tab.Content>
                   </Col>
@@ -384,4 +433,4 @@ hideDetailHandler = () => {
   }
 }
 
-export default UsersPage;
+export default LessonsPage;

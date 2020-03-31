@@ -18,6 +18,7 @@ const userPerkList = props => {
         name={perk.name}
         date={perkDate}
         description={perk.description}
+        code={perk.code}
         imageLink={perk.imageLink}
         perk={perk}
         onDelete={props.onDelete}

@@ -21,14 +21,9 @@ return (
     <option>username</option>
     <option>dob</option>
     <option>phone</option>
-    <option>address.number</option>
-    <option>address.street</option>
-    <option>address.town</option>
-    <option>address.city</option>
-    <option>address.country</option>
-    <option>address.postalCode</option>
+    <option>phone2</option>
     <option>bio</option>
-    <option>tokens</option>
+    <option>points</option>
     <option>verification.type</option>
     <option>verification.verified</option>
     <option>verification.code</option>

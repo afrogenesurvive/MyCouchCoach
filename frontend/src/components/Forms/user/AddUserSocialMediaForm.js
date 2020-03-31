@@ -4,16 +4,23 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import './CreateUserForm.css';
 
-const AddUserPerkForm = (props) => {
+const AddUserSocialMediForm = (props) => {
 
 return (
 <div className="UpdateFormContainer">
 <Form onSubmit={props.onConfirm}>
 
   <Form.Row>
-    <Form.Group as={Col} controlId="formGridTags">
-    <Form.Label>Add Perk Id: {props.selectedPerk._id} to this user?</Form.Label>
-    <Form.Control as="textarea" rows="12" placeholder="tag, tag, tags"/>
+    <Form.Group as={Col} controlId="formGridPlatform">
+    <Form.Label>Platform</Form.Label>
+    <Form.Control type="text" placeholder="Platform"/>
+  </Form.Group>
+  </Form.Row>
+
+  <Form.Row>
+    <Form.Group as={Col} controlId="formGridHandle">
+    <Form.Label>Handle</Form.Label>
+    <Form.Control type="text" placeholder="Handle"/>
   </Form.Group>
   </Form.Row>
 
@@ -37,4 +44,4 @@ return (
 
 )};
 
-export default AddUserPerkForm;
+export default AddUserSocialMediForm;

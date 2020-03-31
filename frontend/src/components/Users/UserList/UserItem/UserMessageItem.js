@@ -14,7 +14,6 @@ const userMessgeItem = props => (
           Message
         </Card.Title>
 
-
         <ul className="cardUl">
           <li className="cardLi">
           <p className="userItemHeading"> date:</p>

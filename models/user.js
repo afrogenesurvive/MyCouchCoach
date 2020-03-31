@@ -79,6 +79,7 @@ const userSchema = new Schema({
     sessionDate: {type: Date},
     lesson: {type: Schema.Types.ObjectId,ref: 'Lesson'}
   }],
+  reviews: [{type: Schema.Types.ObjectId,ref: 'Review'}],
   comments: [{type: Schema.Types.ObjectId,ref: 'Comment'}],
   messages: [{type: Schema.Types.ObjectId,ref: 'Message'}],
   orders: [{type: Schema.Types.ObjectId,ref: 'Order'}],

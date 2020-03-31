@@ -6,29 +6,41 @@ import Tab from 'react-bootstrap/Tab';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
+import UserAddressList from './UserList/UserAddressList';
 import UserProfileImageList from './UserList/UserProfileImageList';
+import UserSocialMediaList from './UserList/UserSocialMediaList';
+
 import UserPerkList from './UserList/UserPerkList';
+import UserPromoList from './UserList/UserPromoList';
+
 import UserInterestList from './UserList/UserInterestList';
 import UserTagList from './UserList/UserTagList';
-import UserModelList from './UserList/UserModelList';
-import UserBillingList from './UserList/UserBillingList';
-import UserComplaintList from './UserList/UserComplaintList';
-import UserMessageList from './UserList/UserMessageList';
-import UserTransactionList from './UserList/UserTransactionList';
 
-import UpdateUserForm from '../Forms/user/UpdateUserForm';
+import UserFriendList from './UserList/UserFriendList';
+import UserCartItemList from './UserList/UserCartItemList';
+import UserBookedLessonList from './UserList/UserBookedLessonList';
+import UserPaymentInfoList from './UserList/UserPaymentInfoList';
+
+import UserOrderList from './UserList/UserOrderList';
+import UserReviewList from './UserList/UserReviewList';
+import UserMessageList from './UserList/UserList/UserMessageList';
+import UserActivityList from './UserList/UserActivityList';
+
+import UpdateUserBasicForm from '../Forms/user/UpdateUserBasicForm';
 import UpdateUserFieldForm from '../Forms/user/UpdateUserFieldForm';
 
+import AddUserAddressForm from '../Forms/user/AddUserAddressForm';
 import AddUserProfileImageForm from '../Forms/user/AddUserProfileImageForm';
-import AddUserPerkForm from '../Forms/user/AddUserPerkForm';
+
 import AddUserInterestsForm from '../Forms/user/AddUserInterestsForm';
 import AddUserTagsForm from '../Forms/user/AddUserTagsForm';
-import AddUserTokensForm from '../Forms/user/AddUserTokensForm';
-import AddUserComplaintForm from '../Forms/user/AddUserComplaintForm';
-import AddUserBillingForm from '../Forms/user/AddUserBillingForm';
+
+import AddUserSocialMediaForm from './AddUserSocialMediaForm';
+import AddUserInterestsForm from './AddUserInterestsForm';
+import AddUserTagsForm from './AddUserTagsForm';
+import AddUserPaymentInfoForm from './AddUserPaymentInfoForm';
 
 import CreateMessageForm from '../Forms/message/CreateMessageForm';
-import CreateTransactionForm from '../Forms/transaction/CreateTransactionForm';
 
 import './thisUserProfile.css';
 
@@ -42,7 +54,7 @@ const thisUserProfile = (props) => {
   <Tabs defaultActiveKey="Demographics" id="uncontrolled-tab-example">
     <Tab eventKey="" title="Details:" disabled>
     </Tab>
-    <Tab eventKey="Demographics" title="Demographics">
+    <Tab eventKey="Basic" title="Basic">
     <Card className="UserDetailCard">
     <Card.Body>
       <Card.Title><span className="ul">Your Profile Details</span></Card.Title>
@@ -61,57 +73,54 @@ const thisUserProfile = (props) => {
             <span className="bold">D.O.B:</span> {userDob}
           </Card.Text>
           <Card.Text>
+            <span className="bold">Age:</span> {user.age}
+          </Card.Text>
+          <Card.Text>
             <span className="bold">Phone:</span> {user.contact.phone}
+          </Card.Text>
+          <Card.Text>
+            <span className="bold">Phone 2:</span> {user.contact.phone2}
           </Card.Text>
           <Card.Text>
             <span className="bold">Email:</span> {user.contact.email}
           </Card.Text>
-        </Col>
-
-        <Col className="detailCardCol">
           <Card.Text>
             <span className="bold">Bio:</span> {user.bio}
           </Card.Text>
           <Card.Text>
-            <span className="bold">Address:</span>
-          </Card.Text>
-          <Card.Text>
-            <span className="bold">Street & Number :</span> {userAddress.number}, {userAddress.street}
-          </Card.Text>
-          <Card.Text>
-            <span className="bold">Town :</span> {userAddress.town}
-          </Card.Text>
-          <Card.Text>
-            <span className="bold">City :</span> {userAddress.city}
-          </Card.Text>
-          <Card.Text>
-            <span className="bold">Country :</span> {userAddress.country}
-          </Card.Text>
-          <Card.Text>
-            <span className="bold">Postal Code :</span> {userAddress.postalCode}
-          </Card.Text>
-          <Card.Text>
-            <span className="bold">Tokens :</span> {user.tokens}
+            <span className="bold">Points :</span> {user.points}
           </Card.Text>
         </Col>
       </Row>
 
-      <Col className="detailCardCol">
-        <Button variant="secondary" className="confirmEditButton" onClick={props.onCallOut}>
-        IO Call Out
-        </Button>
-      </Col>
+      <Row className="detailCardRow">
+        <Col className="detailCardCol">
+          <Card.Text>
+            <span className="bold">Public :</span> {user.public}
+          </Card.Text>
+          <Card.Text>
+            <span className="bold">loggedIn :</span> {user.loggedIn}
+          </Card.Text>
+          <Card.Text>
+            <span className="bold">clientConnected :</span> {user.clientConnected}
+          </Card.Text>
+          <Card.Text>
+            <span className="bold">Verification :</span> {user.verification.type}, {user.verification.verified}
+          </Card.Text>
+        </Col>
+      </Row>
 
       <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.onStartUpdate}>Edit</Button>
       <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.onStartUpdateField}>Edit 1 Field</Button>
-      <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.onStartAddTokens}>+ Tokens</Button>
+      <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.onStartAdd.bind(this, "points")}>+ Points</Button>
 
-      {props.updating === true &&(
+      {props.updating === true &&
+        props.updatingField === "basic" && (
         <UpdateUserForm
         canCancelProfile
           canConfirm
           onCancel={props.onCancel}
-          onConfirm={props.onEdit}
+          onConfirm={props.userEditBasic}
           confirmText="Confirm"
           user={props.user}
           authId={props.authId}
@@ -123,19 +132,19 @@ const thisUserProfile = (props) => {
             canCancel
             canConfirm
             onCancel={props.onCancel}
-            onConfirm={props.onEditField}
+            onConfirm={props.userEditField}
             confirmText="Confirm"
             user={props.user}
             authId={props.authId}
           />
       )}
 
-      {props.userAddField === "tokens" && (
-          <AddUserTokensForm
+      {props.userAddField === "points" && (
+          <AddUserPointsForm
             canCancel
             canConfirm
             onCancel={props.onCancel}
-            onConfirm={props.addTokens}
+            onConfirm={props.userAddPoints}
             confirmText="Confirm"
             user={props.user}
             authId={props.authId}
@@ -146,9 +155,34 @@ const thisUserProfile = (props) => {
     </Card>
     </Tab>
 
+    <Tab eventKey="address" title="address">
+    <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.onStartAdd.bind(this, "address")}>+ Address</Button>
+    {props.userAddField === "address" && (
+        <AddUserAddressForm
+          user={props.user}
+          authId={props.authId}
+          canCancel
+          canConfirm
+          onCancel={props.onCancel}
+          onConfirm={props.userAddAddress}
+          confirmText="Confirm"
+        />
+    )}
+    {user.addresses !== null &&
+      user.addresses !== [] && (
+        <UserAddressList
+          userAddresses={user.addresses}
+          authId={props.authId}
+          canDelete={props.canDelete}
+          onDelete={props.userDeleteAddress}
+        />
+      )}
+
+    </Tab>
+
     <Tab eventKey="profileImages" title="profileImages">
 
-    <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.onStartAddProfileImage}>+ Image</Button>
+    <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.onStartAdd.bind(this, "profileImage")}>+ Image</Button>
     {props.userAddField === "profileImage" && (
         <AddUserProfileImageForm
           user={props.user}
@@ -156,7 +190,7 @@ const thisUserProfile = (props) => {
           canCancel
           canConfirm
           onCancel={props.onCancel}
-          onConfirm={props.addProfileImage}
+          onConfirm={props.userAddProfileImage}
           confirmText="Confirm"
         />
     )}
@@ -167,26 +201,55 @@ const thisUserProfile = (props) => {
           userProfileImages={user.profileImages}
           authId={props.authId}
           canDelete={props.canDelete}
-          onDelete={props.onProfileImageDelete}
+          onDelete={props.userDeleteProfileImage}
+        />
+      ) }
+
+    </Tab>
+
+    <Tab eventKey="socialMedia" title="socialMedia">
+
+    <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.onStartAdd.bind(this, "socialMedia")}>+ Social Media</Button>
+    {props.userAddField === "socialMedia" && (
+        <AddUserSocialMediaForm
+          user={props.user}
+          authId={props.authId}
+          canCancel
+          canConfirm
+          onCancel={props.onCancel}
+          onConfirm={props.userAddSocialMedia}
+          confirmText="Confirm"
+        />
+    )}
+
+    {user.socialMedia !== null &&
+      user.socialMedia !== [] && (
+        <UserSocialMediaList
+          userSocialMedia={user.socialMedia}
+          authId={props.authId}
+          canDelete={props.canDelete}
+          onDelete={props.userDeleteSocialMedia}
         />
       ) }
 
     </Tab>
 
     <Tab eventKey="perks" title="perks">
-    <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.onStartAddPerk}>+ Perk</Button>
+    <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.onStartAdd.bind(this, "perk")}>+ Perk</Button>
 
-    {props.userAddField === "perk" && (
+    {props.userAddField === "perk" &&
+    props.selectedPerk !== null && (
         <AddUserPerkForm
           canCancel
           canConfirm
           onCancel={props.onCancel}
-          onConfirm={props.addPerk}
+          onConfirm={props.userAddPerk}
           confirmText="Confirm"
           user={props.user}
           authId={props.authId}
+          perk={props.selectedPerk}
         />
-    )}
+      )}
 
     {user.perks !== null &&
       user.perks !== [] && (
@@ -194,22 +257,51 @@ const thisUserProfile = (props) => {
           userPerks={user.perks}
           authId={props.authId}
           canDelete={props.canDelete}
-          onDelete={props.onPerkDelete}
+          onDelete={props.userDeletePerk}
         />
-      ) }
+      )}
+
+    </Tab>
+
+    <Tab eventKey="promos" title="promos">
+    <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.onStartAdd.bind(this, "promo")}>+ Promo</Button>
+
+    {props.userAddField === "promo" &&
+    props.selectedPromo !== null && (
+        <AddUserPromoForm
+          canCancel
+          canConfirm
+          onCancel={props.onCancel}
+          onConfirm={props.userAddPromo}
+          confirmText="Confirm"
+          user={props.user}
+          authId={props.authId}
+          promo={props.selectedPromo}
+        />
+    )}
+
+    {user.promos !== null &&
+      user.promos !== [] && (
+        <UserPromoList
+          userPromos={user.promos}
+          authId={props.authId}
+          canDelete={props.canDelete}
+          onDelete={props.userDeletePromo}
+        />
+      )}
 
     </Tab>
 
     <Tab eventKey="interests" title="interests">
 
-    <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.onStartAddInterests}>+ Interests</Button>
+    <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.onStartAdd.bind(this, "interests")}>+ Interests</Button>
 
     {props.userAddField === "interests" && (
         <AddUserInterestsForm
           canCancel
           canConfirm
           onCancel={props.onCancel}
-          onConfirm={props.addInterests}
+          onConfirm={props.userAddInterests}
           confirmText="Confirm"
           user={props.user}
           authId={props.authId}
@@ -222,7 +314,7 @@ const thisUserProfile = (props) => {
           userInterests={user.interests}
           authId={props.authId}
           canDelete={props.canDelete}
-          onDelete={props.onInterestDelete}
+          onDelete={props.userDeleteInterest}
         />
       )}
 
@@ -230,14 +322,14 @@ const thisUserProfile = (props) => {
 
     <Tab eventKey="tags" title="tags">
 
-    <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.onStartAddTags}>+ Tags</Button>
+    <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.onStartAdd.bind(this, "tags")}>+ Tags</Button>
 
     {props.userAddField === "tags" && (
         <AddUserTagsForm
           canCancel
           canConfirm
           onCancel={props.onCancel}
-          onConfirm={props.addTags}
+          onConfirm={props.userAddTags}
           confirmText="Confirm"
           user={props.user}
           authId={props.authId}
@@ -250,78 +342,77 @@ const thisUserProfile = (props) => {
           userTags={user.tags}
           authId={props.authId}
           canDelete={props.canDelete}
-          onDelete={props.onTagsDelete}
+          onDelete={props.userDeleteTag}
         />
       ) }
 
     </Tab>
 
-    <Tab eventKey="favs" title="favs">
+    <Tab eventKey="friends" title="friends">
 
-    {user.models !== null &&
-      user.models !== [] && (
-        <UserModelList
-          userModels={user.models}
+    {user.friends !== null &&
+      user.friends !== [] && (
+        <UserFriendList
+          userFriends={user.friends}
           authId={props.authId}
           canDelete={props.canDelete}
-          onDelete={props.onUserModelDelete}
+          onDelete={props.userDeleteFriend}
         />
       ) }
 
     </Tab>
 
-    <Tab eventKey="billing" title="billing">
+    <Tab eventKey="cart" title="cart">
 
-    <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.onStartAddBilling}>+ Billing</Button>
+    {user.cart !== null &&
+      user.cart !== [] && (
+        <UserCartItemList
+          userCartItems={user.cart}
+          authId={props.authId}
+          canDelete={props.canDelete}
+          onDelete={props.userDeleteCartItem}
+        />
+      )}
 
-    {props.userAddField === "billing" && (
-        <AddUserBillingForm
+    </Tab>
+
+    <Tab eventKey="bookedLessons" title="bookedLessons">
+
+    {user.bookedLessons !== null &&
+      user.bookedLessons!== [] && (
+        <UserBookedLessonList
+          userBookedLessons={user.bookedLessons}
+          authId={props.authId}
+          canDelete={props.canDelete}
+          onDelete={props.userDeleteBookedLesson}
+        />
+      )}
+
+    </Tab>
+
+    <Tab eventKey="paymentInfo" title="paymentInfo">
+
+    <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.onStartAdd.bind(this, "paymentInfo")}>+ PaymentInfo</Button>
+
+    {props.userAddField === "paymentInfo" && (
+        <AddUserPaymentInfoForm
           canCancel
           canConfirm
           onCancel={props.onCancel}
-          onConfirm={props.addBilling}
+          onConfirm={props.userAddPaymentInfo}
           confirmText="Confirm"
           user={props.user}
           authId={props.authId}
         />
     )}
 
-    {user.billing !== null &&
-      user.billing !== [] && (
-        <UserBillingList
-          userBilling={user.billing}
+    {user.paymentInfo !== null &&
+      user.paymentInfo !== [] && (
+        <UserPaymentInfoList
+          userPaymentInfo={user.paymentInfo}
           authId={props.authId}
           canDelete={props.canDelete}
-          onDelete={props.onBillingDelete}
-        />
-      ) }
-
-    </Tab>
-
-    <Tab eventKey="complaints" title="complaints">
-
-    <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.onStartAddComplaint}>+ Complaint</Button>
-
-    {props.userAddField === "complaint" && (
-        <AddUserComplaintForm
-          canCancel
-          canConfirm
-          onCancel={props.onCancel}
-          onConfirm={props.addComplaint}
-          confirmText="Confirm"
-          user={props.user}
-          authId={props.authId}
-          selectedUser={props.selectedUser}
-        />
-    )}
-
-    {user.complaints !== null &&
-      user.complaints !== [] && (
-        <UserComplaintList
-          userComplaints={user.complaints}
-          authId={props.authId}
-          canDelete={props.canDelete}
-          onDelete={props.onComplaintDelete}
+          onDelete={props.userDeletePaymentInfo}
         />
       ) }
 
@@ -341,7 +432,7 @@ const thisUserProfile = (props) => {
           canCancel
           canConfirm
           onCancel={props.onCancel}
-          onConfirm={props.createMessage}
+          onConfirm={props.userCreateMessage}
           confirmText="Confirm"
           user={props.user}
           authId={props.authId}
@@ -355,43 +446,51 @@ const thisUserProfile = (props) => {
           userMessages={user.messages}
           authId={props.authId}
           canDelete={props.canDelete}
-          onDelete={props.onMessageDelete}
+          onDelete={props.userDeleteMessage}
         />
       ) }
 
     </Tab>
 
-    <Tab eventKey="transactions" title="transactions">
+    <Tab eventKey="orders" title="orders">
 
-    <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.onStartCreateTransaction}>+ Transaction</Button>
-
-    {props.messageReceiver === null && (
-      <Button variant="outline-warning" size="lg" className="confirmEditButton" >Select someone send tokens to</Button>
-    )}
-
-    {props.userAddField === "transaction" &&
-      props.messageReceiver !== null && (
-        <CreateTransactionForm
-          canCancel
-          canConfirm
-          onCancel={props.onCancel}
-          onConfirm={props.createTransaction}
-          confirmText="Confirm"
-          user={props.user}
-          authId={props.authId}
-          receiver={props.messageReceiver}
-        />
-    )}
-
-    {user.transactions !== null &&
-      user.transactions !== [] && (
-        <UserTransactionList
-          userTransactions={user.transactions}
+    {user.orders !== null &&
+      user.orders !== [] && (
+        <UserOrderList
+          userOrders={user.orders}
           authId={props.authId}
           canDelete={props.canDelete}
-          onDelete={props.onTransactionDelete}
+          onDelete={props.userDeleteOrder}
         />
       ) }
+
+    </Tab>
+
+    <Tab eventKey="reviews" title="reviews">
+
+    {user.reviews !== null &&
+      user.reviews !== [] && (
+        <UserReviewList
+          userReviews={user.reviews}
+          authId={props.authId}
+          canDelete={props.canDelete}
+          onDelete={props.userDeleteReview}
+        />
+      )}
+
+    </Tab>
+
+    <Tab eventKey="activity" title="activity">
+
+    {user.activity !== null &&
+      user.activity !== [] && (
+        <UserActivityList
+          userActivity={user.activity}
+          authId={props.authId}
+          canDelete={props.canDelete}
+          onDelete={props.userDeleteActivity}
+        />
+      )}
 
     </Tab>
   </Tabs>

@@ -257,7 +257,6 @@ module.exports = {
         name: args.userInput.name,
         username: args.userInput.username,
         dob: args.userInput.dob,
-        age: args.userInput.age,
         contact: {
           email: args.userInput.contactEmail,
           phone: args.userInput.contactPhone,

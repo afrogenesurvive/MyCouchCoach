@@ -49,40 +49,46 @@ mongoose.connect('mongodb://localhost:27017/my_couch_coach',{useNewUrlParser: tr
     console.log(err);
 });
 
-// io.on('connection', (socket) => {
-//     console.log("a wild client appered..", socket.id);
-//
-//     socket.on('msg_subscribe', function(room) {
-//       console.log('joining room', room);
-//       socket.join(room);
-//     });
-//     socket.on('send message', function(data) {
-//       console.log('sending room post', data.room);
-//       socket.broadcast.to(data.room).emit('conversation private post', {
-//           message: data.message
-//       });
-//       socket.emit("MESSAGE_SENT", {msg: "message sent!!"});
-//     });
-//
-//     socket.on('trans_subscribe', function(room) {
-//       console.log('joining room', room);
-//       socket.join(room);
-//     });
-//     socket.on('send transaction', function(data) {
-//       console.log('sending room trnsaction', data.room);
-//       socket.broadcast.to(data.room).emit('conversation private transaction', {
-//           transaction: data.transaction
-//       });
-//       socket.emit("TRANSACTION_SENT", {msg: "transaction sent!!"});
-//     });
-// });
-//
-// server.listen(9007, function (err) {
-//   if (err) throw err
-//   console.log(`
-//     socket.io listening on port 9007
-//     `)
-// })
+const User = require('./models/user');
+function showUserOnline = (room) {
+  try {
+    const userOnline = await User.findOneAndUpdate({_id: room},{clientConnected: true},{new: true, useFindAndModify: false})
+    if (userOnline.clientConnected === true) {
+      console.log("success...others should be able to see that you're online");
+    }
+    return {
+      userOnline
+    });
+  } catch (err) {
+    throw err;
+  }
+}
+
+io.on('connection', (socket) => {
+    console.log("a wild client appered..", socket.id);
+
+    socket.on('msg_subscribe', function(room) {
+      console.log('joining room', room);
+  console.log("bringing user.."+room+"..online..");
+  showUserOnline(room);
+      socket.join(room);
+    });
+    socket.on('send message', function(data) {
+      console.log('sending room post', data.room);
+      socket.broadcast.to(data.room).emit('conversation private post', {
+          message: data.message
+      });
+      socket.emit("MESSAGE_SENT", {msg: "message sent!!"});
+    });
+
+});
+
+server.listen(7770, function (err) {
+  if (err) throw err
+  console.log(`
+    socket.io listening on port 7770
+    `)
+})
 
 //
 // app.use(

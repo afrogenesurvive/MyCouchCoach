@@ -36,7 +36,6 @@ return (
 </Form.Row>
 
 <Form.Row>
-
 <Form.Group as={Col} controlId="formGridName">
   <Form.Label>Name</Form.Label>
   <Form.Control type="text" placeholder="Name" />
@@ -54,12 +53,23 @@ return (
   <Form.Label>Phone</Form.Label>
   <Form.Control type="number" placeholder="phone"/>
 </Form.Group>
+<Form.Group as={Col} controlId="formGridPhone2">
+  <Form.Label>Phone2</Form.Label>
+  <Form.Control type="number" placeholder="phone2"/>
+</Form.Group>
 </Form.Row>
 
 <Form.Row>
 <Form.Group as={Col} controlId="formGridDob">
   <Form.Label>D.O.B</Form.Label>
   <Form.Control type="date" placeholder="Date of Birth"/>
+</Form.Group>
+</Form.Row>
+
+<Form.Row>
+<Form.Group as={Col} controlId="formGridPublicCheckbox">
+  <Form.Label>Public ?</Form.Label>
+  <Form.Control type="checkbox" onChange={(e) => {console.log(e.target.checked)}}/>
 </Form.Group>
 </Form.Row>
 
@@ -96,6 +106,16 @@ return (
 
 
 <Form.Row>
+
+<Form.Group as={Col} controlId="formGridAddressType">
+  <Form.Label>Type</Form.Label>
+  <Form.Control as="select">
+  <option>billing</option>
+  <option>shipping</option>
+
+  </Form.Control>
+</Form.Group>
+
 <Form.Group as={Col} controlId="formGridAddressNumber">
   <Form.Label>Street No.</Form.Label>
   <Form.Control type="number" placeholder="addressNumber"/>

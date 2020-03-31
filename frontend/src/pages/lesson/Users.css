@@ -1,0 +1,164 @@
+.users-control {
+  text-align: center;
+  border: 1px solid #5101d1;
+  padding: 1rem;
+  margin: 5rem auto;
+  width: 30rem;
+  max-width: 80%;
+}
+
+.signupToLoginButton {
+  height: 2rem;
+  width: 4rem;
+  position: fixed;
+  bottom: 10rem;
+  left: 5rem;
+}
+
+.containerCombinedDetail1 {
+  height: 80vh;
+  /* width: 50vw; */
+  /* margin: 5rem 2rem 0 2rem; */
+  margin-top: 7rem;
+  margin-left: 1rem;
+  width: 100%;
+  /* overflow: scroll; */
+  padding: 0;
+}
+.containerProfile {
+  height: 85vh;
+  /* width: 50vw; */
+  margin: 7rem 0 0 0;
+  width: 100%;
+  overflow: scroll;
+  padding: 0;
+}
+
+.detailTab {
+
+}
+
+.searchCard {
+  width: 100%;
+  margin: .5rem 0;
+}
+
+.containerCreateUpdate {
+  margin-top: 5rem;
+  width: 95%;
+}
+.containerSearchUserInput1 {
+  /* margin-top: 3rem; */
+  width: 100%;
+  /* padding: 2rem; */
+}
+.containerSearchUserResults {
+  margin-top: 2rem;
+  width: 100%;
+  /* padding: 2rem; */
+}
+.containerUserMasterList {
+  margin-top: 1rem;
+  width: 100%;
+  /* padding: 1rem; */
+}
+.containerUserDetail {
+  margin-top: 5rem;
+  width: 50vw;
+}
+.createUserRowAdd, .updateUserRowAdd {
+  border: 1.5px solid black;
+  height: 5rem;
+  padding: 1rem 0;
+}
+.searchUserRowAdd {
+  /* border: 1.5px solid black; */
+  height: 3rem;
+  /* padding: 1rem 0; */
+}
+.createUserRowForm, .updateUserRowForm {
+  border: 1.5px solid black;
+  height: 35rem;
+  text-align: center;
+  overflow: scroll;
+}
+.searchUserRowForm1 {
+  /* border: 1.5px solid blue; */
+  border-radius: 5px;
+  height: 10rem;
+  text-align: center;
+  overflow: scroll;
+}
+
+.searchUserRowAdd {
+  margin-left: 6rem;
+  margin-bottom: 3rem;
+}
+
+.searchListRow {
+  height: 40rem;
+  border: 1px solid blue;
+  border-radius: 5px;
+  overflow: scroll;
+}
+.searchListRow1 {
+  height: 35rem;
+  border: 1px solid blue;
+  border-radius: 5px;
+  overflow: scroll;
+}
+
+.createUserColAdd {
+  height: 100%;
+  text-align: center;
+}
+.createUserColForm {
+  height: 100%;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.confirmEditButton {
+  margin: 3rem 10rem;
+}
+
+.bold {
+  font-weight: bold;
+}
+.ul {
+  text-decoration: underline;
+}
+
+.vertMenu {
+  border-right: 1px solid black;
+}
+
+.helpPageMainCol {
+  margin-top: 10rem;
+  margin-left: 5rem;
+}
+
+.helpAccordion {
+  margin: 0 3rem 0 5rem;
+}
+
+.searchButton {
+
+}
+
+.userListRow {
+  height: 85vh;
+}
+
+.userListMainCol {
+  overflow: scroll;
+}
+
+.searchFormBtn {
+  height: 3rem;
+  margin: 1.5rem;
+}
+
+.searchInput {
+  margin: 1.5rem;
+}

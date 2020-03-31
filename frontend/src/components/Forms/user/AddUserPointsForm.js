@@ -4,31 +4,17 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import './CreateUserForm.css';
 
-const AddUserComplaintForm = (props) => {
+const AddUserPointsForm = (props) => {
+// const {...user} = props.user;
 
 return (
 <div className="UpdateFormContainer">
 <Form onSubmit={props.onConfirm}>
 
-<Form.Row>
-<Form.Group as={Col} controlId="formGridTypeSelect">
-<Form.Label>Complaint Types</Form.Label>
-<Form.Control as="select">
-  <option>type 1</option>
-  <option>type 2</option>
-  <option>type 3</option>
-</Form.Control>
-</Form.Group>
-
-<h5>Offender Username:</h5>
-  {props.selectedUser.username}
-
-</Form.Row>
-
   <Form.Row>
-    <Form.Group as={Col} controlId="formGridDescription">
-    <Form.Label>Complaint Description</Form.Label>
-    <Form.Control as="textarea" rows="12" placeholder="Complaint description"/>
+    <Form.Group as={Col} controlId="formGridPoints">
+    <Form.Label>Points</Form.Label>
+    <Form.Control type="number" placeholder="token amount"/>
   </Form.Group>
   </Form.Row>
 
@@ -52,4 +38,4 @@ return (
 
 )};
 
-export default AddUserComplaintForm;
+export default AddUserPointsForm;

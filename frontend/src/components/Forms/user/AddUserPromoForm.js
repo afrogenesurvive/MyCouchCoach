@@ -4,17 +4,15 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import './CreateUserForm.css';
 
-const AddUserTokensForm = (props) => {
-// const {...user} = props.user;
+const AddUserPromoForm = (props) => {
 
 return (
 <div className="UpdateFormContainer">
 <Form onSubmit={props.onConfirm}>
 
   <Form.Row>
-    <Form.Group as={Col} controlId="formGridTokens">
-    <Form.Label>Tokens</Form.Label>
-    <Form.Control type="number" placeholder="token amount"/>
+    <Form.Group as={Col} controlId="formGridTags">
+    <Form.Label>Add Promo Id: {props.selectedPromo._id} to this user?</Form.Label>
   </Form.Group>
   </Form.Row>
 
@@ -38,4 +36,4 @@ return (
 
 )};
 
-export default AddUserTokensForm;
+export default AddUserPromoForm;

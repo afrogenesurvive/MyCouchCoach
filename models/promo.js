@@ -10,6 +10,7 @@ const promoSchema = new Schema({
   valid: {type: Boolean},
   lessons: [{type: Schema.Types.ObjectId,ref: 'Lesson'}],
   description: {type: String},
+  code: {type: String},
   imageLink: {type: String}
 },
   { timestamps: true }

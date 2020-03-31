@@ -5,20 +5,13 @@ import AuthPage from './pages/auth/Auth';
 import SignupPage from './pages/auth/Signup';
 
 import UserProfile from './pages/user/UserProfile';
-import ModelProfile from './pages/model/ModelProfile';
 import UsersPage from './pages/user/Users';
-import ModelsPage from './pages/model/Models';
-import ContentPage from './pages/content/Content';
 
-// import ShowsPage from './pages/show/Shows';
 import MainNavigation from './components/Navigation/MainNavigation';
 import AuthContext from './context/auth-context';
 import io from 'socket.io-client';
 
-
 import './App.css';
-
-
 
 class App extends Component {
   state = {
@@ -37,14 +30,11 @@ class App extends Component {
   }
 
   login = (token, activityId, role, tokenExpiration) => {
-
     this.setState({
       token: token,
       activityId: activityId,
       role: role
     });
-
-
   };
 
   logout = () => {
@@ -58,23 +48,20 @@ class App extends Component {
     this.context = {
       token: null,
       activityId: null,
+      activityA: null,
+      activityB: null,
+      activityC: null,
       role: null,
       userId: null,
-      modelId: null,
-      contentId: null,
-      showId: null,
       user: {},
       users:[],
-      selectedUser: {},
-      model: {},
-      models:[],
-      selectedModel: {},
-      content: {},
-      contents:[],
-      selectedContent: {},
-      show: {},
-      shows:[],
-      selectedShow: {},
+      selectedUser: null,
+      lesson: {},
+      lessons: [],
+      selectedLesson: null,
+      selectedPerk: null,
+      selectedPromo: null,
+      selectedReview: null,
       sender: null,
       receiver: null,
       userAlert: "...",
@@ -84,6 +71,11 @@ class App extends Component {
       logout: this.logout,
     }
   };
+
+  constructor(props){
+      super(props);
+      this.socket = io('http://localhost:7770');
+    }
 
 
   componentDidMount() {
@@ -99,12 +91,20 @@ class App extends Component {
         token: seshStore.token,
         });
     }
-
-    // const socket = io('http://localhost:9007');
-    //   socket.on('news1', function (data) {
-    //     console.log("it's aliiiive!!",data);
-    //     // socket.emit('my other event', { my: 'data' });
-    //   });
+    const conversationId = this.context.activityId;
+    this.socket.emit('msg_subscribe', 'msg'+conversationId);
+    this.socket.emit('trans_subscribe', 'trans'+conversationId);
+    console.log("listening for tokens & pms...");
+    this.socket.on('conversation private post', function(data) {
+      console.log("you got a new message..",data);
+      addMessage(data);
+    });
+    const addMessage = data => {
+      this.setState({
+        userAlert: `New Msg!!
+          Fr:   ${data.message.senderName},
+          Msg:   ${data.message.message}`})
+    };
   }
 
   render() {
@@ -115,23 +115,20 @@ class App extends Component {
             value={{
               token: this.state.token,
               activityId: this.state.activityId,
+              activityA: null,
+              activityB: null,
+              activityC: null,
               role: this.state.role,
               userId: null,
-              modelId: null,
-              contentId: null,
-              showId: null,
               user: {},
               users:[],
               selectedUser: {},
-              model: {},
-              models:[],
-              selectedModel: {},
-              content: {},
-              contents:[],
-              selectedContent: {},
-              show: {},
-              shows:[],
-              selectedShow: {},
+              lesson: {},
+              lessons: [],
+              selectedLesson: {},
+              selectedPerk: {},
+              selectedPromo: {},
+              selectedReview: {},
               sender: null,
               receiver: null,
               userAlert: "...",
@@ -147,34 +144,15 @@ class App extends Component {
             <main className="main-content">
               <Switch>
 
-                { // logged in -> pages
-                this.state.token &&
-                this.state.role === "User" && <Redirect from="/" to="/userProfile" exact />}
-                {this.state.token &&
-                  this.state.role === "Model" && <Redirect from="/" to="/modelProfile" exact />}
+                {this.state.token && <Redirect from="/" to="/userProfile" exact />}
 
-                {this.state.token &&
-                  this.state.role === "User" && (<Route path="/userProfile" component={UserProfile} />)}
-                {this.state.token &&
-                  this.state.role === "Model" && (<Route path="/modelProfile" component={ModelProfile} />)}
+                {this.state.token && (<Route path="/userProfile" component={UserProfile} />)}
 
-                {this.state.token &&
-                  this.state.role === "User" && (
-                    <Redirect from="/auth" to="/userProfile" exact />
-                )}
-                {this.state.token && this.state.role === "Model" && (
-                    <Redirect from="/auth" to="/modelProfile" exact />
-                )}
+                {this.state.token && (<Redirect from="/auth" to="/userProfile" exact />)}
 
                 {this.state.token && (<Route path="/users" component={UsersPage} />)}
-                {this.state.token && (<Route path="/models" component={ModelsPage} />)}
-                {this.state.token && (<Route path="/content" component={ContentPage} />)}
-                {
-                  // this.state.token && (<Route path="/shows" component={ShowsPage} />)
-                }
 
-                { //if not logged in -> go to login page
-                !this.state.token && (<Route path="/auth" component={AuthPage} />)}
+                {!this.state.token && (<Route path="/auth" component={AuthPage} />)}
                 {!this.state.token && (<Route path="/signup" component={SignupPage} />)}
                 {!this.state.token && <Redirect to="/auth" exact />}
               </Switch>

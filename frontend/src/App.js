@@ -27,6 +27,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.sessionStorageAuth = null;
+    this.socket = io('http://localhost:7770');
   }
 
   login = (token, activityId, role, tokenExpiration) => {
@@ -72,11 +73,6 @@ class App extends Component {
     }
   };
 
-  constructor(props){
-      super(props);
-      this.socket = io('http://localhost:7770');
-    }
-
 
   componentDidMount() {
 
@@ -107,6 +103,76 @@ class App extends Component {
     };
 
     // call func to set online status here and on componentWillUnmount
+  }
+
+  componentDidMount() {
+
+  }
+
+  userOnline = () => {
+    const token = this.context.token;
+    const activityId = this.context.activityId;
+    const requestBody = {
+      query:`
+
+      `};
+
+    fetch('http://localhost:7077/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!');
+          this.setState({userAlert: 'Failed!'});
+        }
+        return res.json();
+      })
+      .then(resData => {
+
+        const responseAlert = JSON.stringify(resData.data).slice(2,25);
+        this.context.user = ;
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
+  }
+
+  userOffline = () => {
+    const token = this.context.token;
+    const activityId = this.context.activityId;
+    const requestBody = {
+      query:`
+
+      `};
+
+    fetch('http://localhost:7077/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!');
+          this.setState({userAlert: 'Failed!'});
+        }
+        return res.json();
+      })
+      .then(resData => {
+
+        const responseAlert = JSON.stringify(resData.data).slice(2,25);
+        this.context.user = ;
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
   }
 
   render() {

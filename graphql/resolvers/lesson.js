@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const DataLoader = require('dataloader');
 
 const User = require('../../models/user');
-const Lesson = require('../../models/Lesson');
+const Lesson = require('../../models/lesson');
 const Order = require('../../models/order');
 const Review = require('../../models/review');
 const Perk = require('../../models/perk');
@@ -28,7 +28,7 @@ module.exports = {
     try {
       const lessons = await Lesson.find({})
       .populate('instructors')
-      .populate('reviews');
+      .populate('reviews')
       .populate('session.booked')
       .populate('session.attended');
 
@@ -48,7 +48,7 @@ module.exports = {
 
       const lesson = await Lesson.findById(args.lessonId)
       .populate('instructors')
-      .populate('reviews');
+      .populate('reviews')
       .populate('session.booked')
       .populate('session.attended');
 
@@ -266,7 +266,7 @@ module.exports = {
         duration: args.lessonInput.duration,
         },{new: true, useFindAndModify: false})
         .populate('instructors')
-        .populate('reviews');
+        .populate('reviews')
         .populate('session.booked')
         .populate('session.attended');
 
@@ -291,7 +291,7 @@ module.exports = {
       const query = {[resolverField]:resolverQuery};
       const user = await Lesson.findOneAndUpdate({_id:args.userId},query,{new: true, useFindAndModify: false})
       .populate('instructors')
-      .populate('reviews');
+      .populate('reviews')
       .populate('session.booked')
       .populate('session.attended');
 
@@ -314,7 +314,7 @@ module.exports = {
       const splitTags = tags.split(",");
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: { tags: {$each: splitTags} }},{new: true, useFindAndModify: false})
       populate('instructors')
-      .populate('reviews');
+      .populate('reviews')
       .populate('session.booked')
       .populate('session.attended');
 
@@ -355,7 +355,7 @@ module.exports = {
       const splitRequirements = requirements.split(",");
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: { requirements: {$each: splitRequirements} }},{new: true, useFindAndModify: false})
       populate('instructors')
-      .populate('reviews');
+      .populate('reviews')
       .populate('session.booked')
       .populate('session.attended');
 
@@ -396,7 +396,7 @@ module.exports = {
       const splitMaterials = materials.split(",");
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: { materials: {$each: splitMaterials} }},{new: true, useFindAndModify: false})
       populate('instructors')
-      .populate('reviews');
+      .populate('reviews')
       .populate('session.booked')
       .populate('session.attended');
 
@@ -440,7 +440,7 @@ module.exports = {
       };
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: {schedule: scheduleDate}},{new: true, useFindAndModify: false})
       populate('instructors')
-      .populate('reviews');
+      .populate('reviews')
       .populate('session.booked')
       .populate('session.attended');
 
@@ -470,7 +470,7 @@ module.exports = {
       };
         const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {schedule: scheduleDate}},{new: true, useFindAndModify: false})
         populate('instructors')
-        .populate('reviews');
+        .populate('reviews')
         .populate('session.booked')
         .populate('session.attended');
 
@@ -497,7 +497,7 @@ module.exports = {
       };
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: {gallery: image}},{new: true, useFindAndModify: false})
       populate('instructors')
-      .populate('reviews');
+      .populate('reviews')
       .populate('session.booked')
       .populate('session.attended');
 
@@ -528,7 +528,7 @@ module.exports = {
       };
         const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {gallery: image}},{new: true, useFindAndModify: false})
         populate('instructors')
-        .populate('reviews');
+        .populate('reviews')
         .populate('session.booked')
         .populate('session.attended');
 
@@ -556,7 +556,7 @@ module.exports = {
       };
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: {files: file}},{new: true, useFindAndModify: false})
       populate('instructors')
-      .populate('reviews');
+      .populate('reviews')
       .populate('session.booked')
       .populate('session.attended');
 
@@ -588,7 +588,7 @@ module.exports = {
       };
         const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {files: file}},{new: true, useFindAndModify: false})
         populate('instructors')
-        .populate('reviews');
+        .populate('reviews')
         .populate('session.booked')
         .populate('session.attended');
 
@@ -623,7 +623,7 @@ module.exports = {
       };
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: {sessions: session}},{new: true, useFindAndModify: false})
       populate('instructors')
-      .populate('reviews');
+      .populate('reviews')
       .populate('session.booked')
       .populate('session.attended');
 
@@ -658,7 +658,7 @@ module.exports = {
         'sessions.title': session.title
       }},{new: true, useFindAndModify: false})
       populate('instructors')
-      .populate('reviews');
+      .populate('reviews')
       .populate('session.booked')
       .populate('session.attended');
 
@@ -681,7 +681,7 @@ module.exports = {
       const instructor = await User.findById({_id: args.instructorId});
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: {instructors: instructor}},{new: true, useFindAndModify: false})
       populate('instructors')
-      .populate('reviews');
+      .populate('reviews')
       .populate('session.booked')
       .populate('session.attended');
 
@@ -708,7 +708,7 @@ module.exports = {
       const instructor = await User.findById({_id: args.instructorId});
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {instructors: instructor}},{new: true, useFindAndModify: false})
       populate('instructors')
-      .populate('reviews');
+      .populate('reviews')
       .populate('session.booked')
       .populate('session.attended');
 
@@ -731,7 +731,7 @@ module.exports = {
       const order = await Order.findById({_id: args.orderId});
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: {orders: order}},{new: true, useFindAndModify: false})
       populate('instructors')
-      .populate('reviews');
+      .populate('reviews')
       .populate('session.booked')
       .populate('session.attended');
 
@@ -758,7 +758,7 @@ module.exports = {
       const order = await Order.findById({_id: args.orderId});
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {orders: order}},{new: true, useFindAndModify: false})
       populate('instructors')
-      .populate('reviews');
+      .populate('reviews')
       .populate('session.booked')
       .populate('session.attended');
 
@@ -781,7 +781,7 @@ module.exports = {
       const promo = await Promo.findById({_id: args.promoId});
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: {promos: promo}},{new: true, useFindAndModify: false})
       populate('instructors')
-      .populate('reviews');
+      .populate('reviews')
       .populate('session.booked')
       .populate('session.attended');
 
@@ -808,7 +808,7 @@ module.exports = {
       const promo = await Promo.findById({_id: args.promoId});
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {promos: promo}},{new: true, useFindAndModify: false})
       populate('instructors')
-      .populate('reviews');
+      .populate('reviews')
       .populate('session.booked')
       .populate('session.attended');
 
@@ -831,7 +831,7 @@ module.exports = {
       const review = await Review.findById({_id: args.reviewId});
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: {promos: promo}},{new: true, useFindAndModify: false})
       populate('instructors')
-      .populate('reviews');
+      .populate('reviews')
       .populate('session.booked')
       .populate('session.attended');
 
@@ -858,7 +858,7 @@ module.exports = {
       const review = await Review.findById({_id: args.reviewId});
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {reviews: review}},{new: true, useFindAndModify: false})
       populate('instructors')
-      .populate('reviews');
+      .populate('reviews')
       .populate('session.booked')
       .populate('session.attended');
 
@@ -880,10 +880,10 @@ module.exports = {
     try {
       const user = await User.findById({_id: args.userId});
       const lesson = await Lesson.findOneAndUpdate(
-        {_id:args.lessonId, sessions: {$elemMatch: {date: args.lessonInput.sessionDate, title: args.lessonInput.sessionTitle}}}
+        {_id:args.lessonId, sessions: {$elemMatch: {date: args.lessonInput.sessionDate, title: args.lessonInput.sessionTitle}}},
         {$addToSet: {'sessions.$.booked': user}},{new: true, useFindAndModify: false})
       .populate('instructors')
-      .populate('reviews');
+      .populate('reviews')
       .populate('session.booked')
       .populate('session.attended');
 
@@ -905,10 +905,10 @@ module.exports = {
     try {
       const user = await User.findById({_id: args.userId});
       const lesson = await Lesson.findOneAndUpdate(
-        {_id:args.lessonId, sessions: {$elemMatch: {date: args.lessonInput.sessionDate, title: args.lessonInput.sessionTitle}}}
+        {_id:args.lessonId, sessions: {$elemMatch: {date: args.lessonInput.sessionDate, title: args.lessonInput.sessionTitle}}},
         {$addToSet: {'sessions.$.attended': user}},{new: true, useFindAndModify: false})
       .populate('instructors')
-      .populate('reviews');
+      .populate('reviews')
       .populate('session.booked')
       .populate('session.attended');
 
@@ -946,6 +946,7 @@ module.exports = {
         throw new Error('Lesson w/ that title exists already.');
       }
 
+      const creator = await User.findById({_id: args.creatorId});
       const today = new Date();
 
       const lesson = new Lesson({
@@ -961,7 +962,8 @@ module.exports = {
         schedule: [{
           date: args.lessonInput.scheduleDate,
           time: args.lessonInput.scheduleTime,
-        }]
+        }],
+        instructors: [creator]
       });
 
       const result = await lesson.save();
@@ -978,6 +980,7 @@ module.exports = {
         notes: result.notes,
         duration: result.duration,
         schedule: result.schedule,
+        instructors: result.instructors
       };
     } catch (err) {
       throw err;

@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const DataLoader = require('dataloader');
 
 const User = require('../../models/user');
-const Lesson = require('../../models/Lesson');
+const Lesson = require('../../models/lesson');
 const Order = require('../../models/order');
 const Review = require('../../models/review');
 const Perk = require('../../models/perk');
@@ -1432,6 +1432,42 @@ module.exports = {
           _id: user.id,
           name: user.name,
           username: user.username
+        };
+    } catch (err) {
+      throw err;
+    }
+  },
+  userOnline: async (args, req) => {
+    console.log("Resolver: userOnline...");
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      const user = await User.findOneAndUpdate({_id:args.userId},{clientConnected: true},{new: true, useFindAndModify: false})
+
+        return {
+          ...user._doc,
+          _id: user.id,
+          email: user.contact.email ,
+          name: user.name,
+        };
+    } catch (err) {
+      throw err;
+    }
+  },
+  userOffline: async (args, req) => {
+    console.log("Resolver: userOffline...");
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      const user = await User.findOneAndUpdate({_id:args.userId},{clientConnected: false},{new: true, useFindAndModify: false})
+
+        return {
+          ...user._doc,
+          _id: user.id,
+          email: user.contact.email ,
+          name: user.name,
         };
     } catch (err) {
       throw err;

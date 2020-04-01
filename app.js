@@ -12,8 +12,8 @@ const isAuth = require('./middleware/is-auth');
 const path = require('path');
 
 const app = express();
-// const server = require('http').Server(app);
-// const io = require('socket.io')(server);
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -48,21 +48,6 @@ mongoose.connect('mongodb://localhost:27017/my_couch_coach',{useNewUrlParser: tr
   .catch(err => {
     console.log(err);
 });
-
-// const User = require('./models/user');
-// showUserOnline = async (room) => {
-//   try {
-//     const userOnline = await User.findOneAndUpdate({_id: room},{clientConnected: true},{new: true, useFindAndModify: false})
-//     if (userOnline.clientConnected === true) {
-//       console.log("success...others should be able to see that you're online");
-//     }
-//     return {
-//       userOnline
-//     });
-//   } catch (err) {
-//     throw err;
-//   }
-// }
 
 io.on('connection', (socket) => {
     console.log("a wild client appered..", socket.id);

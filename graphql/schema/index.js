@@ -398,7 +398,6 @@ module.exports = buildSchema(`
   type Promo {
     _id: ID!
     name: String
-    code: String
     type: String
     startDate: String
     endDate: String
@@ -410,7 +409,6 @@ module.exports = buildSchema(`
   }
   input PromoInput {
     name: String
-    code: String
     type: String
     startDate: String
     endDate: String
@@ -543,6 +541,8 @@ module.exports = buildSchema(`
     addUserActivity(activityId: ID!, userId: ID!, userInput: UserInput!): User
 
     verififyUser(activityId: ID!, userId: ID!, userInput: UserInput!): User
+    userOnline(activityId: ID!, userId: ID! ): User
+    userOffline(activityId: ID!, userId: ID! ): User
 
     deleteUserById(activityId: ID!, userId: ID!): User
     deleteUserObjectByField(activityId: ID!, userId: ID!, field: String!, userInput: UserInput!): User
@@ -573,7 +573,7 @@ module.exports = buildSchema(`
     deleteUserOrder(activityId: ID!, userId: ID!, orderId: ID!): User
 
 
-    createLesson(activityId: ID!, lessonInput: LessonInput!): Lesson
+    createLesson(activityId: ID!, creatorId: ID!, lessonInput: LessonInput!): Lesson
     updateLesson(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
     updateLessonByField(activityId: ID!, lessonId: ID!, field: String!, query: String!): Lesson
     addLessonObjectByField(activityId: ID!, field: String!, lessonInput: LessonInput!): Lesson

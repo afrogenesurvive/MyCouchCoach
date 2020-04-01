@@ -29,6 +29,7 @@ const lessonSchema = new Schema({
   files: [{
     name: {type: String},
     type: {type: String},
+    size: {type: String},
     path: {type: String},
     _id : false
   }],

@@ -3,7 +3,7 @@ const userResolver = require('./user');
 // const commentResolver = require('./comment');
 // const reviewResolver = require('./review');
 // const messageResolver = require('./message');
-// const lessonResolver = require('./lesson');
+const lessonResolver = require('./lesson');
 // const orderResolver = require('./order');
 // const perkResolver = require('./perk');
 // const promoResolver = require('./promo');
@@ -14,7 +14,7 @@ const rootResolver = {
   // ...commentResolver,
   // ...reviewResolver,
   // ...messageResolver,
-  // ...lessonResolver,
+  ...lessonResolver,
   // ...orderResolver,
   // ...perkResolver,
   // ...promoResolver,

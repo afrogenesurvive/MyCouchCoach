@@ -5,32 +5,39 @@ import Image from 'react-bootstrap/Image';
 
 import './UserItem.css';
 
-const userProfileImageItem = props => (
+const userPaymentInfoItem = props => (
   <li key={props.authId} className="users__list-item_detail users__list-item_detail1">
     <div>
 
     <Card className="card">
       <Card.Body>
 
-        <ul className="cardUl">
-          <li>
-          <Image src={props.path} className="profileImageImg" fluid />
+      <Card.Text>
+        date: {props.paymentInfoItemDate}
+      </Card.Text>
+      <Card.Text>
+        type: {props.type}
+      </Card.Text>
+      <Card.Text>
+        description: {props.description}
+      </Card.Text>
+      <Card.Text>
+        body: {props.body}
+      </Card.Text>
+      <Card.Text>
+        primary: {props.primary}
+      </Card.Text>
+      <Card.Text>
+        valid: {props.valid}
+      </Card.Text>
 
-          </li>
-          <li className="cardLi">
-          <p className="userItemText">
-          {props.name}
-          </p>
-          </li>
-        </ul>
-
-        <Card.Link href="">
-        { props.canDelete === true && (
-          <Button variant="danger" onClick={props.onDelete.bind(this, props.profileImage)}>
-            Delete
-          </Button>
-        )}
-        </Card.Link>
+      <Card.Link href="">
+      { props.canDelete === true && (
+        <Button variant="danger" onClick={props.onDelete.bind(this, props.paymentInfo)}>
+          Delete
+        </Button>
+      )}
+      </Card.Link>
       </Card.Body>
     </Card>
     </div>
@@ -38,4 +45,4 @@ const userProfileImageItem = props => (
   </li>
 );
 
-export default userProfileImageItem;
+export default userPaymentInfoItem;

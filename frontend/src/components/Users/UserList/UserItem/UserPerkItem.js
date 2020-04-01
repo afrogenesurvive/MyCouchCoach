@@ -33,6 +33,12 @@ const userPerkItem = props => (
           {props.description}
           </p>
           </li>
+          <li>
+          <p className="userItemHeading"> createOrder:</p>
+          <p className="userItemText">
+          {props.code}
+          </p>
+          </li>
         </ul>
 
         <Card.Link href="">

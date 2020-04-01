@@ -26,6 +26,8 @@ const userFriendList = props => {
         points={friend.points}
         loggedIn={friend.loggedIn}
         online={friend.clientConnected}
+        onDelete={props.onDelete}
+        canDelete={props.canDelete}
       />
     );
   });

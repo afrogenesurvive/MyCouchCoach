@@ -1,41 +1,38 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import Image from 'react-bootstrap/Image';
 
 import './UserItem.css';
 
-const userProfileImageItem = props => (
-  <li key={props.authId} className="users__list-item_detail users__list-item_detail1">
-    <div>
+const userCartItemItem = props => (
+  <li key={props.authId} className="users__list-item_detail users__list-item_detail4">
+    <Card style={{ width: '18rem' }}>
 
-    <Card className="card">
-      <Card.Body>
+    <Card.Body>
+      <Card.Text>
+        dateAdded: {props.cartItemDateAdded}
+      </Card.Text>
+      <Card.Text>
+        sessionDate: {props.cartItemSessionDate}
+      </Card.Text>
+      <Card.Text>
+        Lesson:
+      </Card.Text>
+      <Card.Text>
+        ID: {props.lesson._id}
+      </Card.Text>
 
-        <ul className="cardUl">
-          <li>
-          <Image src={props.path} className="profileImageImg" fluid />
-
-          </li>
-          <li className="cardLi">
-          <p className="userItemText">
-          {props.name}
-          </p>
-          </li>
-        </ul>
-
-        <Card.Link href="">
-        { props.canDelete === true && (
-          <Button variant="danger" onClick={props.onDelete.bind(this, props.profileImage)}>
-            Delete
-          </Button>
-        )}
-        </Card.Link>
-      </Card.Body>
+      <Card.Link href="">
+      { props.canDelete === true && (
+        <Button variant="danger" onClick={props.onDelete.bind(this, props.cartItem)}>
+          Delete
+        </Button>
+      )}
+      </Card.Link>
+    </Card.Body>
     </Card>
-    </div>
 
   </li>
 );
 
-export default userProfileImageItem;
+export default userCartItemItem;

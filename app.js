@@ -49,28 +49,28 @@ mongoose.connect('mongodb://localhost:27017/my_couch_coach',{useNewUrlParser: tr
     console.log(err);
 });
 
-const User = require('./models/user');
-function showUserOnline = (room) {
-  try {
-    const userOnline = await User.findOneAndUpdate({_id: room},{clientConnected: true},{new: true, useFindAndModify: false})
-    if (userOnline.clientConnected === true) {
-      console.log("success...others should be able to see that you're online");
-    }
-    return {
-      userOnline
-    });
-  } catch (err) {
-    throw err;
-  }
-}
+// const User = require('./models/user');
+// showUserOnline = async (room) => {
+//   try {
+//     const userOnline = await User.findOneAndUpdate({_id: room},{clientConnected: true},{new: true, useFindAndModify: false})
+//     if (userOnline.clientConnected === true) {
+//       console.log("success...others should be able to see that you're online");
+//     }
+//     return {
+//       userOnline
+//     });
+//   } catch (err) {
+//     throw err;
+//   }
+// }
 
 io.on('connection', (socket) => {
     console.log("a wild client appered..", socket.id);
 
     socket.on('msg_subscribe', function(room) {
       console.log('joining room', room);
-  console.log("bringing user.."+room+"..online..");
-  showUserOnline(room);
+      // console.log("bringing user.."+room+"..online..");
+      // showUserOnline(room);
       socket.join(room);
     });
     socket.on('send message', function(data) {

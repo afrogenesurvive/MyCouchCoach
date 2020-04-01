@@ -1,33 +1,32 @@
 import React from 'react';
 
-import UserItem from './UserItem/UserItem';
+import LessonItem from './LessonItem/LessonItem';
 import './UserList.css';
 
-const userList = props => {
+const lessonList = props => {
 
-  const users = props.users.map(user => {
+  const lessons = props.lessons.map(lesson => {
     return (
-      <UserItem
-        key={user._id}
-        user={user}
+      <LessonItem
+        key={lesson._id}
+        lesson={lesson}
         authId={props.authId}
-        _id={user._id}
-        username={user.username}
-        topImage={user.profileImages[0].path}
-        bio={user.bio}
-        interest1={user.interests[0]}
-        interest2={user.interests[1]}
-        interest3={user.interests[2]}
+        _id={lesson._id}
+        title={lesson.title}
+        subtitle={lesson.subtitle}
+        category={lesson.category}
+        instructors={lesson.instructors}
+        gallery={lesson.gallery}
+        schedule={lesson.schedule}
+        sessions={lesson.sessions}
         onDetail={props.onViewDetail}
         canReport={props.canReport}
         onReport={props.onReport}
-        onSelectNoDetail={props.onSelectNoDetail}
-        onSelectMessageReceiver={props.onSelectMessageReceiver}
       />
     );
   });
 
-  return <ul className="user__list1_master">{users}</ul>;
+  return <ul className="user__list1_master">{lessons}</ul>;
 };
 
-export default userList;
+export default lessonList;

@@ -105,6 +105,8 @@ class App extends Component {
           Fr:   ${data.message.senderName},
           Msg:   ${data.message.message}`})
     };
+
+    // call func to set online status here and on componentWillUnmount
   }
 
   render() {

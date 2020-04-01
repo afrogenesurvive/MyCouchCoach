@@ -267,7 +267,7 @@ const thisUserProfile = (props) => {
     <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.onStartAdd.bind(this, "promo")}>+ Promo</Button>
 
     {props.userAddField === "promo" &&
-    props.selectedPromo !== null && (
+      props.selectedPromo !== null && (
         <AddUserPromoForm
           canCancel
           canConfirm

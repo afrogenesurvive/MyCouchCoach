@@ -11,6 +11,7 @@ const userOrderList = props => {
       <UserOrderItem
         key={order._id}
         order={order}
+        _id={order._id}
         date={orderDate}
         time={order.time}
         type={order.type}
@@ -28,6 +29,8 @@ const userOrderList = props => {
         status={order.status}
         feedback={order.feedback}
         authId={props.authId}
+        onDelete={props.onDelete}
+        canDelete={props.canDelete}
       />
     );
   });

@@ -1,3 +1,5 @@
+
+
 const { buildSchema } = require('graphql');
 
 module.exports = buildSchema(`
@@ -276,17 +278,22 @@ module.exports = buildSchema(`
     amount: Float
   }
   type OrderStatus {
-    cancelled: Boolean
-    held: Boolean
-    paid: Boolean
-    checkedOut: Boolean
-    emailSent: Boolean
-    confirmed: Boolean
-    packaged: Boolean
-    shipped: Boolean
-    delivered: Boolean
-    confirmedDelivery: Boolean
+    cancelled: OrderStatusObject
+    held: OrderStatusObject
+    paid: OrderStatusObject
+    checkedOut: OrderStatusObject
+    emailSent: OrderStatusObject
+    confirmed: OrderStatusObject
+    packaged: OrderStatusObject
+    shipped: OrderStatusObject
+    delivered: OrderStatusObject
+    confirmedDelivery: OrderStatusObject
   }
+  type OrderStatusObject {
+    value: Boolean
+    date: String
+  }
+
   input OrderInput {
     date: String
     time: String
@@ -312,6 +319,9 @@ module.exports = buildSchema(`
     shippingAddressCity: String
     shippingAddressCountry: String
     shippingAddressPostalCode: String
+    status: String
+    statusDate: String
+    statusValue: Boolean
     feedback: String
   }
 
@@ -450,9 +460,11 @@ module.exports = buildSchema(`
     getLessonsByInstructors(activityId: ID!, instructorIds: [ID!]): [Lesson]
     getLessonByReview(activityId: ID!, reviewId: ID!): [Lesson]
     getLessonByPromo(activityId: ID!, promoId: ID!): [Lesson]
+
     getLessonsBySessionField(activityId: ID!, field: String!, query: String!): [Lesson]
 
     getLessonsByCategory(activityId: ID!, lessonInput: LessonInput!): [Lesson]
+
     getLessonsByTags(activityId: ID!, lessonInput: LessonInput!): [Lesson]
     getLessonsByRequirements(activityId: ID!, lessonInput: LessonInput!): [Lesson]
     getLessonsByMaterials(activityId: ID!, lessonInput: LessonInput!): [Lesson]
@@ -513,6 +525,7 @@ module.exports = buildSchema(`
     addUserPoints(activityId: ID!, userId: ID!, userInput: UserInput!): User
 
     addUserPerk(activityId: ID!, userId: ID!, perkId: ID!): User
+    addUserPromo(activityId: ID!, userId: ID!, promoId: ID!): User
     addUserFriend(activityId: ID!, userId: ID!, friendId: ID!): User
 
     addUserLikedLesson(activityId: ID!, userId: ID!, lessonId: ID!): User
@@ -525,7 +538,7 @@ module.exports = buildSchema(`
     addUserComment(activityId: ID!, userId: ID!, commentId: ID!): User
     addUserOrder(activityId: ID!, userId: ID!, orderId: ID!): User
     addUserReview(activityId: ID!, userId: ID!, reviewId: ID!): User
-    addUserPromo(activityId: ID!, userId: ID!, promoId: ID!): User
+
     addUserMessage(activityId: ID!, userId: ID!, messageId: ID!): User
     addUserActivity(activityId: ID!, userId: ID!, userInput: UserInput!): User
 
@@ -568,6 +581,8 @@ module.exports = buildSchema(`
     addLessonScheduleDate(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
     addLessonImage(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
     addLessonFile(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
+    addLessonSession(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
+
     addLessonRequirements(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
     addLessonMaterials(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
     addLessonTags(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
@@ -576,16 +591,23 @@ module.exports = buildSchema(`
     addLessonOrder(activityId: ID!, lessonId: ID!, orderId: ID!): Lesson
     addLessonReview(activityId: ID!, lessonId: ID!, reviewId: ID!): Lesson
     addLessonPromo(activityId: ID!, lessonId: ID!, promoId: ID!): Lesson
-    addLessonSession(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
+
+    addLessonBooking(activityId: ID!, lessonId: ID!, userId: ID!, lessonInput: LessonInput!): Lesson
+    addLessonAttendance(activityId: ID!, lessonId: ID!, userId: ID!, lessonInput: LessonInput!): Lesson
+
+    deleteLessonBooking(activityId: ID!, lessonId: ID!, userId: ID!, lessonInput: LessonInput!): Lesson
+    deleteLessonAttendance(activityId: ID!, lessonId: ID!, userId: ID!, lessonInput: LessonInput!): Lesson
 
     deleteLessonById(activityId: ID!, lessonId: ID!): Lesson
     deleteLessonObjectByField(activityId: ID!, lessonId: ID!, field: String!, lessonInput: LessonInput!): Lesson
 
+    deleteLessonTag(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
+    deleteLessonRequirement(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
+    deleteLessonMaterial(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
+
     deleteLessonScheduleDate(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
     deleteLessonImage(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
     deleteLessonFile(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
-    deleteLessonRequirement(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
-    deleteLessonMaterial(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
     deleteLessonSession(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
 
     deleteLessonInstructor(activityId: ID!, lessonId: ID!, instructorId: ID!): Lesson

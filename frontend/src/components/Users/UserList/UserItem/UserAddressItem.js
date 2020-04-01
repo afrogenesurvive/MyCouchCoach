@@ -5,28 +5,41 @@ import Image from 'react-bootstrap/Image';
 
 import './UserItem.css';
 
-const userProfileImageItem = props => (
+const userAddressItem = props => (
   <li key={props.authId} className="users__list-item_detail users__list-item_detail1">
     <div>
 
     <Card className="card">
       <Card.Body>
 
-        <ul className="cardUl">
-          <li>
-          <Image src={props.path} className="profileImageImg" fluid />
-
-          </li>
-          <li className="cardLi">
-          <p className="userItemText">
-          {props.name}
-          </p>
-          </li>
-        </ul>
+      <Card.Text>
+        type: {props.type}
+      </Card.Text>
+      <Card.Text>
+        number: {props.number}
+      </Card.Text>
+      <Card.Text>
+        street: {props.street}
+      </Card.Text>
+      <Card.Text>
+        town: {props.town}
+      </Card.Text>
+      <Card.Text>
+        city: {props.city}
+      </Card.Text>
+      <Card.Text>
+        country: {props.country}
+      </Card.Text>
+      <Card.Text>
+        postalCode: {props.postalCode}
+      </Card.Text>
+      <Card.Text>
+        primary: {props.primary}
+      </Card.Text>
 
         <Card.Link href="">
         { props.canDelete === true && (
-          <Button variant="danger" onClick={props.onDelete.bind(this, props.profileImage)}>
+          <Button variant="danger" onClick={props.onDelete.bind(this, props.address)}>
             Delete
           </Button>
         )}
@@ -38,4 +51,4 @@ const userProfileImageItem = props => (
   </li>
 );
 
-export default userProfileImageItem;
+export default userAddressItem;

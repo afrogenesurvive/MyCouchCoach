@@ -43,16 +43,46 @@ const orderSchema = new Schema({
     postalCode: {type:String},
   },
   status: {
-    cancelled: {type: Boolean},
-    held: {type: Boolean},
-    paid: {type: Boolean},
-    checkedOut: {type: Boolean},
-    emailSent: {type: Boolean},
-    confirmed: {type: Boolean},
-    packaged: {type: Boolean},
-    shipped: {type: Boolean},
-    delivered: {type: Boolean},
-    confirmedDelivery: {type: Boolean},
+    cancelled: {
+      value: {type: Boolean},
+      date: {type: Date},
+    },
+    held: {
+      value: {type: Boolean},
+      date: {type: Date},
+    },
+    paid: {
+      value: {type: Boolean},
+      date: {type: Date},
+    },
+    checkedOut: {
+      value: {type: Boolean},
+      date: {type: Date},
+    },
+    emailSent: {
+      value: {type: Boolean},
+      date: {type: Date},
+    },
+    confirmed: {
+      value: {type: Boolean},
+      date: {type: Date},
+    },
+    packaged: {
+      value: {type: Boolean},
+      date: {type: Date},
+    },
+    shipped: {
+      value: {type: Boolean},
+      date: {type: Date},
+    },
+    delivered: {
+      value: {type: Boolean},
+      date: {type: Date},
+    },
+    confirmedDelivery: {
+      value: {type: Boolean},
+      date: {type: Date},
+    }
   },
   feedback: {type: String}
 },

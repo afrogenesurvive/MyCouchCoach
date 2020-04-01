@@ -11,13 +11,15 @@ const paymentInfoList = props => {
       <UserPaymentInfoItem
         key={paymentInfo.description}
         paymentInfoItem={paymentInfoItem}
-        date={paymentInfoItem.date}
+        date={paymentInfoItemDate}
         type={paymentInfoItem.type}
         description={paymentInfoItem.description}
         body={paymentInfoItem.body}
         valid={paymentInfoItem.valid}
         primary={paymentInfoItem.primary}
         authId={props.authId}
+        onDelete={props.onDelete}
+        canDelete={props.canDelete}
       />
     );
   });

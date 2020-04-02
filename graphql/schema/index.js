@@ -22,7 +22,9 @@ module.exports = buildSchema(`
     perks: [Perk]
     promos: [Promo]
     friends: [User]
+    friendRequests: [FriendRequest]
     points: Float
+    affiliate: Affiliate
     tags: [String]
     loggedIn: Boolean
     clientConnected: Boolean
@@ -83,6 +85,21 @@ module.exports = buildSchema(`
     verified: Boolean
     type: String
     code: String
+  }
+  type FriendRequest {
+    date: String
+    sender: User
+    reciever: User
+  }
+  type Affiliate {
+    refferrer: User
+    code: String
+    referees: [AffiliateReferee]
+    reward: Float
+  }
+  type AffiliateReferee {
+    date: String
+    referee: User
   }
   type Activity {
     date: String
@@ -175,7 +192,7 @@ module.exports = buildSchema(`
     schedule: [ScheduleItem]
     instructors: [User]
     gallery: [Image]
-    requiremnts: [String]
+    requirements: [String]
     materials: [String]
     files: [File]
     reviews: [Review]
@@ -517,6 +534,7 @@ module.exports = buildSchema(`
     addUserProfileImage(activityId: ID!, userId: ID!, userInput: UserInput): User
     addUserSocialMedia(activityId: ID!, userId: ID!, userInput: UserInput): User
     addUserPaymentInfo(activityId: ID!, userId: ID!, userInput: UserInput): User
+    editUserPaymentInfo(activityId: ID!, userId: ID!, userInput: UserInput!, field: String!, query: String!): User
 
     addUserInterests(activityId: ID!, userId: ID!, userInput: UserInput!): User
     addUserTags(activityId: ID!, userId: ID!, userInput: UserInput!): User
@@ -524,6 +542,7 @@ module.exports = buildSchema(`
 
     addUserPerk(activityId: ID!, userId: ID!, perkId: ID!): User
     addUserPromo(activityId: ID!, userId: ID!, promoId: ID!): User
+    sendFriendRequest(activityId: ID!, senderId: ID!, receiverId: ID!): User
     addUserFriend(activityId: ID!, userId: ID!, friendId: ID!): User
 
     addUserLikedLesson(activityId: ID!, userId: ID!, lessonId: ID!): User
@@ -559,6 +578,7 @@ module.exports = buildSchema(`
     deleteUserPerk(activityId: ID!, userId: ID!, perkId: ID!): User
     deleteUserPromo(activityId: ID!, userId: ID!, promoId: ID!): User
     deleteUserFriend(activityId: ID!, userId: ID!, friendId: ID!): User
+    deleteFriendRequest(activityId: ID!, senderId: ID!, receiverId: ID!): User
 
     deleteUserLikedLesson(activityId: ID!, userId: ID!, lessonId: ID!): User
     deleteUserBookedLesson(activityId: ID!, userId: ID!, lessonId: ID!): User
@@ -574,7 +594,7 @@ module.exports = buildSchema(`
 
 
     createLesson(activityId: ID!, creatorId: ID!, lessonInput: LessonInput!): Lesson
-    updateLesson(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
+    updateLessonBasic(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
     updateLessonByField(activityId: ID!, lessonId: ID!, field: String!, query: String!): Lesson
     addLessonObjectByField(activityId: ID!, field: String!, lessonInput: LessonInput!): Lesson
 
@@ -619,8 +639,9 @@ module.exports = buildSchema(`
     updateOrder(activityId: ID!, orderId: ID!, orderInput: OrderInput!): Order
     updateOrderByField(activityId: ID!, orderId: ID!, field: String!, query: String!): Order
 
-    updateOrderReceiver(activityId: ID!, orderId: ID!, receiverId: ID!): Order
-
+    updateOrderSenderReceiver(activityId: ID!, orderId: ID!, userId: ID!, role: String!): Order
+    updateOrderAddress(activityId: ID!, orderId: ID!, addressType: String, orderInput: OrderInput!): Order
+    updateOrderStatus(activityId: ID!, orderId: ID!, orderInput: OrderInput!): Order
     addOrderObjectByField(activityId: ID!, orderId: ID!, field: String!, orderInput: OrderInput!): Order
 
     deleteOrder(activityId: ID!, orderId: ID!): Order

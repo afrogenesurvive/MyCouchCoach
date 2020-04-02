@@ -91,7 +91,21 @@ const userSchema = new Schema({
     valid: {type: Boolean},
     primary: {type: Boolean},
     _id : false
-  }]
+  }],
+  friendRequests: [{
+    date: {type: Date},
+    sender: {type: Schema.Types.ObjectId,ref: 'User'},
+    receiver: {type: Schema.Types.ObjectId,ref: 'User'}
+  }],
+  affiliate: {
+    refferrer: {type: Schema.Types.ObjectId,ref: 'User'},
+    code: {type: String},
+    referees: [{
+      date: {type: Date},
+      referee: {type: Schema.Types.ObjectId,ref: 'User'}
+    }],
+    reward: {type: Number}
+  }
 },
   { timestamps: true }
 );

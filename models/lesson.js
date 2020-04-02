@@ -24,7 +24,7 @@ const lessonSchema = new Schema({
     path: {type: String},
     _id : false
   }],
-  requiremnts: [{type: String}],
+  requirements: [{type: String}],
   materials: [{type: String}],
   files: [{
     name: {type: String},

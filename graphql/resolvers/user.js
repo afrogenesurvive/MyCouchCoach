@@ -591,6 +591,48 @@ module.exports = {
       throw err;
     }
   },
+  editUserPaymentInfo: async (args, req) => {
+    console.log("Resolver: editUserPaymentInfo...");
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      const paymentInfoOriginal = {
+        date: args.userInput.paymentInfoDate,
+        type: args.userInput.paymentInfoType,
+        description: args.userInput.paymentInfoDescription,
+        body: args.userInput.paymentInfoBody,
+        valid: args.userInput.paymentInfoValid,
+        primary: args.userInput.paymentInfoPrimary,
+      };
+
+      const user = await User.findOneAndUpdate(
+      {_id:args.userId, 'paymentInfo.': args.userInput., 'paymentInfo.': args.userInput.},
+      {$set: {'paymentInfo.$.'+args.field: args.query}}
+      ,{new: true, useFindAndModify: false})
+      .populate('perks')
+      .populate('promos')
+      .populate('friends')
+      .populate('likedLessons')
+      .populate('bookedLessons.ref')
+      .populate('attendedLessons.ref')
+      .populate('taughtLessons.ref')
+      .populate('wishlist.ref')
+      .populate('cart.lesson')
+      .populate('comments.')
+      .populate('messages')
+      .populate('orders');
+
+      return {
+        ...user._doc,
+        _id: user.id,
+        name: user.name,
+        username: user.username,
+      };
+    } catch (err) {
+      throw err;
+    }
+  },
   deleteUserPaymentInfo: async (args, req) => {
     console.log("Resolver: deleteUserPaymentInfo...");
     if (!req.isAuth) {
@@ -844,6 +886,78 @@ module.exports = {
       .populate('messages')
       .populate('orders');
 
+      const updateFriend = await User.findOneAndUpdate({_id: friendId},{$addToSet: {friends: user}},{new: true, useFindAndModify: false});
+
+        return {
+          ...user._doc,
+          _id: user.id,
+          email: user.contact.email ,
+          name: user.name,
+        };
+    } catch (err) {
+      throw err;
+    }
+  },
+  sendFriendRequest: async (args, req) => {
+    console.log("Resolver: sendFriendRequest...");
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      const now = new Date();
+      const invitee = await User.findById({_id: args.receiverId});
+      const sender = await User.findById({_id: args.senderId});
+      const friendRequest = {
+        date: now,
+        sender: sender,
+        receiver: invitee
+      };
+
+      const user = await User.findOneAndUpdate({_id:args.userId},{$addToSet: { friendRequests: friendRequest }},{new: true, useFindAndModify: false})
+      .populate('perks')
+      .populate('promos')
+      .populate('friends')
+      .populate('likedLessons')
+      .populate('bookedLessons.ref')
+      .populate('attendedLessons.ref')
+      .populate('taughtLessons.ref')
+      .populate('wishlist.ref')
+      .populate('cart.lesson')
+      .populate('comments.')
+      .populate('messages')
+      .populate('orders');
+
+      const updateInvitee = await User.findOneAndUpdate({_id: friendId},{$addToSet: {friendRequests: friendRequest}},{new: true, useFindAndModify: false});
+
+        return {
+          ...user._doc,
+          _id: user.id,
+          email: user.contact.email ,
+          name: user.name,
+        };
+    } catch (err) {
+      throw err;
+    }
+  },
+  deleteFriendRequest: async (args, req) => {
+    console.log("Resolver: deleteFriendRequest...");
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      let user = null;
+      const preSender = await User.findById({_id: args.senderId});
+      const preReceiver = await User.findById({_id: args.receiverId});
+      const sender = await User.findOneAndUpdate(
+        {_id:args.senderId, 'friendRequests.sender': preSender, 'friendRequests.receiver': preReceiver },
+        {$pull: {'friendRequests': {'friendRequests.sender': sender, 'friendRequests.receiver': receiver}}}
+        ,{new: true, useFindAndModify: false})
+
+      const receiver = await User.findOneAndUpdate(
+        {_id:args.receiverId, 'friendRequests.sender': preSender, 'friendRequests.receiver': preReceiver },
+        {$pull: {'friendRequests': {'friendRequests.sender': sender, 'friendRequests.receiver': receiver}}}
+        ,{new: true, useFindAndModify: false})
+        user = sender;
         return {
           ...user._doc,
           _id: user.id,
@@ -862,7 +976,7 @@ module.exports = {
     try {
         const friend = await Friend.findById({_id: args.friendId});
         const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { friends: friend }},{new: true, useFindAndModify: false});
-
+        const updateFriend = await User.findOneAndUpdate({_id: friendId},{$pull: {friends: user}},{new: true, useFindAndModify: false});
         return {
           ...user._doc,
           _id: user.id,

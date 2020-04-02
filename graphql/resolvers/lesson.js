@@ -29,8 +29,8 @@ module.exports = {
       const lessons = await Lesson.find({})
       .populate('instructors')
       .populate('reviews')
-      .populate('session.booked')
-      .populate('session.attended');
+      .populate('sessions.booked')
+      .populate('sessions.attended');
 
       return lessons.map(lesson => {
         return transformLesson(lesson,);
@@ -49,8 +49,8 @@ module.exports = {
       const lesson = await Lesson.findById(args.lessonId)
       .populate('instructors')
       .populate('reviews')
-      .populate('session.booked')
-      .populate('session.attended');
+      .populate('sessions.booked')
+      .populate('sessions.attended');
 
         return {
             ...lesson._doc,
@@ -267,8 +267,8 @@ module.exports = {
         },{new: true, useFindAndModify: false})
         .populate('instructors')
         .populate('reviews')
-        .populate('session.booked')
-        .populate('session.attended');
+        .populate('sessions.booked')
+        .populate('sessions.attended');
 
           return {
               ...lesson._doc,
@@ -281,7 +281,6 @@ module.exports = {
   },
   updateLessonByField: async (args, req) => {
     console.log("Resolver: updateLessonField...");
-
     if (!req.isAuth) {
       throw new Error('Unauthenticated!');
     }
@@ -289,11 +288,11 @@ module.exports = {
       const resolverField = args.field;
       const resolverQuery = args.query;
       const query = {[resolverField]:resolverQuery};
-      const user = await Lesson.findOneAndUpdate({_id:args.userId},query,{new: true, useFindAndModify: false})
+      const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},query,{new: true, useFindAndModify: false})
       .populate('instructors')
       .populate('reviews')
-      .populate('session.booked')
-      .populate('session.attended');
+      .populate('sessions.booked')
+      .populate('sessions.attended');
 
         return {
             ...lesson._doc,
@@ -313,10 +312,10 @@ module.exports = {
       const tags = args.lessonInput.tags;
       const splitTags = tags.split(",");
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: { tags: {$each: splitTags} }},{new: true, useFindAndModify: false})
-      populate('instructors')
+      .populate('instructors')
       .populate('reviews')
-      .populate('session.booked')
-      .populate('session.attended');
+      .populate('sessions.booked')
+      .populate('sessions.attended');
 
         return {
             ...lesson._doc,
@@ -354,10 +353,10 @@ module.exports = {
       const requirements = args.lessonInput.requirements;
       const splitRequirements = requirements.split(",");
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: { requirements: {$each: splitRequirements} }},{new: true, useFindAndModify: false})
-      populate('instructors')
+      .populate('instructors')
       .populate('reviews')
-      .populate('session.booked')
-      .populate('session.attended');
+      .populate('sessions.booked')
+      .populate('sessions.attended');
 
         return {
             ...lesson._doc,
@@ -395,10 +394,10 @@ module.exports = {
       const materials = args.lessonInput.materials;
       const splitMaterials = materials.split(",");
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: { materials: {$each: splitMaterials} }},{new: true, useFindAndModify: false})
-      populate('instructors')
+      .populate('instructors')
       .populate('reviews')
-      .populate('session.booked')
-      .populate('session.attended');
+      .populate('sessions.booked')
+      .populate('sessions.attended');
 
         return {
             ...lesson._doc,
@@ -416,7 +415,7 @@ module.exports = {
     }
     try {
         const material = args.lessonInput.material;
-        const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: { materials: requirement }},{new: true, useFindAndModify: false});
+        const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: { materials: material }},{new: true, useFindAndModify: false});
 
         return {
             ...lesson._doc,
@@ -438,11 +437,11 @@ module.exports = {
         date: args.lessonInput.scheduleDate,
         time: args.lessonInput.scheduleTime,
       };
-      const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: {schedule: scheduleDate}},{new: true, useFindAndModify: false})
-      populate('instructors')
+      const lesson = await Lesson.findOneAndUpdate({_id: args.lessonId},{$addToSet: {schedule: scheduleDate}},{new: true, useFindAndModify: false})
+      .populate('instructors')
       .populate('reviews')
-      .populate('session.booked')
-      .populate('session.attended');
+      .populate('sessions.booked')
+      .populate('sessions.attended');
 
         return {
             ...lesson._doc,
@@ -460,19 +459,21 @@ module.exports = {
     }
     try {
       const activityUser = await User.findById({_id: args.activityId});
-      const preLesson = await Lesson.findById({_id: lessonId}).populate('instructors');
+      const preLesson = await Lesson.findById({_id: args.lessonId}).populate('instructors');
+
       if (activityUser.role !== "Admin" && preLesson.instructors[0]._id !== activityUser._id) {
         throw new Error("Yaah.. No! Only the lead Instructor of this Lesson or Admin can delete a User Address");
       };
+
       const scheduleDate = {
         date: args.lessonInput.scheduleDate,
         time: args.lessonInput.scheduleTime,
       };
         const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {schedule: scheduleDate}},{new: true, useFindAndModify: false})
-        populate('instructors')
+        .populate('instructors')
         .populate('reviews')
-        .populate('session.booked')
-        .populate('session.attended');
+        .populate('sessions.booked')
+        .populate('sessions.attended');
 
           return {
               ...lesson._doc,
@@ -496,10 +497,10 @@ module.exports = {
         path: args.lessonInput.imagePath,
       };
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: {gallery: image}},{new: true, useFindAndModify: false})
-      populate('instructors')
+      .populate('instructors')
       .populate('reviews')
-      .populate('session.booked')
-      .populate('session.attended');
+      .populate('sessions.booked')
+      .populate('sessions.attended');
 
         return {
             ...lesson._doc,
@@ -517,7 +518,7 @@ module.exports = {
     }
     try {
       const activityUser = await User.findById({_id: args.activityId});
-      const preLesson = await Lesson.findById({_id: lessonId}).populate('instructors');
+      const preLesson = await Lesson.findById({_id: args.lessonId}).populate('instructors');
       if (activityUser.role !== "Admin" && preLesson.instructors[0]._id !== activityUser._id) {
         throw new Error("Yaah.. No! Only the lead Instructor of this Lesson or Admin can delete a User Address");
       };
@@ -527,10 +528,10 @@ module.exports = {
         path: args.lessonInput.imagePath,
       };
         const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {gallery: image}},{new: true, useFindAndModify: false})
-        populate('instructors')
+        .populate('instructors')
         .populate('reviews')
-        .populate('session.booked')
-        .populate('session.attended');
+        .populate('sessions.booked')
+        .populate('sessions.attended');
 
           return {
               ...lesson._doc,
@@ -555,10 +556,10 @@ module.exports = {
         path: args.lessonInput.filePath,
       };
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: {files: file}},{new: true, useFindAndModify: false})
-      populate('instructors')
+      .populate('instructors')
       .populate('reviews')
-      .populate('session.booked')
-      .populate('session.attended');
+      .populate('sessions.booked')
+      .populate('sessions.attended');
 
         return {
             ...lesson._doc,
@@ -576,7 +577,7 @@ module.exports = {
     }
     try {
       const activityUser = await User.findById({_id: args.activityId});
-      const preLesson = await Lesson.findById({_id: lessonId}).populate('instructors');
+      const preLesson = await Lesson.findById({_id: args.lessonId}).populate('instructors');
       if (activityUser.role !== "Admin" && preLesson.instructors[0]._id !== activityUser._id) {
         throw new Error("Yaah.. No! Only the lead Instructor of this Lesson or Admin can delete a User Address");
       };
@@ -587,10 +588,10 @@ module.exports = {
         path: args.lessonInput.filePath,
       };
         const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {files: file}},{new: true, useFindAndModify: false})
-        populate('instructors')
+        .populate('instructors')
         .populate('reviews')
-        .populate('session.booked')
-        .populate('session.attended');
+        .populate('sessions.booked')
+        .populate('sessions.attended');
 
           return {
               ...lesson._doc,
@@ -609,11 +610,11 @@ module.exports = {
     }
     try {
       const session = {
-        title: args.lessonInput.title,
-        date: args.lessonInput.date,
-        time: args.lessonInput.time,
-        limit: args.lessonInput.limit,
-        amount: args.lessonInput.amount,
+        title: args.lessonInput.sessionTitle,
+        date: args.lessonInput.sessionDate,
+        time: args.lessonInput.sessionTime,
+        limit: args.lessonInput.sessionLimit,
+        amount: args.lessonInput.sessionAmount,
         booked: [],
         bookedAmount: 0,
         attended: [],
@@ -622,10 +623,10 @@ module.exports = {
         full: false,
       };
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: {sessions: session}},{new: true, useFindAndModify: false})
-      populate('instructors')
+      .populate('instructors')
       .populate('reviews')
-      .populate('session.booked')
-      .populate('session.attended');
+      .populate('sessions.booked')
+      .populate('sessions.attended');
 
         return {
             ...lesson._doc,
@@ -643,24 +644,25 @@ module.exports = {
     }
     try {
       const activityUser = await User.findById({_id: args.activityId});
-      const preLesson = await Lesson.findById({_id: lessonId}).populate('instructors');
+      const preLesson = await Lesson.findById({_id: args.lessonId}).populate('instructors');
       if (activityUser.role !== "Admin" && preLesson.instructors[0]._id !== activityUser._id) {
         throw new Error("Yaah.. No! Only the lead Instructor of this Lesson or Admin can delete a User Address");
       };
       const session = {
-        title: args.lessonInput.title,
-        date: args.lessonInput.date,
-        time: args.lessonInput.time,
+        title: args.lessonInput.sessionTitle,
+        date: args.lessonInput.sessionDate,
+        time: args.lessonInput.sessionTime,
       };
-      const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {
-        'sessions.title': session.title,
-        'sessions.date': session.date,
-        'sessions.title': session.title
-      }},{new: true, useFindAndModify: false})
-      populate('instructors')
+      const lesson = await Lesson.findOneAndUpdate({_id: args.lessonId},{$pull: {sessions: {title: session.title, date: session.date }}},{new: true, useFindAndModify: false})
+      // const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {
+      //   'sessions.title': session.title,
+      //   'sessions.date': session.date,
+      //   'sessions.time': session.time
+      // }},{new: true, useFindAndModify: false})
+      .populate('instructors')
       .populate('reviews')
-      .populate('session.booked')
-      .populate('session.attended');
+      .populate('sessions.booked')
+      .populate('sessions.attended');
 
         return {
             ...lesson._doc,
@@ -680,10 +682,10 @@ module.exports = {
     try {
       const instructor = await User.findById({_id: args.instructorId});
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: {instructors: instructor}},{new: true, useFindAndModify: false})
-      populate('instructors')
+      .populate('instructors')
       .populate('reviews')
-      .populate('session.booked')
-      .populate('session.attended');
+      .populate('sessions.booked')
+      .populate('sessions.attended');
 
         return {
             ...lesson._doc,
@@ -701,16 +703,16 @@ module.exports = {
     }
     try {
       const activityUser = await User.findById({_id: args.activityId});
-      const preLesson = await Lesson.findById({_id: lessonId}).populate('instructors');
+      const preLesson = await Lesson.findById({_id: args.lessonId}).populate('instructors');
       if (activityUser.role !== "Admin" && preLesson.instructors[0]._id !== activityUser._id) {
         throw new Error("Yaah.. No! Only the lead Instructor of this Lesson or Admin can delete a User Address");
       };
       const instructor = await User.findById({_id: args.instructorId});
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {instructors: instructor}},{new: true, useFindAndModify: false})
-      populate('instructors')
+      .populate('instructors')
       .populate('reviews')
-      .populate('session.booked')
-      .populate('session.attended');
+      .populate('sessions.booked')
+      .populate('sessions.attended');
 
         return {
             ...lesson._doc,
@@ -730,10 +732,10 @@ module.exports = {
     try {
       const order = await Order.findById({_id: args.orderId});
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: {orders: order}},{new: true, useFindAndModify: false})
-      populate('instructors')
+      .populate('instructors')
       .populate('reviews')
-      .populate('session.booked')
-      .populate('session.attended');
+      .populate('sessions.booked')
+      .populate('sessions.attended');
 
         return {
             ...lesson._doc,
@@ -751,16 +753,16 @@ module.exports = {
     }
     try {
       const activityUser = await User.findById({_id: args.activityId});
-      const preLesson = await Lesson.findById({_id: lessonId}).populate('instructors');
+      const preLesson = await Lesson.findById({_id: args.lessonId}).populate('instructors');
       if (activityUser.role !== "Admin" && preLesson.instructors[0]._id !== activityUser._id) {
         throw new Error("Yaah.. No! Only the lead Instructor of this Lesson or Admin can delete a User Address");
       };
       const order = await Order.findById({_id: args.orderId});
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {orders: order}},{new: true, useFindAndModify: false})
-      populate('instructors')
+      .populate('instructors')
       .populate('reviews')
-      .populate('session.booked')
-      .populate('session.attended');
+      .populate('sessions.booked')
+      .populate('sessions.attended');
 
         return {
             ...lesson._doc,
@@ -780,10 +782,10 @@ module.exports = {
     try {
       const promo = await Promo.findById({_id: args.promoId});
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: {promos: promo}},{new: true, useFindAndModify: false})
-      populate('instructors')
+      .populate('instructors')
       .populate('reviews')
-      .populate('session.booked')
-      .populate('session.attended');
+      .populate('sessions.booked')
+      .populate('sessions.attended');
 
         return {
             ...lesson._doc,
@@ -801,16 +803,16 @@ module.exports = {
     }
     try {
       const activityUser = await User.findById({_id: args.activityId});
-      const preLesson = await Lesson.findById({_id: lessonId}).populate('instructors');
+      const preLesson = await Lesson.findById({_id: args.lessonId}).populate('instructors');
       if (activityUser.role !== "Admin" && preLesson.instructors[0]._id !== activityUser._id) {
         throw new Error("Yaah.. No! Only the lead Instructor of this Lesson or Admin can delete a User Address");
       };
       const promo = await Promo.findById({_id: args.promoId});
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {promos: promo}},{new: true, useFindAndModify: false})
-      populate('instructors')
+      .populate('instructors')
       .populate('reviews')
-      .populate('session.booked')
-      .populate('session.attended');
+      .populate('sessions.booked')
+      .populate('sessions.attended');
 
         return {
             ...lesson._doc,
@@ -830,10 +832,10 @@ module.exports = {
     try {
       const review = await Review.findById({_id: args.reviewId});
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: {promos: promo}},{new: true, useFindAndModify: false})
-      populate('instructors')
+      .populate('instructors')
       .populate('reviews')
-      .populate('session.booked')
-      .populate('session.attended');
+      .populate('sessions.booked')
+      .populate('sessions.attended');
 
         return {
             ...lesson._doc,
@@ -851,16 +853,16 @@ module.exports = {
     }
     try {
       const activityUser = await User.findById({_id: args.activityId});
-      const preLesson = await Lesson.findById({_id: lessonId}).populate('instructors');
+      const preLesson = await Lesson.findById({_id: args.lessonId}).populate('instructors');
       if (activityUser.role !== "Admin" && preLesson.instructors[0]._id !== activityUser._id) {
         throw new Error("Yaah.. No! Only the lead Instructor of this Lesson or Admin can delete a User Address");
       };
       const review = await Review.findById({_id: args.reviewId});
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {reviews: review}},{new: true, useFindAndModify: false})
-      populate('instructors')
+      .populate('instructors')
       .populate('reviews')
-      .populate('session.booked')
-      .populate('session.attended');
+      .populate('sessions.booked')
+      .populate('sessions.attended');
 
         return {
             ...lesson._doc,
@@ -878,15 +880,64 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
+      const today = new Date();
       const user = await User.findById({_id: args.userId});
+      // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$all: [user]} },
+      // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$nin: user} },
+      // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$elemMatch: {$ne: user}} },
+      // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$elemMatch: user} },
       const lesson = await Lesson.findOneAndUpdate(
-        {_id:args.lessonId, sessions: {$elemMatch: {date: args.lessonInput.sessionDate, title: args.lessonInput.sessionTitle}}},
-        {$addToSet: {'sessions.$.booked': user}},{new: true, useFindAndModify: false})
+        {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate },
+        {$addToSet: {'sessions.$.booked': user}, $inc: {'sessions.$.bookedAmount': 1}}
+        ,{new: true, useFindAndModify: false})
       .populate('instructors')
       .populate('reviews')
-      .populate('session.booked')
-      .populate('session.attended');
+      .populate('sessions.booked')
+      .populate('sessions.attended');
 
+      const instructors = lesson.instructors.map(x => x._id);
+      const bookingRef = {
+        date: today,
+        ref: lesson
+      };
+      const updateStudent = await User.findOneAndUpdate({_id: args.userId},{$addToSet: {bookedLessons: bookingRef}},{new: true, useFindAndModify: false})
+      const updateInstructors = await User.update({_id: {$in: instructors}},{$addToSet: {bookedLessons: bookingRef}},{new: true, useFindAndModify: false})
+
+        return {
+            ...lesson._doc,
+            _id: lesson.id,
+            title: lesson.title
+        };
+    } catch (err) {
+      throw err;
+    }
+  },
+  deleteLessonBooking: async (args, req) => {
+    console.log("Resolver: deleteLessonBooking...");
+
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      const today = new Date();
+      const user = await User.findById({_id: args.userId});
+      // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$all: [user]} },
+      // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$nin: user} },
+      // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$elemMatch: {$ne: user}} },
+      // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$elemMatch: user} },
+      const lesson = await Lesson.findOneAndUpdate(
+        {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate },
+        {$pull: {'sessions.$.booked': user}, $inc: {'sessions.$.bookedAmount': -1}}
+        // {$pull: {'sessions': {'sessions.booked': user}}, $inc: {'sessions.$.bookedAmount': -1}}
+        ,{new: true, useFindAndModify: false})
+      .populate('instructors')
+      .populate('reviews')
+      .populate('sessions.booked')
+      .populate('sessions.attended');
+
+      const instructors = lesson.instructors.map(x => x._id);
+      const updateUser = await User.findOneAndUpdate({_id: args.userId},{$pull: {bookedLessons: {'bookedLessons.ref': lesson}}},{new: true, useFindAndModify: false})
+      const updateInstructors = await User.update({_id: {$in: instructors}},{$pull: {'bookedLessons.ref': lesson}},{new: true, useFindAndModify: false})
         return {
             ...lesson._doc,
             _id: lesson.id,
@@ -903,15 +954,63 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
+      const today = new Date();
       const user = await User.findById({_id: args.userId});
+      // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$all: [user]} },
+      // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$nin: user} },
+      // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$elemMatch: {$ne: user}} },
+      // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$elemMatch: user} },
       const lesson = await Lesson.findOneAndUpdate(
-        {_id:args.lessonId, sessions: {$elemMatch: {date: args.lessonInput.sessionDate, title: args.lessonInput.sessionTitle}}},
-        {$addToSet: {'sessions.$.attended': user}},{new: true, useFindAndModify: false})
+        {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate },
+        {$addToSet: {'sessions.$.attended': user}, $inc: {'sessions.$.attendedAmount': 1}}
+        ,{new: true, useFindAndModify: false})
       .populate('instructors')
       .populate('reviews')
-      .populate('session.booked')
-      .populate('session.attended');
+      .populate('sessions.booked')
+      .populate('sessions.attended');
 
+      const instructors = lesson.instructors.map(x => x._id);
+      const attendanceRef = {
+        date: today,
+        ref: lesson
+      };
+      const updateUser = await User.findOneAndUpdate({_id: args.userId},{$addToSet: {attendedLessons: attendanceRef}},{new: true, useFindAndModify: false})
+      const updateInstructors = await User.update({_id: {$in: instructors}},{$addToSet: {taughtLessons: attendanceRef}},{new: true, useFindAndModify: false})
+        return {
+            ...lesson._doc,
+            _id: lesson.id,
+            title: lesson.title
+        };
+    } catch (err) {
+      throw err;
+    }
+  },
+  deleteLessonAttendance: async (args, req) => {
+    console.log("Resolver: deleteLessonAttendance...");
+
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      const today = new Date();
+      const user = await User.findById({_id: args.userId});
+      // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$all: [user]} },
+      // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$nin: user} },
+      // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$elemMatch: {$ne: user}} },
+      // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$elemMatch: user} },
+      const lesson = await Lesson.findOneAndUpdate(
+        {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate },
+        {$pull: {'sessions.$.attended': user}, $inc: {'sessions.$.attendedAmount': -1}}
+        // {$pull: {'sessions': {'sessions.attended': user}}, $inc: {'sessions.$.attendedAmount': -1}}
+        ,{new: true, useFindAndModify: false})
+      .populate('instructors')
+      .populate('reviews')
+      .populate('sessions.booked')
+      .populate('sessions.attended');
+
+      const instructors = lesson.instructors.map(x => x._id);
+      const updateUser = await User.findOneAndUpdate({_id: args.userId},{$pull: {attendedLessons: {'attendedLessons.ref': lesson}}},{new: true, useFindAndModify: false})
+      const updateInstructors = await User.update({_id: {$in: instructors}},{$pull: {'taughtLessons.ref': lesson}},{new: true, useFindAndModify: false})
         return {
             ...lesson._doc,
             _id: lesson.id,

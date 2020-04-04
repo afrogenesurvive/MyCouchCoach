@@ -38,7 +38,9 @@ module.exports = {
       .populate('cart.lesson')
       .populate('comments.')
       .populate('messages')
-      .populate('orders');
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
       return users.map(user => {
         return transformUser(user,);
       });
@@ -605,10 +607,10 @@ module.exports = {
         valid: args.userInput.paymentInfoValid,
         primary: args.userInput.paymentInfoPrimary,
       };
-
+      const paymentInfoField = 'paymentInfo.$.'+args.field+'';
       const user = await User.findOneAndUpdate(
-      {_id:args.userId, 'paymentInfo.': args.userInput., 'paymentInfo.': args.userInput.},
-      {$set: {'paymentInfo.$.'+args.field: args.query}}
+      {_id:args.userId, 'paymentInfo.date': paymentInfoOriginal.date, 'paymentInfo.body': paymentInfoOriginal.body},
+      {$set: {[paymentInfoField]: args.query}}
       ,{new: true, useFindAndModify: false})
       .populate('perks')
       .populate('promos')
@@ -886,7 +888,7 @@ module.exports = {
       .populate('messages')
       .populate('orders');
 
-      const updateFriend = await User.findOneAndUpdate({_id: friendId},{$addToSet: {friends: user}},{new: true, useFindAndModify: false});
+      const updateFriend = await User.findOneAndUpdate({_id: args.friendId},{$addToSet: {friends: user}},{new: true, useFindAndModify: false});
 
         return {
           ...user._doc,
@@ -913,7 +915,7 @@ module.exports = {
         receiver: invitee
       };
 
-      const user = await User.findOneAndUpdate({_id:args.userId},{$addToSet: { friendRequests: friendRequest }},{new: true, useFindAndModify: false})
+      const user = await User.findOneAndUpdate({_id:args.senderId},{$addToSet: { friendRequests: friendRequest }},{new: true, useFindAndModify: false})
       .populate('perks')
       .populate('promos')
       .populate('friends')
@@ -927,7 +929,7 @@ module.exports = {
       .populate('messages')
       .populate('orders');
 
-      const updateInvitee = await User.findOneAndUpdate({_id: friendId},{$addToSet: {friendRequests: friendRequest}},{new: true, useFindAndModify: false});
+      const updateInvitee = await User.findOneAndUpdate({_id: args.receiverId},{$addToSet: {friendRequests: friendRequest}},{new: true, useFindAndModify: false});
 
         return {
           ...user._doc,
@@ -948,21 +950,56 @@ module.exports = {
       let user = null;
       const preSender = await User.findById({_id: args.senderId});
       const preReceiver = await User.findById({_id: args.receiverId});
+      const date = args.date;
+      const friendRequest = {
+        date: args.date,
+        sender: preSender,
+        receiver: preReceiver
+      };
+
       const sender = await User.findOneAndUpdate(
-        {_id:args.senderId, 'friendRequests.sender': preSender, 'friendRequests.receiver': preReceiver },
-        {$pull: {'friendRequests': {'friendRequests.sender': sender, 'friendRequests.receiver': receiver}}}
-        ,{new: true, useFindAndModify: false})
+        {_id:args.senderId },
+        {$pull: {friendRequests: {sender: preSender, receiver: preReceiver}}},
+        {new: true, useFindAndModify: false})
+        .populate('perks')
+        .populate('promos')
+        .populate('friends')
+        .populate('likedLessons')
+        .populate('bookedLessons.ref')
+        .populate('attendedLessons.ref')
+        .populate('taughtLessons.ref')
+        .populate('wishlist.ref')
+        .populate('cart.lesson')
+        .populate('comments.')
+        .populate('messages')
+        .populate('orders')
+        .populate('friendRequests.sender')
+        .populate('friendRequests.receiver');
 
       const receiver = await User.findOneAndUpdate(
-        {_id:args.receiverId, 'friendRequests.sender': preSender, 'friendRequests.receiver': preReceiver },
-        {$pull: {'friendRequests': {'friendRequests.sender': sender, 'friendRequests.receiver': receiver}}}
-        ,{new: true, useFindAndModify: false})
-        user = sender;
+        {_id:args.receiverId },
+        {$pull: {friendRequests: {receiver: preReceiver, sender: preSender}}},
+        {new: true, useFindAndModify: false})
+        .populate('perks')
+        .populate('promos')
+        .populate('friends')
+        .populate('likedLessons')
+        .populate('bookedLessons.ref')
+        .populate('attendedLessons.ref')
+        .populate('taughtLessons.ref')
+        .populate('wishlist.ref')
+        .populate('cart.lesson')
+        .populate('comments.')
+        .populate('messages')
+        .populate('orders')
+        .populate('friendRequests.sender')
+        .populate('friendRequests.receiver');
+
         return {
-          ...user._doc,
-          _id: user.id,
-          email: user.contact.email ,
-          name: user.name,
+          ...sender._doc,
+          _id: sender.id,
+          email: sender.contact.email ,
+          name: sender.name,
         };
     } catch (err) {
       throw err;

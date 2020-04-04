@@ -89,7 +89,7 @@ module.exports = buildSchema(`
   type FriendRequest {
     date: String
     sender: User
-    reciever: User
+    receiver: User
   }
   type Affiliate {
     refferrer: User
@@ -362,6 +362,7 @@ module.exports = buildSchema(`
     _id: ID!
     date: String
     type: String
+    title: String
     lesson: Lesson
     author: User
     body: String
@@ -370,6 +371,7 @@ module.exports = buildSchema(`
   input ReviewInput {
     date: String,
     type: String,
+    title: String,
     body: String,
     rating: Int
   }
@@ -581,7 +583,7 @@ module.exports = buildSchema(`
     deleteUserPerk(activityId: ID!, userId: ID!, perkId: ID!): User
     deleteUserPromo(activityId: ID!, userId: ID!, promoId: ID!): User
     deleteUserFriend(activityId: ID!, userId: ID!, friendId: ID!): User
-    deleteFriendRequest(activityId: ID!, senderId: ID!, receiverId: ID!): User
+    deleteFriendRequest(activityId: ID!, date: String!, senderId: ID!, receiverId: ID!): User
 
     deleteUserLikedLesson(activityId: ID!, userId: ID!, lessonId: ID!): User
     deleteUserBookedLesson(activityId: ID!, userId: ID!, lessonId: ID!): User
@@ -660,7 +662,7 @@ module.exports = buildSchema(`
     addCommentChild(commentId: ID!, childId: ID!): Comment
     deleteComment(commentId: ID!): Comment
 
-    createReview(activityId: ID!, reviewInput: ReviewInput!): Review
+    createReview(activityId: ID!, userId: ID!,lessonId: ID!, reviewInput: ReviewInput!): Review
     updateReview(activityId: ID!, reviewId: ID!, reviewInput: ReviewInput!): Review
     updateReviewByField(activityId: ID!,reviewId: ID!, field: String!, query: String!): Review
     deleteReview(activityId: ID!, reviewId: ID!): Review
@@ -670,7 +672,7 @@ module.exports = buildSchema(`
     deleteMessage(messageId: ID!): Message
 
     createPerk(activityId: ID!, perkInput: PerkInput): Perk
-    updatePerk(activityId: ID!, perkId: ID!, perkInput: PerkInput): Perk
+    updatePerkBasic(activityId: ID!, perkId: ID!, perkInput: PerkInput): Perk
     updatePerkByField(activityId: ID!, perkId: ID!, field: String!, query: String!): Perk
     deletePerk(activityId: ID!, perkId: ID!): Perk
 

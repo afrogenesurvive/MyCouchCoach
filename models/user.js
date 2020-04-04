@@ -95,16 +95,18 @@ const userSchema = new Schema({
   friendRequests: [{
     date: {type: Date},
     sender: {type: Schema.Types.ObjectId,ref: 'User'},
-    receiver: {type: Schema.Types.ObjectId,ref: 'User'}
+    receiver: {type: Schema.Types.ObjectId,ref: 'User'},
+    _id : false
   }],
   affiliate: {
-    refferrer: {type: Schema.Types.ObjectId,ref: 'User'},
+    referrer: {type: Schema.Types.ObjectId,ref: 'User'},
     code: {type: String},
     referees: [{
       date: {type: Date},
       referee: {type: Schema.Types.ObjectId,ref: 'User'}
     }],
-    reward: {type: Number}
+    reward: {type: Number},
+    _id : false
   }
 },
   { timestamps: true }

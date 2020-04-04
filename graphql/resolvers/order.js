@@ -136,8 +136,6 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
-
-      const user = null;
       const user = await User.findById({_id: args.userId});
       const orders = await Order.find({[args.role]: user});
 
@@ -540,11 +538,11 @@ module.exports = {
       const today = new Date();
       const time = new Date().toISOString().substr(11,5);
       const preCart = buyer.cart;
-      const orderLessons = preCart.map(x => {
+      const orderLessons = preCart.map(lesson => ({
         price: x.lesson.price,
         date: x.dateAdded,
         ref: x.lesson
-      });
+      }));
 
       const order = new Order({
         date: today,

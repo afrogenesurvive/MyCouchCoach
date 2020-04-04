@@ -147,7 +147,8 @@ module.exports = {
   createMessage: async (args, req) => {
 
     try {
-
+      const today = new Date();
+      const time = new Date().toISOString().substr(11,5);
       let sender = null;
       let reciever = null;
       let senderRole = args.senderRole;
@@ -156,8 +157,8 @@ module.exports = {
       receiver = await mongoose.model(receiverRole).findById({_id: args.receiverId});
 
       const message = new Message({
-        date: args.messageInput.date,
-        time: args.messageInput.time,
+        date: today,
+        time: time,
         type: args.messageInput.type,
         subject: args.messageInput.subject,
         sender: {

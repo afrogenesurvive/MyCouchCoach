@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 const reviewSchema = new Schema({
   date: {type: Date},
   type: {type: String},
+  title: {type: String},
   lesson: {type: Schema.Types.ObjectId,ref: 'Lesson'},
   author: {type: Schema.Types.ObjectId,ref: 'User'},
   body: {type: String},

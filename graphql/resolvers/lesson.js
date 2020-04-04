@@ -109,7 +109,7 @@ module.exports = {
       const lessons = await Lesson.find({'schedule': {$gte: startDate, $lte: endDate}});
 
       return lessons.map(lesson => {
-        return transformLesosn(lesson);
+        return transformLesson(lesson);
       });
     } catch (err) {
       throw err;
@@ -125,7 +125,7 @@ module.exports = {
       const lessons = await Lesson.find({'instructors._id': {$all: instructors}});
 
       return lessons.map(lesson => {
-        return transformLesosn(lesson);
+        return transformLesson(lesson);
       });
     } catch (err) {
       throw err;
@@ -159,7 +159,7 @@ module.exports = {
       const lessons = await Lesson.find({promos: promo});
 
       return lessons.map(lesson => {
-        return transformLesosn(lesson);
+        return transformLesson(lesson);
       });
     } catch (err) {
       throw err;
@@ -175,7 +175,7 @@ module.exports = {
       const lessons = await Lesson.find({'category': {$regex: regex, $options: 'i'}});
 
       return lessons.map(lesson => {
-        return transformLesosn(lesson);
+        return transformLesson(lesson);
       });
     } catch (err) {
       throw err;

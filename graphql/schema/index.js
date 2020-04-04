@@ -103,7 +103,6 @@ module.exports = buildSchema(`
   }
   type Activity {
     date: String
-    time: String
     request: String
   }
   type LessonRef {
@@ -487,11 +486,15 @@ module.exports = buildSchema(`
     getAllOrders(activityId: ID!): [Order]
     getOrderById(activityId: ID!, orderId: ID!): Order
     getOrdersByField(activityId: ID!, field: String!, query: String!): [Order]
+    getOrdersByBuyer(activityId: ID!, userId: ID!): [Order]
+    getOrdersByReceiver(activityId: ID!, userId: ID!): [Order]
     getOrdersByBuyerReceiver(activityId: ID!, userId: ID!, role: String!): [Order]
     getOrdersByLessons(activityId: ID!, lessonIds: [ID!]): [Order]
     getOrdersByTotalsRange(activityId: ID!, totalType: String!, upperLimit: Float!,lowerLimit: Float): [Order]
     getOrdersByStatuses(activityId: ID!, boolean: Boolean!, statusTypes: [String!]): [Order]
-    getOrdersByAddress(activityId: ID!, addressType: String!, orderInput: OrderInput! ): [Order]
+    getOrdersByBillingAddress(activityId: ID!, orderInput: OrderInput! ): [Order]
+    getOrdersByShippingAddress(activityId: ID!, orderInput: OrderInput! ): [Order]
+    getOrdersByAddresses(activityId: ID!, orderInput: OrderInput! ): [Order]
 
     getAllComments(activityId: ID!): [Comment]
     getCommentById(activityId: ID!, commentId: ID!): Comment
@@ -635,13 +638,17 @@ module.exports = buildSchema(`
     deleteLessonReview(activityId: ID!, lessonId: ID!, reviewId: ID!): Lesson
     deleteLessonPromo(activityId: ID!, lessonId: ID!, promoId: ID!): Lesson
 
-    createOrder(activityId: ID!, orderInput: OrderInput!): Order
-    updateOrder(activityId: ID!, orderId: ID!, orderInput: OrderInput!): Order
+    createOrder(activityId: ID!, buyerId: ID!, receiverId: ID!, orderInput: OrderInput!): Order
+    updateOrderBasic(activityId: ID!, orderId: ID!, orderInput: OrderInput!): Order
     updateOrderByField(activityId: ID!, orderId: ID!, field: String!, query: String!): Order
 
     updateOrderSenderReceiver(activityId: ID!, orderId: ID!, userId: ID!, role: String!): Order
-    updateOrderAddress(activityId: ID!, orderId: ID!, addressType: String, orderInput: OrderInput!): Order
+    updateOrderTotals(activityId: ID!, orderId: ID!, orderInput: OrderInput!): Order
+    updateOrderTax(activityId: ID!, orderId: ID!, orderInput: OrderInput!): Order
+    updateOrderBillingAddress(activityId: ID!, orderId: ID!, orderInput: OrderInput!): Order
+    updateOrderShippingAddress(activityId: ID!, orderId: ID!, orderInput: OrderInput!): Order
     updateOrderStatus(activityId: ID!, orderId: ID!, orderInput: OrderInput!): Order
+    addOrderLesson(activityId: ID!, orderId: ID!, lessonId: ID!): Order
     addOrderObjectByField(activityId: ID!, orderId: ID!, field: String!, orderInput: OrderInput!): Order
 
     deleteOrder(activityId: ID!, orderId: ID!): Order

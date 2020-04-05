@@ -34,6 +34,11 @@ const userFriendItem = props => (
       </Card.Text>
 
       <Card.Link href="">
+        <Button variant="primary" onClick={props.onSelect.bind(this, props.friend)}>
+          Select
+        </Button>
+      </Card.Link>
+      <Card.Link href="">
       { props.canDelete === true && (
         <Button variant="danger" onClick={props.onDelete.bind(this, props.friend)}>
           Delete

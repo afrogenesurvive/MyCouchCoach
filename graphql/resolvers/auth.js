@@ -5,7 +5,7 @@ const { pocketVariables } = require('../../helpers/pocketVars');
 
 module.exports = {
   login: async ({ email, password }) => {
-
+    console.log("Resolver: Login...");
     const user = await User.findOne({ 'contact.email': email });
     if (!user) {
       throw new Error('User does not exist!');
@@ -15,10 +15,13 @@ module.exports = {
     if (!isEqual) {
       throw new Error('Password is incorrect!');
     }
+    if (user.verification.verified !== true) {
+      throw new Error('Please  verify user 1st!');
+    }
     const token = jwt.sign({ userId: user.id },'CoronaWorkLife',{expiresIn: '4h'});
 
     const userLoggedIn = await User.findOneAndUpdate({_id: user.id},{loggedIn: true},{new: true, useFindAndModify: false})
-    console.log("userLoggedIn", JSON.stringify(userLoggedIn.loggedIn));
+    // console.log("userLoggedIn", JSON.stringify(userLoggedIn.loggedIn));
     // pocketVariables.token = token;
     // pocketVariables.userId = user.id;
 

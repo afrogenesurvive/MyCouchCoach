@@ -26,6 +26,7 @@ const userFriendList = props => {
         points={friend.points}
         loggedIn={friend.loggedIn}
         online={friend.clientConnected}
+        onSelect={props.onSelect
         onDelete={props.onDelete}
         canDelete={props.canDelete}
       />

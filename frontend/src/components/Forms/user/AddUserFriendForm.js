@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import './CreateUserForm.css';
 
-const AddUserPerkForm = (props) => {
+const AddUserFriendForm = (props) => {
 
 return (
 <div className="UpdateFormContainer">
@@ -12,7 +12,7 @@ return (
 
   <Form.Row>
     <Form.Group as={Col} controlId="formGridTags">
-    <Form.Label>Add Perk Id: {props.selectedPerk._id} to this user?</Form.Label>
+    <Form.Label>Add Friend Id: {props.requestingFriendId} to this user?</Form.Label>
   </Form.Group>
   </Form.Row>
 
@@ -36,4 +36,4 @@ return (
 
 )};
 
-export default AddUserPerkForm;
+export default AddUserFriendForm;

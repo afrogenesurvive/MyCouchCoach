@@ -17,6 +17,7 @@ import UserInterestList from './UserList/UserInterestList';
 import UserTagList from './UserList/UserTagList';
 
 import UserFriendList from './UserList/UserFriendList';
+import UserFriendRequestList from './UserList/UserFriendRequestList';
 import UserCartItemList from './UserList/UserCartItemList';
 import UserBookedLessonList from './UserList/UserBookedLessonList';
 import UserPaymentInfoList from './UserList/UserPaymentInfoList';
@@ -40,6 +41,7 @@ import AddUserInterestsForm from './AddUserInterestsForm';
 import AddUserTagsForm from './AddUserTagsForm';
 import AddUserPaymentInfoForm from './AddUserPaymentInfoForm';
 
+import AddUserFriendForm from './Forms/user/AddUserFriendForm';
 import CreateMessageForm from '../Forms/message/CreateMessageForm';
 
 import './thisUserProfile.css';
@@ -48,6 +50,13 @@ const thisUserProfile = (props) => {
   const {...user} = props.user;
   const userAddress = user.address;
   const userDob = new Date(user.dob.substr(0,9)*1000).toISOString().slice(0,10);
+
+  let sentRequests = [];
+  let receivedRequests = [];
+  if (user.friendRequests !== []) {
+    sentRequests = user.friendRequests.filter(request => request.sender === user);
+    receivedRequests = user.friendRequests.filter(request => request.receiver === user);
+  }
 
   return (
 
@@ -350,6 +359,20 @@ const thisUserProfile = (props) => {
 
     <Tab eventKey="friends" title="friends">
 
+    <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.onStartAdd.bind(this, "friend")}>+ Friend</Button>
+
+    {props.userAddField === "friend" && (
+        <AddUserFriendForm
+          canCancel
+          canConfirm
+          onCancel={props.onCancel}
+          onConfirm={props.userAddFriend}
+          confirmText="Confirm"
+          requestingFriend={props.requestingFriend}
+          user={props.user}
+        />
+      )}
+
     {user.friends !== null &&
       user.friends !== [] && (
         <UserFriendList
@@ -357,8 +380,24 @@ const thisUserProfile = (props) => {
           authId={props.authId}
           canDelete={props.canDelete}
           onDelete={props.userDeleteFriend}
+          onSelect={props.userSelectFriend}
         />
-      ) }
+      )}
+
+    </Tab>
+
+    <Tab eventKey="friendRequests" title="friendRequests">
+
+    {user.friendRequests !== null &&
+      user.friendRequests !== [] && (
+        <UserFriendRequestList
+          userFriendRequests={receivedRequests}
+          authId={props.authId}
+          canDelete={props.canDelete}
+          onDelete={props.userDeleteFriendRequest}
+          onSelect={props.userSelectFriendRequest}
+        />
+      )}
 
     </Tab>
 
@@ -376,6 +415,19 @@ const thisUserProfile = (props) => {
 
     </Tab>
 
+    <Tab eventKey="likedLessons" title="likedLessons">
+
+    {user.likedLessons !== null &&
+      user.likedLessons!== [] && (
+        <UserLikedLessonList
+          userLikedLessons={user.likedLessons}
+          authId={props.authId}
+          canDelete={props.canDelete}
+          onDelete={props.userDeleteLikedLesson}
+        />
+      )}
+
+    </Tab>
     <Tab eventKey="bookedLessons" title="bookedLessons">
 
     {user.bookedLessons !== null &&
@@ -385,6 +437,33 @@ const thisUserProfile = (props) => {
           authId={props.authId}
           canDelete={props.canDelete}
           onDelete={props.userDeleteBookedLesson}
+        />
+      )}
+
+    </Tab>
+    <Tab eventKey="attendedLessons" title="attendedLessons">
+
+    {user.attendedLessons !== null &&
+      user.attendedLessons!== [] && (
+        <UserAttendedLessonList
+          userAttendedLessons={user.attendedLessons}
+          authId={props.authId}
+          canDelete={props.canDelete}
+          onDelete={props.userDeleteAttendedLesson}
+        />
+      )}
+
+    </Tab>
+    <Tab eventKey="taughtLessons" title="taughtLessons">
+
+    {user.role === "Instructor" &&
+      user.taughtLessons !== null &&
+      user.taughtLessons!== [] && (
+        <UserTaughtLessonList
+          userTaughtLessons={user.taughtLessons}
+          authId={props.authId}
+          canDelete={props.canDelete}
+          onDelete={props.userDeleteTaughtLesson}
         />
       )}
 

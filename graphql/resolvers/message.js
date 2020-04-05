@@ -65,7 +65,7 @@ module.exports = {
     }
     try {
       const sender = await User.findById({_id: args.senderId});
-      const message = await Message.findById({_id: args.messageId})
+      const message = await Message.findId({sender: sender})
       .populate('sender')
       .populate('receiver');
 
@@ -86,7 +86,7 @@ module.exports = {
     }
     try {
       const reciever = await User.findById({_id: args.recieverId});
-      const message = await Message.findById({_id: args.messageId})
+      const message = await Message.findById({receiver: receiver})
       .populate('sender')
       .populate('receiver');
 
@@ -147,37 +147,24 @@ module.exports = {
   createMessage: async (args, req) => {
 
     try {
-      const today = new Date();
+      const date = new Date().toISOString().substr(0,10);
       const time = new Date().toISOString().substr(11,5);
-      let sender = null;
-      let reciever = null;
-      let senderRole = args.senderRole;
-      sender = await mongoose.model(senderRole).findById({_id: args.senderId});
-      let receiverRole = args.receiverRole;
-      receiver = await mongoose.model(receiverRole).findById({_id: args.receiverId});
+      let sender = await User.findById({_id: args.senderId});
+      let receiver = await User.findById({_id: args.receiverId});
 
       const message = new Message({
-        date: today,
+        date: date,
         time: time,
         type: args.messageInput.type,
         subject: args.messageInput.subject,
-        sender: {
-          role: senderRole,
-          username: sender.username,
-          ref: sender
-        },
-        receiver: {
-          role: receiverRole,
-          username: receiver.username,
-          ref: receiver
-        },
+        sender: sender,
+        receiver: receiver,
         message: args.messageInput.message,
         read: false,
       });
 
-      // const result = await message.save();
-      const updateSender = await mongoose.model(senderRole).findOneAndUpdate({_id: args.senderId},{$addToSet: {messages: message}},{new: true, useFindAndModify: false});
-      const updateReceiver = await mongoose.model(receiverRole).findOneAndUpdate({_id: args.receiverId},{$addToSet: {messages: message}},{new: true, useFindAndModify: false});
+      const updateSender = await User.findOneAndUpdate({_id: args.senderId},{$addToSet: {messages: message}},{new: true, useFindAndModify: false});
+      const updateReceiver = await User.findOneAndUpdate({_id: args.receiverId},{$addToSet: {messages: message}},{new: true, useFindAndModify: false});
       const result = await message.save();
 
       return {

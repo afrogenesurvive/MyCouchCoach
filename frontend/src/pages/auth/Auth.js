@@ -128,7 +128,7 @@ class AuthPage extends Component {
       const requestBody = {
         query: `
         query {getThisUser(activityId:"${activityId}")
-        {_id,name,dob,role,username,contact{email,phone},address{number,street,town,city,country,postalCode},bio,profileImages{name,type,path},interests,perks{date,name,description},models{_id,name,username,contact{email},modelNames,profileImages{name,type},bio,interests},tokens,tags,loggedin,viewedShows{_id},viewedContent{_id},likedContent{_id},searches{date,query},comments{_id,date,time,content{_id}},messages{_id,message,sender{role,ref},receiver{ref}},transactions{_id,date,time},billing{date,type,description,amount,paid,payment},complaints{date,type,description,complainant{_id,name}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle},interests,perks{_id},promos{_id},friends{_id},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id},bookedLessons{date,ref{_id}},attendedLessons{date,ref{_id}},taughtLessons{date,ref{_id}},wishlist{date,ref{_id},booked},cart{dateAdded,sessionDate,lesson{_id}},comments{_id},messages{_id},orders{_id},paymentInfo{date,type,description,body,valid,primary}}
           `};
 
       fetch('http://localhost:7077/graphql', {

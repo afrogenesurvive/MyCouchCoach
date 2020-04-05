@@ -46,7 +46,7 @@ const userSchema = new Schema({
   tags: [{type: String}],
   loggedIn: {type: Boolean},
   clientConnected: {type: Boolean},
-  verfication:{
+  verification:{
     verified:{type: Boolean},
     type:{type: String},
     code:{type: String}

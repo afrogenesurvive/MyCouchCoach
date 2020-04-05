@@ -28,9 +28,9 @@ class SignupPage extends Component {
     let name = event.target.formGridName.value;
     let username = event.target.formGridUsername.value;
     let role = "User";
-    let public = false;
+    let publicProfile = false;
     if (event.target.formGridPublicCheckbox.checked === true) {
-      public = true;
+      publicProfile = true;
     }
     let dob = event.target.formGridDob.value;
     let phone = event.target.formGridPhone.value;
@@ -53,6 +53,7 @@ class SignupPage extends Component {
       role.trim().length === 0 ||
       dob.trim().length === 0 ||
       phone.trim().length === 0 ||
+      phone2.trim().length === 0 ||
       addressType.trim().length === 0 ||
       addressNumber.trim().length === 0 ||
       addressStreet.trim().length === 0 ||
@@ -69,26 +70,26 @@ class SignupPage extends Component {
     const token = this.context.token;
     const requestBody = {
       query: `
-          mutation {createUser(
-            userInput:{
-              name:\"${name}\",
-              password:\"${password}\",
-              username:\"${username}\",
-              dob:\"${dob}\",
-              public:${public},
-              contactEmail:\"${contactEmail}\",
-              contactPhone:\"${contactPhone}\",
-              contactPhone2:\"${contactPhone2}\",
-              addressType:\"${addressType}\",
-              addressNumber:${addressNumb},
-              addressStreet:\"${addressStreet}\",
-              addressTown:\"${addressTown}\",
-              addressCity:\"${addressCity}\",
-              addressCountry:\"${addressCountry}\",
-              addressPostalCode:\"${addressPostalCode}\",
-              bio:\"${bio}\"
-            })
-          {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle},interests,perks{_id},promos{_id},friends{_id},points,tags,loggedIn,clientConnected,verfication{verified,type,code},activity{date,request},likedLessons{_id},bookedLessons{date,ref{_id}},attendedLessons{date,ref{_id}},taughtLessons{date,ref{_id}},wishlist{date,ref{_id},booked},cart{dateAdded,sessionDate,lesson{_id}},comments{_id},messages{_id},orders{_id},paymentInfo{date,type,description,body,valid,primary}}}
+            mutation {createUser(
+              userInput:{
+                name:"${name}",
+                password:"${password}",
+                username:"${username}",
+                dob:"${dob}",
+                public:${publicProfile},
+                contactEmail:"${contactEmail}",
+                contactPhone:"${contactPhone}",
+                contactPhone2:"${contactPhone2}",
+                addressType:"${addressType}",
+                addressNumber:${addressNumber},
+                addressStreet:"${addressStreet}",
+                addressTown:"${addressTown}",
+                addressCity:"${addressCity}",
+                addressCountry:"${addressCountry}",
+                addressPostalCode:"${addressPostalCode}",
+                bio:"${bio}"
+              })
+            {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle},interests,perks{_id},promos{_id},friends{_id},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id},bookedLessons{date,ref{_id}},attendedLessons{date,ref{_id}},taughtLessons{date,ref{_id}},wishlist{date,ref{_id},booked},cart{dateAdded,sessionDate,lesson{_id}},comments{_id},messages{_id},orders{_id},paymentInfo{date,type,description,body,valid,primary}}
           `};
 
     fetch('http://localhost:7077/graphql', {

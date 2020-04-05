@@ -114,7 +114,10 @@ class App extends Component {
     const activityId = this.context.activityId;
     const requestBody = {
       query:`
-
+        mutation{userOnline(
+          activityId:"${activityId}",
+          userId:"${activityId}")
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle},interests,perks{_id},promos{_id},friends{_id,username},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id},bookedLessons{date,ref{_id,title}},attendedLessons{date,ref{_id,title}},taughtLessons{date,ref{_id,title}},wishlist{date,ref{_id,title},booked},cart{dateAdded,sessionDate,lesson{_id,title}},comments{_id},messages{_id},orders{_id},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:7077/graphql', {
@@ -134,8 +137,8 @@ class App extends Component {
       })
       .then(resData => {
 
-        const responseAlert = JSON.stringify(resData.data).slice(2,25);
-        this.context.user = ;
+        const responseAlert = JSON.stringify(resData.data.userOnline).slice(2,25);
+        // this.context.user = ;
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -147,7 +150,10 @@ class App extends Component {
     const activityId = this.context.activityId;
     const requestBody = {
       query:`
-
+      mutation{userOffline(
+        activityId:"${activityId}",
+        userId:"${activityId}")
+      {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle},interests,perks{_id},promos{_id},friends{_id,username},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id},bookedLessons{date,ref{_id,title}},attendedLessons{date,ref{_id,title}},taughtLessons{date,ref{_id,title}},wishlist{date,ref{_id,title},booked},cart{dateAdded,sessionDate,lesson{_id,title}},comments{_id},messages{_id},orders{_id},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:7077/graphql', {
@@ -167,8 +173,8 @@ class App extends Component {
       })
       .then(resData => {
 
-        const responseAlert = JSON.stringify(resData.data).slice(2,25);
-        this.context.user = ;
+        const responseAlert = JSON.stringify(resData.data.userOffline).slice(2,25);
+        // this.context.user = ;
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -218,7 +224,9 @@ class App extends Component {
 
                 {this.state.token && (<Redirect from="/auth" to="/userProfile" exact />)}
 
-                {this.state.token && (<Route path="/users" component={UsersPage} />)}
+                {
+                  // this.state.token && (<Route path="/users" component={UsersPage} />)
+                }
 
                 {!this.state.token && (<Route path="/auth" component={AuthPage} />)}
                 {!this.state.token && (<Route path="/signup" component={SignupPage} />)}

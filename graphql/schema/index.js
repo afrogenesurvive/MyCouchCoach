@@ -28,7 +28,7 @@ module.exports = buildSchema(`
     tags: [String]
     loggedIn: Boolean
     clientConnected: Boolean
-    verfication: Verification
+    verification: Verification
     likedLessons: [Lesson]
     bookedLessons: [LessonRef]
     attendedLessons: [LessonRef]
@@ -564,7 +564,7 @@ module.exports = buildSchema(`
     addUserMessage(activityId: ID!, userId: ID!, messageId: ID!): User
     addUserActivity(activityId: ID!, userId: ID!, userInput: UserInput!): User
 
-    verififyUser(activityId: ID!, userId: ID!, userInput: UserInput!): User
+    verifyUser(activityId: ID!, userInput: UserInput!): User
     userOnline(activityId: ID!, userId: ID! ): User
     userOffline(activityId: ID!, userId: ID! ): User
 
@@ -667,9 +667,9 @@ module.exports = buildSchema(`
     updateReviewByField(activityId: ID!,reviewId: ID!, field: String!, query: String!): Review
     deleteReview(activityId: ID!, reviewId: ID!): Review
 
-    createMessage(senderRole: String!, receiverRole: String!, senderId: ID!, receiverId: ID!, messageInput: MessageInput!): Message
-    updateMessageRead(messageId: ID!): Message
-    deleteMessage(messageId: ID!): Message
+    createMessage(activityId: ID!, senderId: ID!, receiverId: ID!, messageInput: MessageInput!): Message
+    updateMessageRead(activityId: ID!, messageId: ID!): Message
+    deleteMessage(activityId: ID!, messageId: ID!): Message
 
     createPerk(activityId: ID!, perkInput: PerkInput): Perk
     updatePerkBasic(activityId: ID!, perkId: ID!, perkInput: PerkInput): Perk

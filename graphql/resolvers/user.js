@@ -78,8 +78,8 @@ module.exports = {
       throw err;
     }
   },
-  getUserByField: async (args, req) => {
-    console.log("Resolver: getUserByField...");
+  getUsersByField: async (args, req) => {
+    console.log("Resolver: getUsersByField...");
     if (!req.isAuth) {
       throw new Error('Unauthenticated!');
     }
@@ -88,6 +88,7 @@ module.exports = {
       let resolverField = args.field;
       let resolverQuery = args.query;
       const query = {[resolverField]:resolverQuery};
+      console.log(query);
       const users = await User.find(query)
 
       return users.map(user => {
@@ -1027,9 +1028,9 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
-      // const date = new Date().toISOString().substr(0,10);
+      const date = new Date().toISOString().substr(0,10);
       const activity = {
-        date: args.userInput.activityDate,
+        date: date,
         request: args.userInput.activityRequest,
       };
 
@@ -1071,7 +1072,7 @@ module.exports = {
           date: args.userInput.activityDate,
           request: args.userInput.activityRequest,
         };
-        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { 'activity': activity }},{new: true, useFindAndModify: false});
+        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { activity: activity }},{new: true, useFindAndModify: false});
 
         return {
           ...user._doc,
@@ -1616,7 +1617,7 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
-        const message = await Message.findById({_id: args.reviewId});
+        const message = await Message.findById({_id: args.messageId});
         const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { messages: message }},{new: true, useFindAndModify: false});
 
         return {
@@ -1646,28 +1647,35 @@ module.exports = {
       throw err;
     }
   },
-  verififyUser: async (args, req) => {
+  verifyUser: async (args, req) => {
     console.log("Resolver: verifyUser...");
     // if (!req.isAuth) {
     //   throw new Error('Unauthenticated!');
     // }
     try {
+      const hashedPassword = await bcrypt.hash(args.userInput.password, 12);
       const challenge = {
-        type: args.userInput.type,
-        code: args.userInput.code,
+        type: args.userInput.verificationType,
+        code: args.userInput.verificationCode,
       }
-      const preUser = await User.findById({_id: args.userId});
+      const preUser = await User.findOne({'contact.email': args.userInput.contactEmail});
+      console.log('hashedPassword',hashedPassword,'preUser',preUser,);
       const response = {
         type: preUser.verification.type,
         code: preUser.verification.code,
       };
-      if (challenge !== preUser) {
+      console.log('challenge', challenge, 'response', challenge.type === response.type && challenge.code === response.code);
+      if (challenge.type !== response.type && challenge.code !== response.code) {
         throw new Error('challenge and response do not match. Check the type and code sent in the verification email and try again');
       }
-      const user = await User.findOneAndUpdate({_id:args.userId},{
-        verfication: {
+      if (challenge.type === response.type && challenge.code === response.code) {
+        console.log("success");;
+      }
+
+      const user = await User.findOneAndUpdate({_id: preUser._id},{
+        verification: {
           verified: true,
-          type: null,
+          type: response.type,
           code: null
         }
       },{new: true, useFindAndModify: false});
@@ -1776,7 +1784,7 @@ module.exports = {
         verification: {
           verified: false,
           type: "email",
-          code: null
+          code: 'VERF001'
         },
         activity: [{
           date: today,

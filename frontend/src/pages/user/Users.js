@@ -106,7 +106,12 @@ class UsersPage extends Component {
     const search = { field, query };
     const requestBody = {
       query: `
-
+        query {getUsersByField(
+          activityId:\"5e815ea627a93c0deab606d0\",
+          field:\"addresses.town\",
+          query:\"Test-Town\"
+        )
+        {_id,password,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle},interests,perks{_id},promos{_id},friends{_id,username},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id},bookedLessons{date,ref{_id,title}},attendedLessons{date,ref{_id,title}},taughtLessons{date,ref{_id,title}},wishlist{date,ref{_id,title},booked},cart{dateAdded,sessionDate,lesson{_id,title}},comments{_id},messages{_id},orders{_id},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `}
 
     fetch('http://localhost:7077/graphql', {
@@ -124,8 +129,8 @@ class UsersPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        const searchUsers = resData.data.;
+        const responseAlert = JSON.stringify(resData.data.getUsersByField).slice(0,8);
+        const searchUsers = resData.data.getUsersByField;
         this.setState({ searchUsers: searchUsers, userAlert: responseAlert})
       })
       .catch(err => {
@@ -138,12 +143,15 @@ class UsersPage extends Component {
   };
 
   fetchUsers() {
-
-    const activityId = this.context.activityId;
     this.setState({ isLoading: true, userAlert: "Fetching User Master List..." });
+    const activityId = this.context.activityId;
+
     const requestBody = {
       query: `
-
+          query {getAllUsers(
+            activityId:"${activityId}"
+          )
+          {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle},interests,perks{_id},promos{_id},friends{_id},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id},bookedLessons{date,ref{_id}},attendedLessons{date,ref{_id}},taughtLessons{date,ref{_id}},wishlist{date,ref{_id},booked},cart{dateAdded,sessionDate,lesson{_id}},comments{_id},messages{_id},orders{_id},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
         `};
 
     fetch('http://localhost:7077/graphql', {
@@ -162,8 +170,8 @@ class UsersPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, users: resData.data., isLoading: false});
+        const responseAlert = JSON.stringify(resData.data.getAllUsers).slice(0,8);
+        this.setState({userAlert: responseAlert, users: resData.data.getAllUsers, isLoading: false});
         this.context.users = this.state.users;
       })
       .catch(err => {
@@ -183,7 +191,7 @@ class UsersPage extends Component {
   }
 
   selectUserReceiver = (user) => {
-    console.log("selected user..",user._id");
+    console.log("selected user..",user._id);
     this.context.receiver = user;
     this.context.selectedUser = user;
   }

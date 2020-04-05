@@ -59,25 +59,30 @@ const userSchema = new Schema({
   likedLessons: [{type: Schema.Types.ObjectId,ref: 'Lesson'}],
   bookedLessons: [{
     date: {type: Date},
-    ref: {type: Schema.Types.ObjectId,ref: 'Lesson'}
+    ref: {type: Schema.Types.ObjectId,ref: 'Lesson'},
+    _id : false
   }],
   attendedLessons: [{
     date: {type: Date},
-    ref: {type: Schema.Types.ObjectId,ref: 'Lesson'}
+    ref: {type: Schema.Types.ObjectId,ref: 'Lesson'},
+    _id : false
   }],
   taughtLessons: [{
     date: {type: Date},
-    ref: {type: Schema.Types.ObjectId,ref: 'Lesson'}
+    ref: {type: Schema.Types.ObjectId,ref: 'Lesson'},
+    _id : false
   }],
   wishlist: [{
     date: {type: Date},
     ref: {type: Schema.Types.ObjectId,ref: 'Lesson'},
-    booked: {type: Boolean}
+    booked: {type: Boolean},
+    _id : false
   }],
   cart: [{
     dateAdded: {type: Date},
     sessionDate: {type: Date},
-    lesson: {type: Schema.Types.ObjectId,ref: 'Lesson'}
+    lesson: {type: Schema.Types.ObjectId,ref: 'Lesson'},
+    _id : false
   }],
   reviews: [{type: Schema.Types.ObjectId,ref: 'Review'}],
   comments: [{type: Schema.Types.ObjectId,ref: 'Comment'}],

@@ -708,7 +708,7 @@ module.exports = {
         throw new Error("Yaah.. No! Only the lead Instructor of this Lesson or Admin can delete a User Address");
       };
       const instructor = await User.findById({_id: args.instructorId});
-      const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {instructors: instructor}},{new: true, useFindAndModify: false})
+      const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {instructors: instructor._id}},{new: true, useFindAndModify: false})
       .populate('instructors')
       .populate('reviews')
       .populate('sessions.booked')
@@ -880,7 +880,7 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
-      const today = new Date();
+      const today = new Date().toISOString().substr(0,10);
       const user = await User.findById({_id: args.userId});
       // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$all: [user]} },
       // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$nin: user} },
@@ -900,7 +900,11 @@ module.exports = {
         date: today,
         ref: lesson
       };
-      const updateStudent = await User.findOneAndUpdate({_id: args.userId},{$addToSet: {bookedLessons: bookingRef}},{new: true, useFindAndModify: false})
+      const updateStudentBookedLessons = await User.findOneAndUpdate({_id: args.userId},{$addToSet: {bookedLessons: bookingRef}},{new: true, useFindAndModify: false})
+      const updateStudentWishlist = await User.findOneAndUpdate(
+        {_id: args.userId, 'wishlist.ref': lesson._id, 'wishlist.date': today},
+        {$set: {'wishlist.$.booked': true}},
+        {new: true, useFindAndModify: false})
       const updateInstructors = await User.update({_id: {$in: instructors}},{$addToSet: {bookedLessons: bookingRef}},{new: true, useFindAndModify: false})
 
         return {
@@ -919,7 +923,7 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
-      const today = new Date();
+      const today = new Date().toISOString().substr(0,10);
       const user = await User.findById({_id: args.userId});
       // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$all: [user]} },
       // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$nin: user} },
@@ -927,7 +931,7 @@ module.exports = {
       // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$elemMatch: user} },
       const lesson = await Lesson.findOneAndUpdate(
         {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate },
-        {$pull: {'sessions.$.booked': user}, $inc: {'sessions.$.bookedAmount': -1}}
+        {$pull: {'sessions.$.booked': user._id}, $inc: {'sessions.$.bookedAmount': -1}}
         // {$pull: {'sessions': {'sessions.booked': user}}, $inc: {'sessions.$.bookedAmount': -1}}
         ,{new: true, useFindAndModify: false})
       .populate('instructors')
@@ -936,8 +940,8 @@ module.exports = {
       .populate('sessions.attended');
 
       const instructors = lesson.instructors.map(x => x._id);
-      const updateUser = await User.findOneAndUpdate({_id: args.userId},{$pull: {bookedLessons: {'bookedLessons.ref': lesson}}},{new: true, useFindAndModify: false})
-      const updateInstructors = await User.update({_id: {$in: instructors}},{$pull: {'bookedLessons.ref': lesson}},{new: true, useFindAndModify: false})
+      const updateUser = await User.findOneAndUpdate({_id: args.userId},{$pull: {bookedLessons: {ref: lesson}}},{new: true, useFindAndModify: false})
+      const updateInstructors = await User.update({_id: {$in: instructors}},{$pull: {bookedLessons: {ref: lesson}}},{new: true, useFindAndModify: false})
         return {
             ...lesson._doc,
             _id: lesson.id,
@@ -1000,7 +1004,7 @@ module.exports = {
       // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$elemMatch: user} },
       const lesson = await Lesson.findOneAndUpdate(
         {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate },
-        {$pull: {'sessions.$.attended': user}, $inc: {'sessions.$.attendedAmount': -1}}
+        {$pull: {'sessions.$.attended': user._id}, $inc: {'sessions.$.attendedAmount': -1}}
         // {$pull: {'sessions': {'sessions.attended': user}}, $inc: {'sessions.$.attendedAmount': -1}}
         ,{new: true, useFindAndModify: false})
       .populate('instructors')
@@ -1009,8 +1013,8 @@ module.exports = {
       .populate('sessions.attended');
 
       const instructors = lesson.instructors.map(x => x._id);
-      const updateUser = await User.findOneAndUpdate({_id: args.userId},{$pull: {attendedLessons: {'attendedLessons.ref': lesson}}},{new: true, useFindAndModify: false})
-      const updateInstructors = await User.update({_id: {$in: instructors}},{$pull: {'taughtLessons.ref': lesson}},{new: true, useFindAndModify: false})
+      const updateUser = await User.findOneAndUpdate({_id: args.userId},{$pull: {attendedLessons: {ref: lesson}}},{new: true, useFindAndModify: false})
+      const updateInstructors = await User.update({_id: {$in: instructors}},{$pull: {attendedLessons: {ref: lesson}}},{new: true, useFindAndModify: false})
         return {
             ...lesson._doc,
             _id: lesson.id,

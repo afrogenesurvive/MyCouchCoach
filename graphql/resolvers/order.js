@@ -30,8 +30,8 @@ module.exports = {
     try {
       const orders = await Order.find({})
       .populate('buyer')
-      .populate('reciever')
-      .populate('lessons.ref');
+      .populate('receiver');
+      // .populate('lessons.ref');
 
       return orders.map(order => {
         return transformOrder(order,);
@@ -533,52 +533,57 @@ module.exports = {
     console.log("Resolver: createOrder...");
     try {
 
-      const buyer = await User.findById({_id: args.buyerId});
+      const buyer = await User.findById({_id: args.buyerId}).populate('cart.lesson.ref');
       const receiver = await User.findById({_id: args.receiverId});
-      const today = new Date();
+      const date = new Date().toISOString().substr(0,10);
       const time = new Date().toISOString().substr(11,5);
       const preCart = buyer.cart;
-      const orderLessons = preCart.map(lesson => ({
-        price: x.lesson.price,
-        date: x.dateAdded,
-        ref: x.lesson
+      // const orderLessons = preCart.map(lesson => console.log(lesson.lesson));
+      const preOrderLessons = preCart.map(lesson => lesson.lesson);
+      const orderLessons = await Lesson.find({_id: {$in: [preOrderLessons] }});
+      const orderLessons2 = orderLessons.map(lesson => ({
+        price: lesson.price,
+        date: lesson.sessionDate,
+        ref: lesson
       }));
+      console.log('preCart',preCart,'preOrderLessons',preOrderLessons,'orderLessons',orderLessons,'orderLessons2',orderLessons2);
+      // console.log(receiver);
 
       const order = new Order({
-        date: today,
+        date: date,
         time: time,
-        type: args.orderInput.Type,
+        type: args.orderInput.type,
         buyer: buyer,
-        reciever: receiver,
-        lessons: orderLessons,
+        receiver: receiver,
+        lessons: orderLessons2,
         totals:{
           a: args.orderInput.totalA,
           b: args.orderInput.totalB,
           c: args.orderInput.totalC,
         },
         tax:{
-          description: args.orderInput.Description,
-          amount: args.orderInput.Amount,
+          description: args.orderInput.taxDescription,
+          amount: args.orderInput.taxAmount,
         },
-        description: args.orderInput.Description,
-        notes: args.orderInput.Notes,
-        payment: args.orderInput.Payment,
-        shipping: args.orderInput.Shipping,
+        description: args.orderInput.description,
+        notes: args.orderInput.notes,
+        payment: args.orderInput.payment,
+        shipping: args.orderInput.shipping,
         billingAddress:{
-          number: args.orderInput.Number,
-          street: args.orderInput.Street,
-          town: args.orderInput.Town,
-          city: args.orderInput.City,
-          country: args.orderInput.Country,
-          postalCode: args.orderInput.PostalCode,
+          number: args.orderInput.billingAddressNumber,
+          street: args.orderInput.billingAddressStreet,
+          town: args.orderInput.billingAddressTown,
+          city: args.orderInput.billingAddressCity,
+          country: args.orderInput.billingAddressCountry,
+          postalCode: args.orderInput.billingAddressPostalCode,
         },
         shippingAddress:{
-          number: args.orderInput.Number,
-          street: args.orderInput.Street,
-          town: args.orderInput.Town,
-          city: args.orderInput.City,
-          country: args.orderInput.Country,
-          postalCode: args.orderInput.PostalCode,
+          number: args.orderInput.shippingAddressNumber,
+          street: args.orderInput.shippingAddressStreet,
+          town: args.orderInput.shippingAddressTown,
+          city: args.orderInput.shippingAddressCity,
+          country: args.orderInput.shippingAddressCountry,
+          postalCode: args.orderInput.shippingAddressPostalCode,
         }
       });
 

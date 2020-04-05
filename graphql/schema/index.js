@@ -554,7 +554,7 @@ module.exports = buildSchema(`
     addUserBookedLesson(activityId: ID!, userId: ID!, lessonId: ID!): User
     addUserAttendedLesson(activityId: ID!, userId: ID!, lessonId: ID!): User
     addUserTaughtLesson(activityId: ID!, userId: ID!, lessonId: ID!): User
-    addUserCartLesson(activityId: ID!, userId: ID!, lessonId: ID!): User
+    addUserCartLesson(activityId: ID!, userId: ID!, lessonId: ID!, sessionDate: String!): User
     addUserWishlistLesson(activityId: ID!, userId: ID!, lessonId: ID!): User
 
     addUserComment(activityId: ID!, userId: ID!, commentId: ID!): User
@@ -586,11 +586,11 @@ module.exports = buildSchema(`
     deleteFriendRequest(activityId: ID!, date: String!, senderId: ID!, receiverId: ID!): User
 
     deleteUserLikedLesson(activityId: ID!, userId: ID!, lessonId: ID!): User
-    deleteUserBookedLesson(activityId: ID!, userId: ID!, lessonId: ID!): User
-    deleteUserAttendedLesson(activityId: ID!, userId: ID!, lessonId: ID!): User
-    deleteUserTaughtLesson(activityId: ID!, userId: ID!, lessonId: ID!): User
+    deleteUserBookedLesson(activityId: ID!, userId: ID!, lessonId: ID!, date: String!): User
+    deleteUserAttendedLesson(activityId: ID!, userId: ID!, lessonId: ID!, date: String!): User
+    deleteUserTaughtLesson(activityId: ID!, userId: ID!, lessonId: ID!, date: String!): User
     deleteUserWishlistLesson(activityId: ID!, userId: ID!, lessonId: ID!): User
-    deleteUserCartLesson(activityId: ID!, userId: ID!, lessonId: ID!): User
+    deleteUserCartLesson(activityId: ID!, userId: ID!, lessonId: ID!, dateAdded: String!, sessionDate: String!): User
 
     deleteUserComment(activityId: ID!, userId: ID!, commentId: ID!): User
     deleteUserReview(activityId: ID!, userId: ID!, reviewId: ID!): User

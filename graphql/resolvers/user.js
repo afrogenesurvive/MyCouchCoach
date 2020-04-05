@@ -874,7 +874,7 @@ module.exports = {
     }
     try {
       const friend = await User.findById({_id: args.friendId});
-      const user = await User.findOneAndUpdate({_id:args.userId},{$addToSet: { friends: friend }},{new: true, useFindAndModify: false})
+      const user = await User.findOneAndUpdate({_id: args.userId},{$addToSet: { friends: friend }},{new: true, useFindAndModify: false})
       .populate('perks')
       .populate('promos')
       .populate('friends')
@@ -894,6 +894,27 @@ module.exports = {
           ...user._doc,
           _id: user.id,
           email: user.contact.email ,
+          name: user.name,
+        };
+    } catch (err) {
+      throw err;
+    }
+  },
+  deleteUserFriend: async (args, req) => {
+    console.log("Resolver: deleteUserFriend...");
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+        const preUser = await User.findById({_id: args.userId});
+        const friend = await User.findById({_id: args.friendId});
+        console.log(preUser.friends);
+        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { friends: friend._id }},{new: true, useFindAndModify: false});
+        const updateFriend = await User.findOneAndUpdate({_id: args.friendId},{$pull: {friends: user._id}},{new: true, useFindAndModify: false});
+        return {
+          ...user._doc,
+          _id: user.id,
+          email: user.contact.email,
           name: user.name,
         };
     } catch (err) {
@@ -950,12 +971,6 @@ module.exports = {
       let user = null;
       const preSender = await User.findById({_id: args.senderId});
       const preReceiver = await User.findById({_id: args.receiverId});
-      const date = args.date;
-      const friendRequest = {
-        date: args.date,
-        sender: preSender,
-        receiver: preReceiver
-      };
 
       const sender = await User.findOneAndUpdate(
         {_id:args.senderId },
@@ -1005,25 +1020,6 @@ module.exports = {
       throw err;
     }
   },
-  deleteUserFriend: async (args, req) => {
-    console.log("Resolver: deleteUserFriend...");
-    if (!req.isAuth) {
-      throw new Error('Unauthenticated!');
-    }
-    try {
-        const friend = await Friend.findById({_id: args.friendId});
-        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { friends: friend }},{new: true, useFindAndModify: false});
-        const updateFriend = await User.findOneAndUpdate({_id: friendId},{$pull: {friends: user}},{new: true, useFindAndModify: false});
-        return {
-          ...user._doc,
-          _id: user.id,
-          email: user.contact.email ,
-          name: user.name,
-        };
-    } catch (err) {
-      throw err;
-    }
-  },
   addUserActivity: async (args, req) => {
     console.log("Resolver: addUserActivity...");
 
@@ -1031,6 +1027,7 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
+      // const date = new Date().toISOString().substr(0,10);
       const activity = {
         date: args.userInput.activityDate,
         request: args.userInput.activityRequest,
@@ -1124,7 +1121,7 @@ module.exports = {
     }
     try {
         const lesson = await Lesson.findById({_id: args.lessonId});
-        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { likedLessons: lesson }},{new: true, useFindAndModify: false});
+        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { likedLessons: lesson._id }},{new: true, useFindAndModify: false});
 
         return {
           ...user._doc,
@@ -1142,8 +1139,14 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
+      const date = new Date().toISOString().substr(0,10);
+      // const time = date.toISOString().substr(11,5);
       const lesson = await Lesson.findById({_id: args.lessonId});
-      const user = await User.findOneAndUpdate({_id:args.userId},{$addToSet: { 'bookedLessons.ref': lesson }},{new: true, useFindAndModify: false})
+      const bookedLesson = {
+        date: date,
+        ref: lesson
+      };
+      const user = await User.findOneAndUpdate({_id:args.userId},{$addToSet: { bookedLessons: bookedLesson }},{new: true, useFindAndModify: false})
       .populate('perks')
       .populate('promos')
       .populate('friends')
@@ -1173,8 +1176,11 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
+        const date = args.date;
+        // const iSOString = new Date().toISOString().substr(0,10);
         const lesson = await Lesson.findById({_id: args.lessonId});
-        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { 'bookedLessons.ref': lesson }},{new: true, useFindAndModify: false});
+        // console.log("args.date",date,"toISOString",iSOString,"x",preUser.bookedLessons[0].date.toISOString().substr(0,10));
+        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { bookedLessons: {date: date, ref: lesson} }},{new: true, useFindAndModify: false});
 
         return {
           ...user._doc,
@@ -1192,8 +1198,14 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
+      const date = new Date().toISOString().substr(0,10);
+      // const time = date.toISOString().substr(11,5);
       const lesson = await Lesson.findById({_id: args.lessonId});
-      const user = await User.findOneAndUpdate({_id:args.userId},{$addToSet: { 'attendedLessons.ref': lesson }},{new: true, useFindAndModify: false})
+      const attendedLesson = {
+        date: date,
+        ref: lesson
+      };
+      const user = await User.findOneAndUpdate({_id:args.userId},{$addToSet: { attendedLessons: attendedLesson }},{new: true, useFindAndModify: false})
       .populate('perks')
       .populate('promos')
       .populate('friends')
@@ -1223,8 +1235,10 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
-        const lesson = await Lesson.findById({_id: args.lessonId});
-        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { 'attendedLessons.ref': lesson }},{new: true, useFindAndModify: false});
+      const date = args.date;
+      // const iSOString = new Date().toISOString().substr(0,10);
+      const lesson = await Lesson.findById({_id: args.lessonId});
+      const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { attendedLessons: {date: date, ref: lesson} }},{new: true, useFindAndModify: false});
 
         return {
           ...user._doc,
@@ -1242,8 +1256,14 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
+      const date = new Date().toISOString().substr(0,10);
+      // const time = date.toISOString().substr(11,5);
       const lesson = await Lesson.findById({_id: args.lessonId});
-      const user = await User.findOneAndUpdate({_id:args.userId},{$addToSet: { 'taughtLessons.ref': lesson }},{new: true, useFindAndModify: false})
+      const taughtLesson = {
+        date: date,
+        ref: lesson
+      };
+      const user = await User.findOneAndUpdate({_id:args.userId},{$addToSet: { taughtLessons: taughtLesson }},{new: true, useFindAndModify: false})
       .populate('perks')
       .populate('promos')
       .populate('friends')
@@ -1273,8 +1293,131 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
-        const lesson = await Lesson.findById({_id: args.lessonId});
-        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { 'taughtLessons.ref': lesson }},{new: true, useFindAndModify: false});
+      const date = args.date;
+      // const iSOString = new Date().toISOString().substr(0,10);
+      const lesson = await Lesson.findById({_id: args.lessonId});
+      const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { taughtLessons: {date: date, ref: lesson} }},{new: true, useFindAndModify: false});
+
+        return {
+          ...user._doc,
+          _id: user.id,
+          email: user.contact.email ,
+          name: user.name,
+        };
+    } catch (err) {
+      throw err;
+    }
+  },
+  addUserCartLesson: async (args, req) => {
+    console.log("Resolver: addUserCartLesson...");
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      const date = new Date().toISOString().substr(0,10);
+      // const time = date.toISOString().substr(11,5);
+      const lesson = await Lesson.findById({_id: args.lessonId});
+      const cartLesson = {
+        dateAdded: date,
+        sessionDate: args.sessionDate,
+        lesson: lesson
+      };
+      const user = await User.findOneAndUpdate({_id:args.userId},{$addToSet: { cart: cartLesson }},{new: true, useFindAndModify: false})
+      .populate('perks')
+      .populate('promos')
+      .populate('friends')
+      .populate('likedLessons')
+      .populate('bookedLessons.ref')
+      .populate('attendedLessons.ref')
+      .populate('taughtLessons.ref')
+      .populate('wishlist.ref')
+      .populate('cart.lesson')
+      .populate('comments.')
+      .populate('messages')
+      .populate('orders');
+
+        return {
+          ...user._doc,
+          _id: user.id,
+          email: user.contact.email ,
+          name: user.name,
+        };
+    } catch (err) {
+      throw err;
+    }
+  },
+  deleteUserCartLesson: async (args, req) => {
+    console.log("Resolver: deleteUserCartLesson...");
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      const dateAdded = args.dateAdded;
+      const sessionDate = args.sessionDate;
+      // const iSOString = new Date().toISOString().substr(0,10);
+      const lesson = await Lesson.findById({_id: args.lessonId});
+      const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { cart: {sessionDate: sessionDate, lesson: lesson} }},{new: true, useFindAndModify: false});
+
+        return {
+          ...user._doc,
+          _id: user.id,
+          email: user.contact.email ,
+          name: user.name,
+        };
+    } catch (err) {
+      throw err;
+    }
+  },
+  addUserWishlistLesson: async (args, req) => {
+    console.log("Resolver: addUserWishlistLesson...");
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      const date = new Date().toISOString().substr(0,10);
+      // const time = date.toISOString().substr(11,5);
+      const lesson = await Lesson.findById({_id: args.lessonId});
+      const wishlistLesson = {
+        date: date,
+        ref: lesson,
+        booked: false
+      };
+      const user = await User.findOneAndUpdate({_id:args.userId},{$addToSet: { wishlist: wishlistLesson }},{new: true, useFindAndModify: false})
+      .populate('perks')
+      .populate('promos')
+      .populate('friends')
+      .populate('likedLessons')
+      .populate('bookedLessons.ref')
+      .populate('attendedLessons.ref')
+      .populate('taughtLessons.ref')
+      .populate('wishlist.ref')
+      .populate('cart.lesson')
+      .populate('comments.')
+      .populate('messages')
+      .populate('orders');
+
+        return {
+          ...user._doc,
+          _id: user.id,
+          email: user.contact.email ,
+          name: user.name,
+        };
+    } catch (err) {
+      throw err;
+    }
+  },
+  // const preUser = await User.find({'bookedLessons.ref': lesson});
+  // if (preUser) {
+  //   throw new Error('User has lready booked this lesson');
+  // }
+  deleteUserWishlistLesson: async (args, req) => {
+    console.log("Resolver: deleteUserWishlistLesson...");
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      const lesson = await Lesson.findById({_id: args.lessonId});
+      const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { wishlist: {ref: lesson} }},{new: true, useFindAndModify: false});
 
         return {
           ...user._doc,
@@ -1475,56 +1618,6 @@ module.exports = {
     try {
         const message = await Message.findById({_id: args.reviewId});
         const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { messages: message }},{new: true, useFindAndModify: false});
-
-        return {
-          ...user._doc,
-          _id: user.id,
-          email: user.contact.email ,
-          name: user.name,
-        };
-    } catch (err) {
-      throw err;
-    }
-  },
-  addUserWishlistLesson: async (args, req) => {
-    console.log("Resolver: addUserWishlistLesson...");
-    if (!req.isAuth) {
-      throw new Error('Unauthenticated!');
-    }
-    try {
-      const lesson = await Lesson.findById({_id: args.lessonId});
-      const user = await User.findOneAndUpdate({_id:args.userId},{$addToSet: { 'wishlistLessons.ref': lesson }},{new: true, useFindAndModify: false})
-      .populate('perks')
-      .populate('promos')
-      .populate('friends')
-      .populate('likedLessons')
-      .populate('bookedLessons.ref')
-      .populate('attendedLessons.ref')
-      .populate('taughtLessons.ref')
-      .populate('wishlist.ref')
-      .populate('cart.lesson')
-      .populate('comments.')
-      .populate('messages')
-      .populate('orders');
-
-        return {
-          ...user._doc,
-          _id: user.id,
-          email: user.contact.email ,
-          name: user.name,
-        };
-    } catch (err) {
-      throw err;
-    }
-  },
-  deleteUserWishlistLesson: async (args, req) => {
-    console.log("Resolver: deleteUserWishlistLesson...");
-    if (!req.isAuth) {
-      throw new Error('Unauthenticated!');
-    }
-    try {
-        const lesson = await Lesson.findById({_id: args.lessonId});
-        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { 'wishlistLessons.ref': lesson }},{new: true, useFindAndModify: false});
 
         return {
           ...user._doc,

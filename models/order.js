@@ -7,7 +7,7 @@ const orderSchema = new Schema({
   time: {type: String},
   type: {type: String},
   buyer: {type: Schema.Types.ObjectId,ref: 'User'},
-  reciever: {type: Schema.Types.ObjectId,ref: 'User'},
+  receiver: {type: Schema.Types.ObjectId,ref: 'User'},
   lessons: [{
     price: {type: Number},
     date: {type: Date},

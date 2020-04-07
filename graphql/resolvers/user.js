@@ -65,9 +65,10 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('comments.')
+      .populate('comments')
       .populate('messages')
-      .populate('orders');
+      .populate('orders')
+      .populate('reviews');
 
         return {
             ...user._doc,
@@ -222,7 +223,20 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
-      const user = await User.findById({_id: args.activityId});
+      const user = await User.findById({_id: args.activityId})
+      .populate('perks')
+      .populate('promos')
+      .populate('friends')
+      .populate('likedLessons')
+      .populate('bookedLessons.ref')
+      .populate('attendedLessons.ref')
+      .populate('taughtLessons.ref')
+      .populate('wishlist.ref')
+      .populate('cart.lesson')
+      .populate('comments')
+      .populate('messages')
+      .populate('orders')
+      .populate('reviews');
 
       return {
         ...user._doc,
@@ -1518,7 +1532,7 @@ module.exports = {
     }
     try {
         const order = await Order.findById({_id: args.orderId});
-        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { orders: order }},{new: true, useFindAndModify: false});
+        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { orders: order._id }},{new: true, useFindAndModify: false});
 
         return {
           ...user._doc,
@@ -1568,7 +1582,7 @@ module.exports = {
     }
     try {
         const review = await Review.findById({_id: args.reviewId});
-        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { reviews: review }},{new: true, useFindAndModify: false});
+        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { reviews: review._id }},{new: true, useFindAndModify: false});
 
         return {
           ...user._doc,
@@ -1618,7 +1632,7 @@ module.exports = {
     }
     try {
         const message = await Message.findById({_id: args.messageId});
-        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { messages: message }},{new: true, useFindAndModify: false});
+        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { messages: message._id }},{new: true, useFindAndModify: false});
 
         return {
           ...user._doc,
@@ -1653,18 +1667,18 @@ module.exports = {
     //   throw new Error('Unauthenticated!');
     // }
     try {
-      const hashedPassword = await bcrypt.hash(args.userInput.password, 12);
+      // const hashedPassword = await bcrypt.hash(args.userInput.password, 12);
       const challenge = {
         type: args.userInput.verificationType,
         code: args.userInput.verificationCode,
       }
       const preUser = await User.findOne({'contact.email': args.userInput.contactEmail});
-      console.log('hashedPassword',hashedPassword,'preUser',preUser,);
+      // console.log('hashedPassword',hashedPassword,'preUser',preUser,);
       const response = {
         type: preUser.verification.type,
         code: preUser.verification.code,
       };
-      console.log('challenge', challenge, 'response', challenge.type === response.type && challenge.code === response.code);
+      console.log('challenge', challenge, 'response',response, 'match',challenge.type === response.type && challenge.code === response.code);
       if (challenge.type !== response.type && challenge.code !== response.code) {
         throw new Error('challenge and response do not match. Check the type and code sent in the verification email and try again');
       }

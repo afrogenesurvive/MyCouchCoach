@@ -39,7 +39,7 @@ module.exports = buildSchema(`
     paymentInfo: [PaymentInfoItem]
     activity:[Activity]
     comments: [Comment]
-    Reviews: [Review]
+    reviews: [Review]
     messages: [Message]
   }
 
@@ -439,7 +439,7 @@ module.exports = buildSchema(`
   type AuthData {
     activityId: ID!
     role: String!
-    token: String!
+    token: String
     tokenExpiration: Int!
     error: String
   }
@@ -507,7 +507,7 @@ module.exports = buildSchema(`
     getCommentByChild(activityId: ID!, commentId: ID!): [Comment]
 
     getAllReviews(activityId: ID!): [Review]
-    getReviewById(activityId: ID!): Review
+    getReviewById(activityId: ID!, reviewId: ID!): Review
     getReviewsByField(activityId: ID!, field: String!, query: String!): [Review]
     getReviewsByAuthor(activityId: ID!, authorId: ID!): [Review]
     getReviewsByLesson(activityId: ID!, lessonId: ID!): [Review]
@@ -564,7 +564,7 @@ module.exports = buildSchema(`
     addUserMessage(activityId: ID!, userId: ID!, messageId: ID!): User
     addUserActivity(activityId: ID!, userId: ID!, userInput: UserInput!): User
 
-    verifyUser(activityId: ID!, userInput: UserInput!): User
+    verifyUser( userInput: UserInput!): User
     userOnline(activityId: ID!, userId: ID! ): User
     userOffline(activityId: ID!, userId: ID! ): User
 
@@ -644,7 +644,7 @@ module.exports = buildSchema(`
     updateOrderBasic(activityId: ID!, orderId: ID!, orderInput: OrderInput!): Order
     updateOrderByField(activityId: ID!, orderId: ID!, field: String!, query: String!): Order
 
-    updateOrderSenderReceiver(activityId: ID!, orderId: ID!, userId: ID!, role: String!): Order
+    updateOrderBuyerReceiver(activityId: ID!, orderId: ID!, userId: ID!, role: String!): Order
     updateOrderTotals(activityId: ID!, orderId: ID!, orderInput: OrderInput!): Order
     updateOrderTax(activityId: ID!, orderId: ID!, orderInput: OrderInput!): Order
     updateOrderBillingAddress(activityId: ID!, orderId: ID!, orderInput: OrderInput!): Order
@@ -663,7 +663,7 @@ module.exports = buildSchema(`
     deleteComment(commentId: ID!): Comment
 
     createReview(activityId: ID!, userId: ID!,lessonId: ID!, reviewInput: ReviewInput!): Review
-    updateReview(activityId: ID!, reviewId: ID!, reviewInput: ReviewInput!): Review
+    updateReviewBasic(activityId: ID!, reviewId: ID!, reviewInput: ReviewInput!): Review
     updateReviewByField(activityId: ID!,reviewId: ID!, field: String!, query: String!): Review
     deleteReview(activityId: ID!, reviewId: ID!): Review
 

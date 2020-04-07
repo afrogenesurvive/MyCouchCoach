@@ -5,7 +5,7 @@ import './UserList.css';
 
 const userOrderList = props => {
 
-  const userOrders = props.orders.map(order => {
+  const userOrders = props.userOrders.map(order => {
     const orderDate = new Date (order.date.substr(0,10)*1000).toISOString().slice(0,10);
     return (
       <UserOrderItem

@@ -12,7 +12,7 @@ const Comment = require('../../models/comment');
 const Message = require('../../models/message');
 const util = require('util');
 
-const { transformPerk } = require('./merge');
+const { transformReview } = require('./merge');
 const { dateToString } = require('../../helpers/date');
 const { pocketVariables } = require('../../helpers/pocketVars');
 
@@ -26,9 +26,11 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
-      const reviews = await Review.find({});
+      const reviews = await Review.find({})
+      .populate('author')
+      .populate('lesson');
 
-      return reviews.map(perk => {
+      return reviews.map(review => {
         return transformReview(review,);
       });
     } catch (err) {
@@ -42,7 +44,9 @@ module.exports = {
     }
     try {
 
-      const review = await Review.findById(args.reviewId);
+      const review = await Review.findById(args.reviewId)
+      .populate('author')
+      .populate('lesson');
 
         return {
             ...review._doc,
@@ -64,6 +68,8 @@ module.exports = {
       let resolverQuery = args.query;
       const query = {[resolverField]:resolverQuery};
       const reviews = await Review.find(query)
+      .populate('author')
+      .populate('lesson');
 
       return reviews.map(review => {
         return transformReview(review);
@@ -79,18 +85,19 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
-      const perk = await Review.findOneAndUpdate({_id:args.perkId},{
-        name: args.perkInput.name,
-        type: args.perkInput.type,
-        description: args.perkInput.description,
-        code: args.perkInput.code,
-        imageLink: args.perkInput.imageLink,
-        },{new: true, useFindAndModify: false});
+      const review = await Review.findOneAndUpdate({_id:args.reviewId},{
+        type: args.reviewInput.type,
+        title: args.reviewInput.title,
+        body: args.reviewInput.body,
+        rating: args.reviewInput.rating
+        },{new: true, useFindAndModify: false})
+        .populate('author')
+        .populate('lesson');
 
         return {
-            ...perk._doc,
-            _id: perk.id,
-            name: perk.name
+            ...review._doc,
+            _id: review.id,
+            title: review.title
         };
     } catch (err) {
       throw err;
@@ -106,12 +113,12 @@ module.exports = {
       const resolverField = args.field;
       const resolverQuery = args.query;
       const query = {[resolverField]:resolverQuery};
-      const user = await Review.findOneAndUpdate({_id:args.perkId},query,{new: true, useFindAndModify: false});
+      const review = await Review.findOneAndUpdate({_id:args.reviewId},query,{new: true, useFindAndModify: false});
 
       return {
-          ...perk._doc,
-          _id: perk.id,
-          name: perk.name
+        ...review._doc,
+        _id: review.id,
+        title: review.title
       };
     } catch (err) {
       throw err;
@@ -137,9 +144,15 @@ module.exports = {
     console.log("Resolver: createReview...");
     try {
 
-      const today = new Date();
-
-      const perk = new Review({
+      const today = new Date().toISOString().substr(0,10);
+      const time = new Date().toISOString().substr(11,5);
+      const author = await User.findById({_id: args.userId});
+      const lesson = await Lesson.findById({_id: args.lessonId});
+      const existingReview = await Review.findOne({author: author, lesson: lesson});
+      if (existingReview) {
+        throw new Error('This user has already reviewed this lesson... One review per lesson per user please...');
+      }
+      const review = new Review({
         date: today,
         type: args.reviewInput.type,
         title: args.reviewInput.title,
@@ -149,7 +162,9 @@ module.exports = {
         rating: args.reviewInput.rating
       });
 
-      const result = await perk.save();
+      const result = await review.save();
+      const updateLesson = await Lesson.findOneAndUpdate({_id: args.lessonId},{$addToSet: {reviews: review} },{new: true, useFindAndModify: false})
+      const updateAuthor = await User.findOneAndUpdate({_id: args.userId},{$addToSet: {reviews: review} },{new: true, useFindAndModify: false})
 
       return {
         ...result._doc,

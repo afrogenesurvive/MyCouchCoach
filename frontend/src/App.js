@@ -89,7 +89,6 @@ class App extends Component {
     }
     const conversationId = this.context.activityId;
     this.socket.emit('msg_subscribe', 'msg'+conversationId);
-    this.socket.emit('trans_subscribe', 'trans'+conversationId);
     console.log("listening for tokens & pms...");
     this.socket.on('conversation private post', function(data) {
       console.log("you got a new message..",data);

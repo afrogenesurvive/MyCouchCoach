@@ -9,7 +9,7 @@ const userBookedLessonList = props => {
     const bookedLessonDate = new Date (bookedLesson.date.substr(0,10)*1000).toISOString().slice(0,10);;
     return (
       <UserBookedLessonItem
-        key={user._id}
+        key={bookedLesson.ref}
         bookedLesson={bookedLesson}
         date={bookedLessonDate}
         ref={bookedLesson.ref}

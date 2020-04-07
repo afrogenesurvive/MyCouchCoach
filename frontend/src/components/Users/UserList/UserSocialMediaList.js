@@ -7,7 +7,7 @@ const userSocialMediaList = props => {
   const userSocialMedia = props.userSocialMedia.map(socialMediaAccount => {
 
     return (
-      <UserProfileImageItem
+      <UserSocialMediaItem
         key={socialMediaAccount.path}
         authId={props.authId}
         platform={socialMediaAccount.platform}

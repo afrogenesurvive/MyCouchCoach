@@ -30,8 +30,8 @@ module.exports = {
     try {
       const orders = await Order.find({})
       .populate('buyer')
-      .populate('receiver');
-      // .populate('lessons.ref');
+      .populate('receiver')
+      .populate('lessons.ref');
 
       return orders.map(order => {
         return transformOrder(order,);
@@ -49,7 +49,7 @@ module.exports = {
 
       const order = await Order.findById(args.orderId)
       .populate('buyer')
-      .populate('reciever')
+      .populate('receiver')
       .populate('lessons.ref');
 
         return {
@@ -255,7 +255,7 @@ module.exports = {
           shipping: args.orderInput.shipping,
         },{new: true, useFindAndModify: false})
         .populate('buyer')
-        .populate('reciever')
+        .populate('receiver')
         .populate('lessons.ref');
 
           return {
@@ -279,7 +279,7 @@ module.exports = {
       const query = {[resolverField]:resolverQuery};
       const order = await Order.findOneAndUpdate({_id:args.orderId},query,{new: true, useFindAndModify: false})
       .populate('buyer')
-      .populate('reciever')
+      .populate('receiver')
       .populate('lessons.ref');
 
         return {
@@ -292,45 +292,19 @@ module.exports = {
       throw err;
     }
   },
-  updateOrderSenderReceiver: async (args, req) => {
-    console.log("Resolver: updateOrderSenderReceiver...");
+  updateOrderBuyerReceiver: async (args, req) => {
+    console.log("Resolver: updateOrderBuyerReceiver...");
     if (!req.isAuth) {
       throw new Error('Unauthenticated!');
     }
     try {
+      const role = args.role;
       const user = await User.findById({_id: args.userId});
       const order = await Order.findOneAndUpdate({_id:args.orderId},
         {[role]: user},
         {new: true, useFindAndModify: false})
       .populate('buyer')
-      .populate('reciever')
-      .populate('lessons.ref');
-
-        return {
-            ...order._doc,
-            _id: order.id,
-            date: order.date,
-            type: order.type
-        };
-    } catch (err) {
-      throw err;
-    }
-  },
-  updateOrderTotals: async (args, req) => {
-    console.log("Resolver: updateOrderTotals...");
-    if (!req.isAuth) {
-      throw new Error('Unauthenticated!');
-    }
-    try {
-      const tax = {
-        description: args.orderInput.taxDescription,
-        amount: args.orderInput.taxAmount,
-      };
-      const order = await Order.findOneAndUpdate({_id:args.orderId},
-        {tax: tax},
-        {new: true, useFindAndModify: false})
-      .populate('buyer')
-      .populate('reciever')
+      .populate('receiver')
       .populate('lessons.ref');
 
         return {
@@ -349,16 +323,43 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
+      const tax = {
+        description: args.orderInput.taxDescription,
+        amount: args.orderInput.taxAmount,
+      };
+      const order = await Order.findOneAndUpdate({_id:args.orderId},
+        {tax: tax},
+        {new: true, useFindAndModify: false})
+      .populate('buyer')
+      .populate('receiver')
+      .populate('lessons.ref');
+
+        return {
+            ...order._doc,
+            _id: order.id,
+            date: order.date,
+            type: order.type
+        };
+    } catch (err) {
+      throw err;
+    }
+  },
+  updateOrderTotals: async (args, req) => {
+    console.log("Resolver: updateOrderTotals...");
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
       const totals = {
         a: args.orderInput.totalA,
-        Bb: args.orderInput.totalB,
+        b: args.orderInput.totalB,
         c: args.orderInput.totalC,
       };
       const order = await Order.findOneAndUpdate({_id:args.orderId},
         {totals: totals},
         {new: true, useFindAndModify: false})
       .populate('buyer')
-      .populate('reciever')
+      .populate('receiver')
       .populate('lessons.ref');
 
         return {
@@ -382,14 +383,14 @@ module.exports = {
         street: args.orderInput.billingAddressStreet,
         town: args.orderInput.billingAddressTown,
         city: args.orderInput.billingAddressCity,
-        counrty: args.orderInput.billingAddressCountry,
-        postCode: args.orderInput.billingAddressPostalCode
+        country: args.orderInput.billingAddressCountry,
+        postalCode: args.orderInput.billingAddressPostalCode
       };
       const order = await Order.findOneAndUpdate({_id:args.orderId},
         {billingAddress: billingAddress},
         {new: true, useFindAndModify: false})
       .populate('buyer')
-      .populate('reciever')
+      .populate('receiver')
       .populate('lessons.ref');
 
         return {
@@ -413,14 +414,14 @@ module.exports = {
         street: args.orderInput.shippingAddressStreet,
         town: args.orderInput.shippingAddressTown,
         city: args.orderInput.shippingAddressCity,
-        counrty: args.orderInput.shippingAddressCountry,
-        postCode: args.orderInput.shippingAddressPostalCode
+        country: args.orderInput.shippingAddressCountry,
+        postalCode: args.orderInput.shippingAddressPostalCode
       };
       const order = await Order.findOneAndUpdate({_id:args.orderId},
         {shippingAddress: shippingAddress},
         {new: true, useFindAndModify: false})
       .populate('buyer')
-      .populate('reciever')
+      .populate('receiver')
       .populate('lessons.ref');
 
         return {
@@ -442,15 +443,15 @@ module.exports = {
 
       const status = args.orderInput.status;
       const statusObject = {
-        value: args.orderInput.statusDate,
-        date: args.orderInput.statusValue,
+        value: args.orderInput.statusValue,
+        date: args.orderInput.statusDate,
       };
       const query = 'status.'+status+'';
       const order = await Order.findOneAndUpdate({_id:args.orderId},
         {[query]: statusObject},
         {new: true, useFindAndModify: false})
       .populate('buyer')
-      .populate('reciever')
+      .populate('receiver')
       .populate('lessons.ref');
 
         return {
@@ -469,12 +470,17 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
-      const lesson = await Lesson.findById({_id: lessonId});
+      const lesson = await Lesson.findById({_id: args.lessonId});
+      const lessonObject = {
+        price: lesson.price,
+        date: 0,
+        ref: lesson
+      };
       const order = await Order.findOneAndUpdate({_id:args.orderId},
-        {$addToSet: {lessons: lesson}},
+        {$addToSet: {lessons: lessonObject}},
         {new: true, useFindAndModify: false})
       .populate('buyer')
-      .populate('reciever')
+      .populate('receiver')
       .populate('lessons.ref');
 
         return {
@@ -493,12 +499,12 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
-      const lesson = await Lesson.findById({_id: lessonId});
+      const lesson = await Lesson.findById({_id: args.lessonId});
       const order = await Order.findOneAndUpdate({_id:args.orderId},
-        {$pull: {lessons: lesson}},
+        {$pull: {lessons: {ref: lesson}}},
         {new: true, useFindAndModify: false})
       .populate('buyer')
-      .populate('reciever')
+      .populate('receiver')
       .populate('lessons.ref');
 
         return {
@@ -546,7 +552,7 @@ module.exports = {
         date: lesson.sessionDate,
         ref: lesson
       }));
-      console.log('preCart',preCart,'preOrderLessons',preOrderLessons,'orderLessons',orderLessons,'orderLessons2',orderLessons2);
+      // console.log('preCart',preCart,'preOrderLessons',preOrderLessons,'orderLessons',orderLessons,'orderLessons2',orderLessons2);
       // console.log(receiver);
 
       const order = new Order({
@@ -588,6 +594,10 @@ module.exports = {
       });
 
       const result = await order.save();
+      updateUser = await User.findOneAndUpdate(
+        {_id: buyer._id},
+        {$addToSet: {orders: order}},
+        {new: true, useFindAndModify: false})
 
       return {
         ...result._doc,

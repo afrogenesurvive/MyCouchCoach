@@ -80,13 +80,13 @@ class UserProfile extends Component {
 
   }
 
-  startUpdate = () => {
+  onStartUpdate = () => {
     this.setState({ updating: true });
   };
-  startUpdateField = () => {
+  onStartUpdateField = () => {
     this.setState({ updatingField: true });
   };
-  startAddHandler = (args) => {
+  onStartAdd = (args) => {
     this.setState({adding: true, userAddField: args})
   }
   addUserField = (args) => {
@@ -99,12 +99,11 @@ class UserProfile extends Component {
     this.setState({adding: true, userAddField: "message"})
   }
 
-  userEdit = (event) => {
+  userEditBasic = (event) => {
     this.setState({ updating: false, userAlert: "Updating selected Staff ..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
-    // const userId =
-
+    let userId = activityId;
     let contactEmail = event.target.formGridEmail.value;
     let password = event.target.formGridPassword.value;
     let name = event.target.formGridName.value;
@@ -149,7 +148,7 @@ class UserProfile extends Component {
       query: `
           mutation {updateUserBasic(
             activityId:"${activityId}",
-            userId:"${activityId}",
+            userId:"${userId}",
             userInput:{
               name:"${name}",
               password:"${password}",
@@ -183,21 +182,20 @@ class UserProfile extends Component {
 
         this.setState({ userAlert: responseAlert, user: updatedUser, activityA: requestBody})
         // logUserActivity();
-        this.getThisUser();
       })
       .catch(err => {
         this.setState({userAlert: err});
       });
     };
-
   userEditField = (event) => {
       this.setState({ updatingField: false, userAlert: "Updating selected Staff by Field..." });
       const token = this.context.token;
       const activityId = this.context.activityId;
+      let userId = activityId;
       let field = null;
       let query = event.target.formGridQuery.value;
       if (event.target.formGridFieldSelect.value === "select") {
-        field = event.target.formGridField.value;
+        // field = event.target.formGridField.value;
       } else {
         field = event.target.formGridFieldSelect.value;
       }
@@ -237,11 +235,11 @@ class UserProfile extends Component {
           this.setState({userAlert: err});
         });
     }
-
   userAddPoints = (event) => {
         this.setState({ adding: false, userAddField: null, userAlert: "adding points for user..." });
         const token = this.context.token;
         const activityId = this.context.activityId;
+        let userId = activityId;
         const points = event.target.formGridPoints.value;
 
         const requestBody = {
@@ -281,12 +279,32 @@ class UserProfile extends Component {
             this.setState({userAlert: err});
           });
       };
-
-  userAddAddress = () => {
+  userAddAddress = (event) => {
     this.setState({ adding: false, userAddField: null, userAlert: "adding address for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
+    let userId = activityId;
+    const addressType = event.target.formGridAddressType.value;
+    const addressNumber = event.target.formGridAddressNumber.value;
+    const addressStreet = event.target.formGridAddressStreet.value;
+    const addressTown = event.target.formGridAddressTown.value;
+    const addressCity = event.target.formGridAddressCity.value;
+    const addressCountry = event.target.formGridAddressCountry.value;
+    const addressPostalCode = event.target.formGridAddressPostalCode.value;
 
+    if (
+      addressType.trim().length === 0 ||
+      addressNumber.trim().length === 0 ||
+      addressStreet.trim().length === 0 ||
+      addressTown.trim().length === 0 ||
+      addressCity.trim().length === 0 ||
+      addressCountry.trim().length === 0 ||
+      addressPostalCode.trim().length === 0
+    ) {
+      console.log('blank fields detected.. please check your info and try again..');
+      this.setState({userAlert: 'blank fields detected.. please check your info and try again..'})
+      return
+    }
 
     const requestBody = {
       query:`
@@ -331,11 +349,19 @@ class UserProfile extends Component {
         this.setState({userAlert: err});
       });
   };
-  userDeleteAddress = () => {
+  userDeleteAddress = (args) => {
     this.setState({ deleting: true, userAlert: "deleting address for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
-
+    let userId = activityId;
+    const addressType = args.type;
+    const addressNumber = args.number;
+    const addressStreet = args.street;
+    const addressTown = args.town;
+    const addressCity = args.city;
+    const addressCountry = args.country;
+    const addressPostalCode = args.postalCode;
+    const addressPrimary = args.primary;
 
     const requestBody = {
       query:`
@@ -381,12 +407,14 @@ class UserProfile extends Component {
         this.setState({userAlert: err});
       });
   };
-  userAddProfileImage = () => {
+  userAddProfileImage = (event) => {
     this.setState({ adding: false, userAddField: null, userAlert: "adding profileImage for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
-
-
+    let userId = activityId;
+    const profileImageName = event.target.formGridFilename.value;
+    const profileImageType = event.target.formGridFiletype.value;
+    const profileImagePath = event.target.formGridFilepath.value;
     const requestBody = {
       query:`
         mutation {addUserProfileImage(
@@ -426,11 +454,14 @@ class UserProfile extends Component {
         this.setState({userAlert: err});
       });
   };
-  userDeleteProfileImage = () => {
+  userDeleteProfileImage = (args) => {
     this.setState({ deleting: true, userAlert: "deleting profileImage for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
-
+    let userId = activityId;
+    const profileImageName = args.name;
+    const profileImageType = args.type;
+    const profileImagePath = args.path;
 
     const requestBody = {
       query:`
@@ -471,11 +502,13 @@ class UserProfile extends Component {
         this.setState({userAlert: err});
       });
   };
-  userAddSocialMedia = () => {
+  userAddSocialMedia = (event) => {
     this.setState({ adding: false, userAddField: null, userAlert: "adding socialMedia for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
-
+    let userId = activityId;
+    const socialMediaPlatform = event.target.formGridPlatform.value;
+    const socialMediaHandle = event.target.formGridHandle.value;
 
     const requestBody = {
       query:`
@@ -515,11 +548,13 @@ class UserProfile extends Component {
         this.setState({userAlert: err});
       });
   };
-  userDeleteSocialMedia = () => {
+  userDeleteSocialMedia = (args) => {
     this.setState({ deleting: true, userAlert: "deleting socialMedia for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
-
+    let userId = activityId;
+    const socialMediaPlatform = args.platform;
+    const socialMediaHandle = args.handle;
 
     const requestBody = {
       query:`
@@ -559,11 +594,18 @@ class UserProfile extends Component {
         this.setState({userAlert: err});
       });
   };
-  userAddPaymentInfo = () => {
+  userAddPaymentInfo = (event) => {
     this.setState({ adding: false, userAddField: null, userAlert: "adding paymentInfo for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
+    let userId = activityId;
 
+    const paymentInfoDate = event.target.paymentInfoDate.value;
+    const paymentInfoType = event.target.formGridPaymentInfoType.value;
+    const paymentInfoDescription = event.target.formGridDescription.value;
+    const paymentInfoBody = event.target.formGridBody.value;
+    let paymentInfoPrimary = event.target.formGridPaymentInfoPrimaryCheckbox.checked;
+    const paymentInfoValid = true;
 
     const requestBody = {
       query:`
@@ -607,11 +649,17 @@ class UserProfile extends Component {
         this.setState({userAlert: err});
       });
   };
-  userDeletePaymentInfo = () => {
+  userDeletePaymentInfo = (args) => {
     this.setState({ deleting: true, userAlert: "deleting paymentInfo for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
-
+    let userId = activityId;
+    const paymentInfoDate = args.date;
+    const paymentInfoType = args.type;
+    const paymentInfoDescription = args.description;
+    const paymentInfoBody = args.body;
+    const paymentInfoValid = args.valid;
+    const paymentInfoPrimary = args.primary;
 
     const requestBody = {
       query:`
@@ -655,11 +703,12 @@ class UserProfile extends Component {
         this.setState({userAlert: err});
       });
   };
-  userAddInterests = () => {
+  userAddInterests = (event) => {
     this.setState({ adding: false, userAddField: null, userAlert: "adding interest for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
-
+    let userId = activityId;
+    const interests = event.target.formGridInterests.value;
 
     const requestBody = {
       query:`
@@ -698,11 +747,12 @@ class UserProfile extends Component {
         this.setState({userAlert: err});
       });
   };
-  userDeleteInterest = () => {
+  userDeleteInterest = (args) => {
     this.setState({ deleting: true, userAlert: "deleting interest for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
-
+    let userId = activityId;
+    const interest = args;
 
     const requestBody = {
       query:`
@@ -741,11 +791,12 @@ class UserProfile extends Component {
         this.setState({userAlert: err});
       });
   };
-  userAddTags = () => {
+  userAddTags = (event) => {
     this.setState({ adding: false, userAddField: null, userAlert: "adding tags for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
-
+    let userId = activityId;
+    const tags = event.target.formGridTags.value;
 
     const requestBody = {
       query:`
@@ -784,11 +835,12 @@ class UserProfile extends Component {
         this.setState({userAlert: err});
       });
   };
-  userDeleteTag = () => {
+  userDeleteTag = (args) => {
     this.setState({ adding: false, userAddField: null, userAlert: "deleting tag for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
-
+    let userId = activityId;
+    const tag = args;
 
     const requestBody = {
       query:`
@@ -827,7 +879,7 @@ class UserProfile extends Component {
         this.setState({userAlert: err});
       });
   };
-  userAddPerk  = () => {
+  userAddPerk  = (event) => {
         this.setState({ adding: false, userAddField: null, userAlert: "adding perk for user..." });
         const token = this.context.token;
         const activityId = this.context.activityId;
@@ -865,7 +917,7 @@ class UserProfile extends Component {
           });
 
       }
-  userDeletePerk = () => {
+  userDeletePerk = (args) => {
     this.setState({ deleting: true, userAlert: "deleting perk for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
@@ -902,7 +954,7 @@ class UserProfile extends Component {
         this.setState({userAlert: err});
       });
   };
-  userAddPromo  = () => {
+  userAddPromo  = (event) => {
         this.setState({ adding: false, userAddField: null, userAlert: "adding promo for user..." });
         const token = this.context.token;
         const activityId = this.context.activityId;
@@ -940,7 +992,7 @@ class UserProfile extends Component {
           });
 
       }
-  userDeletePromo = () => {
+  userDeletePromo = (args) => {
     this.setState({ deleting: true, userAlert: "deleting promo for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
@@ -977,7 +1029,6 @@ class UserProfile extends Component {
         this.setState({userAlert: err});
       });
   };
-
   userSelectFriendRequest = (args) => {
     console.log(args);
     let requestingFriend = args;
@@ -991,11 +1042,13 @@ class UserProfile extends Component {
 
     this.setState({requestingFriend: requestingFriend});
   };
-  userDeleteFriendRequest = (event) => {
+  userDeleteFriendRequest = (args) => {
     this.setState({ deleting: true, userAlert: "deleting friend request for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
-    // const receiverId =
+    const senderId = args.sender;
+    const receiverId = args.receiver;
+    const date = args.date;
 
     const requestBody = {
       query:`
@@ -1034,11 +1087,11 @@ class UserProfile extends Component {
         this.setState({userAlert: err});
       });
   };
-
   userAddFriend = (event) => {
     this.setState({ adding: false, userAddField: null, userAlert: "adding friend for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
+    let userId = activityId;
     const friendId = this.state.requestingFriend;
 
     const requestBody = {
@@ -1080,13 +1133,12 @@ class UserProfile extends Component {
   userSelectFriend = (args) => {
     this.setState({userSelectedFriend: args});
   };
-
-  userDeleteFriend = () => {
+  userDeleteFriend = (args) => {
     this.setState({ deleting: true, userAlert: "deleting friend for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
+    let userId = activityId;
     const friendId = this.state.userSelectedFriend._id;
-
 
     const requestBody = {
       query:`
@@ -1124,11 +1176,14 @@ class UserProfile extends Component {
         this.setState({userAlert: err});
       });
   };
-  userDeleteCartItem = () => {
+  userDeleteCartItem = (args) => {
     this.setState({ deleting: true, userAlert: "deleting promo for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
-
+    let userId = activityId;
+    const lessonId = args.lesson;
+    const dateAdded = args.dateAdded;
+    const sessionDate = args.sessionDate;
 
     const requestBody = {
       query:`
@@ -1168,11 +1223,13 @@ class UserProfile extends Component {
         this.setState({userAlert: err});
       });
   };
-  userDeleteBookedLesson = () => {
+  userDeleteBookedLesson = (args) => {
     this.setState({ deleting: true, userAlert: "deleting promo for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
-
+    let userId = activityId;
+    const date = args.date;
+    const lessonId = args.ref;
 
     const requestBody = {
       query:`
@@ -1211,32 +1268,36 @@ class UserProfile extends Component {
         this.setState({userAlert: err});
       });
   };
-
-  userDeleteLikedLesson = () => {
+  userDeleteLikedLesson = (args) => {
     this.setState({ deleting: true, userAlert: "deleting likeLesson for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
   };
-  userDeleteAttendedLesson = () => {
+  userDeleteAttendedLesson = (args) => {
     this.setState({ deleting: true, userAlert: "deleting attendedLesson for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
   };
-  userDeleteTaughtLesson = () => {
+  userDeleteTaughtLesson = (args) => {
     this.setState({ deleting: true, userAlert: "deleting taughtLesson for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
   };
-
-  userDeleteOrder = () => {
+  userDeleteOrder = (args) => {
     this.setState({ deleting: true, userAlert: "deleting order for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
-
+    let userId = activityId;
+    const orderId = args;
 
     const requestBody = {
       query:`
-
+        mutation {deleteUserOrder(
+          activityId:"${activityId}",
+          userId:"${userId}",
+          orderId:"${orderId}"
+        )
+        {_id,password,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle},interests,perks{_id},promos{_id},friends{_id,username},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id},bookedLessons{date,ref{_id,title}},attendedLessons{date,ref{_id,title}},taughtLessons{date,ref{_id,title}},wishlist{date,ref{_id,title},booked},cart{dateAdded,sessionDate,lesson{_id,title}},reviews{_id},comments{_id},messages{_id},orders{_id},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:7077/graphql', {
@@ -1265,15 +1326,21 @@ class UserProfile extends Component {
         this.setState({userAlert: err});
       });
   };
-  userDeleteReview = () => {
+  userDeleteReview = (args) => {
     this.setState({ deleting: true, userAlert: "deleting promo for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
-
+    let userId = activityId;
+    const reviewId = args;
 
     const requestBody = {
       query:`
-
+        mutation {deleteUserReview(
+          activityId:"${activityId}",
+          userId:"${userId}",
+          reviewId:"${reviewId}"
+        )
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle},interests,perks{_id},promos{_id},friends{_id,username},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id},bookedLessons{date,ref{_id}},attendedLessons{date,ref{_id}},taughtLessons{date,ref{_id}},wishlist{date,ref{_id},booked},cart{dateAdded,sessionDate,lesson{_id}},reviews{_id},comments{_id},messages{_id},orders{_id},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:7077/graphql', {
@@ -1302,7 +1369,6 @@ class UserProfile extends Component {
         this.setState({userAlert: err});
       });
   };
-
   userCreateMessage = (event) => {
 
     this.setState({ adding: false });
@@ -1312,6 +1378,7 @@ class UserProfile extends Component {
     const receiverRole = this.context.receiver.role;
     const role = this.context.role;
     const activityId = this.context.activityId;
+    const senderId = activityId;
     const senderName = this.state.user.username;
     const date = new Date();
     const timeString1 = date.toISOString().slice(11,16);
@@ -1369,11 +1436,11 @@ class UserProfile extends Component {
         this.setState({userAlert: err});
       });
   }
-  userDeleteMessage = () => {
+  userDeleteMessage = (args) => {
     this.setState({ deleting: true, userAlert: "deleting message for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
-
+    const messageId = args;
 
     const requestBody = {
       query:`
@@ -1416,7 +1483,7 @@ class UserProfile extends Component {
     const requestBody = {
       query: `
         query {getThisUser(activityId:"${activityId}")
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle},interests,perks{_id},promos{_id},friends{_id,username},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id},bookedLessons{date,ref{_id,title}},attendedLessons{date,ref{_id,title}},taughtLessons{date,ref{_id,title}},wishlist{date,ref{_id,title},booked},cart{dateAdded,sessionDate,lesson{_id,title}},comments{_id},messages{_id},orders{_id},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        {_id,password,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle},interests,perks{_id},promos{_id},friends{_id,username},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:7077/graphql', {
@@ -1433,7 +1500,18 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
+        
+        let errors = null;
+        if (
+          resData.errors ||
+          JSON.stringify(resData).slice(2,7) === 'error'
+        ) {
+          errors = JSON.stringify({...resData.errors});
+          this.setState({userAlert: "Something went wrong!!!"+errors+""})
+        }
+
           const thisUser = resData.data.getThisUser;
+          console.log(thisUser);
           this.context.user = thisUser;
           if (this.isActive) {
           this.setState({ user: thisUser, isLoading: false, activityA: requestBody });
@@ -1455,6 +1533,7 @@ class UserProfile extends Component {
   }
   logUserActivity() {
     const activityId = this.context.activityId;
+    const userId = activityId;
     const token = this.context.token;
     const today = new Date();
     const request = this.state.activityA;
@@ -1495,12 +1574,38 @@ class UserProfile extends Component {
         this.setState({userAlert: err});
       });
   };
+  sendSocketMessage (msgObject) {
+    const message = msgObject;
+    console.log("sending socket message  ",message);
 
-  userDeleteActivity = () => {
+    let conversationId = null;
+    if (this.context.receiver === null || this.context.receiver === undefined) {
+      console.log("select someone to msg 1st...");
+      this.setState({userAlert: "select someone to msg 1st..."});
+      return
+    }
+    else {
+      conversationId = this.context.receiver._id;
+    }
+
+    this.socket.emit('send message', {
+      room: 'msg'+conversationId,
+      message: message
+    });
+    this.socket.on("MESSAGE_SENT", function(data) {
+      addMessage(data)
+    })
+    const addMessage = data => {
+      this.setState({ userAlert: data.msg})
+    };
+  }
+  userDeleteActivity = (args) => {
     this.setState({ deleting: true, userAlert: "deleting promo for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
-
+    let userId = activityId;
+    const activityDate = args.date;
+    const activityRequest = args.request;
 
     const requestBody = {
       query:`
@@ -1539,11 +1644,9 @@ class UserProfile extends Component {
         this.setState({userAlert: err});
       });
   };
-
   modalCancelHandler = () => {
     this.setState({ updating: false, updatingField: false, adding: false, userAddField: null  });
   };
-
   showSidebar = () => {
       this.setState({
         sidebarShow: true,
@@ -1555,33 +1658,6 @@ class UserProfile extends Component {
         sidebarShow: false,
         mCol2Size: 11
       })
-  }
-
-
-  sendSocketMessage (msgObject) {
-    const message = msgObject;
-    console.log("sending socket message  ",message);
-
-    let conversationId = null;
-    if (this.context.receiver === null || this.context.receiver === undefined) {
-      console.log("select someone to msg 1st...");
-      this.setState({userAlert: "select someone to msg 1st..."});
-      return
-    }
-    else {
-      conversationId = this.context.receiver._id;
-    }
-
-    this.socket.emit('send message', {
-      room: 'msg'+conversationId,
-      message: message
-    });
-    this.socket.on("MESSAGE_SENT", function(data) {
-      addMessage(data)
-    })
-    const addMessage = data => {
-      this.setState({ userAlert: data.msg})
-    };
   }
 
   componentWillUnmount() {
@@ -1631,18 +1707,15 @@ class UserProfile extends Component {
                     onCancel={this.modalCancelHandler}
                     canDelete={this.state.canDelete}
 
-                    onStartUpdate={this.userEdit}
-                    onStartUpdateField={this.startUpdateUserFieldHandler}
-                    onStartAdd={this.startAddHandler}
+                    onStartUpdate={this.onStartUpdate}
+                    onStartUpdateField={this.onStartUpdateField}
+                    onStartAdd={this.onStartAdd}
 
-                    onEdit={this.userEditBasic}
-                    onEditField={this.userEditField}
-
+                    userEditBasic={this.userEditBasic}
+                    userEditField={this.userEditField}
                     userAddPoints={this.userAddPoints}
-
                     userAddAddress={this.userAddAddress}
                     userDeleteAddress={this.userDeleteAddress}
-
                     userAddProfileImage={this.userAddProfileImage}
                     userDeleteProfileImage={this.userDeleteProfileImage}
 

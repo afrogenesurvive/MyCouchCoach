@@ -9,7 +9,7 @@ const userActivityList = props => {
     const activityDate = new Date (activity.date.substr(0,10)*1000).toISOString().slice(0,10);
     return (
       <UserActivityItem
-        key={user._id}
+        key={activity.request}
         activity={activity}
         date={activityDate}
         request={activity.request}
@@ -18,7 +18,7 @@ const userActivityList = props => {
     );
   });
 
-  return <ul className="user__list1_master">{users}</ul>;
+  return <ul className="user__list1_master">{activity}</ul>;
 };
 
 export default userActivityList;

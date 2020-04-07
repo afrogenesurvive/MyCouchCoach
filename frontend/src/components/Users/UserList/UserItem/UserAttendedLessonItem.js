@@ -4,13 +4,13 @@ import Card from 'react-bootstrap/Card';
 
 import './UserItem.css';
 
-const userBookedLessonItem = props => (
+const userAttendedLessonItem = props => (
   <li key={props.authId} className="users__list-item_detail users__list-item_detail4">
     <Card style={{ width: '18rem' }}>
 
     <Card.Body>
       <Card.Text>
-        date: {props.bookedLessonDate}
+        date: {props.attendedLessonDate}
       </Card.Text>
       <Card.Text>
         Lesson:
@@ -21,7 +21,7 @@ const userBookedLessonItem = props => (
 
       <Card.Link href="">
       { props.canDelete === true && (
-        <Button variant="danger" onClick={props.onDelete.bind(this, props.bookedLesson)}>
+        <Button variant="danger" onClick={props.onDelete.bind(this, props.attendedLesson)}>
           Delete
         </Button>
       )}
@@ -32,4 +32,4 @@ const userBookedLessonItem = props => (
   </li>
 );
 
-export default userBookedLessonItem;
+export default userAttendedLessonItem;

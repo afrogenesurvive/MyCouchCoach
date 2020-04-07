@@ -4,6 +4,7 @@ import UserMessageItem from './UserItem/UserMessageItem';
 import './UserList.css';
 
 const userMessageList = props => {
+  console.log("here",props.userMessages);
 
   // function compare( a, b ) {
   //   if ( a.sender.username < b.sender.username ){

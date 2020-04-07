@@ -20,11 +20,14 @@ import UserFriendList from './UserList/UserFriendList';
 import UserFriendRequestList from './UserList/UserFriendRequestList';
 import UserCartItemList from './UserList/UserCartItemList';
 import UserBookedLessonList from './UserList/UserBookedLessonList';
+import UserLikedLessonList from './UserList/UserLikedLessonList';
+import UserAttendedLessonList from './UserList/UserAttendedLessonList';
+import UserTaughtLessonList from './UserList/UserTaughtLessonList';
 import UserPaymentInfoList from './UserList/UserPaymentInfoList';
 
 import UserOrderList from './UserList/UserOrderList';
 import UserReviewList from './UserList/UserReviewList';
-import UserMessageList from './UserList/UserList/UserMessageList';
+import UserMessageList from './UserList/UserMessageList';
 import UserActivityList from './UserList/UserActivityList';
 
 import UpdateUserBasicForm from '../Forms/user/UpdateUserBasicForm';
@@ -32,16 +35,18 @@ import UpdateUserFieldForm from '../Forms/user/UpdateUserFieldForm';
 
 import AddUserAddressForm from '../Forms/user/AddUserAddressForm';
 import AddUserProfileImageForm from '../Forms/user/AddUserProfileImageForm';
+import AddUserSocialMediaForm from '../Forms/user/AddUserSocialMediaForm';
 
 import AddUserInterestsForm from '../Forms/user/AddUserInterestsForm';
 import AddUserTagsForm from '../Forms/user/AddUserTagsForm';
 
-import AddUserSocialMediaForm from './AddUserSocialMediaForm';
-import AddUserInterestsForm from './AddUserInterestsForm';
-import AddUserTagsForm from './AddUserTagsForm';
-import AddUserPaymentInfoForm from './AddUserPaymentInfoForm';
+import AddUserPaymentInfoForm from '../Forms/user/AddUserPaymentInfoForm';
 
-import AddUserFriendForm from './Forms/user/AddUserFriendForm';
+import AddUserPointsForm from '../Forms/user/AddUserPointsForm';
+import AddUserPerkForm from '../Forms/user/AddUserPerkForm';
+import AddUserPromoForm from '../Forms/user/AddUserPromoForm';
+
+import AddUserFriendForm from '../Forms/user/AddUserFriendForm';
 import CreateMessageForm from '../Forms/message/CreateMessageForm';
 
 import './thisUserProfile.css';
@@ -57,6 +62,8 @@ const thisUserProfile = (props) => {
     sentRequests = user.friendRequests.filter(request => request.sender === user);
     receivedRequests = user.friendRequests.filter(request => request.receiver === user);
   }
+
+const publicUser = user.public.toString();
 
   return (
 
@@ -105,16 +112,16 @@ const thisUserProfile = (props) => {
       <Row className="detailCardRow">
         <Col className="detailCardCol">
           <Card.Text>
-            <span className="bold">Public :</span> {user.public}
+            <span className="bold">Public :</span> {user.public.toString()}
           </Card.Text>
           <Card.Text>
-            <span className="bold">loggedIn :</span> {user.loggedIn}
+            <span className="bold">loggedIn :</span> {user.loggedIn.toString()}
           </Card.Text>
           <Card.Text>
-            <span className="bold">clientConnected :</span> {user.clientConnected}
+            <span className="bold">clientConnected :</span> {user.clientConnected.toString()}
           </Card.Text>
           <Card.Text>
-            <span className="bold">Verification :</span> {user.verification.type}, {user.verification.verified}
+            <span className="bold">Verification :</span> {user.verification.type}, {user.verification.verified.toString()}
           </Card.Text>
         </Col>
       </Row>
@@ -125,8 +132,8 @@ const thisUserProfile = (props) => {
 
       {props.updating === true &&
         props.updatingField === "basic" && (
-        <UpdateUserForm
-        canCancelProfile
+        <UpdateUserBasicForm
+          canCancelProfile
           canConfirm
           onCancel={props.onCancel}
           onConfirm={props.userEditBasic}
@@ -137,27 +144,27 @@ const thisUserProfile = (props) => {
       )}
 
       {props.updatingField === true && (
-          <UpdateUserFieldForm
-            canCancel
-            canConfirm
-            onCancel={props.onCancel}
-            onConfirm={props.userEditField}
-            confirmText="Confirm"
-            user={props.user}
-            authId={props.authId}
-          />
+        <UpdateUserFieldForm
+          canCancel
+          canConfirm
+          onCancel={props.onCancel}
+          onConfirm={props.userEditField}
+          confirmText="Confirm"
+          user={props.user}
+          authId={props.authId}
+        />
       )}
 
       {props.userAddField === "points" && (
-          <AddUserPointsForm
-            canCancel
-            canConfirm
-            onCancel={props.onCancel}
-            onConfirm={props.userAddPoints}
-            confirmText="Confirm"
-            user={props.user}
-            authId={props.authId}
-          />
+        <AddUserPointsForm
+          canCancel
+          canConfirm
+          onCancel={props.onCancel}
+          onConfirm={props.userAddPoints}
+          confirmText="Confirm"
+          user={props.user}
+          authId={props.authId}
+        />
       )}
 
     </Card.Body>

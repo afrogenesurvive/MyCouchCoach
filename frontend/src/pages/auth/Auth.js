@@ -16,11 +16,13 @@ import AuthContext from '../../context/auth-context';
 import AlertBox from '../../components/AlertBox';
 import LoadingOverlay from '../../components/LoadingOverlay';
 import SidebarControl from '../../components/SidebarControl';
+import VerifyUserForm from '../../components/Forms/user/VerifyUserForm';
 
 import UserProfile from '../user/UserProfile';
 
 class AuthPage extends Component {
   state = {
+    verifying: false,
     role: null,
     userAlert: null,
     overlay: false,
@@ -62,7 +64,7 @@ class AuthPage extends Component {
       requestBody = {
         query: `
           query {login(email:"${email}",password:"${password}")
-          {activityId,role,token,tokenExpiration}}
+          {activityId,role,token,tokenExpiration,error}}
         `};
 
     fetch('http://localhost:7077/graphql', {
@@ -74,16 +76,33 @@ class AuthPage extends Component {
     })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
+          // let foo = res.json();
+          // console.log(res,res.body,foo);
           throw new Error('Failed!');
         }
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(2,25)
+        // let errors = null;
+        // if (
+        //   resData.errors ||
+        //   JSON.stringify(resData).slice(2,7) === 'error'
+        // ) {
+        //   errors = JSON.stringify({...resData.errors});
+        //   this.setState({userAlert: "Something went wrong!!!"+errors+""})
+        // }
+        console.log(resData.data.login.error);
+        let responseAlert = JSON.stringify(resData.data).slice(2,25);
+        let error = null;
+        if (resData.data.login.error) {
+          error = resData.data.login.error;
+          responseAlert = error;
+        }
+
         this.setState({userAlert: responseAlert})
         let sessionStorageLoginInfo = null;
 
-        if (resData.data.login.token) {
+        if (resData.data.login.token !== "") {
           this.context.login(
             resData.data.login.token,
             resData.data.login.activityId,
@@ -155,6 +174,54 @@ class AuthPage extends Component {
         });
     }
 
+    verifyUser = (event) => {
+      event.preventDefault();
+      console.log('here');
+      const contactEmail = event.target.formGridEmail.value;
+      const verificationType = event.target.formGridType.value;
+      const verificationCode = event.target.formGridCode.value;
+
+      const requestBody = {
+        query: `
+        mutation {verifyUser(
+          userInput:{
+            contactEmail:"${contactEmail}",
+            verificationType:"${verificationType}",
+            verificationCode:"${verificationCode}"
+          })
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle},interests,perks{_id},promos{_id},friends{_id},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id},bookedLessons{date,ref{_id}},attendedLessons{date,ref{_id}},taughtLessons{date,ref{_id}},wishlist{date,ref{_id},booked},cart{dateAdded,sessionDate,lesson{_id}},comments{_id},messages{_id},orders{_id},paymentInfo{date,type,description,body,valid,primary}}
+          `};
+
+        console.log(JSON.stringify(requestBody));
+
+      fetch('http://localhost:7077/graphql', {
+        method: 'POST',
+        body: JSON.stringify(requestBody),
+        headers: {
+          'Content-Type': 'application/json',
+        }})
+        .then(res => {
+          if (res.status !== 200 && res.status !== 201) {
+            throw new Error('Failed!');
+          }
+          return res.json();
+        })
+        .then(resData => {
+          console.log(resData.data.verifyUser);
+          this.setState({userAlert: 'Verified...Please try loggin in again..'});
+        })
+        .catch(err => {
+          this.setState({userAlert: err});
+        });
+    }
+
+    startVerification = () => {
+      this.setState({verifying: true})
+    };
+    closeVerification = () => {
+      this.setState({verifying: false})
+    };
+
   render() {
     return (
       <Container className="loginPageContainer">
@@ -193,6 +260,15 @@ class AuthPage extends Component {
             </Button>
           </Form>
         </Col>
+        <Button variant="outline-primary" onClick={this.startVerification}>Verify</Button>
+        {this.state.verifying === true && (
+          <VerifyUserForm
+            canCancel
+            canConfirm
+            onCancel={this.closeVerification}
+            onConfirm={this.verifyUser}
+          />
+        )}
         </Row>
       </Container>
 

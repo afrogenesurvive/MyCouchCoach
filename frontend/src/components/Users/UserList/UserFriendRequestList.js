@@ -9,7 +9,7 @@ const userFriendRequestList = props => {
 
     return (
       <UserFriendRequestItem
-        key={friend._id}
+        key={friendRequest.sender._id}
         friendRequest={friendRequest}
         date={friendRequest.date}
         sender={friendRequest.sender}

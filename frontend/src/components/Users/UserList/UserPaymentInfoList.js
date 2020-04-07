@@ -5,11 +5,11 @@ import './UserList.css';
 
 const paymentInfoList = props => {
 
-  const paymentInfo = props.users.map(paymentInfoItem => {
+  const paymentInfo = props.userPaymentInfo.map(paymentInfoItem => {
     const paymentInfoItemDate = new Date (paymentInfoItem.date.substr(0,10)*1000).toISOString().slice(0,10);
     return (
       <UserPaymentInfoItem
-        key={paymentInfo.description}
+        key={paymentInfoItem.description}
         paymentInfoItem={paymentInfoItem}
         date={paymentInfoItemDate}
         type={paymentInfoItem.type}

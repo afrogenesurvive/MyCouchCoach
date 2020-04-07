@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
@@ -10,7 +10,7 @@ const AddUserPaymentInfoForm = (props) => {
 
   const [payInfoDate, setPayInfoDate] = useState(new Date());
   const handleChangePayInfoDate = date => {
-    setDob(date);
+    setPayInfoDate(date);
     console.log(`PayInfoDate ${payInfoDate}`);
    }
 
@@ -22,7 +22,7 @@ return (
 
   <Form.Group as={Col} controlId="">
     <Form.Label>Date</Form.Label>
-    <DatePicker className="" id="PaymentInfoDate"
+    <DatePicker className="" id="paymentInfoDate"
       selected={payInfoDate}
       onChange={handleChangePayInfoDate}
     />

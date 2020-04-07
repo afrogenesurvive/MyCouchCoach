@@ -16,7 +16,16 @@ module.exports = {
       throw new Error('Password is incorrect!');
     }
     if (user.verification.verified !== true) {
-      throw new Error('Please  verify user 1st!');
+
+      console.log('Please  verify user 1st!');
+      return{
+        activityId:user.id,
+        role:"",
+        token:"",
+        tokenExpiration:0 ,
+        error: 'Please  verify user 1st!'}
+        ;
+      // throw new Error('Please  verify user 1st!');
     }
     const token = jwt.sign({ userId: user.id },'CoronaWorkLife',{expiresIn: '4h'});
 

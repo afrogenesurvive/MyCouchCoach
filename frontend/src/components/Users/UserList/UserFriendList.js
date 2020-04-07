@@ -5,7 +5,7 @@ import './UserList.css';
 
 const userFriendList = props => {
 
-  const userFriends = props.users.map(friend=> {
+  const userFriends = props.userFriends.map(friend=> {
     return (
       <UserFriendItem
         key={friend._id}
@@ -17,7 +17,7 @@ const userFriendList = props => {
         age={friend.age}
         phone={friend.contact.phone}
         phone2={friend.contact.phone2}
-        email={fieind.contact.email}
+        email={friend.contact.email}
         bio={friend.bio}
         profileImages={friend.profileImages}
         socialMedia={friend.socialMedia}
@@ -26,7 +26,7 @@ const userFriendList = props => {
         points={friend.points}
         loggedIn={friend.loggedIn}
         online={friend.clientConnected}
-        onSelect={props.onSelect
+        onSelect={props.onSelect}
         onDelete={props.onDelete}
         canDelete={props.canDelete}
       />

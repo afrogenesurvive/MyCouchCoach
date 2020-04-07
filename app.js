@@ -68,6 +68,9 @@ io.on('connection', (socket) => {
 
 });
 
+io.on('disconnect', (socket) => {
+  console.log("a wild client disappeared..");
+});
 server.listen(7770, function (err) {
   if (err) throw err
   console.log(`

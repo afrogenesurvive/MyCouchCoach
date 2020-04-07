@@ -4,7 +4,7 @@ import UserPromoItem from './UserItem/UserPromoItem';
 import './UserList.css';
 
 const userPromoList = props => {
-  const userPromos = props.userPerks.map(promo => {
+  const userPromos = props.userPromos.map(promo => {
     let promoStartDate = 0;
     if (promo.startDate !== null && promo.startDate !== "") {
       promoStartDate = new Date (promo.startDate.substr(0,10)*1000).toISOString().slice(0,10);
@@ -24,9 +24,9 @@ const userPromoList = props => {
         valid={promo.valid}
         startDate={promoStartDate}
         endDate={promoEndDate}
-        description={perk.description}
-        code={perk.code}
-        imageLink={perk.imageLink}
+        description={promo.description}
+        code={promo.code}
+        imageLink={promo.imageLink}
         promo={promo}
         onDelete={props.onDelete}
         canDelete={props.canDelete}

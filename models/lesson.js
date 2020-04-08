@@ -9,6 +9,7 @@ const lessonSchema = new Schema({
   category: {type: String},
   price: {type: Number},
   points: {type: Number},
+  sku: {type: String},
   description: {type: String},
   notes: {type: String},
   duration: {type: String},

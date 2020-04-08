@@ -488,11 +488,12 @@ module.exports = buildSchema(`
 
     getLessonsBySessionField(activityId: ID!, field: String!, query: String!): [Lesson]
 
-    getLessonsByCategory(activityId: ID!, lessonInput: LessonInput!): [Lesson]
+    getLessonsByCategory(activityId: ID!, regex: String!): [Lesson]
 
     getLessonsByTags(activityId: ID!, lessonInput: LessonInput!): [Lesson]
     getLessonsByRequirements(activityId: ID!, lessonInput: LessonInput!): [Lesson]
     getLessonsByMaterials(activityId: ID!, lessonInput: LessonInput!): [Lesson]
+    getLessonReminders(sessionDate: String!): [Lesson]
 
     getAllOrders(activityId: ID!): [Order]
     getOrderById(activityId: ID!, orderId: ID!): Order

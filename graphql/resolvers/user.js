@@ -16,6 +16,8 @@ const { transformUser, transformMessage } = require('./merge');
 const { dateToString } = require('../../helpers/date');
 const { pocketVariables } = require('../../helpers/pocketVars');
 
+const mailjet = require ('node-mailjet')
+.connect('b34ad52fd810be3d7c9fd5159f36be82', '6dda635891e3fd08383004e54179f0d0')
 
 module.exports = {
   getAllUsers: async (args, req) => {
@@ -41,6 +43,39 @@ module.exports = {
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
+
+
+      const request = mailjet
+      .post("send", {'version': 'v3.1'})
+      .request({
+        "Messages":[
+          {
+            "From": {
+              "Email": "prof.black@africangeneticsurvival.net",
+              "Name": "Michael's Robot"
+            },
+            "To": [
+              {
+                "Email": "nataliegreid@gmail.com",
+                "Name": "Naturalie"
+              }
+            ],
+            "Subject": "Anika: Your horrorscope",
+            "TextPart": "My 5th Mailjet email",
+            "HTMLPart": "<h3>Dear passenger 1, welcome to <a href='https://www.mailjet.com/'>Mailjet</a>!</h3><br />May the delivery force be with you!",
+            "CustomID": "AppGettingStartedTest"
+          }
+        ]
+      })
+      request
+        .then((result) => {
+          console.log("here",result.body)
+        })
+        .catch((err) => {
+          console.log(err.statusCode)
+        })
+
+
       return users.map(user => {
         return transformUser(user,);
       });
@@ -1826,6 +1861,36 @@ module.exports = {
       });
 
       const result = await user.save();
+
+      const request = mailjet
+      .post("send", {'version': 'v3.1'})
+      .request({
+        "Messages":[
+          {
+            "From": {
+              "Email": "prof.black@africangeneticsurvival.net",
+              "Name": "Michael"
+            },
+            "To": [
+              {
+                "Email": "michael.grandison@gmail.com",
+                "Name": "Michael"
+              }
+            ],
+            "Subject": "toast.",
+            "TextPart": "My first Mailjet email",
+            "HTMLPart": "<h3>Dear passenger 1, welcome to <a href='https://www.mailjet.com/'>Mailjet</a>!</h3><br />May the delivery force be with you!",
+            "CustomID": "AppGettingStartedTest"
+          }
+        ]
+      })
+      request
+        .then((result) => {
+          console.log("here",result.body)
+        })
+        .catch((err) => {
+          console.log(err.statusCode)
+        })
 
       // let transporter = nodemailer.createTransport({
       //   host: "smtp.example.com",

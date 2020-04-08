@@ -552,8 +552,6 @@ module.exports = {
         date: lesson.sessionDate,
         ref: lesson
       }));
-      // console.log('preCart',preCart,'preOrderLessons',preOrderLessons,'orderLessons',orderLessons,'orderLessons2',orderLessons2);
-      // console.log(receiver);
 
       const order = new Order({
         date: date,
@@ -596,7 +594,7 @@ module.exports = {
       const result = await order.save();
       updateUser = await User.findOneAndUpdate(
         {_id: buyer._id},
-        {$addToSet: {orders: order}},
+        {$addToSet: {orders: order}, cart: []},
         {new: true, useFindAndModify: false})
 
       return {

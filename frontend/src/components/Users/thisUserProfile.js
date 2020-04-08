@@ -117,7 +117,7 @@ const publicUser = user.public.toString();
           <Card.Text>
             <span className="bold">loggedIn :</span> {user.loggedIn.toString()}
           </Card.Text>
-          
+
           <Card.Text>
             <span className="bold">Verification :</span> {user.verification.type}, {user.verification.verified.toString()}
           </Card.Text>
@@ -562,6 +562,11 @@ const publicUser = user.public.toString();
         />
       )}
 
+    </Tab>
+
+    <Tab eventKey="meeting" title="meeting">
+      <p>session details go here</p>
+      <p>zoom mtg create button, dom element etc</p>
     </Tab>
 
     <Tab eventKey="activity" title="activity">

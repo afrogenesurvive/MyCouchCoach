@@ -171,8 +171,9 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
-      const regex = "/^" + args.regex + "/";
-      const lessons = await Lesson.find({'category': {$regex: regex, $options: 'i'}});
+      const regex = new RegExp(args.regex);
+      console.log(regex);
+      const lessons = await Lesson.find({category: {$regex: regex, $options: 'i'}});
 
       return lessons.map(lesson => {
         return transformLesson(lesson);
@@ -244,6 +245,35 @@ module.exports = {
       return lessons.map(lesson => {
         return transformLesson(lesson);
       });
+    } catch (err) {
+      throw err;
+    }
+  },
+  getLessonReminders: async (args, req) => {
+    console.log("Resolver: getLessonReminders...");
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      const sessionDate = new Date(args.sessionDate);
+      const session = {
+        date: sessionDate,
+        title: args.sessionTitle
+      };
+      // const lessons = await Lesson.find({sessions: {$elemMatch: {$gte:, $lte:}}})
+      const lessons = await Lesson.aggregate([
+        {$unwind: '$sessions'},
+        {$group: {_id:{date:'$sessions.date',title:'$sessions.title'},booked: { $addToSet: '$sessions.booked'}}},
+        {$match: {_id: {$eq: session }}}
+        // {$group: {_id:'$sessions.date', booked: { $addToSet: '$sessions.booked'}}},
+        // {$match: {_id: {$eq: sessionDate }}}
+        // {$group: {_id:'$sessions.title', date: { $addToSet: '$sessions.date'}}}
+      ]);
+
+        console.log("x day session bookings",JSON.stringify(lessons));
+        // return lessons.map(lesson => {
+        //   return transformLesson(lesson);
+        // });
     } catch (err) {
       throw err;
     }

@@ -54,13 +54,7 @@ const userOffline = async function (args) {
   console.log("Socket.io: userOffline...",args);
   try {
     const user = await User.findOneAndUpdate({_id:args},{clientConnected: false},{new: true, useFindAndModify: false})
-
-      return {
-        ...user._doc,
-        _id: user.id,
-        email: user.contact.email ,
-        name: user.name,
-      };
+      return ;
   } catch (err) {
     throw err;
   }

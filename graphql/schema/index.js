@@ -30,7 +30,7 @@ module.exports = buildSchema(`
     clientConnected: Boolean
     verification: Verification
     likedLessons: [Lesson]
-    bookedLessons: [LessonRef]
+    bookedLessons: [BookedLessonRef]
     attendedLessons: [LessonRef]
     taughtLessons: [LessonRef]
     wishlist: [WishlistItem]
@@ -108,6 +108,15 @@ module.exports = buildSchema(`
   type LessonRef {
     date: String
     ref: Lesson
+  }
+  type BookedLessonRef {
+    date: String
+    session: BookedLessonSession
+    ref: Lesson
+  }
+  type BookedLessonSession {
+    title: String
+    date: String
   }
   type WishlistItem {
     date: String

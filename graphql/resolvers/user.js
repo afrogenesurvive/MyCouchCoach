@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const DataLoader = require('dataloader');
-
+const nodemailer = require('nodemailer');
 const User = require('../../models/user');
 const Lesson = require('../../models/lesson');
 const Order = require('../../models/order');
@@ -1795,6 +1795,8 @@ module.exports = {
         friends: [],
         points: 0,
         tags: [""],
+        clientConnected: false,
+        loggedIn:false,
         verification: {
           verified: false,
           type: "email",
@@ -1814,7 +1816,7 @@ module.exports = {
         messages: [],
         orders: [],
         paymentInfo: [{
-          date: "",
+          date: 0,
           type: "",
           description: "",
           body: "",
@@ -1824,6 +1826,39 @@ module.exports = {
       });
 
       const result = await user.save();
+
+      // let transporter = nodemailer.createTransport({
+      //   host: "smtp.example.com",
+      //   port: 587,
+      //   secure: false, // upgrade later with STARTTLS
+      //   auth: {
+      //     user: "username",
+      //     pass: "password"
+      //   }
+      // });
+      //
+      // let transporter = nodemailer.createTransport({
+      //   service: 'gmail',
+      //   auth: {
+      //     user: 'stonedrone001@gmail.com',
+      //     pass: '18769095112'
+      //   }
+      // });
+      //
+      // let mailOptions = {
+      //   from: 'stonedrone001@gmail.com',
+      //   to: 'michael.grandison@gmail.com',
+      //   subject: 'Sending Email using Node.js',
+      //   text: 'That was easy!'
+      // };
+      //
+      // transporter.sendMail(mailOptions, function(error, info){
+      //   if (error) {
+      //     console.log(error);
+      //   } else {
+      //     console.log('Email sent: ' + info.response);
+      //   }
+      // });
 
       return {
         ...result._doc,

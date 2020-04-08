@@ -36,6 +36,8 @@ class App extends Component {
       activityId: activityId,
       role: role
     });
+
+    this.socket.emit('msg_subscribe', {user: activityId, room:'msg'+activityId});
   };
 
   logout = () => {
@@ -75,6 +77,7 @@ class App extends Component {
 
 
   componentDidMount() {
+    console.log(this.socket.connected);
 
     if (sessionStorage.getItem('login info')) {
 
@@ -86,10 +89,11 @@ class App extends Component {
         sessionCookiePresent: true,
         token: seshStore.token,
         });
-    }
+    };
+
     const conversationId = this.context.activityId;
-    this.socket.emit('msg_subscribe', 'msg'+conversationId);
-    console.log("listening for tokens & pms...");
+    this.socket.emit('unauthorizedClientConnect');
+    console.log("socket listening....");
     this.socket.on('conversation private post', function(data) {
       console.log("you got a new message..",data);
       addMessage(data);
@@ -101,14 +105,14 @@ class App extends Component {
           Msg:   ${data.message.message}`})
     };
 
-    // call func to set online status here and on componentWillUnmount
+    // this.userOnline();
   }
 
-  componentDidMount() {
-
+  componentWillUnmount() {
+    // this.UserOffline();
   }
 
-  userOnline = () => {
+  userOnline () {
     const token = this.context.token;
     const activityId = this.context.activityId;
     const requestBody = {
@@ -135,7 +139,7 @@ class App extends Component {
         return res.json();
       })
       .then(resData => {
-
+        console.log("u now online");
         const responseAlert = JSON.stringify(resData.data.userOnline).slice(2,25);
         // this.context.user = ;
       })
@@ -144,7 +148,8 @@ class App extends Component {
       });
   }
 
-  userOffline = () => {
+  userOffline () {
+    console.log('woioioi');
     const token = this.context.token;
     const activityId = this.context.activityId;
     const requestBody = {

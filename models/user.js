@@ -59,6 +59,10 @@ const userSchema = new Schema({
   likedLessons: [{type: Schema.Types.ObjectId,ref: 'Lesson'}],
   bookedLessons: [{
     date: {type: Date},
+    session:{
+      title: {type: String},
+      date: {type: Date}
+    },
     ref: {type: Schema.Types.ObjectId,ref: 'Lesson'},
     _id : false
   }],

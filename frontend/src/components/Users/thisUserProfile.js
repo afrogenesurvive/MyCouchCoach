@@ -52,22 +52,22 @@ import CreateMessageForm from '../Forms/message/CreateMessageForm';
 import './thisUserProfile.css';
 
 const thisUserProfile = (props) => {
-  const {...user} = props.user;
-  const userAddress = user.address;
-  const userDob = new Date(user.dob.substr(0,9)*1000).toISOString().slice(0,10);
+const {...user} = props.user;
+const userAddress = user.address;
+const userDob = new Date(user.dob.substr(0,9)*1000).toISOString().slice(0,10);
 
-  let sentRequests = [];
-  let receivedRequests = [];
-  if (user.friendRequests !== []) {
-    sentRequests = user.friendRequests.filter(request => request.sender === user);
-    receivedRequests = user.friendRequests.filter(request => request.receiver === user);
-  }
+let sentRequests = [];
+let receivedRequests = [];
+if (user.friendRequests !== []) {
+  sentRequests = user.friendRequests.filter(request => request.sender === user);
+  receivedRequests = user.friendRequests.filter(request => request.receiver === user);
+}
 
 const publicUser = user.public.toString();
 
   return (
 
-  <Tabs defaultActiveKey="Demographics" id="uncontrolled-tab-example">
+  <Tabs defaultActiveKey="Basic" id="uncontrolled-tab-example">
     <Tab eventKey="" title="Details:" disabled>
     </Tab>
     <Tab eventKey="Basic" title="Basic">
@@ -117,9 +117,7 @@ const publicUser = user.public.toString();
           <Card.Text>
             <span className="bold">loggedIn :</span> {user.loggedIn.toString()}
           </Card.Text>
-          <Card.Text>
-            <span className="bold">clientConnected :</span> {user.clientConnected.toString()}
-          </Card.Text>
+          
           <Card.Text>
             <span className="bold">Verification :</span> {user.verification.type}, {user.verification.verified.toString()}
           </Card.Text>

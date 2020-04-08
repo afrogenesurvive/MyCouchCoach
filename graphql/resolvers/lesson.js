@@ -898,6 +898,10 @@ module.exports = {
       const instructors = lesson.instructors.map(x => x._id);
       const bookingRef = {
         date: today,
+        session: {
+          title: args.lessonInput.sessionTitle,
+          date: args.lessonInput.sessionDate,
+        },
         ref: lesson
       };
       const updateStudentBookedLessons = await User.findOneAndUpdate({_id: args.userId},{$addToSet: {bookedLessons: bookingRef}},{new: true, useFindAndModify: false})

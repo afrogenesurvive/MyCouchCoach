@@ -42,13 +42,57 @@ class AuthPage extends Component {
   }
 
   retrieveLogin = () => {
-    console.log("retrieving login");
-    this.context.login(
-      sessionStorage.getItem('token'),
-      sessionStorage.getItem('activityId'),
-      sessionStorage.getItem('role'),
-      sessionStorage.getItem('tokenExpiration'),
-    );
+    // const activityId = sessionStorage.getItem('activityId');
+    // const token = sessionStorage.getItem('token');
+    //
+    // let requestBody = null;
+    //   requestBody = {
+    //     query: `
+    //       mutation {userOnline(
+    //         activityId:"${activityId}",
+    //         userId:"${activityId}"
+    //       )
+    //       {_id,password,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle},interests,perks{_id},promos{_id},friends{_id,username},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+    //     `};
+    //
+    // fetch('http://localhost:7077/graphql', {
+    //   method: 'POST',
+    //   body: JSON.stringify(requestBody),
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //
+    //   }
+    // })
+    //   .then(res => {
+    //     if (res.status !== 200 && res.status !== 201) {
+    //       throw new Error('Failed!');
+    //     }
+    //     return res.json();
+    //   })
+    //   .then(resData => {
+    //     console.log(resData.data);
+    //     this.context.user = resData.data.userOnline
+    //     console.log("retrieving login");
+    //     this.context.login(
+    //       sessionStorage.getItem('token'),
+    //       sessionStorage.getItem('activityId'),
+    //       sessionStorage.getItem('role'),
+    //       sessionStorage.getItem('tokenExpiration'),
+    //     );
+    //   })
+    //   .catch(err => {
+    //     if (this.isActive) {
+    //       this.setState({userAlert: err});
+    //     }
+    //   });
+
+      console.log("retrieving login");
+      this.context.login(
+        sessionStorage.getItem('token'),
+        sessionStorage.getItem('activityId'),
+        sessionStorage.getItem('role'),
+        sessionStorage.getItem('tokenExpiration'),
+      );
   };
 
   submitHandler = event => {
@@ -141,14 +185,14 @@ class AuthPage extends Component {
     }
 
     getThisUser() {
-
+      // console.log("get this user...");
       const activityId = sessionStorage.getItem('activityId');
       const token = sessionStorage.getItem('token');
       const requestBody = {
         query: `
-        query {getThisUser(activityId:"${activityId}")
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle},interests,perks{_id},promos{_id},friends{_id},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id},bookedLessons{date,ref{_id}},attendedLessons{date,ref{_id}},taughtLessons{date,ref{_id}},wishlist{date,ref{_id},booked},cart{dateAdded,sessionDate,lesson{_id}},comments{_id},messages{_id},orders{_id},paymentInfo{date,type,description,body,valid,primary}}
-          `};
+          query {getThisUser(activityId:"${activityId}")
+          {_id,password,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle},interests,perks{_id},promos{_id},friends{_id,username},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        `};
 
       fetch('http://localhost:7077/graphql', {
         method: 'POST',
@@ -176,7 +220,6 @@ class AuthPage extends Component {
 
     verifyUser = (event) => {
       event.preventDefault();
-      console.log('here');
       const contactEmail = event.target.formGridEmail.value;
       const verificationType = event.target.formGridType.value;
       const verificationCode = event.target.formGridCode.value;
@@ -187,9 +230,9 @@ class AuthPage extends Component {
           userInput:{
             contactEmail:"${contactEmail}",
             verificationType:"${verificationType}",
-            verificationCode:"${verificationCode}"
+            verificationCode:"$verificationCode{}"
           })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle},interests,perks{_id},promos{_id},friends{_id},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id},bookedLessons{date,ref{_id}},attendedLessons{date,ref{_id}},taughtLessons{date,ref{_id}},wishlist{date,ref{_id},booked},cart{dateAdded,sessionDate,lesson{_id}},comments{_id},messages{_id},orders{_id},paymentInfo{date,type,description,body,valid,primary}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle},interests,perks{_id},promos{_id},friends{_id,username},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id},bookedLessons{date,ref{_id}},attendedLessons{date,ref{_id}},taughtLessons{date,ref{_id}},wishlist{date,ref{_id},booked},cart{dateAdded,sessionDate,lesson{_id}},reviews{_id},comments{_id},messages{_id},orders{_id},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
           `};
 
         console.log(JSON.stringify(requestBody));
@@ -260,15 +303,19 @@ class AuthPage extends Component {
             </Button>
           </Form>
         </Col>
-        <Button variant="outline-primary" onClick={this.startVerification}>Verify</Button>
-        {this.state.verifying === true && (
-          <VerifyUserForm
-            canCancel
-            canConfirm
-            onCancel={this.closeVerification}
-            onConfirm={this.verifyUser}
-          />
-        )}
+        </Row>
+        <Row className="loginPageContainerRow2">
+          <Col className="loginPageContainerCol2">
+            <Button variant="outline-primary" onClick={this.startVerification}>Verify</Button>
+            {this.state.verifying === true && (
+              <VerifyUserForm
+                canCancel
+                canConfirm
+                onCancel={this.closeVerification}
+                onConfirm={this.verifyUser}
+              />
+            )}
+          </Col>
         </Row>
       </Container>
 

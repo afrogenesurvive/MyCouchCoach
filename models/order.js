@@ -9,6 +9,7 @@ const orderSchema = new Schema({
   buyer: {type: Schema.Types.ObjectId,ref: 'User'},
   receiver: {type: Schema.Types.ObjectId,ref: 'User'},
   lessons: [{
+    sku: {type: String},
     price: {type: Number},
     date: {type: Date},
     ref: {type: Schema.Types.ObjectId,ref: 'Lesson'}

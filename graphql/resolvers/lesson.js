@@ -28,6 +28,7 @@ module.exports = {
     try {
       const lessons = await Lesson.find({})
       .populate('instructors')
+      .populate('attendees')
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended');
@@ -960,7 +961,7 @@ module.exports = {
       };
       const updateStudentBookedLessons = await User.findOneAndUpdate({_id: args.userId},{$addToSet: {bookedLessons: bookingRef}},{new: true, useFindAndModify: false})
       const updateStudentWishlist = await User.findOneAndUpdate(
-        {_id: args.userId, 'wishlist.ref': lesson._id, 'wishlist.date': today},
+        {_id: args.userId, 'wishlist.ref': lesson._id},
         {$set: {'wishlist.$.booked': true}},
         {new: true, useFindAndModify: false})
       const updateInstructors = await User.update({_id: {$in: instructors}},{$addToSet: {bookedLessons: bookingRef}},{new: true, useFindAndModify: false})
@@ -1016,7 +1017,7 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
-      const today = new Date();
+      const today = new Date().toISOString().substr(0,10);
       const user = await User.findById({_id: args.userId});
       // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$all: [user]} },
       // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$nin: user} },
@@ -1024,7 +1025,7 @@ module.exports = {
       // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$elemMatch: user} },
       const lesson = await Lesson.findOneAndUpdate(
         {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate },
-        {$addToSet: {'sessions.$.attended': user}, $inc: {'sessions.$.attendedAmount': 1}}
+        {$addToSet: {'sessions.$.attended': user, attendees: user}, $inc: {'sessions.$.attendedAmount': 1}}
         ,{new: true, useFindAndModify: false})
       .populate('instructors')
       .populate('reviews')
@@ -1117,6 +1118,7 @@ module.exports = {
         subtitle: args.lessonInput.subtitle,
         type: args.lessonInput.type,
         category: args.lessonInput.category,
+        sku: args.lessonInput.sku,
         price: args.lessonInput.price,
         points: args.lessonInput.points,
         description: args.lessonInput.description,

@@ -544,14 +544,20 @@ module.exports = {
       const date = new Date().toISOString().substr(0,10);
       const time = new Date().toISOString().substr(11,5);
       const preCart = buyer.cart;
-      // const orderLessons = preCart.map(lesson => console.log(lesson.lesson));
+      if (preCart.length === 0) {
+        throw new Error('Ummm just no! Your cart is empty...')
+      }
       const preOrderLessons = preCart.map(lesson => lesson.lesson);
-      const orderLessons = await Lesson.find({_id: {$in: [preOrderLessons] }});
+      const orderLessons = await Lesson.find({_id: {$in: preOrderLessons }});
       const orderLessons2 = orderLessons.map(lesson => ({
+        sku: lesson.sku,
         price: lesson.price,
         date: lesson.sessionDate,
         ref: lesson
       }));
+      const orderLessons3 = orderLessons.map(x => x.price);
+      const orderLessons4 = orderLessons3.reduce((a, b) => a + b, 0);
+      console.log(orderLessons4);
 
       const order = new Order({
         date: date,
@@ -563,7 +569,7 @@ module.exports = {
         totals:{
           a: args.orderInput.totalA,
           b: args.orderInput.totalB,
-          c: args.orderInput.totalC,
+          c: orderLessons4.toString(),
         },
         tax:{
           description: args.orderInput.taxDescription,

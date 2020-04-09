@@ -194,6 +194,7 @@ module.exports = buildSchema(`
     subtitle: String
     type: String
     category: String
+    sku: String
     price: Float
     points: Float
     description: String
@@ -205,6 +206,7 @@ module.exports = buildSchema(`
     requirements: [String]
     materials: [String]
     files: [File]
+    attendees: [User]
     reviews: [Review]
     tags: [String]
     sessions: [Session]
@@ -240,6 +242,7 @@ module.exports = buildSchema(`
     subtitle: String
     type: String
     category: String
+    sku: String
     price: Float
     points: Float
     description: String
@@ -278,7 +281,7 @@ module.exports = buildSchema(`
     type: String
     buyer: User
     receiver: User
-    lessons: [LessonOrder]
+    lessons: [OrderLesson]
     totals: OrderTotals
     tax: LessonTax
     description: String
@@ -290,7 +293,8 @@ module.exports = buildSchema(`
     status: OrderStatus
     feedback: String
   }
-  type LessonOrder {
+  type OrderLesson {
+    sku: String
     price: Float
     date: String
     ref: Lesson

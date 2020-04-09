@@ -24,6 +24,17 @@ return (
 <Form onSubmit={props.onConfirm}>
 
 <Form.Row>
+
+<Form.Group as={Col} controlId="formGridRole">
+  <Form.Label>Role</Form.Label>
+  <Form.Control as="select">
+  <option>Instructor</option>
+  <option>User</option>
+
+  </Form.Control>
+</Form.Group>
+
+<Form.Row>
   <Form.Group as={Col} controlId="formGridEmail">
     <Form.Label>Email</Form.Label>
     <Form.Control type="email" placeholder="Enter email"/>

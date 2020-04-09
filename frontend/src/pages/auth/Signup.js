@@ -27,7 +27,7 @@ class SignupPage extends Component {
     let password = event.target.formGridPassword.value;
     let name = event.target.formGridName.value;
     let username = event.target.formGridUsername.value;
-    let role = "User";
+    let role = event.target.formGridRole.value;
     let publicProfile = false;
     if (event.target.formGridPublicCheckbox.checked === true) {
       publicProfile = true;
@@ -43,7 +43,6 @@ class SignupPage extends Component {
     let addressCountry = event.target.formGridAddressCountry.value;
     let addressPostalCode = event.target.formGridAddressPostalCode.value;
     let bio = event.target.formGridBio.value;
-
 
     if (
       contactEmail.trim().length === 0 ||
@@ -72,6 +71,7 @@ class SignupPage extends Component {
       query: `
             mutation {createUser(
               userInput:{
+                role:"${role}",
                 name:"${name}",
                 password:"${password}",
                 username:"${username}",

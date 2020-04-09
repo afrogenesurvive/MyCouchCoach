@@ -80,6 +80,7 @@ module.exports = buildSchema(`
   type SocialMedia {
     platform: String
     handle: String
+    link: String
   }
   type Verification {
     verified: Boolean
@@ -160,6 +161,7 @@ module.exports = buildSchema(`
     profileImagePath: String
     socialMediaPlatform: String
     socialMediaHandle: String
+    socialMediaLink: String
     interest: String
     interests: String
     points: Float
@@ -593,7 +595,7 @@ module.exports = buildSchema(`
     deleteUserPerk(activityId: ID!, userId: ID!, perkId: ID!): User
     deleteUserPromo(activityId: ID!, userId: ID!, promoId: ID!): User
     deleteUserFriend(activityId: ID!, userId: ID!, friendId: ID!): User
-    deleteFriendRequest(activityId: ID!, date: String!, senderId: ID!, receiverId: ID!): User
+    deleteFriendRequest(activityId: ID!, senderId: ID!, receiverId: ID!): User
 
     deleteUserLikedLesson(activityId: ID!, userId: ID!, lessonId: ID!): User
     deleteUserBookedLesson(activityId: ID!, userId: ID!, lessonId: ID!, date: String!): User

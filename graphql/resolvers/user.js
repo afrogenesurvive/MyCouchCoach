@@ -45,35 +45,35 @@ module.exports = {
       .populate('friendRequests.receiver');
 
 
-      const request = mailjet
-      .post("send", {'version': 'v3.1'})
-      .request({
-        "Messages":[
-          {
-            "From": {
-              "Email": "prof.black@africangeneticsurvival.net",
-              "Name": "Michael's Robot"
-            },
-            "To": [
-              {
-                "Email": "nataliegreid@gmail.com",
-                "Name": "Naturalie"
-              }
-            ],
-            "Subject": "Anika: Your horrorscope",
-            "TextPart": "My 5th Mailjet email",
-            "HTMLPart": "<h3>Dear passenger 1, welcome to <a href='https://www.mailjet.com/'>Mailjet</a>!</h3><br />May the delivery force be with you!",
-            "CustomID": "AppGettingStartedTest"
-          }
-        ]
-      })
-      request
-        .then((result) => {
-          console.log("here",result.body)
-        })
-        .catch((err) => {
-          console.log(err.statusCode)
-        })
+      // const request = mailjet
+      // .post("send", {'version': 'v3.1'})
+      // .request({
+      //   "Messages":[
+      //     {
+      //       "From": {
+      //         "Email": "prof.black@africangeneticsurvival.net",
+      //         "Name": "Michael's Robot"
+      //       },
+      //       "To": [
+      //         {
+      //           "Email": "nataliegreid@gmail.com",
+      //           "Name": "Naturalie"
+      //         }
+      //       ],
+      //       "Subject": "Anika: Your horrorscope",
+      //       "TextPart": "My 5th Mailjet email",
+      //       "HTMLPart": "<h3>Dear passenger 1, welcome to <a href='https://www.mailjet.com/'>Mailjet</a>!</h3><br />May the delivery force be with you!",
+      //       "CustomID": "AppGettingStartedTest"
+      //     }
+      //   ]
+      // })
+      // request
+      //   .then((result) => {
+      //     console.log("here",result.body)
+      //   })
+      //   .catch((err) => {
+      //     console.log(err.statusCode)
+      //   })
 
 
       return users.map(user => {
@@ -100,10 +100,11 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('comments')
+      .populate('comments.')
       .populate('messages')
       .populate('orders')
-      .populate('reviews');
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
         return {
             ...user._doc,
@@ -243,7 +244,7 @@ module.exports = {
     try {
       const upper = args.upperLimit;
       const lower = args.lowerLimit;
-      const users = await User.find({'points': {$gte: lower, $lte: upper}});
+      const users = await User.find({points: {$gte: lower, $lte: upper}});
 
       return users.map(user => {
         return transformUser(user);
@@ -552,6 +553,7 @@ module.exports = {
       const socialMedia = {
         platform:args.userInput.socialMediaPlatform,
         handle:args.userInput.socialMediaHandle,
+        link:args.userInput.socialMediaLink,
       };
 
       const user = await User.findOneAndUpdate({_id:args.userId},{$addToSet: {socialMedia: socialMedia}},{new: true, useFindAndModify: false})
@@ -591,6 +593,7 @@ module.exports = {
         const socialMedia = {
           platform:args.userInput.socialMediaPlatform,
           handle:args.userInput.socialMediaHandle,
+          link:args.userInput.socialMediaLink,
         };
         const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { 'socialMedia': socialMedia }},{new: true, useFindAndModify: false});
 
@@ -977,7 +980,7 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
-      const now = new Date();
+      const now = new Date().toISOString().substr(0,10);
       const invitee = await User.findById({_id: args.receiverId});
       const sender = await User.findById({_id: args.senderId});
       const friendRequest = {
@@ -998,7 +1001,9 @@ module.exports = {
       .populate('cart.lesson')
       .populate('comments.')
       .populate('messages')
-      .populate('orders');
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
       const updateInvitee = await User.findOneAndUpdate({_id: args.receiverId},{$addToSet: {friendRequests: friendRequest}},{new: true, useFindAndModify: false});
 
@@ -1021,6 +1026,11 @@ module.exports = {
       let user = null;
       const preSender = await User.findById({_id: args.senderId});
       const preReceiver = await User.findById({_id: args.receiverId});
+      const friendRequest = {
+        date: args.date,
+        sender: preSender,
+        user: preReceiver
+      };
 
       const sender = await User.findOneAndUpdate(
         {_id:args.senderId },
@@ -1194,6 +1204,10 @@ module.exports = {
       const lesson = await Lesson.findById({_id: args.lessonId});
       const bookedLesson = {
         date: date,
+        session: {
+          title: args.sessionTitle,
+          date: args.sessionDate,
+        },
         ref: lesson
       };
       const user = await User.findOneAndUpdate({_id:args.userId},{$addToSet: { bookedLessons: bookedLesson }},{new: true, useFindAndModify: false})
@@ -1794,7 +1808,7 @@ module.exports = {
       const user = new User({
         password: hashedPassword,
         name: args.userInput.name,
-        role: "User",
+        role: args.userInput.role,
         username: args.userInput.username,
         dob: args.userInput.dob,
         age: age,
@@ -1823,6 +1837,7 @@ module.exports = {
         socialMedia: [{
           platform: "",
           handle: "",
+          link: ""
         }],
         interests: [""],
         perks: [],
@@ -1862,35 +1877,35 @@ module.exports = {
 
       const result = await user.save();
 
-      const request = mailjet
-      .post("send", {'version': 'v3.1'})
-      .request({
-        "Messages":[
-          {
-            "From": {
-              "Email": "prof.black@africangeneticsurvival.net",
-              "Name": "Michael"
-            },
-            "To": [
-              {
-                "Email": "michael.grandison@gmail.com",
-                "Name": "Michael"
-              }
-            ],
-            "Subject": "toast.",
-            "TextPart": "My first Mailjet email",
-            "HTMLPart": "<h3>Dear passenger 1, welcome to <a href='https://www.mailjet.com/'>Mailjet</a>!</h3><br />May the delivery force be with you!",
-            "CustomID": "AppGettingStartedTest"
-          }
-        ]
-      })
-      request
-        .then((result) => {
-          console.log("here",result.body)
-        })
-        .catch((err) => {
-          console.log(err.statusCode)
-        })
+      // const request = mailjet
+      // .post("send", {'version': 'v3.1'})
+      // .request({
+      //   "Messages":[
+      //     {
+      //       "From": {
+      //         "Email": "prof.black@africangeneticsurvival.net",
+      //         "Name": "Michael"
+      //       },
+      //       "To": [
+      //         {
+      //           "Email": "michael.grandison@gmail.com",
+      //           "Name": "Michael"
+      //         }
+      //       ],
+      //       "Subject": "toast.",
+      //       "TextPart": "My first Mailjet email",
+      //       "HTMLPart": "<h3>Dear passenger 1, welcome to <a href='https://www.mailjet.com/'>Mailjet</a>!</h3><br />May the delivery force be with you!",
+      //       "CustomID": "AppGettingStartedTest"
+      //     }
+      //   ]
+      // })
+      // request
+      //   .then((result) => {
+      //     console.log("here",result.body)
+      //   })
+      //   .catch((err) => {
+      //     console.log(err.statusCode)
+      //   })
 
       // let transporter = nodemailer.createTransport({
       //   host: "smtp.example.com",

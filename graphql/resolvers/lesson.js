@@ -315,6 +315,15 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
+      const user = await User.findById({_id: args.activityId});
+      const preLesson = await Lesson.findById({_id: args.lessonId});
+      const instructors = preLesson.instructors;
+      let userIsInstructor = instructors.includes(user._id);
+      let userIsAdmin = user.role === "Admin";
+      if (userIsAdmin === false && userIsInstructor === false) {
+        throw new Error('Umm just no! Only instructors of this class and Admin can edit it...')
+      }
+
       const resolverField = args.field;
       const resolverQuery = args.query;
       const query = {[resolverField]:resolverQuery};
@@ -339,6 +348,15 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
+      const user = await User.findById({_id: args.activityId});
+      const preLesson = await Lesson.findById({_id: args.lessonId});
+      const instructors = preLesson.instructors;
+      let userIsInstructor = instructors.includes(user._id);
+      let userIsAdmin = user.role === "Admin";
+      if (userIsAdmin === false && userIsInstructor === false) {
+        throw new Error('Umm just no! Only instructors of this class and Admin can edit it...')
+      }
+
       const tags = args.lessonInput.tags;
       const splitTags = tags.split(",");
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: { tags: {$each: splitTags} }},{new: true, useFindAndModify: false})
@@ -710,6 +728,12 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
+      const user = await User.findById({_id: args.instructorId});
+      let userIsInstructor = user.role === "Instructor";
+      if (userIsInstructor === false) {
+        throw new Error('Users cant be Instructors...Only Instructors can..')
+      }
+
       const instructor = await User.findById({_id: args.instructorId});
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: {instructors: instructor}},{new: true, useFindAndModify: false})
       .populate('instructors')
@@ -1076,6 +1100,9 @@ module.exports = {
   },
   createLesson: async (args, req) => {
     console.log("Resolver: createLesson...");
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
     try {
 
       const existingLessonTitle = await Lesson.findOne({ title: args.lessonInput.title});
@@ -1084,7 +1111,6 @@ module.exports = {
       }
 
       const creator = await User.findById({_id: args.creatorId});
-      const today = new Date();
 
       const lesson = new Lesson({
         title: args.lessonInput.title,

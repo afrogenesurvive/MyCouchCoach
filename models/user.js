@@ -36,6 +36,7 @@ const userSchema = new Schema({
   socialMedia: [{
     platform: {type:String},
     handle: {type:String},
+    link: {type: String},
     _id : false
   }],
   interests: [{type: String}],

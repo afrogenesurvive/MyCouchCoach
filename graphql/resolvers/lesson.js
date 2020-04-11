@@ -964,7 +964,7 @@ module.exports = {
         {_id: args.userId, 'wishlist.ref': lesson._id},
         {$set: {'wishlist.$.booked': true}},
         {new: true, useFindAndModify: false})
-      const updateInstructors = await User.update({_id: {$in: instructors}},{$addToSet: {bookedLessons: bookingRef}},{new: true, useFindAndModify: false})
+      const updateInstructors = await User.updateMany({_id: {$in: instructors}},{$addToSet: {bookedLessons: bookingRef}},{new: true, useFindAndModify: false})
 
         return {
             ...lesson._doc,
@@ -1124,10 +1124,11 @@ module.exports = {
         description: args.lessonInput.description,
         notes: args.lessonInput.notes,
         duration: args.lessonInput.duration,
-        schedule: [{
-          date: args.lessonInput.scheduleDate,
-          time: args.lessonInput.scheduleTime,
-        }],
+        schedule: [],
+        // schedule: [{
+        //   date: args.lessonInput.scheduleDate,
+        //   time: args.lessonInput.scheduleTime,
+        // }],
         instructors: [creator]
       });
 

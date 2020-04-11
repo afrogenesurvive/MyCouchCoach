@@ -14,7 +14,7 @@ return (
   <Form.Row>
     <Form.Group as={Col} controlId="formGridPoints">
     <Form.Label>Points</Form.Label>
-    <Form.Control type="number" placeholder="token amount"/>
+    <Form.Control type="number" placeholder="point amount"/>
   </Form.Group>
   </Form.Row>
 

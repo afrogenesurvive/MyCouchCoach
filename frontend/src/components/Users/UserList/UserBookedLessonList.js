@@ -14,6 +14,8 @@ const userBookedLessonList = props => {
         date={bookedLessonDate}
         ref={bookedLesson.ref}
         authId={props.authId}
+        onDelete={props.onDelete}
+        canDelete={props.canDelete}
       />
     );
   });

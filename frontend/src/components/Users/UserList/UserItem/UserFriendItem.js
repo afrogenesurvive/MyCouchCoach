@@ -12,25 +12,16 @@ const userFriendItem = props => (
       <Card.Title>{props.username}</Card.Title>
       <Card.Img variant="top" src={props.profileImages[0].path} />
       <Card.Text>
-        name: {props.name}
+        _id: {props._id}
       </Card.Text>
       <Card.Text>
         username: {props.username}
       </Card.Text>
       <Card.Text>
-        phone: {props.contact.phone}
+        loggedIn: {props.loggedIn.toString()}
       </Card.Text>
       <Card.Text>
-        email: {props.contact.email}
-      </Card.Text>
-      <Card.Text>
-        Bio: {props.bio}
-      </Card.Text>
-      <Card.Text>
-        points: {props.points}
-      </Card.Text>
-      <Card.Text>
-        Interests: {props.interests[1]}, {props.interests[2]}, {props.interests[3]}
+        online: {props.online.toString()}
       </Card.Text>
 
       <Card.Link href="">

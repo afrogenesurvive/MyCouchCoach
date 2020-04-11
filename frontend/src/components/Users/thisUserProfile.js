@@ -59,10 +59,11 @@ const userDob = new Date(user.dob.substr(0,9)*1000).toISOString().slice(0,10);
 let sentRequests = [];
 let receivedRequests = [];
 if (user.friendRequests !== []) {
-  sentRequests = user.friendRequests.filter(request => request.sender === user);
-  receivedRequests = user.friendRequests.filter(request => request.receiver === user);
+  // console.log('!!!',user._id, user.friendRequests, user.friendRequests[0].sender._id, user.friendRequests[0].receiver._id);
+  sentRequests = user.friendRequests.filter(request => request.sender._id === user._id);
+  receivedRequests = user.friendRequests.filter(request => request.receiver._id === user._id);
 }
-
+// console.log('sentRequests',sentRequests,'receivedRequests',receivedRequests);
 const publicUser = user.public.toString();
 
   return (
@@ -129,7 +130,7 @@ const publicUser = user.public.toString();
       <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.onStartAdd.bind(this, "points")}>+ Points</Button>
 
       {props.updating === true &&
-        props.updatingField === "basic" && (
+        props.userAddField === "basic" && (
         <UpdateUserBasicForm
           canCancelProfile
           canConfirm
@@ -141,7 +142,8 @@ const publicUser = user.public.toString();
         />
       )}
 
-      {props.updatingField === true && (
+      {props.updating === true &&
+        props.updatingField === true && (
         <UpdateUserFieldForm
           canCancel
           canConfirm
@@ -398,9 +400,8 @@ const publicUser = user.public.toString();
         <UserFriendRequestList
           userFriendRequests={receivedRequests}
           authId={props.authId}
-          canDelete={props.canDelete}
-          onDelete={props.userDeleteFriendRequest}
-          onSelect={props.userSelectFriendRequest}
+          onReject={props.userRejectFriendRequest}
+          onAccept={props.userAcceptFriendRequest}
         />
       )}
 
@@ -461,7 +462,7 @@ const publicUser = user.public.toString();
     </Tab>
     <Tab eventKey="taughtLessons" title="taughtLessons">
 
-    {user.role === "Instructor" &&
+    {
       user.taughtLessons !== null &&
       user.taughtLessons!== [] && (
         <UserTaughtLessonList

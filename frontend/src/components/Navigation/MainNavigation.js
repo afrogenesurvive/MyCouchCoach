@@ -37,13 +37,7 @@ const mainNavigation = props => (
                     <NavLink to="/users">Users</NavLink>
                   </li>
                   <li>
-                    <NavLink to="/models">Models</NavLink>
-                  </li>
-                  <li>
-                    <NavLink to="/content">Content</NavLink>
-                  </li>
-                  <li>
-                    <NavLink to="/shows">Shows</NavLink>
+                    <NavLink to="/lessons">Lessons</NavLink>
                   </li>
                   <li>
                     <button onClick={context.logout}>Logout</button>

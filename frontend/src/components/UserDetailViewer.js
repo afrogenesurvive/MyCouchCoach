@@ -9,9 +9,6 @@ const UserDetailViewer = (props) =>{
 return (
   <div className="attachmentViewerBg">
     <div className="attachmentViewer">
-    <Button variant="danger" className="attachmentViewerCloseButton" onClick={props.onHideUserDetail}>
-      x
-    </Button>
 
     <UserDetail
       authId={props.authId}
@@ -20,6 +17,13 @@ return (
       onReport={props.onReport}
       canDelete={props.canDelete}
       onDelete={props.onDelete}
+      onFriendRequest={props.onFriendRequest}
+      onStartSendMessage={props.onStartSendMessage}
+      onHideUserDetail={props.onHideUserDetail}
+      creatingMessage={props.creatingMessage}
+      messageReceiver={props.messageReceiver}
+      cancelMessage={props.cancelMessage}
+      sendMessage={props.sendMessage}
     />
 
     </div>

@@ -13,16 +13,15 @@ const userList = props => {
         authId={props.authId}
         _id={user._id}
         username={user.username}
-        topImage={user.profileImages[0].path}
-        bio={user.bio}
-        interest1={user.interests[0]}
-        interest2={user.interests[1]}
-        interest3={user.interests[2]}
+        role={user.role}
+        public={user.public}
+        clientConnected={user.clientConnected}
         onDetail={props.onViewDetail}
         canReport={props.canReport}
         onReport={props.onReport}
         onSelectNoDetail={props.onSelectNoDetail}
         onSelectMessageReceiver={props.onSelectMessageReceiver}
+        onFriendRequest={props.onFriendRequest}
       />
     );
   });

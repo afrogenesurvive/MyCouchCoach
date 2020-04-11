@@ -15,13 +15,13 @@ return (
   <Form.Label>Field Options</Form.Label>
   <Form.Control as="select">
     <option>select</option>
-    <option>email</option>
+    <option>contact.email</option>
     <option>password</option>
     <option>name</option>
     <option>username</option>
     <option>dob</option>
-    <option>phone</option>
-    <option>phone2</option>
+    <option>contact.phone</option>
+    <option>contact.phone2</option>
     <option>bio</option>
     <option>points</option>
     <option>verification.type</option>

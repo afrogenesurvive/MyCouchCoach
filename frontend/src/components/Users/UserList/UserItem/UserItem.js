@@ -9,13 +9,14 @@ const userItem = props => (
     <Card style={{ width: '18rem' }}>
 
     <Card.Body>
-      <Card.Title>{props.username}</Card.Title>
-      <Card.Img variant="top" src={props.topImage} />
       <Card.Text>
-        Bio: {props.bio}
+        ID: {props._id}
       </Card.Text>
       <Card.Text>
-        Interests: {props.interest1}, {props.interest2}, {props.interest3}
+        username: {props.username}
+      </Card.Text>
+      <Card.Text>
+        role: {props.role}
       </Card.Text>
       <Button variant="primary" onClick={props.onDetail.bind(this, props._id)}>
         Details
@@ -23,14 +24,7 @@ const userItem = props => (
       <Button variant="secondary" onClick={props.onSelectNoDetail.bind(this, props.user)}>
         Select
       </Button>
-      <Button variant="link" onClick={props.onSelectMessageReceiver.bind(this, props.user)}>
-        Send Message/Tokens
-      </Button>
-      {props.canReport === true && (
-        <Button variant="danger" onClick={props.onReport.bind(this, props._id)}>
-        Report
-        </Button>
-      )}
+
     </Card.Body>
     </Card>
 

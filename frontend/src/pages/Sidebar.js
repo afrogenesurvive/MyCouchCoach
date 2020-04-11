@@ -61,7 +61,14 @@ class SidebarPage extends Component {
           {this.context.selectedUser._id}
         </Card.Text>
         <Card.Text>
-          {this.context.selectedUser.name}
+          {this.context.selectedUser.username}
+        </Card.Text>
+        <Card.Subtitle className="mb-2">User:</Card.Subtitle>
+        <Card.Text>
+          {this.context.selectedLesson._id}
+        </Card.Text>
+        <Card.Text>
+          {this.context.selectedLesson.title}
         </Card.Text>
       </Card.Body>
       </Card>

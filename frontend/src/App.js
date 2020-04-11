@@ -6,6 +6,7 @@ import SignupPage from './pages/auth/Signup';
 
 import UserProfile from './pages/user/UserProfile';
 import UsersPage from './pages/user/Users';
+import LessonsPage from './pages/lesson/Lessons';
 
 import MainNavigation from './components/Navigation/MainNavigation';
 import AuthContext from './context/auth-context';
@@ -229,7 +230,10 @@ class App extends Component {
                 {this.state.token && (<Redirect from="/auth" to="/userProfile" exact />)}
 
                 {
-                  // this.state.token && (<Route path="/users" component={UsersPage} />)
+                  this.state.token && (<Route path="/users" component={UsersPage} />)
+                }
+                {
+                  this.state.token && (<Route path="/lessons" component={LessonsPage} />)
                 }
 
                 {!this.state.token && (<Route path="/auth" component={AuthPage} />)}

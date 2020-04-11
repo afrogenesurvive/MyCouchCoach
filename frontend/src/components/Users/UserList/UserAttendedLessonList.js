@@ -14,6 +14,8 @@ const userAttendedLessonList = props => {
         date={attendedLessonDate}
         ref={attendedLesson.ref}
         authId={props.authId}
+        onDelete={props.onDelete}
+        canDelete={props.canDelete}
       />
     );
   });

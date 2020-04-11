@@ -9,17 +9,19 @@ const LessonDetailViewer = (props) =>{
 return (
   <div className="attachmentViewerBg">
     <div className="attachmentViewer">
-    <Button variant="danger" className="attachmentViewerCloseButton" onClick={props.onHideLessonDetail}>
-      x
-    </Button>
-
     <LessonDetail
       authId={props.authId}
       lesson={props.lesson}
-      canReport={props.canReport}
-      onReport={props.onReport}
-      canDelete={props.canDelete}
-      onDelete={props.onDelete}
+      sessionsLoaded={props.sessionsLoaded}
+      onSessionLoad={props.onSessionLoad}
+      onHideSessions={props.onHideSessions}
+      onBookSession={props.onBookSession}
+      onAddCartLesson={props.onAddCartLesson}
+      onHideLessonDetail={props.onHideLessonDetail}
+      startCreateSession={props.startCreateSession}
+      creatingSession={props.creatingSession}
+      cancelCreateSession={props.cancelCreateSession}
+      createLessonSession={props.createLessonSession}
     />
 
     </div>

@@ -2,25 +2,26 @@ import React from 'react';
 // import Accordion from 'react-bootstrap/Accordion';
 // import Button from 'react-bootstrap/Button';
 
-import SearchUserItem from './UserItem/SearchUserItem';
+import SearchLessonItem from './LessonItem/SearchLessonItem';
 import './UserList.css';
 
-const searchUserList = props => {
+const searchLessonList = props => {
 
-  const searchUsers = props.searchUsers.map(user => {
+  const searchLessons = props.searchLessons.map(lesson => {
     return (
       <React.Fragment>
-      <SearchUserItem
-        key={user._id}
+      <SearchLessonItem
+        key={lesson._id}
         userId={props.authUserId}
-        _id={user._id}
-        name={user.name}
+        _id={lesson._id}
+        title={lesson.title}
+        
         onDetail={props.onViewDetail}
       />
       </React.Fragment>
     );
   });
-  return <ul className="user__list1_master">{searchUsers}</ul>;
+  return <ul className="user__list1_master">{searchLessons}</ul>;
 };
 
-export default searchUserList;
+export default searchLessonList;

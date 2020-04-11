@@ -927,7 +927,11 @@ module.exports = {
     }
     try {
       const friend = await User.findById({_id: args.friendId});
-      const user = await User.findOneAndUpdate({_id: args.userId},{$addToSet: { friends: friend }},{new: true, useFindAndModify: false})
+      const user = await User.findOneAndUpdate({_id: args.userId},{
+        $addToSet: { friends: friend },
+        $pull: {friendRequests: {sender: args.friendId, receiver: args.userId }}
+      },
+        {new: true, useFindAndModify: false})
       .populate('perks')
       .populate('promos')
       .populate('friends')
@@ -940,8 +944,28 @@ module.exports = {
       .populate('comments.')
       .populate('messages')
       .populate('orders');
+      // console.log(user.friends);
+      // const user2 = await User.findOneAndUpdate({_id: args.userId},{
+      //   $pull: {friendRequests: {sender: friend._id}}
+      // },
+      //   {new: true, useFindAndModify: false})
+      //   console.log(friend._id,user2.friendRequests);
+      const updateFriend = await User.findOneAndUpdate({_id: args.friendId},{
+        $addToSet: {friends: user},
+        $pull: {friendRequests: {sender: args.friendId, receiver: args.userId }}
+      },
+      {new: true, useFindAndModify: false});
 
-      const updateFriend = await User.findOneAndUpdate({_id: args.friendId},{$addToSet: {friends: user}},{new: true, useFindAndModify: false});
+      // const updateFriend2 = await User.findOneAndUpdate({_id: args.friendId},{
+      //   $pull: {friendRequests: {receiver: userId, sender: friendId}}
+      // },
+      // {new: true, useFindAndModify: false});
+      // console.log(`
+      //   user.friends: ${user.friends}
+      //   user.friendRequests: ${user2.friendRequests}
+      //   friend.friends: ${updateFriend.friends}
+      //   friendFriendRequests: ${updateFriend2.FriendRequests}
+      //   `);
 
         return {
           ...user._doc,
@@ -1023,18 +1047,17 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
-      let user = null;
-      const preSender = await User.findById({_id: args.senderId});
-      const preReceiver = await User.findById({_id: args.receiverId});
-      const friendRequest = {
-        date: args.date,
-        sender: preSender,
-        user: preReceiver
-      };
+      // let user = null;
+      // const preSender = await User.findById({_id: args.senderId});
+      // const preReceiver = await User.findById({_id: args.senderId});
+      // const friendRequest = {
+      //   sender: preSender,
+      //   user: preReceiver
+      // };
 
       const sender = await User.findOneAndUpdate(
         {_id:args.senderId },
-        {$pull: {friendRequests: {sender: preSender, receiver: preReceiver}}},
+        {$pull: {friendRequests: {sender: args.senderId, receiver: args.receiverId}}},
         {new: true, useFindAndModify: false})
         .populate('perks')
         .populate('promos')
@@ -1053,7 +1076,7 @@ module.exports = {
 
       const receiver = await User.findOneAndUpdate(
         {_id:args.receiverId },
-        {$pull: {friendRequests: {receiver: preReceiver, sender: preSender}}},
+        {$pull: {friendRequests: {sender: args.senderId, receiver: args.receiverId}}},
         {new: true, useFindAndModify: false})
         .populate('perks')
         .populate('promos')
@@ -1088,9 +1111,10 @@ module.exports = {
     }
     try {
       const date = new Date().toISOString().substr(0,10);
+      const request = args.userInput.activityRequest;
       const activity = {
         date: date,
-        request: args.userInput.activityRequest,
+        request: request,
       };
 
       const user = await User.findOneAndUpdate({_id:args.userId},{$addToSet: {activity: activity}},{new: true, useFindAndModify: false})
@@ -1829,22 +1853,14 @@ module.exports = {
           primary: true
         }],
         bio: args.userInput.bio,
-        profileImages: [{
-          name: "",
-          type: "",
-          path: "",
-        }],
-        socialMedia: [{
-          platform: "",
-          handle: "",
-          link: ""
-        }],
-        interests: [""],
+        profileImages: [],
+        socialMedia: [],
+        interests: [],
         perks: [],
         promos: [],
         friends: [],
         points: 0,
-        tags: [""],
+        tags: [],
         clientConnected: false,
         loggedIn:false,
         verification: {

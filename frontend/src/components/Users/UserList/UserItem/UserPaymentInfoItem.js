@@ -13,7 +13,7 @@ const userPaymentInfoItem = props => (
       <Card.Body>
 
       <Card.Text>
-        date: {props.paymentInfoItemDate}
+        date: {props.date}
       </Card.Text>
       <Card.Text>
         type: {props.type}
@@ -25,15 +25,15 @@ const userPaymentInfoItem = props => (
         body: {props.body}
       </Card.Text>
       <Card.Text>
-        primary: {props.primary}
+        primary: {props.primary.toString()}
       </Card.Text>
       <Card.Text>
-        valid: {props.valid}
+        valid: {props.valid.toString()}
       </Card.Text>
 
       <Card.Link href="">
       { props.canDelete === true && (
-        <Button variant="danger" onClick={props.onDelete.bind(this, props.paymentInfo)}>
+        <Button variant="danger" onClick={props.onDelete.bind(this, props.paymentInfoItem)}>
           Delete
         </Button>
       )}

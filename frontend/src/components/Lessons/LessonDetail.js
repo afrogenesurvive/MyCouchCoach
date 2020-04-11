@@ -7,6 +7,9 @@ import Tab from 'react-bootstrap/Tab';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
+import LessonSessionList from './LessonList/LessonSessionList';
+import CreateLessonSessionForm from '../Forms/lesson/CreateLessonSessionForm';
+
 // import AuthContext from '../../context/auth-context';
 
 import './UserDetail.css';
@@ -15,7 +18,8 @@ const LessonDetail = (props) => {
 
   const {...lesson} = props.lesson;
   // let userDob = new Date(user.dob.substr(0,9) * 1000).toISOString().slice(0,10);
-
+  const instructorIds = lesson.instructors.map(x => x._id)
+  const isInstructor = instructorIds.includes(props.authId);
   return (
     <div className={"UserDetailBox1"}>
 
@@ -27,7 +31,11 @@ const LessonDetail = (props) => {
         <Card.Title><span className="ul">Lesson Details</span></Card.Title>
         <Row className="detailCardRow">
           <Col className="detailCardCol">
-          <Card.Img variant="top" src={lesson.gallery[0]} />
+          {isInstructor === true &&(
+            <Card.Text>
+            Your lesson
+            </Card.Text>
+          )}
           <Card.Text>
             <span className="bold">ID:</span> {lesson._id}
           </Card.Text>
@@ -65,6 +73,9 @@ const LessonDetail = (props) => {
 
         <Row className="detailCardRow">
           <Col className="detailCardCol">
+            <Button variant="danger" onClick={props.onHideLessonDetail}>
+              x
+            </Button>
             { props.canDelete === true && (
               <Button variant="danger" onClick={props.onDelete.bind(this, lesson._id)}>
                 Delete !!??
@@ -75,6 +86,37 @@ const LessonDetail = (props) => {
                 Report!!??
               </Button>
             )}
+          </Col>
+        </Row>
+        <Row className="detailCardRow">
+          <Col className="detailCardCol">
+          <Button variant="primary" onClick={props.startCreateSession.bind(this, lesson._id)}>
+            New Session
+          </Button>
+          {props.creatingSession === true && (
+            <CreateLessonSessionForm
+              authId={props.authId}
+              onCancel={props.cancelCreateSession}
+              onConfirm={props.createLessonSession}
+            />
+          )}
+          </Col>
+
+          <Col className="detailCardCol">
+          Sessions:
+          <Button variant="primary" onClick={props.onSessionLoad.bind(this, lesson._id)}>
+            See Sessions
+          </Button>
+          <Button variant="danger" onClick={props.onHideSessions}>
+            x
+          </Button>
+          {props.sessionsLoaded === true && (
+            <LessonSessionList
+            lessonSessions={lesson.sessions}
+            onBookSession={props.onBookSession}
+            onAddCartLesson={props.onAddCartLesson}
+          />
+        )}
           </Col>
         </Row>
 

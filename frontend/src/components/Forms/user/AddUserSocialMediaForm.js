@@ -23,6 +23,12 @@ return (
     <Form.Control type="text" placeholder="Handle"/>
   </Form.Group>
   </Form.Row>
+  <Form.Row>
+    <Form.Group as={Col} controlId="formGridLink">
+    <Form.Label>Link</Form.Label>
+    <Form.Control type="text" placeholder="Link"/>
+  </Form.Group>
+  </Form.Row>
 
 <Form.Row>
 {props.canCancel && (

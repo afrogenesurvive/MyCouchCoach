@@ -5,7 +5,7 @@ import Image from 'react-bootstrap/Image';
 
 import './UserItem.css';
 
-const userProfileImageItem = props => (
+const userSocialMediaItem = props => (
   <li key={props.authId} className="users__list-item_detail users__list-item_detail1">
     <div>
 
@@ -13,20 +13,26 @@ const userProfileImageItem = props => (
       <Card.Body>
 
         <ul className="cardUl">
-          <li>
-          <Image src={props.path} className="profileImageImg" fluid />
-
+          <li className="cardLi">
+          <p className="userItemText">
+          {props.platform}
+          </p>
           </li>
           <li className="cardLi">
           <p className="userItemText">
-          {props.name}
+          {props.handle}
+          </p>
+          </li>
+          <li className="cardLi">
+          <p className="userItemText">
+          {props.link}
           </p>
           </li>
         </ul>
 
         <Card.Link href="">
         { props.canDelete === true && (
-          <Button variant="danger" onClick={props.onDelete.bind(this, props.profileImage)}>
+          <Button variant="danger" onClick={props.onDelete.bind(this, props.socialMediaAccount)}>
             Delete
           </Button>
         )}
@@ -38,4 +44,4 @@ const userProfileImageItem = props => (
   </li>
 );
 
-export default userProfileImageItem;
+export default userSocialMediaItem;

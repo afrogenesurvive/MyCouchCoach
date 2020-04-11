@@ -4,13 +4,12 @@ import Card from 'react-bootstrap/Card';
 
 import './UserItem.css';
 
-const userItem = props => (
+const lessonItem = props => (
   <li key={props.authId} className="users__list-item_detail users__list-item_detail4">
     <Card style={{ width: '18rem' }}>
 
     <Card.Body>
       <Card.Title>{props.title}</Card.Title>
-      <Card.Img variant="top" src={props.gallery[0].path} />
       <Card.Text>
         _id: {props._id}
       </Card.Text>
@@ -37,4 +36,4 @@ const userItem = props => (
   </li>
 );
 
-export default userItem;
+export default lessonItem;

@@ -40,6 +40,9 @@ class UsersPage extends Component {
     isLoading: false,
     isSorting: false,
     selectedUser: null,
+    detailsLoaded: false,
+    creatingMessage: false,
+    messageReceiver: null,
     userUpdateField: null,
     userSearchField: null,
     userSearchQuery: null,
@@ -63,7 +66,7 @@ class UsersPage extends Component {
 
   componentDidMount() {
 
-    if (this.context.role === "Admin"){
+    if (this.context.user.role === "Admin"){
       this.setState({canDelete: true})
     }
 
@@ -71,7 +74,7 @@ class UsersPage extends Component {
       this.setState({ selectedUser: this.context.selectedUser })
     }
 
-    this.fetchUsers();
+    this.fetchUsersBasic();
   }
 
 
@@ -142,7 +145,7 @@ class UsersPage extends Component {
     this.setState({ creating: false, updating: false, deleting: false, searching: false});
   };
 
-  fetchUsers() {
+  fetchUsersBasic() {
     this.setState({ isLoading: true, userAlert: "Fetching User Master List..." });
     const activityId = this.context.activityId;
 
@@ -151,7 +154,7 @@ class UsersPage extends Component {
           query {getAllUsers(
             activityId:"${activityId}"
           )
-          {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle},interests,perks{_id},promos{_id},friends{_id},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id},bookedLessons{date,ref{_id}},attendedLessons{date,ref{_id}},taughtLessons{date,ref{_id}},wishlist{date,ref{_id},booked},cart{dateAdded,sessionDate,lesson{_id}},comments{_id},messages{_id},orders{_id},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+          {_id,role,username,public,clientConnected}}
         `};
 
     fetch('http://localhost:7077/graphql', {
@@ -190,20 +193,105 @@ class UsersPage extends Component {
     console.log("reporting user", userId);
   }
 
-  selectUserReceiver = (user) => {
-    console.log("selected user..",user._id);
-    this.context.receiver = user;
-    this.context.selectedUser = user;
+  startSendMessage = (args) => {
+    console.log("opening message form...");
+    this.setState({creatingMessage: true, messageReceiver: {_id: args._id, username: args.username}})
+  }
+  cancelMessage = () => {
+    this.setState({creatingMessage: false})
+  }
+  sendMessage = (event) => {
+    event.preventDefault();
+    console.log(this.state.messageReceiver,event.target);
+    this.setState({creatingMessage: false, userAlert: "sending message..."});
+    const activityId = this.context.activityId;
+    const senderId = activityId;
+    const receiverId = this.state.messageReceiver._id;
+    const type = event.target.formBasicTypeSelect.value;
+    const subject = event.target.formGridSubject.value;
+    const message = event.target.formGridMessage.value;
+
+    const requestBody = {
+      query: `
+        mutation {createMessage(
+          activityId:"${activityId}",
+          senderId:"${senderId}",
+          receiverId:"${receiverId}",
+          messageInput:{
+            type:"${type}",
+            subject:"${subject}",
+            message:"${message}"
+          })
+          {_id,date,time,type,subject,sender{_id,username},receiver{_id,username},message,read}}
+        `};
+
+    fetch('http://localhost:7077/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          this.setState({userAlert: 'Failed!'});
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        console.log(JSON.stringify(resData.data.createMessage));
+        const responseAlert = JSON.stringify(resData.data.createMessage).slice(0,8);
+        this.setState({userAlert: responseAlert});
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+        if (this.isActive) {
+          this.setState({ isLoading: false });
+        }
+      });
   }
 
 showDetailHandler = userId => {
+  this.setState({ isLoading: true, userAlert: "Fetching User Details...", showDetail: true });
+  const activityId = this.context.activityId;
 
-  this.setState(prevState => {
-    const selectedUser = prevState.users.find(e => e._id === userId);
-    this.context.selectedUser = selectedUser;
-    this.setState({selectedUser: selectedUser, showDetail: true});
-    return { selectedUser: selectedUser };
-  });
+  const requestBody = {
+    query: `
+        query {getUserById(
+          activityId:"${activityId}",
+          userId:"${userId}"
+        )
+        {_id,role,username,public,clientConnected,age,bio,socialMedia{platform,handle,link},profileImages{name,type,path},interests,tags}}
+      `};
+
+  fetch('http://localhost:7077/graphql', {
+    method: 'POST',
+    body: JSON.stringify(requestBody),
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + this.context.token
+    }
+  })
+    .then(res => {
+      if (res.status !== 200 && res.status !== 201) {
+        this.setState({userAlert: 'Failed!'});
+        throw new Error('Failed!');
+      }
+      return res.json();
+    })
+    .then(resData => {
+      const responseAlert = JSON.stringify(resData.data.getUserById).slice(0,8);
+      this.setState({userAlert: responseAlert, selectedUser: resData.data.getUserById, detailsLoaded:true, isLoading: false});
+      this.context.selectedUser = this.state.selectedUser;
+    })
+    .catch(err => {
+      this.setState({userAlert: err});
+      if (this.isActive) {
+        this.setState({ isLoading: false });
+      }
+    });
 };
 
 selectUserNoDetail = (user) => {
@@ -214,6 +302,54 @@ selectUserNoDetail = (user) => {
 hideDetailHandler = () => {
   this.setState({showDetail: false, overlay: false})
 }
+
+
+  onFriendRequest = (args) => {
+    console.log("sending friend request...",args._id);
+    this.setState({ userAlert: "sending friend request..."});
+    const activityId = this.context.activityId;
+    const senderId = activityId;
+    const receiverId = args._id;
+
+    const requestBody = {
+      query: `
+          mutation {sendFriendRequest(
+            activityId:"${activityId}",
+            senderId:"${senderId}",
+            receiverId:"${receiverId}"
+          )
+          {_id,role,username,public,clientConnected,friendRequests{date,sender{_id},receiver{_id}}}}
+        `};
+
+    fetch('http://localhost:7077/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          this.setState({userAlert: 'Failed!'});
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        console.log(JSON.stringify(resData.data.sendFriendRequest.friendRequests));
+        const responseAlert = JSON.stringify(resData.data.sendFriendRequest).slice(0,8);
+        this.setState({userAlert: responseAlert});
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+        if (this.isActive) {
+          this.setState({ isLoading: false });
+        }
+      });
+
+
+  }
 
   onViewAttachment = (attachment) => {
 
@@ -267,7 +403,8 @@ hideDetailHandler = () => {
         alert={this.state.userAlert}
       />
 
-      {this.state.showDetail === true && (
+      {this.state.showDetail === true &&
+        this.state.detailsLoaded === true && (
         <UserDetailViewer
           user={this.state.selectedUser}
           onHideUserDetail={this.hideDetailHandler}
@@ -275,6 +412,12 @@ hideDetailHandler = () => {
           onDelete={this.deleteListUser}
           canReport={this.state.canReport}
           onReport={this.reportUser}
+          onFriendRequest={this.onFriendRequest}
+          onStartSendMessage={this.startSendMessage}
+          creatingMessage={this.state.creatingMessage}
+          messageReceiver={this.state.messageReceiver}
+          cancelMessage={this.cancelMessage}
+          sendMessage={this.sendMessage}
         />
       )}
       <SidebarControl
@@ -328,7 +471,7 @@ hideDetailHandler = () => {
                              authId={this.context.activityId}
                              onViewDetail={this.showDetailHandler}
                              onSelectNoDetail={this.selectUserNoDetail}
-                             onSelectMessageReceiver={this.selectUserReceiver}
+
                            />
                          )}
                         </Row>

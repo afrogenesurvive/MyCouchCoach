@@ -6,7 +6,7 @@ import './UserList.css';
 const userFriendRequestList = props => {
 
   const userFriendRequests = props.userFriendRequests.map(friendRequest=> {
-
+    // console.log(friendRequest.date,friendRequest.sender,friendRequest.receiver);
     return (
       <UserFriendRequestItem
         key={friendRequest.sender._id}
@@ -14,9 +14,8 @@ const userFriendRequestList = props => {
         date={friendRequest.date}
         sender={friendRequest.sender}
         receiver={friendRequest.receiver}
-        onSelect={props.onSelect}
-        onDelete={props.onDelete}
-        canDelete={props.canDelete}
+        onAccept={props.onAccept}
+        onReject={props.onReject}
       />
     );
   });

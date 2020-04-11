@@ -13,6 +13,8 @@ const userLikedLessonList = props => {
         _id={likedLesson._id}
         title={likedLesson.title}
         authId={props.authId}
+        onDelete={props.onDelete}
+        canDelete={props.canDelete}
       />
     );
   });

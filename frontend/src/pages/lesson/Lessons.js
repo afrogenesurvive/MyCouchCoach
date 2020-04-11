@@ -13,7 +13,7 @@ import Card from 'react-bootstrap/Card';
 
 import AuthContext from '../../context/auth-context';
 import LessonList from '../../components/Lessons/LessonList/LessonList';
-import SearchLessonList from '../../components/Lessons/UserList/SearchLessonList';
+import SearchLessonList from '../../components/Lessons/LessonList/SearchLessonList';
 import LessonDetail from '../../components/Lessons/LessonDetail';
 
 import Spinner from '../../components/Spinner/Spinner';
@@ -46,6 +46,8 @@ class LessonsPage extends Component {
     lessonUpdateField: null,
     lessonSearchField: null,
     lessonSearchQuery: null,
+    sessionsLoaded: false,
+    creatingSession: false,
     canDelete: null,
     canReport: null,
     userAlert: null,
@@ -74,7 +76,7 @@ class LessonsPage extends Component {
       this.setState({ selectedLesson: this.context.selectedLesson })
     }
 
-    this.fetchLessons();
+    this.fetchLessonsBasic();
   }
 
 
@@ -98,57 +100,83 @@ class LessonsPage extends Component {
       userAlert: "Searching for User..."
     })
 
-    if (
-      field.trim().length === 0 ||
-      query.trim().length === 0
-    ) {
-      this.setState({userAlert: "blank fields detected!!!...Please try again..."})
-      return;
-    }
-
-    const search = { field, query };
-    const requestBody = {
-      query: `
-
-      `}
-
-    fetch('http://localhost:7077/graphql', {
-      method: 'POST',
-      body: JSON.stringify(requestBody),
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token
-      }
-    })
-      .then(res => {
-        if (res.status !== 200 && res.status !== 201) {
-          throw new Error('Failed!');
-        }
-        return res.json();
-      })
-      .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        const searchLessons = resData.data.;
-        this.setState({ searchUsers: searchLessons, userAlert: responseAlert})
-      })
-      .catch(err => {
-        this.setState({userAlert: err});
-      });
+    // if (
+    //   field.trim().length === 0 ||
+    //   query.trim().length === 0
+    // ) {
+    //   this.setState({userAlert: "blank fields detected!!!...Please try again..."})
+    //   return;
+    // }
+    //
+    // const search = { field, query };
+    // const requestBody = {
+    //   query: `
+    //
+    //   `}
+    //
+    // fetch('http://localhost:7077/graphql', {
+    //   method: 'POST',
+    //   body: JSON.stringify(requestBody),
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     Authorization: 'Bearer ' + token
+    //   }
+    // })
+    //   .then(res => {
+    //     if (res.status !== 200 && res.status !== 201) {
+    //       throw new Error('Failed!');
+    //     }
+    //     return res.json();
+    //   })
+    //   .then(resData => {
+    //     const responseAlert = JSON.stringify(resData.data).slice(0,8);
+    //     const searchLessons = resData.data.;
+    //     this.setState({ searchUsers: searchLessons, userAlert: responseAlert})
+    //   })
+    //   .catch(err => {
+    //     this.setState({userAlert: err});
+    //   });
   }
 
   startCreateLesson = () => {
     this.setState({creating: true})
   }
 
-  createLessonHandler = () => {
+  createLessonHandler = (event) => {
     this.setState({creating: false})
     let activityId = this.context.activityId;
+    const creatorId = activityId;
     const token = this.context.token;
 
+    const title = event.target.formGridTitle.value;
+    const subtitle = event.target.formGridSubtitle.value;
+    const type = event.target.formGridType.value;
+    const category = event.target.formGridCategory.value;
+    const sku = event.target.formGridSku.value;
+    const price = event.target.formGridPrice.value;
+    const points = event.target.formGridPoints.value;
+    const description = event.target.formGridDescription.value;
+    const notes = event.target.formGridNotes.value;
+    const duration = event.target.formGridDuration.value;
 
     const requestBody = {
       query: `
-
+        mutation {createLesson(
+          activityId:"${activityId}",
+          creatorId:"${creatorId}",
+          lessonInput:{
+            title:"${title}",
+            subtitle:"${subtitle}",
+            type:"${type}",
+            category:"${category}",
+            price:${price},
+            points:${points},
+            description:"${description}",
+            notes:"${notes}",
+            duration:"${duration}",
+            sku:"${sku}"
+          })
+        {_id,title,subtitle,type,category,price,points,description,notes,duration,schedule{date,time},instructors{_id,username},gallery{name,type,path},requirements,materials,files{name,type,size,path},reviews{_id,title,author{_id}},tags,sessions{title,date,time,limit,amount,booked{_id,username},bookedAmount,attended{_id,username},attendedAmount,inProgress,full},promos{_id}}}
       `}
 
     fetch('http://localhost:7077/graphql', {
@@ -166,8 +194,8 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({ searchUsers: resData.data., userAlert: responseAlert})
+        const responseAlert = JSON.stringify(resData.data.createLesson).slice(0,8);
+        this.setState({ lesson: resData.data.createLesson, userAlert: responseAlert})
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -178,12 +206,13 @@ class LessonsPage extends Component {
     this.setState({ creating: false, updating: false, deleting: false, searching: false});
   };
 
-  fetchLessons() {
+  fetchLessonsBasic() {
     const activityId = this.context.activityId;
     this.setState({ isLoading: true, userAlert: "Fetching Lesson Master List..." });
     const requestBody = {
       query: `
-
+        query {getAllLessons(activityId:"${activityId}")
+        {_id,title,subtitle,type,category,price,sku,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{phone,phone2,email}},tags}}
         `};
 
     fetch('http://localhost:7077/graphql', {
@@ -203,7 +232,7 @@ class LessonsPage extends Component {
       })
       .then(resData => {
         const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, lessons: resData.data., isLoading: false});
+        this.setState({userAlert: responseAlert, lessons: resData.data.getAllLessons, isLoading: false});
         this.context.lessons = this.state.lessons;
       })
       .catch(err => {
@@ -213,6 +242,221 @@ class LessonsPage extends Component {
         }
       });
   }
+
+  loadSessions = (args) => {
+    console.log('retriving sessions for this lesson');
+    this.setState({userAlert: 'retriving sessions for this lesson'})
+    const activityId = this.context.activityId;
+    const lessonId = this.state.selectedLesson._id;
+    const requestBody = {
+      query: `
+        query {getLessonById(
+          activityId:"${activityId}",
+          lessonId:"${lessonId}"
+        )
+        {_id,title,subtitle,type,category,price,sku,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{phone,phone2,email}},tags,sessions{title,date,time,limit,inProgress,full}}}
+        `};
+
+    fetch('http://localhost:7077/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          this.setState({userAlert: 'Failed!'});
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+        this.setState({userAlert: responseAlert, selectedLesson: resData.data.getLessonById, isLoading: false, sessionsLoaded: true});
+        this.context.selectedLesson = this.state.selectedLesson;
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+        if (this.isActive) {
+          this.setState({ isLoading: false });
+        }
+      });
+
+  }
+
+  hideSessions = () => {
+    this.setState({sessionsLoaded: false})
+  }
+
+  addCartLesson = (args) => {
+    console.log('adding lesson to cart');
+    this.setState({userAlert: 'adding lesson to cart'});
+
+    const activityId = this.context.activityId;
+    const userId = activityId;
+    const lessonId = this.state.selectedLesson._id;
+    const sessionTitle = args.title;
+    const sessionDate = new Date (args.date.substr(0,10)*1000).toISOString().slice(0,10);
+
+    const requestBody = {
+      query: `
+            mutation {addUserCartLesson(
+              activityId:"${activityId}",
+              userId:"${userId}",
+              lessonId:"${lessonId}",
+              sessionDate:"${sessionDate}")
+            {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        `};
+
+    fetch('http://localhost:7077/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          this.setState({userAlert: 'Failed!'});
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+        this.setState({userAlert: responseAlert, isLoading: false});
+        this.context.selectedUser = resData.data.addUserCartLesson;
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+        if (this.isActive) {
+          this.setState({ isLoading: false });
+        }
+      });
+  }
+
+  bookSession = (args) => {
+    console.log('booking lesson session');
+    this.setState({userAlert: 'booking lesson session'});
+
+    const activityId = this.context.activityId;
+    const userId = activityId;
+    const lessonId = this.state.selectedLesson._id;
+    const sessionTitle = args.title;
+    const sessionDate = new Date (args.date.substr(0,10)*1000).toISOString().slice(0,10);
+
+    const requestBody = {
+      query: `
+            mutation {addLessonBooking(
+              activityId:"${activityId}",
+              lessonId:"${lessonId}",
+              userId:"${userId}",
+              lessonInput:{
+                sessionTitle:"${sessionTitle}",
+                sessionDate:"${sessionDate}"
+              })
+            {_id,title,subtitle,type,category,price,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{phone,phone2,email}},gallery{name,type,path},requirements,materials,files{name,type,size,path},reviews{_id},tags,sessions{title,date,time,limit,amount,booked{_id},bookedAmount,attended{_id},attendedAmount,inProgress,full},promos{_id}}}
+        `};
+
+    fetch('http://localhost:7077/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          this.setState({userAlert: 'Failed!'});
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+        this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonBooking, isLoading: false});
+        this.context.selectedLesson = this.state.selectedLesson;
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+        if (this.isActive) {
+          this.setState({ isLoading: false });
+        }
+      });
+  }
+
+
+  startCreateSession = (args) => {
+    this.setState({creatingSession: true})
+  }
+  cancelCreateSession = () => {
+    this.setState({creatingSession: false})
+  }
+  createLessonSession = (event) => {
+    console.log('creating new lesson session');
+    this.setState({userAlert: 'creating new lesson session'});
+
+    const activityId = this.context.activityId;
+    const userId = activityId;
+    const lessonId = this.state.selectedLesson._id;
+
+    const sessionTitle = event.target.formGridTitle.value;
+    // const sessionDate = new Date (event.target.patientReferralCalendarVisitDate.value.substr(0,10)*1000).toISOString().slice(0,10);
+    let sessionDate = event.target.CalendarDate.value;
+    sessionDate = new Date(sessionDate).toISOString().slice(0,10);
+    const sessionTime = event.target.formGridTime.value;
+    const sessionLimit = event.target.formGridLimit.value;
+    const sessionAmount = 0;
+
+    const requestBody = {
+      query: `
+          mutation {addLessonSession(
+            activityId:"${activityId}",
+            lessonId:"${lessonId}",
+            lessonInput:{
+              sessionTitle:"${sessionTitle}",
+              sessionDate:"${sessionDate}",
+              sessionTime:"${sessionTime}",
+              sessionLimit:${sessionLimit},
+              sessionAmount:${sessionAmount}
+            })
+            {_id,title,subtitle,type,category,price,sku,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{phone,phone2,email}},tags,sessions{title,date,time,limit,inProgress,full}}}
+        `};
+
+        // console.log('xxx',JSON.stringify(requestBody));
+
+    fetch('http://localhost:7077/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          this.setState({userAlert: 'Failed!'});
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+        this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonBooking, isLoading: false});
+        this.context.selectedLesson = this.state.selectedLesson;
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+        if (this.isActive) {
+          this.setState({ isLoading: false });
+        }
+      });
+  }
+
 
   deleteListLesson = (lessonId) => {
     console.log("delete listed lesson", lessonId);
@@ -292,12 +536,18 @@ hideDetailHandler = () => {
 
       {this.state.showDetail === true && (
         <LessonDetailViewer
+          authId={this.context.activityId}
           lesson={this.state.selectedLesson}
           onHideLessonDetail={this.hideDetailHandler}
-          canDelete={this.state.canDelete}
-          onDelete={this.deleteListLesson}
-          canReport={this.state.canReport}
-          onReport={this.reportLesson}
+          sessionsLoaded={this.state.sessionsLoaded}
+          onSessionLoad={this.loadSessions}
+          onHideSessions={this.hideSessions}
+          onBookSession={this.bookSession}
+          onAddCartLesson={this.addCartLesson}
+          startCreateSession={this.startCreateSession}
+          creatingSession={this.state.creatingSession}
+          cancelCreateSession={this.cancelCreateSession}
+          createLessonSession={this.createLessonSession}
         />
       )}
       <SidebarControl
@@ -405,7 +655,7 @@ hideDetailHandler = () => {
                       </Tab.Pane>
 
                       <Tab.Pane eventKey="Create">
-                        <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.startCreateLesson}>+ Lesson</Button>
+                        <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={this.startCreateLesson}>+ Lesson</Button>
 
                         <Row className="userListRow">
                           {this.state.creating === true && (

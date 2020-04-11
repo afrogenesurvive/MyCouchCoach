@@ -15,8 +15,8 @@ return (
 <Form.Group as={Col} controlId="formGridAddressType">
   <Form.Label>Type</Form.Label>
   <Form.Control as="select">
-  <option>billing</option>
-  <option>shipping</option>
+  <option>Billing</option>
+  <option>Shipping</option>
 
   </Form.Control>
 </Form.Group>

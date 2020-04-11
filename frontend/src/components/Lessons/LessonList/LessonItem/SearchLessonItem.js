@@ -4,16 +4,16 @@ import Button from 'react-bootstrap/Button';
 
 import './UserItem.css';
 
-const searchUserItem = props => (
+const searchLessonItem = props => (
   <li key={props.authId} className="users__list-item_master">
     <div>
-      <p className="userItemHeading"> Name:</p>
+      <p className="userItemHeading"> ID:</p>
       <p className="userItemText">
-        {props.name}
+        {props._id}
       </p>
-      <p className="userItemHeading"> Role:</p>
+      <p className="userItemHeading"> Title:</p>
       <p className="userItemText">
-        {props.role}
+        {props.title}
       </p>
     </div>
     <div>
@@ -24,4 +24,4 @@ const searchUserItem = props => (
   </li>
 );
 
-export default searchUserItem;
+export default searchLessonItem;

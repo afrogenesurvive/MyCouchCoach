@@ -12,6 +12,7 @@ const userSocialMediaList = props => {
         authId={props.authId}
         platform={socialMediaAccount.platform}
         handle={socialMediaAccount.handle}
+        link={socialMediaAccount.link}
         socialMediaAccount={socialMediaAccount}
         onDelete={props.onDelete}
         canDelete={props.canDelete}

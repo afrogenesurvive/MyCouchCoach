@@ -13,22 +13,20 @@ const userFriendRequestItem = props => (
         date: {props.date}
       </Card.Text>
       <Card.Text>
-        Sender: {props.sender._id}, {props.sender.username}
+        Sender: {props.sender._id},
       </Card.Text>
       <Card.Text>
-        Receiver: {props.receiver._id}, {props.receiver.username}
+        Receiver: {props.receiver._id},
       </Card.Text>
 
       <Card.Link href="">
-        <Button variant="primary" onClick={props.onSelect.bind(this, props.friendRequest)}>
-          Select
+        <Button variant="primary" onClick={props.onAccept.bind(this, props.friendRequest)}>
+          Accept
         </Button>
         <Card.Link href="">
-        { props.canDelete === true && (
-          <Button variant="danger" onClick={props.onDelete.bind(this, props.friendRequest)}>
-            Delete
+          <Button variant="danger" onClick={props.onReject.bind(this, props.friendRequest)}>
+            Reject
           </Button>
-        )}
         </Card.Link>
       </Card.Link>
     </Card.Body>

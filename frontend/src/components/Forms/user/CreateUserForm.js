@@ -33,7 +33,7 @@ return (
 
   </Form.Control>
 </Form.Group>
-
+</Form.Row>
 <Form.Row>
   <Form.Group as={Col} controlId="formGridEmail">
     <Form.Label>Email</Form.Label>

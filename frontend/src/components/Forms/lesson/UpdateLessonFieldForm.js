@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import './CreateUserForm.css';
 
-const UpdateUserFieldForm = (props) => {
+const UpdateLessonFieldForm = (props) => {
 // const {...user} = props.user;
 
 return (
@@ -15,18 +15,13 @@ return (
   <Form.Label>Field Options</Form.Label>
   <Form.Control as="select">
     <option>select</option>
-    <option>contact.email</option>
-    <option>password</option>
-    <option>name</option>
-    <option>username</option>
-    <option>dob</option>
-    <option>contact.phone</option>
-    <option>contact.phone2</option>
-    <option>bio</option>
-    <option>points</option>
-    <option>verification.type</option>
-    <option>verification.verified</option>
-    <option>verification.code</option>
+    <option>title</option>
+    <option>subtitle</option>
+    <option>type</option>
+    <option>category</option>
+    <option>sku</option>
+    <option>price</option>
+    <option>description</option>
   </Form.Control>
   </Form.Group>
   </Form.Row>
@@ -50,18 +45,15 @@ return (
 
 
 <Form.Row>
-{props.canCancel && (
-  <Button variant="danger" className="formButton" onClick={props.onCancel}>Cancel</Button>
-)}
-{props.canCancelProfile && (
-  <Button variant="danger" className="formButton" onClick={props.onCancel}>Cancel</Button>
-)}
 
-{props.canConfirm && (
+  <Button variant="danger" className="formButton" onClick={props.onCancel}>Cancel</Button>
+
+
+
   <Button variant="primary" className="formButton" type="submit">
   Submit
   </Button>
-)}
+
 </Form.Row>
 
 </Form>
@@ -69,4 +61,4 @@ return (
 
 )};
 
-export default UpdateUserFieldForm;
+export default UpdateLessonFieldForm;

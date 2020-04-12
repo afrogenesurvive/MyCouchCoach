@@ -10,16 +10,13 @@ const userCartItemItem = props => (
 
     <Card.Body>
       <Card.Text>
-        dateAdded: {props.cartItemDateAdded}
+        dateAdded: {props.dateAdded}
       </Card.Text>
       <Card.Text>
-        sessionDate: {props.cartItemSessionDate}
+        sessionDate: {props.sessionDate}
       </Card.Text>
       <Card.Text>
-        Lesson:
-      </Card.Text>
-      <Card.Text>
-        ID: {props.lesson._id}
+        Lesson ID: {props.lesson._id}
       </Card.Text>
 
       <Card.Link href="">

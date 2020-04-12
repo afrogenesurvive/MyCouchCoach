@@ -34,13 +34,25 @@ const userAddressItem = props => (
         postalCode: {props.postalCode}
       </Card.Text>
       <Card.Text>
-        primary: {props.primary}
+        primary: {props.primary.toString()}
       </Card.Text>
 
         <Card.Link href="">
         { props.canDelete === true && (
           <Button variant="danger" onClick={props.onDelete.bind(this, props.address)}>
             Delete
+          </Button>
+        )}
+          </Card.Link>
+          <Card.Link href="">
+          <Button variant="danger" onClick={props.makeAddressPrimary.bind(this, props.address)}>
+            Make Primary
+          </Button>
+        </Card.Link>
+        <Card.Link href="">
+        { props.orderForm === true && (
+          <Button variant="danger" value={JSON.stringify(props.address)} onClick={props.addToOrder.bind('x')}>
+            Add to order
           </Button>
         )}
         </Card.Link>

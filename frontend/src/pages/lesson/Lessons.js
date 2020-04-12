@@ -48,6 +48,9 @@ class LessonsPage extends Component {
     lessonSearchQuery: null,
     sessionsLoaded: false,
     creatingSession: false,
+    editingLesson: false,
+    editingLessonField: false,
+    showSchedule: false,
     canDelete: null,
     canReport: null,
     userAlert: null,
@@ -63,7 +66,6 @@ class LessonsPage extends Component {
     mCol2Size: 9,
   };
   isActive = true;
-
   static contextType = AuthContext;
 
   componentDidMount() {
@@ -78,8 +80,6 @@ class LessonsPage extends Component {
 
     this.fetchLessonsBasic();
   }
-
-
 
   modalConfirmSearchHandler = (event) => {
 
@@ -141,7 +141,6 @@ class LessonsPage extends Component {
   startCreateLesson = () => {
     this.setState({creating: true})
   }
-
   createLessonHandler = (event) => {
     this.setState({creating: false})
     let activityId = this.context.activityId;
@@ -202,6 +201,123 @@ class LessonsPage extends Component {
       });
   }
 
+  onStartEditLessonBasic = () => {
+    this.setState({editingLesson: true})
+  }
+  onStartEditLessonField = () => {
+    console.log('beep!');
+    this.setState({editingLessonField: true})
+  }
+  cancelEditBasic = () => {
+    this.setState({editingLesson: false})
+  }
+  cancelEditField = () => {
+    this.setState({editingLessonField: false})
+  }
+  editLessonBasic = (event) => {
+    event.preventDefault();
+    this.setState({editingLesson: false})
+    let activityId = this.context.activityId;
+    const creatorId = activityId;
+    const lessonId = this.state.selectedLesson._id;
+    const token = this.context.token;
+
+    const title = event.target.formGridTitle.value;
+    const subtitle = event.target.formGridSubtitle.value;
+    const duration = event.target.formGridDuration.value;
+    const type = event.target.formGridType.value;
+    const category = event.target.formGridCategory.value;
+    const sku = event.target.formGridSku.value;
+    const price = event.target.formGridPrice.value;
+    const points = event.target.formGridPoints.value;
+    const description = event.target.formGridDescription.value;
+    const notes = event.target.formGridNotes.value;
+
+    const requestBody = {
+      query: `
+       mutation {updateLessonBasic(
+         activityId:"${activityId}",
+         lessonId:"${lessonId}",
+         lessonInput:{
+           title:"${title}",
+           subtitle:"${subtitle}",
+           type:"${type}",
+           category:"${category}",
+           price:${price},
+           sku:"${sku}",
+           points:${points},
+           description:"${description}",
+           notes:"${notes}",
+           duration:"${duration}"
+         })
+    {_id,title,subtitle,type,category,price,sku,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{phone,phone2,email}},tags}}
+    `}
+
+    fetch('http://localhost:7077/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data.updateLessonBasic).slice(0,8);
+        this.setState({ lesson: resData.data.updateLessonBasic, userAlert: responseAlert})
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
+  }
+  editLessonField = (event) => {
+    event.preventDefault();
+    this.setState({editingLessonField: false})
+    let activityId = this.context.activityId;
+    const creatorId = activityId;
+    const lessonId = this.state.selectedLesson._id;
+    const token = this.context.token;
+
+    const field = event.target.formGridFieldSelect.value;
+    const query = event.target.formGridQuery.value;
+    const requestBody = {
+      query: `
+         mutation {updateLessonByField(
+           activityId:"${activityId}",
+           lessonId:"${lessonId}",
+           field:"${field}",
+           query:"${query}"
+         )
+         {_id,title,subtitle,type,category,price,sku,points,description,notes,duration,schedule{date,time},instructors{_id,username},gallery{name,type,path},requirements,materials,files{name,type,size,path},reviews{_id,title,author{_id}},tags,sessions{title,date,time,limit,amount,booked{_id,username},bookedAmount,attended{_id,username},attendedAmount,inProgress,full},promos{_id}}}
+          `}
+
+    fetch('http://localhost:7077/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data.updateLessonByField).slice(0,8);
+        this.setState({ lesson: resData.data.updateLessonByField, userAlert: responseAlert})
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
+  }
   modalCancelHandler = () => {
     this.setState({ creating: false, updating: false, deleting: false, searching: false});
   };
@@ -242,6 +358,12 @@ class LessonsPage extends Component {
         }
       });
   }
+  showSchedule = () => {
+    this.setState({showSchedule: true})
+  };
+  hideSchedule = () => {
+    this.setState({showSchedule: false})
+  };
 
   loadSessions = (args) => {
     console.log('retriving sessions for this lesson');
@@ -284,12 +406,10 @@ class LessonsPage extends Component {
         }
       });
 
-  }
-
+  };
   hideSessions = () => {
     this.setState({sessionsLoaded: false})
-  }
-
+  };
   addCartLesson = (args) => {
     console.log('adding lesson to cart');
     this.setState({userAlert: 'adding lesson to cart'});
@@ -336,8 +456,7 @@ class LessonsPage extends Component {
           this.setState({ isLoading: false });
         }
       });
-  }
-
+  };
   bookSession = (args) => {
     console.log('booking lesson session');
     this.setState({userAlert: 'booking lesson session'});
@@ -387,15 +506,14 @@ class LessonsPage extends Component {
           this.setState({ isLoading: false });
         }
       });
-  }
-
+  };
 
   startCreateSession = (args) => {
     this.setState({creatingSession: true})
-  }
+  };
   cancelCreateSession = () => {
     this.setState({creatingSession: false})
-  }
+  };
   createLessonSession = (event) => {
     console.log('creating new lesson session');
     this.setState({userAlert: 'creating new lesson session'});
@@ -455,19 +573,16 @@ class LessonsPage extends Component {
           this.setState({ isLoading: false });
         }
       });
-  }
-
+  };
 
   deleteListLesson = (lessonId) => {
     console.log("delete listed lesson", lessonId);
-  }
-
+  };
   reportLesson = (lessonId) => {
     console.log("reporting lesson", lessonId);
-  }
+  };
 
-
-showDetailHandler = lessonId => {
+  showDetailHandler = lessonId => {
   this.setState(prevState => {
     const selectedLesson = prevState.lessons.find(e => e._id === lessonId);
     this.context.selectedLesson = selectedLesson;
@@ -475,27 +590,24 @@ showDetailHandler = lessonId => {
     return { selectedLesson: selectedLesson };
   });
 };
+  selectLessonNoDetail = (lesson) => {
+    this.setState({selectedLesson: lesson});
+    this.context.selectedLesson = lesson;
+  };
 
-selectLessonNoDetail = (lesson) => {
-  this.setState({selectedLesson: lesson});
-  this.context.selectedLesson = lesson;
-}
-
-hideDetailHandler = () => {
+  hideDetailHandler = () => {
   this.setState({showDetail: false, overlay: false})
-}
-
+};
   onViewAttachment = (attachment) => {
       this.setState({showAttachment: true})
       const file = "https://ent-emr-bucket.s3-us-east-2.amazonaws.com/"+attachment.path+"/"+attachment.name;
       const type = attachment.format;
 
       this.setState({showThisAttachmentFile: file, showThisAttachmentType: type, })
-  }
-
+  };
   closeAttachmentView = () => {
       this.setState({showAttachment: false})
-  }
+  };
 
   userSearchClearlHandler () {
     this.setState({searchUsers: [], userAlert: "clearing user search results"});
@@ -507,7 +619,6 @@ hideDetailHandler = () => {
         mCol2Size: 9
       })
   }
-
   hideSidebar = () => {
       this.setState({
         sidebarShow: false,
@@ -548,6 +659,17 @@ hideDetailHandler = () => {
           creatingSession={this.state.creatingSession}
           cancelCreateSession={this.cancelCreateSession}
           createLessonSession={this.createLessonSession}
+          onStartEditLessonBasic={this.onStartEditLessonBasic}
+          onStartEditLessonField={this.onStartEditLessonField}
+          editingLesson={this.state.editingLesson}
+          editingLessonField={this.state.editingLessonField}
+          cancelEditBasic={this.cancelEditBasic}
+          cancelEditField={this.cancelEditField}
+          editLessonBasic={this.editLessonBasic}
+          editLessonField={this.editLessonField}
+          showScheduleState={this.state.showSchedule}
+          showSchedule={this.showSchedule}
+          hideSchedule={this.hideSchedule}
         />
       )}
       <SidebarControl

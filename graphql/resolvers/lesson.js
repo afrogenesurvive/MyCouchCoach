@@ -290,6 +290,7 @@ module.exports = {
         subtitle: args.lessonInput.subtitle,
         type: args.lessonInput.type,
         category: args.lessonInput.category,
+        sku: args.lessonInput.sku,
         price: args.lessonInput.price,
         points: args.lessonInput.points,
         description: args.lessonInput.description,

@@ -49,7 +49,9 @@ class UserProfile extends Component {
     activityC: null,
     selectedFriendRequest: null,
     requestingFriend: null,
-    userSelectedFriend: null
+    userSelectedFriend: null,
+    orderBillingAddress: null,
+    orderShippingAddress: null,
   };
 
   isActive = true;
@@ -97,6 +99,13 @@ class UserProfile extends Component {
       this.setState({userAlert: "select a receiver 1st..."});
     }
     this.setState({adding: true, userAddField: "message"})
+  }
+
+  startCartCheckout = () => {
+    this.setState({creatingOrder: true})
+  }
+  cancelCartCheckout = () => {
+    this.setState({creatingOrder: false})
   }
 
   userEditBasic = (event) => {
@@ -319,7 +328,7 @@ class UserProfile extends Component {
             addressCountry:"${addressCountry}",
             addressPostalCode:"${addressPostalCode}"
           })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:7077/graphql', {
@@ -350,6 +359,65 @@ class UserProfile extends Component {
   };
   userDeleteAddress = (args) => {
     console.log('userDeleteAddress...');
+    this.setState({ deleting: true, userAlert: "deleting address for user..." });
+    const token = this.context.token;
+    const activityId = this.context.activityId;
+    let userId = activityId;
+    const addressType = args.type;
+    const addressNumber = args.number;
+    const addressStreet = args.street;
+    const addressTown = args.town;
+    const addressCity = args.city;
+    const addressCountry = args.country;
+    const addressPostalCode = args.postalCode;
+    const addressPrimary = args.primary;
+
+    const requestBody = {
+      query:`
+        mutation {deleteUserAddress(
+          activityId:"${activityId}",
+          userId:"${userId}",
+          userInput:{
+            addressType:"${addressType}",
+            addressNumber:${addressNumber},
+            addressStreet:"${addressStreet}",
+            addressTown:"${addressTown}",
+            addressCity:"${addressCity}",
+            addressCountry:"${addressCountry}",
+            addressPostalCode:"${addressPostalCode}",
+            addressPrimary:${addressPrimary}
+          })
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+      `};
+
+    fetch('http://localhost:7077/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!');
+          this.setState({userAlert: 'Failed!'});
+        }
+        return res.json();
+      })
+      .then(resData => {
+
+        const responseAlert = JSON.stringify(resData.data.deleteUserAddress).slice(2,25);
+        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserAddress, activityA: requestBody})
+        this.context.user = this.state.user;
+        // logUserActivity();
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
+  };
+  makeAddressPrimary = (args) => {
+    console.log('makeAddressPrimary...');
     this.setState({ deleting: true, userAlert: "deleting address for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
@@ -1330,6 +1398,114 @@ class UserProfile extends Component {
     const token = this.context.token;
     const activityId = this.context.activityId;
   };
+
+  addAddressToOrder = (event) => {
+    event.preventDefault();
+    // const address = JSON.stringify(event);
+    console.log(event.target.value.slice(9,16));
+    let type = event.target.value.slice(9,16);
+    if (type === 'Billing') {
+      console.log('beep');
+      this.setState({orderBillingAddress: event.target.value})
+    }
+    if (type === 'Shipping') {
+      console.log('beep');
+      this.setState({orderShippingAddress: event.target.value})
+    }
+  }
+  // orderStripePayment = () => {
+    // const userCartLessonSkus = user.cart.map(x => x.lesson.sku)
+    // console.log(userCartLessonSkus);
+  // }
+  createOrder = (event) => {
+    event.preventDefault();
+    this.setState({ creatingOrder: false, userAlert: "creating order for user..." });
+
+    const token = this.context.token;
+    const activityId = this.context.activityId;
+    let userId = activityId;
+    const buyerId = activityId;
+    const receiverId = activityId;
+
+    const type = event.target.formGridType.value;
+    const totalA = event.target.formGridTotalA.value;
+    const totalB = event.target.formGridTotalB.value;
+    const taxDescription = event.target.formGridTaxDescription.value;
+    const taxAmount = event.target.formGridTaxAmount.value;
+    const description = event.target.formGridDescription.value;
+    const notes = event.target.formGridNotes.value;
+    const payment = event.target.formGridPayment.value;
+    const shipping = event.target.formGridShipping.value;
+    const billingAddressNumber = 0;
+    const billingAddressStreet = '';
+    const billingAddressTown = '';
+    const billingAddressCity = '';
+    const billingAddressCountry = '';
+    const billingAddressPostalCode = '';
+    const shippingAddressNumber = 0;
+    const shippingAddressStreet = '';
+    const shippingAddressTown = '';
+    const shippingAddressCity = '';
+    const shippingAddressCountry = '';
+    const shippingAddressPostalCode = '';
+
+    const requestBody = {
+      query:`
+        mutation {createOrder(
+          activityId:"${activityId}",
+          buyerId:"${buyerId}",
+          receiverId:"${receiverId}",
+          orderInput:{
+            type:"${type}",
+            totalA:${totalA},
+            totalB:${totalB},
+            taxDescription:"${taxDescription}",
+            taxAmount:${taxAmount},
+            description:"${description}",
+            notes:"${notes}",
+            payment:"${payment}",
+            shipping:"${shipping}",
+            billingAddressNumber:${billingAddressNumber},
+            billingAddressStreet:"${billingAddressStreet}",
+            billingAddressTown:"${billingAddressTown}",
+            billingAddressCity:"${billingAddressCity}",
+            billingAddressCountry:"${billingAddressCountry}",
+            billingAddressPostalCode:"${billingAddressPostalCode}",
+            shippingAddressNumber:${shippingAddressNumber},
+            shippingAddressStreet:"${shippingAddressStreet}",
+            shippingAddressTown:"${shippingAddressTown}",
+            shippingAddressCity:"${shippingAddressCity}",
+            shippingAddressCountry:"${shippingAddressCountry}",
+            shippingAddressPostalCode:"${shippingAddressPostalCode}"
+          })
+        {_id,date,time,type,buyer{_id,username},receiver{_id,username},lessons{price,date,ref{_id,title}},totals{a,b,c},tax{description,amount},description,notes,payment,shipping,billingAddress{number,street,town,city,country,postalCode},shippingAddress{number,street,town,city,country,postalCode},status{cancelled{value,date}held{value,date}paid{value,date}checkedOut{value,date}emailSent{value,date}confirmed{value,date}packaged{value,date}shipped{value,date}delivered{value,date}confirmedDelivery{value,date}},feedback}}
+      `};
+
+    fetch('http://localhost:7077/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!');
+          this.setState({userAlert: 'Failed!'});
+        }
+        return res.json();
+      })
+      .then(resData => {
+
+        const responseAlert = JSON.stringify(resData.data.createOrder).slice(2,25);
+        this.setState({userAlert: responseAlert, activityA: requestBody})
+        // logUserActivity();
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
+  }
   userDeleteOrder = (args) => {
     this.setState({ deleting: true, userAlert: "deleting order for user..." });
     const token = this.context.token;
@@ -1524,13 +1700,15 @@ class UserProfile extends Component {
       });
   };
 
+
+
   getThisUser() {
     this.setState({ isLoading: true });
     const activityId = this.context.activityId;
     const requestBody = {
       query: `
         query {getThisUser(activityId:"${activityId}")
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:7077/graphql', {
@@ -1764,6 +1942,7 @@ class UserProfile extends Component {
                     userEditField={this.userEditField}
                     userAddPoints={this.userAddPoints}
                     userAddAddress={this.userAddAddress}
+                    makeAddressPrimary={this.makeAddressPrimary}
                     userDeleteAddress={this.userDeleteAddress}
                     userAddProfileImage={this.userAddProfileImage}
                     userDeleteProfileImage={this.userDeleteProfileImage}
@@ -1801,6 +1980,12 @@ class UserProfile extends Component {
                     userDeleteAttendedLesson={this.userDeleteAttendedLesson}
                     userDeleteTaughtLesson={this.userDeleteTaughtLesson}
 
+                    addAddressToOrder={this.addAddressToOrder}
+                    orderBillingAddress={this.state.orderBillingAddress}
+                    orderShippingAddress={this.state.orderShippingAddress}
+                    startCartCheckout={this.startCartCheckout}
+                    cancelCartCheckout={this.cancelCartCheckout}
+                    createOrder={this.createOrder}
                     userDeleteOrder={this.userDeleteOrder}
                     userDeleteReview={this.userDeleteReview}
                     userDeleteActivity={this.userDeleteActivity}
@@ -1811,6 +1996,7 @@ class UserProfile extends Component {
                     updating={this.state.updating}
                     updatingField={this.state.updatingField}
                     userAddField={this.state.userAddField}
+                    creatingOrder={this.state.creatingOrder}
 
                     selectedUser={this.context.selectedUser}
                     messageReceiver={this.context.receiver}

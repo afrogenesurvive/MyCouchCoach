@@ -21,6 +21,9 @@ const userAddressList = props => {
         address={address}
         onDelete={props.onDelete}
         canDelete={props.canDelete}
+        orderForm={props.orderForm}
+        addToOrder={props.addToOrder}
+        makeAddressPrimary={props.makeAddressPrimary}
       />
     );
   });

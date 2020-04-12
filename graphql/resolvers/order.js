@@ -557,7 +557,7 @@ module.exports = {
       }));
       const orderLessons3 = orderLessons.map(x => x.price);
       const orderLessons4 = orderLessons3.reduce((a, b) => a + b, 0);
-      console.log(orderLessons4);
+      console.log(orderLessons2,orderLessons4);
 
       const order = new Order({
         date: date,

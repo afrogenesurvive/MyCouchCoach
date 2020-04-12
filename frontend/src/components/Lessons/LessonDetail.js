@@ -8,7 +8,11 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 import LessonSessionList from './LessonList/LessonSessionList';
+import LessonScheduleList from './LessonList/LessonScheduleList';
 import CreateLessonSessionForm from '../Forms/lesson/CreateLessonSessionForm';
+import UpdateLessonBasicForm from '../Forms/lesson/UpdateLessonBasicForm';
+import UpdateLessonFieldForm from '../Forms/lesson/UpdateLessonFieldForm';
+
 
 // import AuthContext from '../../context/auth-context';
 
@@ -46,16 +50,19 @@ const LessonDetail = (props) => {
             <span className="bold">Subtitle:</span> {lesson.subtitle}
           </Card.Text>
           <Card.Text>
-            <span className="bold">Type:</span> {lesson.Type}
+            <span className="bold">Type:</span> {lesson.type}
           </Card.Text>
           <Card.Text>
-            <span className="bold">Category:</span> {lesson.Category}
+            <span className="bold">Category:</span> {lesson.category}
           </Card.Text>
           <Card.Text>
-            <span className="bold">Price:</span> {lesson.Price}
+            <span className="bold">Sku:</span> {lesson.sku}
           </Card.Text>
           <Card.Text>
-            <span className="bold">Description:</span> {lesson.Description}
+            <span className="bold">Price:</span> {lesson.price}
+          </Card.Text>
+          <Card.Text>
+            <span className="bold">Description:</span> {lesson.description}
           </Card.Text>
 
           </Col>
@@ -68,11 +75,54 @@ const LessonDetail = (props) => {
             {lesson.instructors[0].contact.phone}
             {lesson.instructors[0].contact.email}
           </Card.Text>
+
+          <Button variant="danger" onClick={props.showSchedule}>
+            See dates
+          </Button>
+          <Button variant="danger" onClick={props.hideSchedule}>
+            Hide dates
+          </Button>
+          {props.showScheduleState === true && (
+            <LessonScheduleList
+              lessonSchedule={lesson.schedule}
+            />
+          )}
+
+          </Col>
+        </Row>
+        <Row className="detailCardRow">
+          <Col className="detailCardCol">
+          <Button variant="danger" onClick={props.onStartEditLessonBasic}>
+            Edit Basic
+          </Button>
+            {props.editingLesson === true && (
+              <UpdateLessonBasicForm
+              lesson={lesson}
+              onCancel={props.cancelEditBasic}
+              onConfirm={props.editLessonBasic}
+              />
+            )}
+          </Col>
+        </Row>
+        <Row className="detailCardRow">
+          <Col className="detailCardCol">
+          <Button variant="danger" onClick={props.onStartEditLessonField}>
+            Edit Field
+          </Button>
+            {props.editingLessonField === true && (
+              <UpdateLessonFieldForm
+              lesson={lesson}
+              onCancel={props.cancelEditField}
+              onConfirm={props.editLessonField}
+              />
+            )}
           </Col>
         </Row>
 
+
         <Row className="detailCardRow">
           <Col className="detailCardCol">
+
             <Button variant="danger" onClick={props.onHideLessonDetail}>
               x
             </Button>

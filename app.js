@@ -38,8 +38,9 @@ app.use(
     graphiql: true
   })
 );
-
-mongoose.connect('mongodb://localhost:27017/my_couch_coach',{useNewUrlParser: true, useUnifiedTopology: true})// mongoose.connect("mongodb+srv://"+creds.atlas.user+":"+creds.atlas.pw+"@cluster0-5iwfn.mongodb.net/"+creds.atlas.db+"?retryWrites=true&w=majority",{useNewUrlParser: true, useUnifiedTopology: true})
+// mongoose.connect("mongodb+srv://profBlack:FoiH8muN5lZAWdNT@cluster0-knrho.mongodb.net/test?retryWrites=true&w=majority",
+mongoose.connect('mongodb://localhost:27017/my_couch_coach',
+{useNewUrlParser: true, useUnifiedTopology: true})
   .then(() => {
     console.log(`
       DB connected... Now Serving Port: 7077
@@ -54,6 +55,15 @@ const userOffline = async function (args) {
   console.log("Socket.io: userOffline...",args);
   try {
     const user = await User.findOneAndUpdate({_id:args},{clientConnected: false},{new: true, useFindAndModify: false})
+      return ;
+  } catch (err) {
+    throw err;
+  }
+};
+const userOnline = async function (args) {
+  console.log("Socket.io: userOnline...",args);
+  try {
+    const user = await User.findOneAndUpdate({_id:args},{clientConnected: true},{new: true, useFindAndModify: false})
       return ;
   } catch (err) {
     throw err;
@@ -74,6 +84,7 @@ io.on('connection', (socket) => {
         socket.join(data.room);
         connectedClients.push({socket: socket.id, user: data.user})
         console.log('connectedClients',connectedClients);
+        userOnline(data.user);
     });
     socket.on('send message', function(data) {
       console.log('sending room post', data.room);

@@ -552,6 +552,7 @@ module.exports = buildSchema(`
     addUserObjectByField(activityId: ID!, userId: ID!, field: String!, userInput: UserInput!): User
 
     addUserAddress(activityId: ID!, userId: ID!, userInput: UserInput!): User
+    setUserAddressPrimary(activityId: ID, userId: ID!, userInput: UserInput!): User
     addUserProfileImage(activityId: ID!, userId: ID!, userInput: UserInput): User
     addUserSocialMedia(activityId: ID!, userId: ID!, userInput: UserInput): User
     addUserPaymentInfo(activityId: ID!, userId: ID!, userInput: UserInput): User

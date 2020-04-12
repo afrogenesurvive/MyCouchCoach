@@ -478,6 +478,73 @@ module.exports = {
       throw err;
     }
   },
+  setUserAddressPrimary: async (args, req) => {
+    console.log("Resolver: setUserAddressPrimary...");
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      // const activityUser = await User.findById({_id: args.activityId});
+      // if (activityUser.role !== "Admin" && args.activityId !== args.userId) {
+      //   throw new Error("Yaah.. No! Only the owner or Admin can delete a User Address");
+      // };
+      const nerfAllAddresses = await User.findOneAndUpdate(
+        // {_id: args.userId},
+        {_id: args.userId, 'addresses.type':args.userInput.addressType},
+        {'addresses.$.primary': false},
+        // {$set: {'addresses.$.primary': false}},
+        // {$set: {'addresses.$[].primary': false}},
+        {new: true, useFindAndModify: false})
+        const preUser = await User.findById({_id: args.userId})
+        console.log("beep",preUser.addresses);
+      const address = {
+        type: args.userInput.addressType,
+        number: args.userInput.addressNumber,
+        street: args.userInput.addressStreet,
+        town: args.userInput.addressTown,
+        city: args.userInput.addressCity,
+        country: args.userInput.addressCountry,
+        postalCode: args.userInput.addressPostalCode,
+        primary: args.userInput.addressPrimary,
+      };
+      const address2 = {
+        type: args.userInput.addressType,
+        number: args.userInput.addressNumber,
+        street: args.userInput.addressStreet,
+        town: args.userInput.addressTown,
+        city: args.userInput.addressCity,
+        country: args.userInput.addressCountry,
+        postalCode: args.userInput.addressPostalCode,
+        primary: true,
+      };
+      const user2 = await User.findOneAndUpdate(
+        {_id:args.userId,
+          'addresses.type': address.type,
+          'addresses.number': address.number,
+          'addresses.street': address.street,
+          'addresses.town': address.town,
+          'addresses.city': address.city,
+          'addresses.country': address.country,
+          'addresses.postalCode': address.postalCode,
+        },
+        // {'addresses.$': address},
+        {$pull: {addresses: address}},
+        {new: true, useFindAndModify: false})
+      const user = await User.findOneAndUpdate(
+        {_id:args.userId},
+        {$addToSet: {addresses: address2}},
+        {new: true, useFindAndModify: false})
+
+        return {
+          ...user._doc,
+          _id: user.id,
+          email: user.contact.email ,
+          name: user.name,
+        };
+    } catch (err) {
+      throw err;
+    }
+  },
   addUserProfileImage: async (args, req) => {
     console.log("Resolver: addUserProfileImage...");
 

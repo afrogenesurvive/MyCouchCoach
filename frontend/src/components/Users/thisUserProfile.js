@@ -48,6 +48,7 @@ import AddUserPromoForm from '../Forms/user/AddUserPromoForm';
 
 import AddUserFriendForm from '../Forms/user/AddUserFriendForm';
 import CreateMessageForm from '../Forms/message/CreateMessageForm';
+import CreateOrderForm from '../Forms/order/CreateOrderForm';
 
 import './thisUserProfile.css';
 
@@ -64,7 +65,8 @@ if (user.friendRequests !== []) {
   receivedRequests = user.friendRequests.filter(request => request.receiver._id === user._id);
 }
 // console.log('sentRequests',sentRequests,'receivedRequests',receivedRequests);
-const publicUser = user.public.toString();
+const publicUser = user.public.toString()
+console.log(user.cart);
 
   return (
 
@@ -191,6 +193,7 @@ const publicUser = user.public.toString();
           authId={props.authId}
           canDelete={props.canDelete}
           onDelete={props.userDeleteAddress}
+          makeAddressPrimary={props.makeAddressPrimary}
         />
       )}
 
@@ -408,6 +411,24 @@ const publicUser = user.public.toString();
     </Tab>
 
     <Tab eventKey="cart" title="cart">
+
+    {user.cart !== null &&
+      user.cart !== [] && (
+    <Button variant="primary" onClick={props.startCartCheckout.bind(this, user.cart)}>
+      Checkout
+    </Button>
+    )}
+
+    {props.creatingOrder === true && (
+      <CreateOrderForm
+        user={user}
+        onCancel={props.cancelCartCheckout}
+        onConfirm={props.createOrder}
+        addAddressToOrder={props.addAddressToOrder}
+        orderBillingAddress={props.orderBillingAddress}
+        orderShippingAddress={props.orderShippingAddress}
+      />
+    )}
 
     {user.cart !== null &&
       user.cart !== [] && (

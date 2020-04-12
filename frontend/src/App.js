@@ -140,7 +140,6 @@ class App extends Component {
         return res.json();
       })
       .then(resData => {
-        console.log("u now online");
         const responseAlert = JSON.stringify(resData.data.userOnline).slice(2,25);
         // this.context.user = ;
       })
@@ -150,7 +149,6 @@ class App extends Component {
   }
 
   userOffline () {
-    console.log('woioioi');
     const token = this.context.token;
     const activityId = this.context.activityId;
     const requestBody = {

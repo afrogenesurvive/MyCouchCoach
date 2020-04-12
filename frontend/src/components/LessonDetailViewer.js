@@ -22,6 +22,17 @@ return (
       creatingSession={props.creatingSession}
       cancelCreateSession={props.cancelCreateSession}
       createLessonSession={props.createLessonSession}
+      onStartEditLessonBasic={props.onStartEditLessonBasic}
+      onStartEditLessonField={props.onStartEditLessonField}
+      editingLesson={props.editingLesson}
+      editingLessonField={props.editingLessonField}
+      cancelEditBasic={props.cancelEditBasic}
+      editLessonBasic={props.editLessonBasic}
+      cancelEditField={props.cancelEditField}
+      editLessonField={props.editLessonField}
+      showSchedule={props.showSchedule}
+      showScheduleState={props.showScheduleState}
+      hideSchedule={props.hideSchedule}
     />
 
     </div>

@@ -13,13 +13,16 @@ const userOrderItem = props => (
         _id: {props._id}
       </Card.Text>
       <Card.Text>
-        date: {props.orderDate}
+        date: {props.date}
       </Card.Text>
       <Card.Text>
         time: {props.time}
       </Card.Text>
       <Card.Text>
         type: {props.type}
+      </Card.Text>
+      <Card.Text>
+        total: {props.totals.c}
       </Card.Text>
       <Card.Link href="">
       { props.canDelete === true && (

@@ -598,19 +598,37 @@ module.exports = {
       });
 
       const result = await order.save();
-      updateUser = await User.findOneAndUpdate(
+      user = await User.findOneAndUpdate(
         {_id: buyer._id},
         {$addToSet: {orders: order}, cart: []},
         {new: true, useFindAndModify: false})
+        .populate('perks')
+        .populate('promos')
+        .populate('friends')
+        .populate('likedLessons')
+        .populate('bookedLessons.ref')
+        .populate('attendedLessons.ref')
+        .populate('taughtLessons.ref')
+        .populate('wishlist.ref')
+        .populate('cart.lesson')
+        .populate('comments.')
+        .populate('messages')
+        .populate('orders')
+        .populate('friendRequests.sender')
+        .populate('friendRequests.receiver');
+        // console.log(updateUser.cart);
 
       return {
-        ...result._doc,
-        date: result.date,
-        time: result.time,
-        type: result.type,
-        buyer: result.buyer,
-        receiver: result.receiver
+        ...user._doc,
       };
+      // return {
+      //   ...result._doc,
+      //   date: result.date,
+      //   time: result.time,
+      //   type: result.type,
+      //   buyer: result.buyer,
+      //   receiver: result.receiver
+      // };
     } catch (err) {
       throw err;
     }

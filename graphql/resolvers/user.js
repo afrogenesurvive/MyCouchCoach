@@ -488,15 +488,24 @@ module.exports = {
       // if (activityUser.role !== "Admin" && args.activityId !== args.userId) {
       //   throw new Error("Yaah.. No! Only the owner or Admin can delete a User Address");
       // };
-      const nerfAllAddresses = await User.findOneAndUpdate(
+      const nerfLikeAddresses = await User.findOneAndUpdate(
         // {_id: args.userId},
         {_id: args.userId, 'addresses.type':args.userInput.addressType},
-        {'addresses.$.primary': false},
-        // {$set: {'addresses.$.primary': false}},
+        // {'addresses.primary': true},
+        // {'addresses.$.primary': true},
+        // {$set: {'addresses.primary': true}},
+        // {$set: {'addresses.$.primary': true}},
         // {$set: {'addresses.$[].primary': false}},
-        {new: true, useFindAndModify: false})
-        const preUser = await User.findById({_id: args.userId})
-        console.log("beep",preUser.addresses);
+        {$set: {'addresses.$[elem].primary': false}},
+        {
+          arrayFilters: [ { "elem.type": args.userInput.addressType } ],
+          new: true,
+          useFindAndModify: false
+        })
+        // {new: true, useFindAndModify: false})
+        // const preUser = await User.findById({_id: args.userId})
+        console.log("beep",nerfLikeAddresses.addresses);
+
       const address = {
         type: args.userInput.addressType,
         number: args.userInput.addressNumber,
@@ -514,12 +523,11 @@ module.exports = {
         town: args.userInput.addressTown,
         city: args.userInput.addressCity,
         country: args.userInput.addressCountry,
-        postalCode: args.userInput.addressPostalCode,
+        postalCode: 'x',
         primary: true,
       };
-      const user2 = await User.findOneAndUpdate(
+      const user = await User.findOneAndUpdate(
         {_id:args.userId,
-          'addresses.type': address.type,
           'addresses.number': address.number,
           'addresses.street': address.street,
           'addresses.town': address.town,
@@ -527,18 +535,14 @@ module.exports = {
           'addresses.country': address.country,
           'addresses.postalCode': address.postalCode,
         },
-        // {'addresses.$': address},
-        {$pull: {addresses: address}},
+        {$set:{'addresses.$': address2}},
         {new: true, useFindAndModify: false})
-      const user = await User.findOneAndUpdate(
-        {_id:args.userId},
-        {$addToSet: {addresses: address2}},
-        {new: true, useFindAndModify: false})
+        console.log('user2',user.addresses);
 
         return {
           ...user._doc,
           _id: user.id,
-          email: user.contact.email ,
+          email: user.contact.email,
           name: user.name,
         };
     } catch (err) {

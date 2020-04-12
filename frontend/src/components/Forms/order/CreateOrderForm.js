@@ -18,13 +18,14 @@ const CreateOrderForm = (props) => {
     const shippingAddresses = user.addresses.filter(address => address.type === 'Shipping')
     const primaryShippingAddresses = shippingAddresses.filter(address => address.primary === true)
     const primaryBillingAddresses = billingAddresses.filter(address => address.primary === true)
-
+    const primaryShippingAddress = primaryShippingAddresses[0];
+    const primaryBillingAddress = primaryBillingAddresses[0];
     console.log(`
         addressTypes: ${addressTypes},
-        billingAddresses: ${billingAddresses[0].type}
-        shippingAddresses: ${shippingAddresses[0].type},
-        primaryShippingAddresses: ${primaryShippingAddresses[0].type},${primaryShippingAddresses[0].street},
-        primaryBillingAddresses: ${primaryBillingAddresses[0].type},${primaryBillingAddresses[0].street}
+        billingAddresses: ${billingAddresses.length}
+        shippingAddresses: ${shippingAddresses.length},
+        primaryShippingAddresses: ${primaryShippingAddresses.length},
+        primaryBillingAddresses: ${primaryBillingAddresses.length},
       `);
 
 return (
@@ -86,41 +87,61 @@ return (
 </Form.Group>
 </Form.Row>
 
-<Form.Row>
-<Form.Group as={Col} controlId="formGridDescription">
-  <Form.Label>Description</Form.Label>
-  <Form.Control as="textarea"rows="7" placeholder="Description"/>
-</Form.Group>
-</Form.Row>
-<Form.Row>
-<Form.Group as={Col} controlId="formGridNotes">
-  <Form.Label>Notes</Form.Label>
-  <Form.Control as="textarea"rows="5" placeholder="Notes"/>
-</Form.Group>
-</Form.Row>
-
-<Form.Row>
-{user.addresses !== null &&
-  user.addresses !== [] && (
-    <UserAddressList
-      userAddresses={user.addresses}
-      authId={props.authId}
-      orderForm={true}
-      addToOrder={props.addAddressToOrder}
-    />
-  )}
-  </Form.Row>
-
   <Form.Row>
-  <Form.Group as={Col} controlId="formGridBillingAddress">
-    <Form.Label>BillingAddress</Form.Label>
-    <Form.Control as="textarea"rows="7"  value={props.orderBillingAddress}/>
+  <Form.Group as={Col} controlId="formGridBillingAddressNumber">
+    <Form.Label>BillingAddressNumber</Form.Label>
+    <Form.Control type="number"  value={primaryBillingAddress.number}/>
+  </Form.Group>
+  <Form.Group as={Col} controlId="formGridBillingAddressStreet">
+    <Form.Label>BillingAddressStreet</Form.Label>
+    <Form.Control type="text"  value={primaryBillingAddress.street}/>
+  </Form.Group>
+  <Form.Group as={Col} controlId="formGridBillingAddressTown">
+    <Form.Label>BillingAddressTown</Form.Label>
+    <Form.Control type="text"  value={primaryBillingAddress.town}/>
   </Form.Group>
   </Form.Row>
   <Form.Row>
-  <Form.Group as={Col} controlId="formGridShippingAddress">
-    <Form.Label>ShippingAddress</Form.Label>
-    <Form.Control as="textarea"rows="5" value={props.orderShippingAddress}/>
+  <Form.Group as={Col} controlId="formGridBillingAddressCity">
+    <Form.Label>BillingAddressCity</Form.Label>
+    <Form.Control type="text"  value={primaryBillingAddress.city}/>
+  </Form.Group>
+  <Form.Group as={Col} controlId="formGridBillingAddressCountry">
+    <Form.Label>BillingAddressCountry</Form.Label>
+    <Form.Control type="text"  value={primaryBillingAddress.country}/>
+  </Form.Group>
+  <Form.Group as={Col} controlId="formGridBillingAddressPostalCode">
+    <Form.Label>BillingAddressPostalCode</Form.Label>
+    <Form.Control type="text"  value={primaryBillingAddress.postalCode}/>
+  </Form.Group>
+  </Form.Row>
+
+  <Form.Row>
+  <Form.Group as={Col} controlId="formGridShippingAddressNumber">
+    <Form.Label>ShippingAddressNumber</Form.Label>
+    <Form.Control type="number"  value={primaryShippingAddress.number}/>
+  </Form.Group>
+  <Form.Group as={Col} controlId="formGridShippingAddressStreet">
+    <Form.Label>ShippingAddressStreet</Form.Label>
+    <Form.Control type="text"  value={primaryShippingAddress.street}/>
+  </Form.Group>
+  <Form.Group as={Col} controlId="formGridShippingAddressTown">
+    <Form.Label>ShippingAddressTown</Form.Label>
+    <Form.Control type="text"  value={primaryShippingAddress.town}/>
+  </Form.Group>
+  </Form.Row>
+  <Form.Row>
+  <Form.Group as={Col} controlId="formGridShippingAddressCity">
+    <Form.Label>ShippingAddressCity</Form.Label>
+    <Form.Control type="text"  value={primaryShippingAddress.city}/>
+  </Form.Group>
+  <Form.Group as={Col} controlId="formGridShippingAddressCountry">
+    <Form.Label>ShippingAddressCountry</Form.Label>
+    <Form.Control type="text"  value={primaryShippingAddress.country}/>
+  </Form.Group>
+  <Form.Group as={Col} controlId="formGridShippingAddressPostalCode">
+    <Form.Label>ShippingAddressPostalCode</Form.Label>
+    <Form.Control type="text"  value={primaryShippingAddress.postalCode}/>
   </Form.Group>
   </Form.Row>
 

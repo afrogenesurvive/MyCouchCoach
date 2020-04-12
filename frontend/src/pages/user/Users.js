@@ -117,7 +117,7 @@ class UsersPage extends Component {
         {_id,password,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle},interests,perks{_id},promos{_id},friends{_id,username},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id},bookedLessons{date,ref{_id,title}},attendedLessons{date,ref{_id,title}},taughtLessons{date,ref{_id,title}},wishlist{date,ref{_id,title},booked},cart{dateAdded,sessionDate,lesson{_id,title}},comments{_id},messages{_id},orders{_id},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `}
 
-    fetch('http://ec2-54-173-208-178.compute-1.amazonaws.com/graphql', {
+    fetch('http://localhost:7077/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
@@ -157,7 +157,7 @@ class UsersPage extends Component {
           {_id,role,username,public,clientConnected}}
         `};
 
-    fetch('http://ec2-54-173-208-178.compute-1.amazonaws.com/graphql', {
+    fetch('http://localhost:7077/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
@@ -225,7 +225,7 @@ class UsersPage extends Component {
           {_id,date,time,type,subject,sender{_id,username},receiver{_id,username},message,read}}
         `};
 
-    fetch('http://ec2-54-173-208-178.compute-1.amazonaws.com/graphql', {
+    fetch('http://localhost:7077/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
@@ -266,7 +266,7 @@ showDetailHandler = userId => {
         {_id,role,username,public,clientConnected,age,bio,socialMedia{platform,handle,link},profileImages{name,type,path},interests,tags}}
       `};
 
-  fetch('http://ec2-54-173-208-178.compute-1.amazonaws.com/graphql', {
+  fetch('http://localhost:7077/graphql', {
     method: 'POST',
     body: JSON.stringify(requestBody),
     headers: {
@@ -321,7 +321,7 @@ hideDetailHandler = () => {
           {_id,role,username,public,clientConnected,friendRequests{date,sender{_id},receiver{_id}}}}
         `};
 
-    fetch('http://ec2-54-173-208-178.compute-1.amazonaws.com/graphql', {
+    fetch('http://localhost:7077/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {

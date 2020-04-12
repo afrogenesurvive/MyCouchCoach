@@ -657,7 +657,7 @@ module.exports = buildSchema(`
     deleteLessonReview(activityId: ID!, lessonId: ID!, reviewId: ID!): Lesson
     deleteLessonPromo(activityId: ID!, lessonId: ID!, promoId: ID!): Lesson
 
-    createOrder(activityId: ID!, buyerId: ID!, receiverId: ID!, orderInput: OrderInput!): Order
+    createOrder(activityId: ID!, buyerId: ID!, receiverId: ID!, orderInput: OrderInput!): User
     updateOrderBasic(activityId: ID!, orderId: ID!, orderInput: OrderInput!): Order
     updateOrderByField(activityId: ID!, orderId: ID!, field: String!, query: String!): Order
 

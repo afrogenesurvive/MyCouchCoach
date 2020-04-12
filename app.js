@@ -38,8 +38,8 @@ app.use(
     graphiql: true
   })
 );
-// mongoose.connect("mongodb+srv://profBlack:FoiH8muN5lZAWdNT@cluster0-knrho.mongodb.net/test?retryWrites=true&w=majority",
-mongoose.connect('mongodb://localhost:27017/my_couch_coach',
+mongoose.connect("mongodb+srv://profBlack:FoiH8muN5lZAWdNT@cluster0-knrho.mongodb.net/test?retryWrites=true&w=majority",
+// mongoose.connect('mongodb://localhost:27017/my_couch_coach',
 {useNewUrlParser: true, useUnifiedTopology: true})
   .then(() => {
     console.log(`
@@ -118,11 +118,11 @@ server.listen(7770, function (err) {
     `)
 })
 
-//
-// app.use(
-//   express.static(path.join(__dirname, "./frontend/build"))
-// );
-// app.get('/*', function(req, res) {
-//   res.send("Hello World!");
-//   res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
-// });
+
+app.use(
+  express.static(path.join(__dirname, "./frontend/build"))
+);
+app.get('/*', function(req, res) {
+  res.send("Hello World!");
+  res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
+});

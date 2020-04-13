@@ -963,7 +963,7 @@ class UserProfile extends Component {
         //
         //   `};
         //
-        ec2-3-81-110-166.compute-1.amazonaws.com/graphql
+        // fetch('ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
         //   method: 'POST',
         //   body: JSON.stringify(requestBody),
         //   headers: {

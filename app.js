@@ -111,10 +111,10 @@ io.on('connection', (socket) => {
 io.on('disconnect', (socket) => {
   console.log("a wild client disappeared..");
 });
-server.listen(9909, function (err) {
+server.listen(35790, function (err) {
   if (err) throw err
   console.log(`
-    socket.io listening on port 9909
+    socket.io listening on port 35790
     `)
 })
 

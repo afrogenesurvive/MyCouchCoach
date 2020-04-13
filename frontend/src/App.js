@@ -28,7 +28,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.sessionStorageAuth = null;
-    this.socket = io('http://localhost:35790');
+    this.socket = io('http://localhost:9099');
   }
 
   login = (token, activityId, role, tokenExpiration) => {

@@ -8,7 +8,7 @@ const userOrderList = props => {
   const userOrders = props.userOrders.map(order => {
     // console.log(order.date);
     const orderDate = new Date (order.date.substr(0,10)*1000).toISOString().slice(0,10);
-    console.log(order.totals);
+    // console.log(order.totals);
     return (
       <UserOrderItem
         key={order._id}

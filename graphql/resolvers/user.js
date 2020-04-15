@@ -143,7 +143,8 @@ module.exports = {
     }
     try {
 
-      const regex = "/^" + args.regex + "/";
+      const regex = new RegExp(args.regex);
+      // const regex = "/^" + args.regex + "/";
       const users = await User.find({'name': {$regex: regex, $options: 'i'}});
 
       return users.map(user => {

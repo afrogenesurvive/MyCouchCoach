@@ -32,7 +32,7 @@ const UserDetail = (props) => {
         <Card.Title><span className="ul">User Details</span></Card.Title>
         <Row className="detailCardRow">
           <Col className="detailCardCol">
-          <Card.Img variant="top" src={user.profileImages[1].path} />
+          <Card.Img variant="top" src={user.profileImages[0].path} />
           <Card.Text>
             <span className="bold">ID:</span> {user._id}
           </Card.Text>

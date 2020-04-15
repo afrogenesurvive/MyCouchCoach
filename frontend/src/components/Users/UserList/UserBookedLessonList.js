@@ -6,13 +6,18 @@ import './UserList.css';
 const userBookedLessonList = props => {
 
   const bookedLessons = props.userBookedLessons.map(bookedLesson => {
-    const bookedLessonDate = new Date (bookedLesson.date.substr(0,10)*1000).toISOString().slice(0,10);;
+
+    const dateBooked = new Date (bookedLesson.date.substr(0,10)*1000).toISOString().slice(0,10);;
+    const sessionDate = new Date (bookedLesson.session.date.substr(0,10)*1000).toISOString().slice(0,10);;
     return (
       <UserBookedLessonItem
         key={bookedLesson.ref}
         bookedLesson={bookedLesson}
-        date={bookedLessonDate}
-        ref={bookedLesson.ref}
+        dateBooked={dateBooked}
+        sessionDate={sessionDate}
+        sessionTime={bookedLesson.session.time}
+        sessionTitle={bookedLesson.session.title}
+        lesson={bookedLesson.ref}
         authId={props.authId}
         onDelete={props.onDelete}
         canDelete={props.canDelete}

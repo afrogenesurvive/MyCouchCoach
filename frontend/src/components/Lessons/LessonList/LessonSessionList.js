@@ -14,6 +14,7 @@ const lessonSessionList = props => {
         authId={props.authId}
         title={session.title}
         date={sessionDate}
+        time={session.time}
         onBookSession={props.onBookSession}
         onAddCartLesson={props.onAddCartLesson}
       />

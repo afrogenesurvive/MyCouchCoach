@@ -118,6 +118,7 @@ module.exports = buildSchema(`
   type BookedLessonSession {
     title: String
     date: String
+    time: String
   }
   type WishlistItem {
     date: String
@@ -235,6 +236,7 @@ module.exports = buildSchema(`
     attendedAmount: Int
     inProgress: Boolean
     full: Boolean
+    url: String
   }
 
   input LessonInput {
@@ -272,6 +274,7 @@ module.exports = buildSchema(`
     sessionAttendedAmount: Int
     sessionInProgress: Boolean
     sessionFull: Boolean
+    sessionUrl: String
   }
 
   type Order {
@@ -493,6 +496,7 @@ module.exports = buildSchema(`
     getLessonByPromo(activityId: ID!, promoId: ID!): [Lesson]
 
     getLessonsBySessionField(activityId: ID!, field: String!, query: String!): [Lesson]
+    getLessonSession(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Session
 
     getLessonsByCategory(activityId: ID!, regex: String!): [Lesson]
 
@@ -634,6 +638,7 @@ module.exports = buildSchema(`
     addLessonReview(activityId: ID!, lessonId: ID!, reviewId: ID!): Lesson
     addLessonPromo(activityId: ID!, lessonId: ID!, promoId: ID!): Lesson
 
+    updateSessionUrl(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
     addLessonBooking(activityId: ID!, lessonId: ID!, userId: ID!, lessonInput: LessonInput!): Lesson
     addLessonAttendance(activityId: ID!, lessonId: ID!, userId: ID!, lessonInput: LessonInput!): Lesson
 

@@ -49,6 +49,7 @@ const lessonSchema = new Schema({
     attendedAmount: {type: Number},
     inProgress: {type: Boolean},
     full: {type: Boolean},
+    url: {type: String},
     _id : false
   }],
   promos: {type: Schema.Types.ObjectId,ref: 'Promo'}

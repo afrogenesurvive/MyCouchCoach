@@ -587,8 +587,10 @@ console.log(user.cart);
     </Tab>
 
     <Tab eventKey="meeting" title="meeting">
-      <p>session details go here</p>
-      <p>zoom mtg create button, dom element etc</p>
+      <p>lesson and session details go here</p>
+      <p>add lesson attendance function hook</p>
+      <p>updateSessionUrl mutation func hook</p>
+      <p>zoom mtg create button, dom element etc </p>
     </Tab>
 
     <Tab eventKey="activity" title="activity">

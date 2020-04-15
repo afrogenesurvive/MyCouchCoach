@@ -13,6 +13,9 @@ const lessonSessionItem = props => (
       <Card.Text>
         date: {props.date}
       </Card.Text>
+      <Card.Text>
+        time: {props.time}
+      </Card.Text>
     </Card.Body>
 
     <Button variant="primary" onClick={props.onBookSession.bind(this, props.session)}>

@@ -261,17 +261,75 @@ module.exports = {
         date: sessionDate,
         title: args.sessionTitle
       };
+      console.log(sessionDate);
       // const lessons = await Lesson.find({sessions: {$elemMatch: {$gte:, $lte:}}})
       const lessons = await Lesson.aggregate([
         {$unwind: '$sessions'},
-        {$group: {_id:{date:'$sessions.date',title:'$sessions.title'},booked: { $addToSet: '$sessions.booked'}}},
-        {$match: {_id: {$eq: session }}}
+        {$group: {_id:{
+          // lessonId: '$_id',
+          lessonId: '$_id',
+          lessonTitle: '$title',
+          date:'$sessions.date',
+          title:'$sessions.title',
+          time:'$sessions.time',
+          limit:'$sessions.limit',
+          bookedAmount: '$sessions.bookedAmount',
+          booked: '$sessions.booked',
+          full: '$sessions.full'
+        }}},
+        {$match: {
+          '_id.date': {$eq: sessionDate },
+          '_id.booked': {$ne: []}
+        }}
         // {$group: {_id:'$sessions.date', booked: { $addToSet: '$sessions.booked'}}},
         // {$match: {_id: {$eq: sessionDate }}}
         // {$group: {_id:'$sessions.title', date: { $addToSet: '$sessions.date'}}}
       ]);
-
-        console.log("x day session bookings",JSON.stringify(lessons));
+      const lessons2 = lessons.map(x => x._id.booked);
+        console.log("x day session bookings",lessons.length,JSON.stringify(lessons),lessons,lessons2);
+        // for each element of lessons, generate msg based on fields, find many w/ booked user ids, map to array w/ emails, send msg to email
+        // return lessons.map(lesson => {
+        //   return transformLesson(lesson);
+        // });
+    } catch (err) {
+      throw err;
+    }
+  },
+  getLessonSession: async (args, req) => {
+    console.log("Resolver: getLessonSession...");
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      const preLesson = await Lesson.findById({_id: args.lessonId});
+      const session = await Lesson.aggregate([
+              {$unwind: '$sessions'},
+              {$group: {_id:{
+                // lessonId: '$_id',
+                lessonId: '$_id',
+                lessonTitle: '$title',
+                date:'$sessions.date',
+                title:'$sessions.title',
+                time:'$sessions.time',
+                limit:'$sessions.limit',
+                bookedAmount: '$sessions.bookedAmount',
+                booked: '$sessions.booked',
+                full: '$sessions.full'
+              }}},
+              // {$group: {_id:{date:'$sessions.date',title:'$sessions.title'},booked: { $addToSet: '$sessions.booked'}}},
+              {$match:
+                {
+                  // '_id.lessonId': {$ne: args.lessonId},
+                  '_id.lessonId': {$eq: preLesson._id},
+                  '_id.title': {$eq: args.lessonInput.sessionTitle }
+                }}
+              // {$match: {'_id.lessonId': args.lessonId, '_id.title': {$eq: args.lessonInput.sessionTitle }}}
+            ]);
+            const session2 = session[0]._id;
+            // console.log(session2);
+            return {
+              ...session2
+            }
         // return lessons.map(lesson => {
         //   return transformLesson(lesson);
         // });
@@ -938,13 +996,54 @@ module.exports = {
     try {
       const today = new Date().toISOString().substr(0,10);
       const user = await User.findById({_id: args.userId});
-      // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$all: [user]} },
-      // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$nin: user} },
-      // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$elemMatch: {$ne: user}} },
-      // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$elemMatch: user} },
+      const preLesson = await Lesson.findById({_id: args.lessonId});
+      const userBookings = user.bookedLessons.map(x => x.ref);
+      console.log(args.lessonId,preLesson._id);
+      // console.log(userBookings, userBookings.includes(args.lessonId));
+      const session = await Lesson.aggregate([
+        {$unwind: '$sessions'},
+        {$group: {_id:{
+          // lessonId: '$_id',
+          lessonId: '$_id',
+          lessonTitle: '$title',
+          date:'$sessions.date',
+          title:'$sessions.title',
+          limit:'$sessions.limit',
+          bookedAmount: '$sessions.bookedAmount',
+          booked: '$sessions.booked',
+          full: '$sessions.full'
+        }}},
+        // {$group: {_id:{date:'$sessions.date',title:'$sessions.title'},booked: { $addToSet: '$sessions.booked'}}},
+        {$match:
+          {
+            // '_id.lessonId': {$ne: args.lessonId},
+            '_id.lessonId': {$eq: preLesson._id},
+            '_id.title': {$eq: args.lessonInput.sessionTitle }
+          }}
+        // {$match: {'_id.lessonId': args.lessonId, '_id.title': {$eq: args.lessonInput.sessionTitle }}}
+      ]);
+
+      if (session[0]._id.booked.toString().split(',').includes(args.userId) === true) {
+        throw new Error('...umm no.. youve already booked this session');
+      }
+      let sessionFull = session[0]._id.full;
+      if (session[0]._id.bookedAmount >= (session[0]._id.limit - 1)) {
+        // console.log('...session full...');
+        sessionFull = true;
+        throw new Error('...sorry this session is full..')
+      }
+      // if (session[0]._id.bookedAmount < (session[0]._id.limit - 1)) {
+      //   console.log('...spaces open...');
+      // }
+      // console.log(session,session[0]._id.limit,session[0]._id.bookedAmount,sessionFull,session[0]._id.booked,session[0]._id.booked.toString(),session[0]._id.booked.toString().split(','),user._id,args.userId,session[0]._id.booked.includes(user._id),session[0]._id.booked.includes(args.userId),session[0]._id.booked.toString().search(args.userId),session[0]._id.booked.toString().split(',').includes(args.userId),session[0]._id.booked.filter(x => x === user._id));
+
       const lesson = await Lesson.findOneAndUpdate(
         {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate },
-        {$addToSet: {'sessions.$.booked': user}, $inc: {'sessions.$.bookedAmount': 1}}
+        {
+          $addToSet: {'sessions.$.booked': user},
+          $inc: {'sessions.$.bookedAmount': 1},
+          $set: {'sessions.$.full': sessionFull}
+        }
         ,{new: true, useFindAndModify: false})
       .populate('instructors')
       .populate('reviews')
@@ -957,6 +1056,7 @@ module.exports = {
         session: {
           title: args.lessonInput.sessionTitle,
           date: args.lessonInput.sessionDate,
+          time: args.lessonInput.sessionTime,
         },
         ref: lesson
       };
@@ -1075,6 +1175,32 @@ module.exports = {
       const instructors = lesson.instructors.map(x => x._id);
       const updateUser = await User.findOneAndUpdate({_id: args.userId},{$pull: {attendedLessons: {ref: lesson}}},{new: true, useFindAndModify: false})
       const updateInstructors = await User.update({_id: {$in: instructors}},{$pull: {attendedLessons: {ref: lesson}}},{new: true, useFindAndModify: false})
+        return {
+            ...lesson._doc,
+            _id: lesson.id,
+            title: lesson.title
+        };
+    } catch (err) {
+      throw err;
+    }
+  },
+  updateSessionUrl: async (args, req) => {
+    console.log("Resolver: updateSessionUrl...");
+
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+
+      const lesson = await Lesson.findOneAndUpdate(
+        {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate },
+        {$set: {'sessions.$.url': args.lessonInput.sessionUrl}},
+        {new: true, useFindAndModify: false})
+      .populate('instructors')
+      .populate('reviews')
+      .populate('sessions.booked')
+      .populate('sessions.attended');
+
         return {
             ...lesson._doc,
             _id: lesson.id,

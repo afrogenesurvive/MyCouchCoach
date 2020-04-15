@@ -10,13 +10,28 @@ const userBookedLessonItem = props => (
 
     <Card.Body>
       <Card.Text>
-        date: {props.bookedLessonDate}
+        dateBooked: {props.dateBooked}
       </Card.Text>
       <Card.Text>
         Lesson:
       </Card.Text>
       <Card.Text>
-        ID: {props.ref}
+        ID: {props.lesson._id}
+      </Card.Text>
+      <Card.Text>
+        Title: {props.lesson.title}
+      </Card.Text>
+      <Card.Text>
+        Session:
+      </Card.Text>
+      <Card.Text>
+        Title: {props.sessionTitle}
+      </Card.Text>
+      <Card.Text>
+        Date: {props.sessionDate}
+      </Card.Text>
+      <Card.Text>
+        Time: {props.sessionTime}
       </Card.Text>
 
       <Card.Link href="">

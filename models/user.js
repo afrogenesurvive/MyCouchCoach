@@ -62,7 +62,8 @@ const userSchema = new Schema({
     date: {type: Date},
     session:{
       title: {type: String},
-      date: {type: Date}
+      date: {type: Date},
+      time: {type: String}
     },
     ref: {type: Schema.Types.ObjectId,ref: 'Lesson'},
     _id : false

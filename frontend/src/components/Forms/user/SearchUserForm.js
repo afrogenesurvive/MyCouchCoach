@@ -12,21 +12,19 @@ return (
 
   <Form.Row>
   {
-//     <Form.Group className="searchInput" controlId="formBasicFieldSelect">
-//   <Form.Label>Field</Form.Label>
-//   <Form.Control as="select">
-//   <option>select</option>
-//
-//   username
-// age
-// phone
-// phone2
-// email
-//   <option></option>
-//   </Form.Control>
-//   <Form.Text className="text-muted">
-//   </Form.Text>
-//   </Form.Group>
+    <Form.Group className="searchInput" controlId="formBasicFieldSelect">
+    <Form.Label>Field</Form.Label>
+    <Form.Control as="select">
+    <option>select</option>
+    <option>username</option>
+    <option>age</option>
+    <option>phone</option>
+    <option>phone2</option>
+    <option>email</option>
+    </Form.Control>
+    <Form.Text className="text-muted">
+    </Form.Text>
+    </Form.Group>
 }
 
 

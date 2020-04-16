@@ -279,29 +279,35 @@ module.exports = {
       console.log("x day sessions",sessions2);
       const sessionsBooked = sessions.map(x => x._id.booked);
       const sessionsBookedConcat = [].concat.apply([], sessionsBooked);
-        console.log("x day session bookings",sessionsBookedConcat);
+        // console.log("x day session bookings",sessionsBookedConcat);
       const bookedUsers = await User.find({_id: {$in: sessionsBookedConcat}})
       const bookedUserContacts = bookedUsers.map(user =>
-        ({_id: user._id, username: user.username, email: user.contact.email})
+        ({_id: user._id, username: user.username, email: user.contact.email, phone: user.contact.phone})
       )
-      console.log('todays booked session user contacts...',bookedUserContacts);
+      // console.log('todays booked session user contacts...',bookedUserContacts);
       const sessionReminders = sessions2.map(x => ({
         message: `
           Don't forget !!! You have a class: ${x.lessonTitle},
-          session: ${x.title}, on: ${x.date}, at: ${x.time},
+          session: ${x.title}, on: ${x.date.toISOString()}, at: ${x.time},
           wake that ass up!!
         `,
         recipients: x.booked,
       }))
-      console.log('sessionReminders',sessionReminders);
+      // console.log('sessionReminders',sessionReminders);
       let arr1 = sessionReminders;
       let arr2 = bookedUserContacts;
       let arr3 = [];
-      console.log(arr2);
-      // arr1.forEach(reminder => reminder.booked.forEach(bookedId => bookedId = arr2.find(contact => contact._id === bookedId)));
-      // arr1.forEach(reminder => reminder.booked.forEach(bookedId => bookedId = arr2.find(contact => contact._id === bookedId),arr3.push(bookedId)));
-      // arr1.forEach(reminder => reminder.booked.forEach(booked => let bookedId = arr2.find(contact => contact._id === booked),arr3.push(bookedId)));
-        // return lessons.map(lesson => {
+      let arr4 = []
+      // console.log(arr2);
+        // arr1.forEach(reminder => console.log('beep',reminder.recipients));
+        // arr1.forEach(reminder => reminder.recipients.forEach(recipient => console.log({msg: reminder.message, usrid: recipient})));
+        arr1.forEach(reminder => reminder.recipients.forEach(recipient => arr3.push({message: reminder.message, user: recipient})));
+        // arr1.forEach(reminder => reminder.recipients.forEach(recipient => recipient = 'x',console.log(recipient)));
+        // arr3.forEach(reminder => console.log(reminder.message,arr2.find(contact => contact._id.toString() === reminder.user.toString())))
+        arr3.forEach(reminder => arr4.push({message: reminder.message, contact: arr2.find(contact => contact._id.toString() === reminder.user.toString())}))
+        // arr3.forEach(reminder => console.log(reminder.user,arr2.filter(contact => contact._id === reminder.user)))
+        console.log('finally',arr4);
+      // return lessons.map(lesson => {
         //   return transformLesson(lesson);
         // });
     } catch (err) {

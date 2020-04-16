@@ -257,16 +257,9 @@ module.exports = {
     }
     try {
       const sessionDate = new Date(args.sessionDate);
-      const session = {
-        date: sessionDate,
-        title: args.sessionTitle
-      };
-      console.log(sessionDate);
-      // const lessons = await Lesson.find({sessions: {$elemMatch: {$gte:, $lte:}}})
-      const lessons = await Lesson.aggregate([
+      const sessions = await Lesson.aggregate([
         {$unwind: '$sessions'},
         {$group: {_id:{
-          // lessonId: '$_id',
           lessonId: '$_id',
           lessonTitle: '$title',
           date:'$sessions.date',
@@ -275,19 +268,39 @@ module.exports = {
           limit:'$sessions.limit',
           bookedAmount: '$sessions.bookedAmount',
           booked: '$sessions.booked',
-          full: '$sessions.full'
+          full: '$sessions.full',
         }}},
         {$match: {
           '_id.date': {$eq: sessionDate },
           '_id.booked': {$ne: []}
         }}
-        // {$group: {_id:'$sessions.date', booked: { $addToSet: '$sessions.booked'}}},
-        // {$match: {_id: {$eq: sessionDate }}}
-        // {$group: {_id:'$sessions.title', date: { $addToSet: '$sessions.date'}}}
       ]);
-      const lessons2 = lessons.map(x => x._id.booked);
-        console.log("x day session bookings",lessons.length,JSON.stringify(lessons),lessons,lessons2);
-        // for each element of lessons, generate msg based on fields, find many w/ booked user ids, map to array w/ emails, send msg to email
+      const sessions2 = sessions.map(x => x._id);
+      console.log("x day sessions",sessions2);
+      const sessionsBooked = sessions.map(x => x._id.booked);
+      const sessionsBookedConcat = [].concat.apply([], sessionsBooked);
+        console.log("x day session bookings",sessionsBookedConcat);
+      const bookedUsers = await User.find({_id: {$in: sessionsBookedConcat}})
+      const bookedUserContacts = bookedUsers.map(user =>
+        ({_id: user._id, username: user.username, email: user.contact.email})
+      )
+      console.log('todays booked session user contacts...',bookedUserContacts);
+      const sessionReminders = sessions2.map(x => ({
+        message: `
+          Don't forget !!! You have a class: ${x.lessonTitle},
+          session: ${x.title}, on: ${x.date}, at: ${x.time},
+          wake that ass up!!
+        `,
+        recipients: x.booked,
+      }))
+      console.log('sessionReminders',sessionReminders);
+      let arr1 = sessionReminders;
+      let arr2 = bookedUserContacts;
+      let arr3 = [];
+      console.log(arr2);
+      // arr1.forEach(reminder => reminder.booked.forEach(bookedId => bookedId = arr2.find(contact => contact._id === bookedId)));
+      // arr1.forEach(reminder => reminder.booked.forEach(bookedId => bookedId = arr2.find(contact => contact._id === bookedId),arr3.push(bookedId)));
+      // arr1.forEach(reminder => reminder.booked.forEach(booked => let bookedId = arr2.find(contact => contact._id === booked),arr3.push(bookedId)));
         // return lessons.map(lesson => {
         //   return transformLesson(lesson);
         // });
@@ -729,6 +742,7 @@ module.exports = {
         attendedAmount: 0,
         inProgress: false,
         full: false,
+        url: args.lessonInput.sessionUrl
       };
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: {sessions: session}},{new: true, useFindAndModify: false})
       .populate('instructors')

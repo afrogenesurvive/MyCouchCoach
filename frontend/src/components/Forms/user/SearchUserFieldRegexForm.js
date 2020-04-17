@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import './CreateUserForm.css';
 
-const SearchUserFieldBasicForm = (props) => {
+const SearchUserFieldRegexForm = (props) => {
 
 return (
 <div className="SearchFormContainer">
@@ -13,14 +13,20 @@ return (
   <Form.Row>
   {
     <Form.Group className="searchInput" controlId="formBasicFieldSelect">
-    <Form.Label>Field</Form.Label>
+    <Form.Label>Regex Field</Form.Label>
     <Form.Control as="select">
     <option>select</option>
+    <option>_id</option>
     <option>username</option>
-    <option>age</option>
-    <option>phone</option>
-    <option>phone2</option>
-    <option>email</option>
+    <option>role</option>
+    <option>contact.phone</option>
+    <option>contact.phone2</option>
+    <option>contact.email</option>
+    <option>socialMedia.platform</option>
+    <option>socialMedia.handle</option>
+    <option>tags</option>
+    <option>interests</option>
+    <option>bookedLessons.session.title</option>
     </Form.Control>
     <Form.Text className="text-muted">
     </Form.Text>
@@ -29,7 +35,7 @@ return (
 
 
   <Form.Group className="searchInput" controlId="formBasicQuery">
-  <Form.Label>Query</Form.Label>
+  <Form.Label>Regex Query</Form.Label>
   <Form.Control type="textarea" rows="5" placeholder="Query"/>
   </Form.Group>
 
@@ -52,4 +58,4 @@ return (
 
 )};
 
-export default SearchUserFieldBasicForm;
+export default SearchUserFieldRegexForm;

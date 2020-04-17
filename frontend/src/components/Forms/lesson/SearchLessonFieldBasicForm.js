@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import './CreateUserForm.css';
 
-const SearchLessonForm = (props) => {
+const SearchLessonFieldBasicForm = (props) => {
 
 return (
 <div className="SearchFormContainer">
@@ -11,26 +11,31 @@ return (
 
   <Form.Row>
   <Form.Group className="searchInput" controlId="formBasicFieldSelect">
-  <Form.Label>Field</Form.Label>
+  <Form.Label>Basic Field</Form.Label>
   <Form.Control as="select">
   <option>select</option>
-  <option>email</option>
-  <option>password</option>
-  <option>name</option>
-  <option>dob</option>
-  <option>phone</option>
-  <option>address.town</option>
-  <option>address.parish</option>
-  <option>role</option>
-  <option>employmentDate</option>
-  <option>terminationDate</option>
+  <option>price</option>
+  <option>points</option>
+  <option>schedule.date</option>
+  <option>schedule.time</option>
+  <option>instructors</option>
+  <option>attendees</option>
+  <option>sessions.booked</option>
+  <option>sessions.attended</option>
+  <option>sessions.bookedAmount</option>
+  <option>sessions.attendedAmount</option>
+  <option>sessions.date</option>
+  <option>sessions.full</option>
+  <option>sessions.inProgress</option>
+  <option>sessions.limit</option>
+  <option>sessions.amount</option>
   </Form.Control>
   <Form.Text className="text-muted">
   </Form.Text>
   </Form.Group>
 
   <Form.Group className="searchInput" controlId="formBasicQuery">
-  <Form.Label>Query</Form.Label>
+  <Form.Label>Basic Query</Form.Label>
   <Form.Control type="textarea" rows="5" placeholder="Query"/>
   </Form.Group>
 
@@ -53,4 +58,4 @@ return (
 
 )};
 
-export default SearchLessonForm;
+export default SearchLessonFieldBasicForm;

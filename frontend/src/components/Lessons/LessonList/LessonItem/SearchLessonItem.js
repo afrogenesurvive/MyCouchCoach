@@ -15,6 +15,10 @@ const searchLessonItem = props => (
       <p className="userItemText">
         {props.title}
       </p>
+      <p className="userItemHeading"> Category:</p>
+      <p className="userItemText">
+        {props.category}
+      </p>
     </div>
     <div>
     <Button variant="primary" onClick={props.onDetail.bind(this, props._id)}>

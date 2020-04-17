@@ -469,6 +469,7 @@ module.exports = buildSchema(`
     getAllUsers(activityId: ID!): [User]
     getUserById(activityId: ID!, userId: ID!): User
     getUsersByField(activityId: ID!, field: String!, query: String!): [User]
+    getUsersByFieldRegex(activityId: ID!, field: String!, query: String!): [User]
     getUsersByInterests(activityId: ID!, userInput: UserInput!): [User]
     getUsersByTags(activityId: ID!, userInput: UserInput!): [User]
     getUsersByPointRange(activityId: ID!, upperLimit: Float!,lowerLimit: Float!): [User]
@@ -490,6 +491,7 @@ module.exports = buildSchema(`
     getAllLessons(activityId: ID!): [Lesson]
     getLessonById(activityId: ID!, lessonId: ID!): Lesson
     getLessonsByField(activityId: ID!, field: String!, query: String!): [Lesson]
+    getLessonsByFieldRegex(activityId: ID!, field: String!, query: String!): [Lesson]
     getLessonsByScheduleRange(activityId: ID!, startDate: String!, endDate: String!): [Lesson]
     getLessonsByInstructors(activityId: ID!, instructorIds: [ID!]): [Lesson]
     getLessonByReview(activityId: ID!, reviewId: ID!): [Lesson]

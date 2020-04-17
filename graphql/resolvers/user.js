@@ -136,6 +136,28 @@ module.exports = {
       throw err;
     }
   },
+  getUsersByFieldRegex: async (args, req) => {
+    console.log("Resolver: getUsersByFieldRegex...");
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      let fieldType = null;
+      let resolverField = args.field;
+      const regExpQuery = new RegExp(args.query)
+      let resolverQuery = {$regex: regExpQuery, $options: 'i'};
+      const query = {[resolverField]:resolverQuery};
+      console.log(query);
+      const users = await User.find(query)
+
+      return users.map(user => {
+        return transformUser(user);
+
+      });
+    } catch (err) {
+      throw err;
+    }
+  },
   getUserByNameRegex: async (args, req) => {
 
     if (!req.isAuth) {

@@ -7,7 +7,7 @@ import './UserList.css';
 
 const searchLessonList = props => {
 
-  const searchLessons = props.searchLessons.map(lesson => {
+  const searchLessons = props.lessons.map(lesson => {
     return (
       <React.Fragment>
       <SearchLessonItem
@@ -15,8 +15,15 @@ const searchLessonList = props => {
         userId={props.authUserId}
         _id={lesson._id}
         title={lesson.title}
-        
+        subtitle={lesson.subtitle}
+        category={lesson.category}
+        instructors={lesson.instructors}
+        gallery={lesson.gallery}
+        schedule={lesson.schedule}
+        sessions={lesson.sessions}
         onDetail={props.onViewDetail}
+        canReport={props.canReport}
+        onReport={props.onReport}
       />
       </React.Fragment>
     );

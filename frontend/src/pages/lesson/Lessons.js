@@ -15,6 +15,7 @@ import AuthContext from '../../context/auth-context';
 import LessonList from '../../components/Lessons/LessonList/LessonList';
 import SearchLessonList from '../../components/Lessons/LessonList/SearchLessonList';
 import LessonDetail from '../../components/Lessons/LessonDetail';
+import SearchSession from '../../components/Lessons/LessonList/LessonItem/SearchSession';
 
 import Spinner from '../../components/Spinner/Spinner';
 import SidebarPage from '../Sidebar';
@@ -24,8 +25,11 @@ import LoadingOverlay from '../../components/LoadingOverlay';
 import AttachmentViewer from '../../components/AttachmentViewer';
 import LessonDetailViewer from '../../components/LessonDetailViewer';
 
-import SearchLessonForm from '../../components/Forms/lesson/SearchLessonForm';
 import CreateLessonForm from '../../components/Forms/lesson/CreateLessonForm';
+import SearchLessonFieldRegexForm from '../../components/Forms/lesson/SearchLessonFieldRegexForm';
+import SearchLessonFieldBasicForm from '../../components/Forms/lesson/SearchLessonFieldBasicForm';
+import SearchLessonSessionForm from '../../components/Forms/leson/SearchLessonSessionForm';
+
 
 import './Users.css';
 
@@ -40,6 +44,7 @@ class LessonsPage extends Component {
     lesson: null,
     lessons: [],
     searchLessons: [],
+    searchSession: null,
     isLoading: false,
     isSorting: false,
     selectedLesson: null,
@@ -81,8 +86,8 @@ class LessonsPage extends Component {
     this.fetchLessonsBasic();
   }
 
-  modalConfirmSearchHandler = (event) => {
-
+  modalConfirmSearchRegexHandler = (event) => {
+    event.preventDefault();
     let activityId = this.context.activityId;
     const token = this.context.token;
     let field = null;
@@ -97,45 +102,150 @@ class LessonsPage extends Component {
       userSearchField: field,
       userSearchQuery: query,
       searching: false,
-      userAlert: "Searching for User..."
+      userAlert: "Searching for Lesson..."
     })
 
-    // if (
-    //   field.trim().length === 0 ||
-    //   query.trim().length === 0
-    // ) {
-    //   this.setState({userAlert: "blank fields detected!!!...Please try again..."})
-    //   return;
-    // }
-    //
-    // const search = { field, query };
-    // const requestBody = {
-    //   query: `
-    //
-    //   `}
-    //
-    // fetch('http://localhost:8088/graphql', {
-    //   method: 'POST',
-    //   body: JSON.stringify(requestBody),
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     Authorization: 'Bearer ' + token
-    //   }
-    // })
-    //   .then(res => {
-    //     if (res.status !== 200 && res.status !== 201) {
-    //       throw new Error('Failed!');
-    //     }
-    //     return res.json();
-    //   })
-    //   .then(resData => {
-    //     const responseAlert = JSON.stringify(resData.data).slice(0,8);
-    //     const searchLessons = resData.data.;
-    //     this.setState({ searchUsers: searchLessons, userAlert: responseAlert})
-    //   })
-    //   .catch(err => {
-    //     this.setState({userAlert: err});
-    //   });
+    if (
+      field.trim().length === 0 ||
+      query.trim().length === 0
+    ) {
+      this.setState({userAlert: "blank fields detected!!!...Please try again..."})
+      return;
+    }
+
+    const search = { field, query };
+    const requestBody = {
+      query: `
+        query {getLessonsByFieldRegex(
+          activityId:"${activityId}",
+          field:"${field}",
+          query:"${query}")
+          {_id,title,subtitle,type,category,price,sku,points,description,notes,duration,schedule{date,time},instructors{_id,username},attendees{_id,username},gallery{name,type,path},requirements,materials,files{name,type,size,path},reviews{_id,title,author{_id}},tags,sessions{title,date,time,limit,amount,booked{_id,username},bookedAmount,attended{_id,username},attendedAmount,inProgress,full,url},promos{_id}}}
+      `}
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data.getLessonsByFieldRegex).slice(0,8);
+        const searchLessons = resData.data.getLessonsByFieldRegex;
+        this.setState({ searchLessons: searchLessons, userAlert: responseAlert})
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
+  }
+  modalConfirmSearchBasicHandler = (event) => {
+    event.preventDefault();
+    let activityId = this.context.activityId;
+    const token = this.context.token;
+    let field = null;
+    let query = event.target.formBasicQuery.value;
+    if (event.target.formBasicFieldSelect.value === "select") {
+      field = event.target.formBasicField.value;
+    } else {
+      field = event.target.formBasicFieldSelect.value;
+    }
+
+    this.setState({
+      userSearchField: field,
+      userSearchQuery: query,
+      searching: false,
+      userAlert: "Searching for Lesson..."
+    })
+
+    if (
+      field.trim().length === 0 ||
+      query.trim().length === 0
+    ) {
+      this.setState({userAlert: "blank fields detected!!!...Please try again..."})
+      return;
+    }
+
+    const search = { field, query };
+    const requestBody = {
+      query: `
+        query {getLessonsByField(
+          activityId:"${activityId}",
+          field:"${field}",
+          query:"${query}")
+          {_id,title,subtitle,type,category,price,sku,points,description,notes,duration,schedule{date,time},instructors{_id,username},attendees{_id,username},gallery{name,type,path},requirements,materials,files{name,type,size,path},reviews{_id,title,author{_id}},tags,sessions{title,date,time,limit,amount,booked{_id,username},bookedAmount,attended{_id,username},attendedAmount,inProgress,full,url},promos{_id}}}
+      `}
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data.getLessonsByField).slice(0,8);
+        const searchLessons = resData.data.getLessonsByField;
+        this.setState({ searchLessons: searchLessons, userAlert: responseAlert})
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
+  }
+  modalConfirmSearchSessionHandler = (event) => {
+    event.preventDefault();
+    let activityId = this.context.activityId;
+    const token = this.context.token;
+
+    const search = { field, query };
+    const requestBody = {
+      query: `
+        query {getLessonSession(
+          activityId:"${activityId}",
+          lessonId:"${lessonId}",
+          lessonInput:{
+            sessionTitle:"${sessionTitle}",
+            sessionDate:"${sessionDate}"
+          })
+          {title,date,time,limit,amount,bookedAmount,attendedAmount,booked{_id,username},attended{_id,username},inProgress,full,url}}
+      `}
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data.getLessonSession).slice(0,8);
+        const searchSession = resData.data.getLessonSession;
+        this.setState({ searchSession: searchSession, userAlert: responseAlert})
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
   }
 
   startCreateLesson = () => {
@@ -739,14 +849,38 @@ class LessonsPage extends Component {
                         <Tabs defaultActiveKey="Field" id="uncontrolled-tab-example">
 
                         <Tab eventKey="Field" title="Search by Field:">
-                          <SearchLessonForm
+                          <SearchLessonFieldRegexForm
                           authId={this.context.activityId}
                           canCancel
                             canConfirm
                             onCancel={this.modalCancelHandler}
-                            onConfirm={this.modalConfirmSearchHandler}
+                            onConfirm={this.modalConfirmSearchRegexHandler}
                             confirmText="Search"
                           />
+                          <SearchLessonFieldBasicForm
+                          authId={this.context.activityId}
+                          canCancel
+                            canConfirm
+                            onCancel={this.modalCancelHandler}
+                            onConfirm={this.modalConfirmSearchBasicHandler}
+                            confirmText="Search"
+                          />
+                        </Tab>
+                        <Tab eventKey="Session" title="Search Session">
+                          <SearchLessonSessionForm
+                          authId={this.context.activityId}
+                          canCancel
+                            canConfirm
+                            onCancel={this.modalCancelHandler}
+                            onConfirm={this.modalConfirmSearchSessionHandler}
+                            confirmText="Search"
+                          />
+
+                          {this.state.searchSession !== null && (
+                            <SearchSession
+                            session={this.state.searchSession}
+                            />
+                          )}
                         </Tab>
                         </Tabs>
                         </Col>
@@ -766,9 +900,12 @@ class LessonsPage extends Component {
 
                         {this.state.searchLessons !== [] && (
                           <SearchLessonList
-                            searchLessons={this.state.searchLessons}
-                            authId={this.context.activityId}
-                            onViewDetail={this.showDetailHandler}
+                            lessons={this.state.searchLessons}
+                            canReport={this.state.canReport}
+                            onReport={this.reportLesson}
+                             authId={this.context.activityId}
+                             onViewDetail={this.showDetailHandler}
+                             onSelectNoDetail={this.selectLessonNoDetail}
                           />
                         )}
                         </Row>

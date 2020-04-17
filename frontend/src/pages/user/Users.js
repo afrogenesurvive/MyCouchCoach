@@ -24,7 +24,8 @@ import LoadingOverlay from '../../components/LoadingOverlay';
 import AttachmentViewer from '../../components/AttachmentViewer';
 import UserDetailViewer from '../../components/UserDetailViewer';
 
-import SearchUserForm from '../../components/Forms/user/SearchUserForm';
+import SearchUserFieldBasicForm from '../../components/Forms/user/SearchUserFieldBasicForm';
+import SearchUserFieldRegexForm from '../../components/Forms/user/SearchUserFieldRegexForm';
 
 import './Users.css';
 
@@ -79,8 +80,8 @@ class UsersPage extends Component {
 
 
 
-  modalConfirmSearchHandler = (event) => {
-
+  modalConfirmSearchBasicHandler = (event) => {
+    event.preventDefault();
     let activityId = this.context.activityId;
     const token = this.context.token;
     let field = null;
@@ -110,11 +111,11 @@ class UsersPage extends Component {
     const requestBody = {
       query: `
         query {getUsersByField(
-          activityId:\"5e815ea627a93c0deab606d0\",
-          field:\"addresses.town\",
-          query:\"Test-Town\"
+          activityId:"${activityId}",
+          field:"${field}",
+          query:"${query}"
         )
-        {_id,password,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle},interests,perks{_id},promos{_id},friends{_id,username},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id},bookedLessons{date,ref{_id,title}},attendedLessons{date,ref{_id,title}},taughtLessons{date,ref{_id,title}},wishlist{date,ref{_id,title},booked},cart{dateAdded,sessionDate,lesson{_id,title}},comments{_id},messages{_id},orders{_id},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        {_id,role,username,public,clientConnected}}
       `}
 
     fetch('http://localhost:8088/graphql', {
@@ -135,6 +136,72 @@ class UsersPage extends Component {
         const responseAlert = JSON.stringify(resData.data.getUsersByField).slice(0,8);
         const searchUsers = resData.data.getUsersByField;
         this.setState({ searchUsers: searchUsers, userAlert: responseAlert})
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
+  }
+  modalConfirmSearchRegexHandler = (event) => {
+    event.preventDefault();
+    let activityId = this.context.activityId;
+    const token = this.context.token;
+    let field = null;
+    let query = event.target.formBasicQuery.value;
+    if (event.target.formBasicFieldSelect.value === "select") {
+      field = event.target.formBasicField.value;
+    } else {
+      field = event.target.formBasicFieldSelect.value;
+    }
+
+    this.setState({
+      userSearchField: field,
+      userSearchQuery: query,
+      searching: false,
+      userAlert: "Searching for User..."
+    })
+
+    if (
+      field.trim().length === 0 ||
+      query.trim().length === 0
+    ) {
+      this.setState({userAlert: "blank fields detected!!!...Please try again..."})
+      return;
+    }
+
+    const search = { field, query };
+    const requestBody = {
+      query: `
+        query {getUsersByFieldRegex(
+          activityId:"${activityId}",
+          field:"${field}",
+          query:"${query}"
+        )
+        {_id,role,username,public,clientConnected}}
+      `}
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data.getUsersByFieldRegex).slice(0,8);
+        const searchUsers = resData.data.getUsersByFieldRegex;
+        if (searchUsers === [] ) {
+          this.setState({ userAlert: '... nothing found soz...'})
+        } else {
+          this.setState({ searchUsers: searchUsers, userAlert: responseAlert})
+        }
+
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -485,12 +552,21 @@ hideDetailHandler = () => {
                         <Tabs defaultActiveKey="Field" id="uncontrolled-tab-example">
 
                         <Tab eventKey="Field" title="Search by Field:">
-                          <SearchUserForm
+                          <SearchUserFieldRegexForm
                           authUserId={this.context.userId}
                           canCancel
                             canConfirm
                             onCancel={this.modalCancelHandler}
-                            onConfirm={this.modalConfirmSearchHandler}
+                            onConfirm={this.modalConfirmSearchRegexHandler}
+                            confirmText="Search"
+                            user={this.context.selectedUser}
+                          />
+                          <SearchUserFieldBasicForm
+                          authUserId={this.context.userId}
+                          canCancel
+                            canConfirm
+                            onCancel={this.modalCancelHandler}
+                            onConfirm={this.modalConfirmSearchBasicHandler}
                             confirmText="Search"
                             user={this.context.selectedUser}
                           />
@@ -513,9 +589,12 @@ hideDetailHandler = () => {
 
                         {this.state.searchUsers !== [] && (
                           <SearchUserList
-                            searchUsers={this.state.searchUsers}
-                            authUserId={this.context.userId}
-                            onViewDetail={this.showDetailHandler}
+                          canReport={this.state.canReport}
+                          onReport={this.reportUser}
+                           users={this.state.searchUsers}
+                           authId={this.context.activityId}
+                           onViewDetail={this.showDetailHandler}
+                           onSelectNoDetail={this.selectUserNoDetail}
                           />
                         )}
                         </Row>

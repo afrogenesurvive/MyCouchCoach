@@ -67,12 +67,45 @@ module.exports = {
     if (!req.isAuth) {
       throw new Error('Unauthenticated!');
     }
+
     try {
       let fieldType = null;
       let resolverField = args.field;
       let resolverQuery = args.query;
       const query = {[resolverField]:resolverQuery};
       const lessons = await Lesson.find(query)
+      .populate('instructors')
+      .populate('attendees')
+      .populate('reviews')
+      .populate('sessions.booked')
+      .populate('sessions.attended');
+
+      return lessons.map(lesson => {
+        return transformLesson(lesson);
+
+      });
+    } catch (err) {
+      throw err;
+    }
+  },
+  getLessonsByFieldRegex: async (args, req) => {
+    console.log("Resolver: getLessonByFieldRegex...");
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+
+    try {
+      let fieldType = null;
+      let resolverField = args.field;
+      const regExpQuery = new RegExp(args.query)
+      let resolverQuery = {$regex: regExpQuery, $options: 'i'};
+      const query = {[resolverField]:resolverQuery};
+      const lessons = await Lesson.find(query)
+      .populate('instructors')
+      .populate('attendees')
+      .populate('reviews')
+      .populate('sessions.booked')
+      .populate('sessions.attended');
 
       return lessons.map(lesson => {
         return transformLesson(lesson);
@@ -750,7 +783,10 @@ module.exports = {
         full: false,
         url: args.lessonInput.sessionUrl
       };
-      const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: {sessions: session}},{new: true, useFindAndModify: false})
+      const lesson = await Lesson.findOneAndUpdate(
+        {_id:args.lessonId},
+        {$addToSet: {sessions: session, schedule: {date: session.date , time: session.time}}},
+        {new: true, useFindAndModify: false})
       .populate('instructors')
       .populate('reviews')
       .populate('sessions.booked')

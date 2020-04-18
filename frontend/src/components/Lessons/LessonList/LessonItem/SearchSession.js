@@ -4,32 +4,22 @@ import Card from 'react-bootstrap/Card';
 
 import './UserItem.css';
 
-const userLikedLessonItem = props => (
+const searchSession = props => (
   <li key={props.authId} className="users__list-item_detail users__list-item_detail4">
     <Card style={{ width: '18rem' }}>
 
     <Card.Body>
+      <Card.Title>{props.session.title}</Card.Title>
       <Card.Text>
-        Lesson:
+        date: {props.session.date}
       </Card.Text>
       <Card.Text>
-        ID: {props._id}
+        time: {props.session.time}
       </Card.Text>
-      <Card.Text>
-        Title: {props.title}
-      </Card.Text>
-
-      
-      { props.canDelete === true && (
-        <Button variant="danger" onClick={props.onDelete.bind(this, props.likedLesson)}>
-          Delete
-        </Button>
-      )}
-      
     </Card.Body>
     </Card>
 
   </li>
 );
 
-export default userLikedLessonItem;
+export default searchSession;

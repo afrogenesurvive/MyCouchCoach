@@ -21,6 +21,7 @@ const userBookedLessonList = props => {
         authId={props.authId}
         onDelete={props.onDelete}
         canDelete={props.canDelete}
+        viewLessonDetails={props.viewLessonDetails}
       />
     );
   });

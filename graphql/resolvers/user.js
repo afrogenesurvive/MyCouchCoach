@@ -149,6 +149,20 @@ module.exports = {
       const query = {[resolverField]:resolverQuery};
       console.log(query);
       const users = await User.find(query)
+      .populate('perks')
+      .populate('promos')
+      .populate('friends')
+      .populate('likedLessons')
+      .populate('bookedLessons.ref')
+      .populate('attendedLessons.ref')
+      .populate('taughtLessons.ref')
+      .populate('wishlist.ref')
+      .populate('cart.lesson')
+      .populate('comments.')
+      .populate('messages')
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
       return users.map(user => {
         return transformUser(user);
@@ -183,7 +197,21 @@ module.exports = {
     }
     try {
       const interests = args.interests;
-      const users = await User.find({'interests': {$all: interests}});
+      const users = await User.find({'interests': {$all: interests}})
+      .populate('perks')
+      .populate('promos')
+      .populate('friends')
+      .populate('likedLessons')
+      .populate('bookedLessons.ref')
+      .populate('attendedLessons.ref')
+      .populate('taughtLessons.ref')
+      .populate('wishlist.ref')
+      .populate('cart.lesson')
+      .populate('comments.')
+      .populate('messages')
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
       return users.map(user => {
         return transformUser(user);
@@ -292,10 +320,11 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('comments')
+      .populate('comments.')
       .populate('messages')
       .populate('orders')
-      .populate('reviews');
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
       return {
         ...user._doc,
@@ -338,7 +367,9 @@ module.exports = {
         .populate('cart.lesson')
         .populate('comments.')
         .populate('messages')
-        .populate('orders');
+        .populate('orders')
+        .populate('friendRequests.sender')
+        .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -376,7 +407,9 @@ module.exports = {
       .populate('cart.lesson')
       .populate('comments.')
       .populate('messages')
-      .populate('orders');
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
       return {
         ...user._doc,
@@ -414,7 +447,9 @@ module.exports = {
       .populate('cart.lesson')
       .populate('comments.')
       .populate('messages')
-      .populate('orders');
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -457,7 +492,9 @@ module.exports = {
       .populate('cart.lesson')
       .populate('comments.')
       .populate('messages')
-      .populate('orders');
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
       return {
         ...user._doc,
@@ -489,7 +526,21 @@ module.exports = {
           postalCode: args.userInput.addressPostalCode,
           primary: args.userInput.addressPrimary
         };
-        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { 'addresses': address }},{new: true, useFindAndModify: false});
+        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { 'addresses': address }},{new: true, useFindAndModify: false})
+        .populate('perks')
+        .populate('promos')
+        .populate('friends')
+        .populate('likedLessons')
+        .populate('bookedLessons.ref')
+        .populate('attendedLessons.ref')
+        .populate('taughtLessons.ref')
+        .populate('wishlist.ref')
+        .populate('cart.lesson')
+        .populate('comments.')
+        .populate('messages')
+        .populate('orders')
+        .populate('friendRequests.sender')
+        .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -560,6 +611,20 @@ module.exports = {
         },
         {$set:{'addresses.$': address2}},
         {new: true, useFindAndModify: false})
+        .populate('perks')
+        .populate('promos')
+        .populate('friends')
+        .populate('likedLessons')
+        .populate('bookedLessons.ref')
+        .populate('attendedLessons.ref')
+        .populate('taughtLessons.ref')
+        .populate('wishlist.ref')
+        .populate('cart.lesson')
+        .populate('comments.')
+        .populate('messages')
+        .populate('orders')
+        .populate('friendRequests.sender')
+        .populate('friendRequests.receiver');
         console.log('user2',user.addresses);
 
         return {
@@ -598,7 +663,9 @@ module.exports = {
       .populate('cart.lesson')
       .populate('comments.')
       .populate('messages')
-      .populate('orders');
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
       return {
         ...user._doc,
@@ -625,7 +692,22 @@ module.exports = {
           type:args.userInput.profileImageType,
           path:args.userInput.profileImagePath,
         };
-        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { 'profileImages': profileImage }},{new: true, useFindAndModify: false});
+        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { 'profileImages': profileImage }},{new: true, useFindAndModify: false})
+        .populate('perks')
+        .populate('promos')
+        .populate('friends')
+        .populate('likedLessons')
+        .populate('bookedLessons.ref')
+        .populate('attendedLessons.ref')
+        .populate('taughtLessons.ref')
+        .populate('wishlist.ref')
+        .populate('cart.lesson')
+        .populate('comments.')
+        .populate('messages')
+        .populate('orders')
+        .populate('friendRequests.sender')
+        .populate('friendRequests.receiver');
+
 
         return {
           ...user._doc,
@@ -662,7 +744,9 @@ module.exports = {
       .populate('cart.lesson')
       .populate('comments.')
       .populate('messages')
-      .populate('orders');
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
       return {
         ...user._doc,
@@ -689,7 +773,21 @@ module.exports = {
           handle:args.userInput.socialMediaHandle,
           link:args.userInput.socialMediaLink,
         };
-        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { 'socialMedia': socialMedia }},{new: true, useFindAndModify: false});
+        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { 'socialMedia': socialMedia }},{new: true, useFindAndModify: false})
+        .populate('perks')
+        .populate('promos')
+        .populate('friends')
+        .populate('likedLessons')
+        .populate('bookedLessons.ref')
+        .populate('attendedLessons.ref')
+        .populate('taughtLessons.ref')
+        .populate('wishlist.ref')
+        .populate('cart.lesson')
+        .populate('comments.')
+        .populate('messages')
+        .populate('orders')
+        .populate('friendRequests.sender')
+        .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -728,7 +826,9 @@ module.exports = {
       .populate('cart.lesson')
       .populate('comments.')
       .populate('messages')
-      .populate('orders');
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
       return {
         ...user._doc,
@@ -770,7 +870,9 @@ module.exports = {
       .populate('cart.lesson')
       .populate('comments.')
       .populate('messages')
-      .populate('orders');
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
       return {
         ...user._doc,
@@ -832,7 +934,9 @@ module.exports = {
       .populate('cart.lesson')
       .populate('comments.')
       .populate('messages')
-      .populate('orders');
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -883,7 +987,9 @@ module.exports = {
       .populate('cart.lesson')
       .populate('comments.')
       .populate('messages')
-      .populate('orders');
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -933,7 +1039,9 @@ module.exports = {
       .populate('cart.lesson')
       .populate('comments.')
       .populate('messages')
-      .populate('orders');
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -983,7 +1091,9 @@ module.exports = {
       .populate('cart.lesson')
       .populate('comments.')
       .populate('messages')
-      .populate('orders');
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -1002,7 +1112,21 @@ module.exports = {
     }
     try {
         const promo = await Promo.findById({_id: args.promoId});
-        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { promos: promo }},{new: true, useFindAndModify: false});
+        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { promos: promo }},{new: true, useFindAndModify: false})
+        .populate('perks')
+        .populate('promos')
+        .populate('friends')
+        .populate('likedLessons')
+        .populate('bookedLessons.ref')
+        .populate('attendedLessons.ref')
+        .populate('taughtLessons.ref')
+        .populate('wishlist.ref')
+        .populate('cart.lesson')
+        .populate('comments.')
+        .populate('messages')
+        .populate('orders')
+        .populate('friendRequests.sender')
+        .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -1026,18 +1150,20 @@ module.exports = {
         $pull: {friendRequests: {sender: args.friendId, receiver: args.userId }}
       },
         {new: true, useFindAndModify: false})
-      .populate('perks')
-      .populate('promos')
-      .populate('friends')
-      .populate('likedLessons')
-      .populate('bookedLessons.ref')
-      .populate('attendedLessons.ref')
-      .populate('taughtLessons.ref')
-      .populate('wishlist.ref')
-      .populate('cart.lesson')
-      .populate('comments.')
-      .populate('messages')
-      .populate('orders');
+        .populate('perks')
+        .populate('promos')
+        .populate('friends')
+        .populate('likedLessons')
+        .populate('bookedLessons.ref')
+        .populate('attendedLessons.ref')
+        .populate('taughtLessons.ref')
+        .populate('wishlist.ref')
+        .populate('cart.lesson')
+        .populate('comments.')
+        .populate('messages')
+        .populate('orders')
+        .populate('friendRequests.sender')
+        .populate('friendRequests.receiver');
       // console.log(user.friends);
       // const user2 = await User.findOneAndUpdate({_id: args.userId},{
       //   $pull: {friendRequests: {sender: friend._id}}
@@ -1081,7 +1207,22 @@ module.exports = {
         const friend = await User.findById({_id: args.friendId});
         console.log(preUser.friends);
         const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { friends: friend._id }},{new: true, useFindAndModify: false});
-        const updateFriend = await User.findOneAndUpdate({_id: args.friendId},{$pull: {friends: user._id}},{new: true, useFindAndModify: false});
+        const updateFriend = await User.findOneAndUpdate({_id: args.friendId},{$pull: {friends: user._id}},{new: true, useFindAndModify: false})
+        .populate('perks')
+        .populate('promos')
+        .populate('friends')
+        .populate('likedLessons')
+        .populate('bookedLessons.ref')
+        .populate('attendedLessons.ref')
+        .populate('taughtLessons.ref')
+        .populate('wishlist.ref')
+        .populate('cart.lesson')
+        .populate('comments.')
+        .populate('messages')
+        .populate('orders')
+        .populate('friendRequests.sender')
+        .populate('friendRequests.receiver');
+
         return {
           ...user._doc,
           _id: user.id,
@@ -1223,7 +1364,9 @@ module.exports = {
       .populate('cart.lesson')
       .populate('comments.')
       .populate('messages')
-      .populate('orders');
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
       return {
         ...user._doc,
@@ -1249,7 +1392,21 @@ module.exports = {
           date: args.userInput.activityDate,
           request: args.userInput.activityRequest,
         };
-        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { activity: activity }},{new: true, useFindAndModify: false});
+        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { activity: activity }},{new: true, useFindAndModify: false})
+        .populate('perks')
+        .populate('promos')
+        .populate('friends')
+        .populate('likedLessons')
+        .populate('bookedLessons.ref')
+        .populate('attendedLessons.ref')
+        .populate('taughtLessons.ref')
+        .populate('wishlist.ref')
+        .populate('cart.lesson')
+        .populate('comments.')
+        .populate('messages')
+        .populate('orders')
+        .populate('friendRequests.sender')
+        .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -1280,7 +1437,9 @@ module.exports = {
       .populate('cart.lesson')
       .populate('comments.')
       .populate('messages')
-      .populate('orders');
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -1299,7 +1458,21 @@ module.exports = {
     }
     try {
         const lesson = await Lesson.findById({_id: args.lessonId});
-        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { likedLessons: lesson._id }},{new: true, useFindAndModify: false});
+        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { likedLessons: lesson._id }},{new: true, useFindAndModify: false})
+        .populate('perks')
+        .populate('promos')
+        .populate('friends')
+        .populate('likedLessons')
+        .populate('bookedLessons.ref')
+        .populate('attendedLessons.ref')
+        .populate('taughtLessons.ref')
+        .populate('wishlist.ref')
+        .populate('cart.lesson')
+        .populate('comments.')
+        .populate('messages')
+        .populate('orders')
+        .populate('friendRequests.sender')
+        .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -1340,7 +1513,9 @@ module.exports = {
       .populate('cart.lesson')
       .populate('comments.')
       .populate('messages')
-      .populate('orders');
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -1362,7 +1537,21 @@ module.exports = {
         // const iSOString = new Date().toISOString().substr(0,10);
         const lesson = await Lesson.findById({_id: args.lessonId});
         // console.log("args.date",date,"toISOString",iSOString,"x",preUser.bookedLessons[0].date.toISOString().substr(0,10));
-        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { bookedLessons: {date: date, ref: lesson} }},{new: true, useFindAndModify: false});
+        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { bookedLessons: {date: date, ref: lesson} }},{new: true, useFindAndModify: false})
+        .populate('perks')
+        .populate('promos')
+        .populate('friends')
+        .populate('likedLessons')
+        .populate('bookedLessons.ref')
+        .populate('attendedLessons.ref')
+        .populate('taughtLessons.ref')
+        .populate('wishlist.ref')
+        .populate('cart.lesson')
+        .populate('comments.')
+        .populate('messages')
+        .populate('orders')
+        .populate('friendRequests.sender')
+        .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -1399,7 +1588,9 @@ module.exports = {
       .populate('cart.lesson')
       .populate('comments.')
       .populate('messages')
-      .populate('orders');
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -1420,7 +1611,21 @@ module.exports = {
       const date = args.date;
       // const iSOString = new Date().toISOString().substr(0,10);
       const lesson = await Lesson.findById({_id: args.lessonId});
-      const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { attendedLessons: {date: date, ref: lesson} }},{new: true, useFindAndModify: false});
+      const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { attendedLessons: {date: date, ref: lesson} }},{new: true, useFindAndModify: false})
+      .populate('perks')
+      .populate('promos')
+      .populate('friends')
+      .populate('likedLessons')
+      .populate('bookedLessons.ref')
+      .populate('attendedLessons.ref')
+      .populate('taughtLessons.ref')
+      .populate('wishlist.ref')
+      .populate('cart.lesson')
+      .populate('comments.')
+      .populate('messages')
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -1457,7 +1662,9 @@ module.exports = {
       .populate('cart.lesson')
       .populate('comments.')
       .populate('messages')
-      .populate('orders');
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -1478,7 +1685,21 @@ module.exports = {
       const date = args.date;
       // const iSOString = new Date().toISOString().substr(0,10);
       const lesson = await Lesson.findById({_id: args.lessonId});
-      const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { taughtLessons: {date: date, ref: lesson} }},{new: true, useFindAndModify: false});
+      const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { taughtLessons: {date: date, ref: lesson} }},{new: true, useFindAndModify: false})
+      .populate('perks')
+      .populate('promos')
+      .populate('friends')
+      .populate('likedLessons')
+      .populate('bookedLessons.ref')
+      .populate('attendedLessons.ref')
+      .populate('taughtLessons.ref')
+      .populate('wishlist.ref')
+      .populate('cart.lesson')
+      .populate('comments.')
+      .populate('messages')
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -1516,7 +1737,9 @@ module.exports = {
       .populate('cart.lesson')
       .populate('comments.')
       .populate('messages')
-      .populate('orders');
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -1538,7 +1761,21 @@ module.exports = {
       const sessionDate = args.sessionDate;
       // const iSOString = new Date().toISOString().substr(0,10);
       const lesson = await Lesson.findById({_id: args.lessonId});
-      const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { cart: {sessionDate: sessionDate, lesson: lesson} }},{new: true, useFindAndModify: false});
+      const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { cart: {sessionDate: sessionDate, lesson: lesson} }},{new: true, useFindAndModify: false})
+      .populate('perks')
+      .populate('promos')
+      .populate('friends')
+      .populate('likedLessons')
+      .populate('bookedLessons.ref')
+      .populate('attendedLessons.ref')
+      .populate('taughtLessons.ref')
+      .populate('wishlist.ref')
+      .populate('cart.lesson')
+      .populate('comments.')
+      .populate('messages')
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -1576,7 +1813,9 @@ module.exports = {
       .populate('cart.lesson')
       .populate('comments.')
       .populate('messages')
-      .populate('orders');
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -1599,7 +1838,21 @@ module.exports = {
     }
     try {
       const lesson = await Lesson.findById({_id: args.lessonId});
-      const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { wishlist: {ref: lesson} }},{new: true, useFindAndModify: false});
+      const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { wishlist: {ref: lesson} }},{new: true, useFindAndModify: false})
+      .populate('perks')
+      .populate('promos')
+      .populate('friends')
+      .populate('likedLessons')
+      .populate('bookedLessons.ref')
+      .populate('attendedLessons.ref')
+      .populate('taughtLessons.ref')
+      .populate('wishlist.ref')
+      .populate('cart.lesson')
+      .populate('comments.')
+      .populate('messages')
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -1630,7 +1883,9 @@ module.exports = {
       .populate('cart.lesson')
       .populate('comments.')
       .populate('messages')
-      .populate('orders');
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -1649,7 +1904,21 @@ module.exports = {
     }
     try {
         const comment = await Comment.findById({_id: args.commentId});
-        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { comments: comment }},{new: true, useFindAndModify: false});
+        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { comments: comment }},{new: true, useFindAndModify: false})
+        .populate('perks')
+        .populate('promos')
+        .populate('friends')
+        .populate('likedLessons')
+        .populate('bookedLessons.ref')
+        .populate('attendedLessons.ref')
+        .populate('taughtLessons.ref')
+        .populate('wishlist.ref')
+        .populate('cart.lesson')
+        .populate('comments.')
+        .populate('messages')
+        .populate('orders')
+        .populate('friendRequests.sender')
+        .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -1680,7 +1949,9 @@ module.exports = {
       .populate('cart.lesson')
       .populate('comments.')
       .populate('messages')
-      .populate('orders');
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -1699,7 +1970,21 @@ module.exports = {
     }
     try {
         const order = await Order.findById({_id: args.orderId});
-        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { orders: order._id }},{new: true, useFindAndModify: false});
+        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { orders: order._id }},{new: true, useFindAndModify: false})
+        .populate('perks')
+        .populate('promos')
+        .populate('friends')
+        .populate('likedLessons')
+        .populate('bookedLessons.ref')
+        .populate('attendedLessons.ref')
+        .populate('taughtLessons.ref')
+        .populate('wishlist.ref')
+        .populate('cart.lesson')
+        .populate('comments.')
+        .populate('messages')
+        .populate('orders')
+        .populate('friendRequests.sender')
+        .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -1730,7 +2015,9 @@ module.exports = {
       .populate('cart.lesson')
       .populate('comments.')
       .populate('messages')
-      .populate('orders');
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -1749,7 +2036,21 @@ module.exports = {
     }
     try {
         const review = await Review.findById({_id: args.reviewId});
-        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { reviews: review._id }},{new: true, useFindAndModify: false});
+        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { reviews: review._id }},{new: true, useFindAndModify: false})
+        .populate('perks')
+        .populate('promos')
+        .populate('friends')
+        .populate('likedLessons')
+        .populate('bookedLessons.ref')
+        .populate('attendedLessons.ref')
+        .populate('taughtLessons.ref')
+        .populate('wishlist.ref')
+        .populate('cart.lesson')
+        .populate('comments.')
+        .populate('messages')
+        .populate('orders')
+        .populate('friendRequests.sender')
+        .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -1780,7 +2081,10 @@ module.exports = {
       .populate('cart.lesson')
       .populate('comments.')
       .populate('messages')
-      .populate('orders');
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
+
 
         return {
           ...user._doc,
@@ -1799,7 +2103,21 @@ module.exports = {
     }
     try {
         const message = await Message.findById({_id: args.messageId});
-        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { messages: message._id }},{new: true, useFindAndModify: false});
+        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { messages: message._id }},{new: true, useFindAndModify: false})
+        .populate('perks')
+        .populate('promos')
+        .populate('friends')
+        .populate('likedLessons')
+        .populate('bookedLessons.ref')
+        .populate('attendedLessons.ref')
+        .populate('taughtLessons.ref')
+        .populate('wishlist.ref')
+        .populate('cart.lesson')
+        .populate('comments.')
+        .populate('messages')
+        .populate('orders')
+        .populate('friendRequests.sender')
+        .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -1975,14 +2293,7 @@ module.exports = {
         comments: [],
         messages: [],
         orders: [],
-        paymentInfo: [{
-          date: 0,
-          type: "",
-          description: "",
-          body: "",
-          valid: false,
-          primary: false,
-        }]
+        paymentInfo: []
       });
 
       const result = await user.save();

@@ -20,6 +20,9 @@ const searchUserItem = props => (
     <Button variant="primary" onClick={props.onDetail.bind(this, props._id)}>
           Details
         </Button>
+        <Button variant="secondary" onClick={props.onSelectNoDetail.bind(this, props.user)}>
+        Select
+      </Button>
     </div>
   </li>
 );

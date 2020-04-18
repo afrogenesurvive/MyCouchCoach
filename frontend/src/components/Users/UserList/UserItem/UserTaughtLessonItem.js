@@ -19,13 +19,13 @@ const userTaughtLessonItem = props => (
         ID: {props.ref}
       </Card.Text>
 
-      <Card.Link href="">
+
       { props.canDelete === true && (
         <Button variant="danger" onClick={props.onDelete.bind(this, props.taughtLesson)}>
           Delete
         </Button>
       )}
-      </Card.Link>
+
     </Card.Body>
     </Card>
 

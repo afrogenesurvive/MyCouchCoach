@@ -14,13 +14,13 @@ const userTagItem = props => (
           {props.tag}
         </Card.Text>
 
-        <Card.Link href="">
+
         { props.canDelete === true && (
           <Button variant="danger" onClick={props.onDelete.bind(this, props.tag)}>
             Delete
           </Button>
         )}
-        </Card.Link>
+
       </Card.Body>
     </Card>
     </div>

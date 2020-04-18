@@ -24,13 +24,11 @@ const userProfileImageItem = props => (
           </li>
         </ul>
 
-        <Card.Link href="">
         { props.canDelete === true && (
           <Button variant="danger" onClick={props.onDelete.bind(this, props.profileImage)}>
             Delete
           </Button>
         )}
-        </Card.Link>
       </Card.Body>
     </Card>
     </div>

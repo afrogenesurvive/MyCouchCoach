@@ -14,13 +14,13 @@ const userInterestItem = props => (
           {props.interest}
         </Card.Text>
 
-        <Card.Link href="">
+
         { props.canDelete === true && (
           <Button variant="danger" onClick={props.onDelete.bind(this, props.interest)}>
             Delete
           </Button>
         )}
-        </Card.Link>
+
       </Card.Body>
     </Card>
     </div>

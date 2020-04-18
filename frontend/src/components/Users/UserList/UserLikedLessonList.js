@@ -4,11 +4,11 @@ import UserLikedLessonItem from './UserItem/UserLikedLessonItem';
 import './UserList.css';
 
 const userLikedLessonList = props => {
-
+  console.log(props.userLikedLessons)
   const likedLessons = props.userLikedLessons.map(likedLesson => {
     return (
       <UserLikedLessonItem
-        key={likedLesson.ref}
+        key={likedLesson}
         likedLesson={likedLesson}
         _id={likedLesson._id}
         title={likedLesson.title}

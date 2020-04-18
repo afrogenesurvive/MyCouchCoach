@@ -12,6 +12,7 @@ const searchLessonList = props => {
       <React.Fragment>
       <SearchLessonItem
         key={lesson._id}
+        lesson={lesson}
         userId={props.authUserId}
         _id={lesson._id}
         title={lesson.title}
@@ -22,6 +23,7 @@ const searchLessonList = props => {
         schedule={lesson.schedule}
         sessions={lesson.sessions}
         onDetail={props.onViewDetail}
+        onSelectNoDetail={props.onSelectNoDetail}
         canReport={props.canReport}
         onReport={props.onReport}
       />

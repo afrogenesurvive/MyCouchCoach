@@ -25,6 +25,9 @@ const lessonItem = props => (
       <Button variant="primary" onClick={props.onDetail.bind(this, props._id)}>
         Details
       </Button>
+      <Button variant="primary" onClick={props.onSelectNoDetail.bind(this, props.lesson)}>
+        Select
+      </Button>
       {props.canReport === true && (
         <Button variant="danger" onClick={props.onReport.bind(this, props._id)}>
         Report

@@ -12,6 +12,9 @@ const Comment = require('../../models/comment');
 const Message = require('../../models/message');
 const util = require('util');
 
+const mailjet = require ('node-mailjet')
+.connect('b34ad52fd810be3d7c9fd5159f36be82', '6dda635891e3fd08383004e54179f0d0')
+
 const { transformLesson } = require('./merge');
 const { dateToString } = require('../../helpers/date');
 const { pocketVariables } = require('../../helpers/pocketVars');
@@ -340,6 +343,39 @@ module.exports = {
         arr3.forEach(reminder => arr4.push({message: reminder.message, contact: arr2.find(contact => contact._id.toString() === reminder.user.toString())}))
         // arr3.forEach(reminder => console.log(reminder.user,arr2.filter(contact => contact._id === reminder.user)))
         console.log('finally',arr4);
+
+
+        // const request = mailjet
+        // .post("send", {'version': 'v3.1'})
+        // .request({
+        //   "Messages":[
+        //     {
+        //       "From": {
+        //         "Email": "prof.black@africangeneticsurvival.net",
+        //         "Name": "Michael"
+        //       },
+        //       "To": [
+        //         {
+        //           "Email": "michael.grandison@gmail.com",
+        //           "Name": "Michael"
+        //         }
+        //       ],
+        //       "Subject": "toast.",
+        //       "TextPart": "My first Mailjet email",
+        //       "HTMLPart": "<h3>Dear passenger 1, welcome to <a href='https://www.mailjet.com/'>Mailjet</a>!</h3><br />May the delivery force be with you!",
+        //       "CustomID": "AppGettingStartedTest"
+        //     }
+        //   ]
+        // })
+        // request
+        //   .then((result) => {
+        //     console.log("here",result.body)
+        //   })
+        //   .catch((err) => {
+        //     console.log(err.statusCode)
+        //   })
+
+
       // return lessons.map(lesson => {
         //   return transformLesson(lesson);
         // });
@@ -378,7 +414,7 @@ module.exports = {
               // {$match: {'_id.lessonId': args.lessonId, '_id.title': {$eq: args.lessonInput.sessionTitle }}}
             ]);
             const session2 = session[0]._id;
-            // console.log(session2);
+            console.log(session2);
             return {
               ...session2
             }

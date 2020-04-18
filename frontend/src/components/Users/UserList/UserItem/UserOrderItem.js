@@ -24,13 +24,13 @@ const userOrderItem = props => (
       <Card.Text>
         total: {props.totals.c}
       </Card.Text>
-      <Card.Link href="">
+      
       { props.canDelete === true && (
         <Button variant="danger" onClick={props.onDelete.bind(this, props.order)}>
           Delete
         </Button>
       )}
-      </Card.Link>
+      
     </Card.Body>
     </Card>
 

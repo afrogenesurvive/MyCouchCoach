@@ -23,12 +23,13 @@ const userFriendRequestItem = props => (
         <Button variant="primary" onClick={props.onAccept.bind(this, props.friendRequest)}>
           Accept
         </Button>
+        </Card.Link>
         <Card.Link href="">
           <Button variant="danger" onClick={props.onReject.bind(this, props.friendRequest)}>
             Reject
           </Button>
         </Card.Link>
-      </Card.Link>
+
     </Card.Body>
     </Card>
 

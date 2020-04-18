@@ -19,8 +19,8 @@
   height: 80vh;
   /* width: 50vw; */
   /* margin: 5rem 2rem 0 2rem; */
-  margin-top: 7rem;
-  margin-left: 1rem;
+  margin-top: 4rem;
+  /* margin-left: 1rem; */
   width: 100%;
   /* overflow: scroll; */
   padding: 0;
@@ -85,7 +85,7 @@
 .searchUserRowForm1 {
   /* border: 1.5px solid blue; */
   border-radius: 5px;
-  height: 10rem;
+  height: 20rem;
   text-align: center;
   overflow: scroll;
 }
@@ -96,13 +96,13 @@
 }
 
 .searchListRow {
-  height: 40rem;
+  height: 20rem;
   border: 1px solid blue;
   border-radius: 5px;
   overflow: scroll;
 }
 .searchListRow1 {
-  height: 35rem;
+  height: 20rem;
   border: 1px solid blue;
   border-radius: 5px;
   overflow: scroll;

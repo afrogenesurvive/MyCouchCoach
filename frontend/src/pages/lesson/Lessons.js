@@ -28,7 +28,7 @@ import LessonDetailViewer from '../../components/LessonDetailViewer';
 import CreateLessonForm from '../../components/Forms/lesson/CreateLessonForm';
 import SearchLessonFieldRegexForm from '../../components/Forms/lesson/SearchLessonFieldRegexForm';
 import SearchLessonFieldBasicForm from '../../components/Forms/lesson/SearchLessonFieldBasicForm';
-import SearchLessonSessionForm from '../../components/Forms/leson/SearchLessonSessionForm';
+import SearchLessonSessionForm from '../../components/Forms/lesson/SearchLessonSessionForm';
 
 
 import './Users.css';
@@ -79,7 +79,7 @@ class LessonsPage extends Component {
       this.setState({canDelete: true})
     }
 
-    if (this.context.selectedLesson) {
+    if (JSON.stringify(this.context.selectedLesson) !== '{}') {
       this.setState({ selectedLesson: this.context.selectedLesson })
     }
 
@@ -210,8 +210,10 @@ class LessonsPage extends Component {
     event.preventDefault();
     let activityId = this.context.activityId;
     const token = this.context.token;
+    const lessonId = this.state.selectedLesson._id;
+    const sessionDate = event.target.formGridSessionDate.value;
+    const sessionTitle = event.target.formGridSessionTitle.value;
 
-    const search = { field, query };
     const requestBody = {
       query: `
         query {getLessonSession(
@@ -867,17 +869,25 @@ class LessonsPage extends Component {
                           />
                         </Tab>
                         <Tab eventKey="Session" title="Search Session">
-                          <SearchLessonSessionForm
+
+                          {this.state.selectedLesson === null && (
+                            <p>Select a lesson 1st</p>
+                          )}
+
+                          {this.state.selectedLesson !== null && (
+                            <SearchLessonSessionForm
                           authId={this.context.activityId}
                           canCancel
                             canConfirm
                             onCancel={this.modalCancelHandler}
                             onConfirm={this.modalConfirmSearchSessionHandler}
+                            lesson={this.state.selectedLesson}
                             confirmText="Search"
-                          />
+                          />)}
 
                           {this.state.searchSession !== null && (
                             <SearchSession
+                            authId={this.context.activityId}
                             session={this.state.searchSession}
                             />
                           )}
@@ -885,6 +895,7 @@ class LessonsPage extends Component {
                         </Tabs>
                         </Col>
                         </Row>
+
 
                         <Row>
                           <Card className="searchCard">
@@ -897,6 +908,8 @@ class LessonsPage extends Component {
                           </Card>
                         </Row>
                         <Row className="searchListRow1">
+
+
 
                         {this.state.searchLessons !== [] && (
                           <SearchLessonList

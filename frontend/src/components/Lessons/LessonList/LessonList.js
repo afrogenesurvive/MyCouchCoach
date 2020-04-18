@@ -19,6 +19,7 @@ const lessonList = props => {
         gallery={lesson.gallery}
         schedule={lesson.schedule}
         sessions={lesson.sessions}
+        onSelectNoDetail={props.onSelectNoDetail}
         onDetail={props.onViewDetail}
         canReport={props.canReport}
         onReport={props.onReport}

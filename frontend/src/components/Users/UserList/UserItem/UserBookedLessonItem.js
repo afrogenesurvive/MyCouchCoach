@@ -34,13 +34,17 @@ const userBookedLessonItem = props => (
         Time: {props.sessionTime}
       </Card.Text>
 
-      <Card.Link href="">
+      <Button variant="primary" onClick={props.viewLessonDetails.bind(this, props.lesson)}>
+        View Details
+      </Button>
+      
       { props.canDelete === true && (
         <Button variant="danger" onClick={props.onDelete.bind(this, props.bookedLesson)}>
           Delete
         </Button>
+
       )}
-      </Card.Link>
+      
     </Card.Body>
     </Card>
 

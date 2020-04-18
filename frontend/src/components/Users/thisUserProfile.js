@@ -66,7 +66,7 @@ if (user.friendRequests !== []) {
 }
 // console.log('sentRequests',sentRequests,'receivedRequests',receivedRequests);
 const publicUser = user.public.toString()
-console.log(user.cart);
+// console.log(user.cart);
 
   return (
 
@@ -464,6 +464,7 @@ console.log(user.cart);
           authId={props.authId}
           canDelete={props.canDelete}
           onDelete={props.userDeleteBookedLesson}
+          viewLessonDetails={props.viewLessonDetails}
         />
       )}
 

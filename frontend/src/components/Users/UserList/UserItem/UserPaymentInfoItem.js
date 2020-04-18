@@ -31,13 +31,13 @@ const userPaymentInfoItem = props => (
         valid: {props.valid.toString()}
       </Card.Text>
 
-      <Card.Link href="">
+
       { props.canDelete === true && (
         <Button variant="danger" onClick={props.onDelete.bind(this, props.paymentInfoItem)}>
           Delete
         </Button>
       )}
-      </Card.Link>
+
       </Card.Body>
     </Card>
     </div>

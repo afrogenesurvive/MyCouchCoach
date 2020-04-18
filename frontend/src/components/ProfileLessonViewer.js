@@ -7,25 +7,26 @@ import Tab from 'react-bootstrap/Tab';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-import LessonSessionList from './LessonList/LessonSessionList';
-import LessonScheduleList from './LessonList/LessonScheduleList';
-import CreateLessonSessionForm from '../Forms/lesson/CreateLessonSessionForm';
-import UpdateLessonBasicForm from '../Forms/lesson/UpdateLessonBasicForm';
-import UpdateLessonFieldForm from '../Forms/lesson/UpdateLessonFieldForm';
+import LessonSessionList from './Lessons/LessonList/LessonSessionList';
+import LessonScheduleList from './Lessons/LessonList/LessonScheduleList';
+import CreateLessonSessionForm from './Forms/lesson/CreateLessonSessionForm';
+import UpdateLessonBasicForm from './Forms/lesson/UpdateLessonBasicForm';
+import UpdateLessonFieldForm from './Forms/lesson/UpdateLessonFieldForm';
 
 
 // import AuthContext from '../../context/auth-context';
 
-import './UserDetail.css';
+import './AttachmentViewer.css';
 
-const LessonDetail = (props) => {
+const ProfileLessonViewer = (props) => {
 
-  const {...lesson} = props.lesson;
+  const {...lesson} = props.profileLesson;
   // let userDob = new Date(user.dob.substr(0,9) * 1000).toISOString().slice(0,10);
   const instructorIds = lesson.instructors.map(x => x._id)
   const isInstructor = instructorIds.includes(props.authId);
   return (
-    <div className={"UserDetailBox1"}>
+    <div className="attachmentViewerBg">
+      <div className="attachmentViewer">
 
     <Tabs defaultActiveKey="Basic" id="uncontrolled-tab-example" className="tab">
 
@@ -91,12 +92,14 @@ const LessonDetail = (props) => {
           </Col>
         </Row>
 
+
         <Row className="detailCardRow">
           <Col className="detailCardCol">
           <Button variant="danger" onClick={props.onStartEditLessonBasic}>
             Edit Basic
           </Button>
-            {props.editingLesson === true && (
+            {props.editingLesson === true &&
+              isInstructor === true && (
               <UpdateLessonBasicForm
               lesson={lesson}
               onCancel={props.cancelEditBasic}
@@ -178,8 +181,9 @@ const LessonDetail = (props) => {
     </Tabs>
 
     </div>
+    </div>
 
   );
 }
 
-export default LessonDetail;
+export default ProfileLessonViewer;

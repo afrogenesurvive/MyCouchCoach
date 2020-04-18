@@ -118,7 +118,7 @@ class UsersPage extends Component {
         {_id,role,username,public,clientConnected}}
       `}
 
-    fetch('http://localhost:8088/graphql', {
+    fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
@@ -179,7 +179,7 @@ class UsersPage extends Component {
         {_id,role,username,public,clientConnected}}
       `}
 
-    fetch('http://localhost:8088/graphql', {
+    fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
@@ -224,7 +224,7 @@ class UsersPage extends Component {
           {_id,role,username,public,clientConnected}}
         `};
 
-    fetch('http://localhost:8088/graphql', {
+    fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
@@ -292,7 +292,7 @@ class UsersPage extends Component {
           {_id,date,time,type,subject,sender{_id,username},receiver{_id,username},message,read}}
         `};
 
-    fetch('http://localhost:8088/graphql', {
+    fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
@@ -333,7 +333,7 @@ showDetailHandler = userId => {
         {_id,role,username,public,clientConnected,age,bio,socialMedia{platform,handle,link},profileImages{name,type,path},interests,tags}}
       `};
 
-  fetch('http://localhost:8088/graphql', {
+  fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
     method: 'POST',
     body: JSON.stringify(requestBody),
     headers: {
@@ -388,7 +388,7 @@ hideDetailHandler = () => {
           {_id,role,username,public,clientConnected,friendRequests{date,sender{_id},receiver{_id}}}}
         `};
 
-    fetch('http://localhost:8088/graphql', {
+    fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {

@@ -10,22 +10,27 @@ const userAttendedLessonItem = props => (
 
     <Card.Body>
       <Card.Text>
-        date: {props.attendedLessonDate}
+        date: {props.date}
       </Card.Text>
       <Card.Text>
         Lesson:
       </Card.Text>
       <Card.Text>
-        ID: {props.ref}
+        ID: {props.lesson._id}
+      </Card.Text>
+      <Card.Text>
+        Title: {props.lesson.title}
       </Card.Text>
 
-      
+      <Button variant="primary" onClick={props.viewLessonDetails.bind(this, props.lesson)}>
+        View Details
+      </Button>
       { props.canDelete === true && (
         <Button variant="danger" onClick={props.onDelete.bind(this, props.attendedLesson)}>
           Delete
         </Button>
       )}
-      
+
     </Card.Body>
     </Card>
 

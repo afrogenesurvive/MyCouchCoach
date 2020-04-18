@@ -89,9 +89,47 @@ const LessonDetail = (props) => {
           )}
 
           </Col>
+
         </Row>
 
         <Row className="detailCardRow">
+
+        <Col className="detailCardCol">
+        Sessions:
+        <Button variant="primary" onClick={props.onSessionLoad.bind(this, lesson._id)}>
+          See Sessions
+        </Button>
+        <Button variant="danger" onClick={props.onHideSessions}>
+          x
+        </Button>
+        {props.sessionsLoaded === true && (
+          <LessonSessionList
+          lessonSessions={lesson.sessions}
+          onBookSession={props.onBookSession}
+          onAddCartLesson={props.onAddCartLesson}
+        />
+      )}
+        </Col>
+
+          {isInstructor === true && (
+            <Col className="detailCardCol">
+          <Button variant="primary" onClick={props.startCreateSession.bind(this, lesson._id)}>
+            New Session
+          </Button>
+          {props.creatingSession === true && (
+            <CreateLessonSessionForm
+              authId={props.authId}
+              onCancel={props.cancelCreateSession}
+              onConfirm={props.createLessonSession}
+            />
+          )}
+          </Col>
+        )}
+
+        </Row>
+
+        {isInstructor === true && (
+          <Row className="detailCardRow">
           <Col className="detailCardCol">
           <Button variant="danger" onClick={props.onStartEditLessonBasic}>
             Edit Basic
@@ -104,8 +142,12 @@ const LessonDetail = (props) => {
               />
             )}
           </Col>
+
         </Row>
-        <Row className="detailCardRow">
+      )}
+
+        {isInstructor === true && (
+          <Row className="detailCardRow">
           <Col className="detailCardCol">
           <Button variant="danger" onClick={props.onStartEditLessonField}>
             Edit Field
@@ -118,7 +160,9 @@ const LessonDetail = (props) => {
               />
             )}
           </Col>
+
         </Row>
+      )}
 
 
         <Row className="detailCardRow">
@@ -138,38 +182,8 @@ const LessonDetail = (props) => {
               </Button>
             )}
           </Col>
-        </Row>
-        <Row className="detailCardRow">
-          <Col className="detailCardCol">
-          <Button variant="primary" onClick={props.startCreateSession.bind(this, lesson._id)}>
-            New Session
-          </Button>
-          {props.creatingSession === true && (
-            <CreateLessonSessionForm
-              authId={props.authId}
-              onCancel={props.cancelCreateSession}
-              onConfirm={props.createLessonSession}
-            />
-          )}
-          </Col>
+          </Row>
 
-          <Col className="detailCardCol">
-          Sessions:
-          <Button variant="primary" onClick={props.onSessionLoad.bind(this, lesson._id)}>
-            See Sessions
-          </Button>
-          <Button variant="danger" onClick={props.onHideSessions}>
-            x
-          </Button>
-          {props.sessionsLoaded === true && (
-            <LessonSessionList
-            lessonSessions={lesson.sessions}
-            onBookSession={props.onBookSession}
-            onAddCartLesson={props.onAddCartLesson}
-          />
-        )}
-          </Col>
-        </Row>
 
       </Card.Body>
       </Card>

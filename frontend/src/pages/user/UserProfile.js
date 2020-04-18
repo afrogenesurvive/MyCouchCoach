@@ -55,6 +55,11 @@ class UserProfile extends Component {
     orderShippingAddress: null,
     profileLessonViewer: false,
     profileLessonViewerData: null,
+    showSessionState: false,
+    showScheduleState: false,
+    creatingSession: false,
+    editingLesson: false,
+    editingLessonField: false,
   };
 
   isActive = true;
@@ -1933,6 +1938,200 @@ class UserProfile extends Component {
     this.setState({profileLessonViewer: false, profileLessonViewerData: null})
   }
 
+  showSchedule = () => {
+    this.setState({showScheduleState: true})
+  };
+  hideSchedule = () => {
+    this.setState({showScheduleState: false})
+  };
+  showSessions = () => {
+    this.setState({showSessionState: true})
+  };
+  hideSessions = () => {
+    this.setState({showSessionState: false})
+  };
+  startCreateSession = (args) => {
+    this.setState({creatingSession: true})
+  };
+  cancelCreateSession = () => {
+    this.setState({creatingSession: false})
+  };
+  createLessonSession = (event) => {
+    console.log('creating new lesson session');
+    this.setState({userAlert: 'creating new lesson session'});
+
+    const activityId = this.context.activityId;
+    const userId = activityId;
+    const lessonId = this.state.profileLessonViewerData._id;
+
+    const sessionTitle = event.target.formGridTitle.value;
+    // const sessionDate = new Date (event.target.patientReferralCalendarVisitDate.value.substr(0,10)*1000).toISOString().slice(0,10);
+    let sessionDate = event.target.CalendarDate.value;
+    sessionDate = new Date(sessionDate).toISOString().slice(0,10);
+    const sessionTime = event.target.formGridTime.value;
+    const sessionLimit = event.target.formGridLimit.value;
+    const sessionAmount = 0;
+
+    const requestBody = {
+      query: `
+          mutation {addLessonSession(
+            activityId:"${activityId}",
+            lessonId:"${lessonId}",
+            lessonInput:{
+              sessionTitle:"${sessionTitle}",
+              sessionDate:"${sessionDate}",
+              sessionTime:"${sessionTime}",
+              sessionLimit:${sessionLimit},
+              sessionAmount:${sessionAmount}
+            })
+            {_id,title,subtitle,type,category,price,sku,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{phone,phone2,email}},tags,sessions{title,date,time,limit,inProgress,full}}}
+        `};
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          this.setState({userAlert: 'Failed!'});
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+        this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.addLessonBooking, isLoading: false});
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+        if (this.isActive) {
+          this.setState({ isLoading: false });
+        }
+      });
+  };
+  onStartEditLessonBasic = () => {
+    this.setState({editingLesson: true})
+  };
+  cancelEditBasic = () => {
+    this.setState({editingLesson: false})
+  };
+  editLessonBasic = (event) => {
+    event.preventDefault();
+    this.setState({editingLesson: false})
+    let activityId = this.context.activityId;
+    const creatorId = activityId;
+    const lessonId = this.state.profileLessonViewerData._id;
+    const token = this.context.token;
+
+    const title = event.target.formGridTitle.value;
+    const subtitle = event.target.formGridSubtitle.value;
+    const duration = event.target.formGridDuration.value;
+    const type = event.target.formGridType.value;
+    const category = event.target.formGridCategory.value;
+    const sku = event.target.formGridSku.value;
+    const price = event.target.formGridPrice.value;
+    const points = event.target.formGridPoints.value;
+    const description = event.target.formGridDescription.value;
+    const notes = event.target.formGridNotes.value;
+
+    const requestBody = {
+      query: `
+       mutation {updateLessonBasic(
+         activityId:"${activityId}",
+         lessonId:"${lessonId}",
+         lessonInput:{
+           title:"${title}",
+           subtitle:"${subtitle}",
+           type:"${type}",
+           category:"${category}",
+           price:${price},
+           sku:"${sku}",
+           points:${points},
+           description:"${description}",
+           notes:"${notes}",
+           duration:"${duration}"
+         })
+    {_id,title,subtitle,type,category,price,sku,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{phone,phone2,email}},tags}}
+    `}
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data.updateLessonBasic).slice(0,8);
+        this.setState({ profileLessonViewerData: resData.data.updateLessonBasic, userAlert: responseAlert})
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
+  };
+
+  onStartEditLessonField = () => {
+    this.setState({editingLessonField: true})
+  };
+  cancelEditField = () => {
+    this.setState({editingLessonField: false})
+  };
+  editLessonField = (event) => {
+    event.preventDefault();
+    this.setState({editingLessonField: false})
+    let activityId = this.context.activityId;
+    const creatorId = activityId;
+    const lessonId = this.state.profileLessonViewerData._id;
+    const token = this.context.token;
+
+    const field = event.target.formGridFieldSelect.value;
+    const query = event.target.formGridQuery.value;
+    const requestBody = {
+      query: `
+         mutation {updateLessonByField(
+           activityId:"${activityId}",
+           lessonId:"${lessonId}",
+           field:"${field}",
+           query:"${query}"
+         )
+         {_id,title,subtitle,type,category,price,sku,points,description,notes,duration,schedule{date,time},instructors{_id,username},gallery{name,type,path},requirements,materials,files{name,type,size,path},reviews{_id,title,author{_id}},tags,sessions{title,date,time,limit,amount,booked{_id,username},bookedAmount,attended{_id,username},attendedAmount,inProgress,full},promos{_id}}}
+          `}
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data.updateLessonByField).slice(0,8);
+        this.setState({ profileLessonViewer: resData.data.updateLessonByField, userAlert: responseAlert})
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
+  };
+
+
   componentWillUnmount() {
     this.isActive = false;
   }
@@ -1974,13 +2173,27 @@ class UserProfile extends Component {
             profileLesson={this.state.profileLessonViewerData}
             closeProfileLessonView={this.closeProfileLessonView}
 
-            sessionsLoaded={props.sessionsLoaded}
-            onSessionLoad={props.onSessionLoad}
-            onHideSessions={props.onHideSessions}
-            onHideLessonDetail={props.onHideLessonDetail}
-            showSchedule={props.showSchedule}
-            showScheduleState={props.showScheduleState}
-            hideSchedule={props.hideSchedule}
+            hideSessions={this.hideSessions}
+            showSessions={this.showSessions}
+            showSessionState={this.state.showSessionState}
+            hideSchedule={this.hideSchedule}
+            showSchedule={this.showSchedule}
+            showScheduleState={this.state.showScheduleState}
+
+            startCreateSession={this.startCreateSession}
+            creatingSession={this.state.creatingSession}
+            cancelCreateSession={this.cancelCreateSession}
+            createLessonSession={this.createLessonSession}
+
+            editingLesson={this.state.editingLesson}
+            onStartEditLessonBasic={this.onStartEditLessonBasic}
+            editLessonBasic={this.editLessonBasic}
+            cancelEditBasic={this.cancelEditBasic}
+
+            editingLessonField={this.state.editingLessonField}
+            onStartEditLessonField={this.onStartEditLessonField}
+            editLessonField={this.editLessonField}
+            cancelEditField={this.cancelEditField}
           />
         )}
 

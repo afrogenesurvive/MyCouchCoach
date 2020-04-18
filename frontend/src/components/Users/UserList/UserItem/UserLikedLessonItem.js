@@ -19,13 +19,15 @@ const userLikedLessonItem = props => (
         Title: {props.title}
       </Card.Text>
 
-      
+      <Button variant="primary" onClick={props.viewLessonDetails.bind(this, props.likedLesson)}>
+        View Details
+      </Button>
       { props.canDelete === true && (
         <Button variant="danger" onClick={props.onDelete.bind(this, props.likedLesson)}>
           Delete
         </Button>
       )}
-      
+
     </Card.Body>
     </Card>
 

@@ -24,6 +24,7 @@ const ProfileLessonViewer = (props) => {
   // let userDob = new Date(user.dob.substr(0,9) * 1000).toISOString().slice(0,10);
   const instructorIds = lesson.instructors.map(x => x._id)
   const isInstructor = instructorIds.includes(props.authId);
+  // console.log(lesson.sessions);
   return (
     <div className="attachmentViewerBg">
       <div className="attachmentViewer">
@@ -77,29 +78,17 @@ const ProfileLessonViewer = (props) => {
             {lesson.instructors[0].contact.email}
           </Card.Text>
 
-          <Button variant="danger" onClick={props.showSchedule}>
-            See dates
-          </Button>
-          <Button variant="danger" onClick={props.hideSchedule}>
-            Hide dates
-          </Button>
-          {props.showScheduleState === true && (
-            <LessonScheduleList
-              lessonSchedule={lesson.schedule}
-            />
-          )}
-
           </Col>
         </Row>
 
-
+        {isInstructor === true && (
         <Row className="detailCardRow">
           <Col className="detailCardCol">
+
           <Button variant="danger" onClick={props.onStartEditLessonBasic}>
             Edit Basic
           </Button>
-            {props.editingLesson === true &&
-              isInstructor === true && (
+            {props.editingLesson === true && (
               <UpdateLessonBasicForm
               lesson={lesson}
               onCancel={props.cancelEditBasic}
@@ -108,6 +97,8 @@ const ProfileLessonViewer = (props) => {
             )}
           </Col>
         </Row>
+        )}
+        {isInstructor === true && (
         <Row className="detailCardRow">
           <Col className="detailCardCol">
           <Button variant="danger" onClick={props.onStartEditLessonField}>
@@ -122,27 +113,48 @@ const ProfileLessonViewer = (props) => {
             )}
           </Col>
         </Row>
-
+        )}
 
         <Row className="detailCardRow">
           <Col className="detailCardCol">
-
-            <Button variant="danger" onClick={props.onHideLessonDetail}>
+            <Button variant="danger" onClick={props.closeProfileLessonView}>
               x
             </Button>
-            { props.canDelete === true && (
-              <Button variant="danger" onClick={props.onDelete.bind(this, lesson._id)}>
-                Delete !!??
-              </Button>
-            )}
-            { props.canReport === true && (
-              <Button variant="danger" onClick={props.onReport.bind(this, lesson._id)}>
-                Report!!??
-              </Button>
-            )}
           </Col>
         </Row>
-        <Row className="detailCardRow">
+
+        {isInstructor === true && (
+          <Row className="detailCardRow">
+
+          <Col className="detailCardCol">
+          Schedule:
+          <Button variant="danger" onClick={props.showSchedule}>
+            See dates
+          </Button>
+          <Button variant="danger" onClick={props.hideSchedule}>
+            Hide dates
+          </Button>
+          {props.showScheduleState === true && (
+            <LessonScheduleList
+              lessonSchedule={lesson.schedule}
+            />
+          )}
+
+          Sessions:
+          <Button variant="primary" onClick={props.showSessions}>
+            Show Sessions
+          </Button>
+          <Button variant="primary" onClick={props.hideSessions}>
+            X
+          </Button>
+          {lesson.sessions !== [] &&
+            props.showSessionState === true && (
+            <LessonSessionList
+            lessonSessions={lesson.sessions}
+            />
+          )}
+          </Col>
+
           <Col className="detailCardCol">
           <Button variant="primary" onClick={props.startCreateSession.bind(this, lesson._id)}>
             New Session
@@ -156,23 +168,8 @@ const ProfileLessonViewer = (props) => {
           )}
           </Col>
 
-          <Col className="detailCardCol">
-          Sessions:
-          <Button variant="primary" onClick={props.onSessionLoad.bind(this, lesson._id)}>
-            See Sessions
-          </Button>
-          <Button variant="danger" onClick={props.onHideSessions}>
-            x
-          </Button>
-          {props.sessionsLoaded === true && (
-            <LessonSessionList
-            lessonSessions={lesson.sessions}
-            onBookSession={props.onBookSession}
-            onAddCartLesson={props.onAddCartLesson}
-          />
-        )}
-          </Col>
         </Row>
+      )}
 
       </Card.Body>
       </Card>

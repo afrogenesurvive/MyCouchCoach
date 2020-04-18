@@ -15,6 +15,14 @@ const lessonSessionList = props => {
         title={session.title}
         date={sessionDate}
         time={session.time}
+        full={session.full}
+        limit={session.limit}
+        amount={session.amount}
+        url={session.url}
+        booked={session.booked}
+        bookedAmount={session.bookedAmount}
+        attended={session.attended}
+        attendedAmount={session.attendedAmount}
         onBookSession={props.onBookSession}
         onAddCartLesson={props.onAddCartLesson}
       />

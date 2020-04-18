@@ -157,7 +157,8 @@ const publicUser = user.public.toString()
         />
       )}
 
-      {props.userAddField === "points" && (
+      {props.userAddField === "points" &&
+        user.role === 'Admin' && (
         <AddUserPointsForm
           canCancel
           canConfirm
@@ -451,6 +452,7 @@ const publicUser = user.public.toString()
           authId={props.authId}
           canDelete={props.canDelete}
           onDelete={props.userDeleteLikedLesson}
+          viewLessonDetails={props.viewLessonDetails}
         />
       )}
 
@@ -478,12 +480,14 @@ const publicUser = user.public.toString()
           authId={props.authId}
           canDelete={props.canDelete}
           onDelete={props.userDeleteAttendedLesson}
+          viewLessonDetails={props.viewLessonDetails}
         />
       )}
 
     </Tab>
-    <Tab eventKey="taughtLessons" title="taughtLessons">
 
+    {user.Role === "Instructor" && (
+    <Tab eventKey="taughtLessons" title="taughtLessons">
     {
       user.taughtLessons !== null &&
       user.taughtLessons!== [] && (
@@ -492,10 +496,12 @@ const publicUser = user.public.toString()
           authId={props.authId}
           canDelete={props.canDelete}
           onDelete={props.userDeleteTaughtLesson}
+          viewLessonDetails={props.viewLessonDetails}
         />
       )}
 
     </Tab>
+    )}
 
     <Tab eventKey="paymentInfo" title="paymentInfo">
 

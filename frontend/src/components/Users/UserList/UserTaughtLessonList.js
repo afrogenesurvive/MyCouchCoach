@@ -13,10 +13,11 @@ const userTaughtLessonList = props => {
         key={taughtLesson.ref}
         taughtLesson={taughtLesson}
         date={taughtLessonDate}
-        ref={taughtLesson.ref}
+        lesson={taughtLesson.ref}
         authId={props.authId}
         onDelete={props.onDelete}
         canDelete={props.canDelete}
+        viewLessonDetails={props.viewLessonDetails}
       />
     );
   });

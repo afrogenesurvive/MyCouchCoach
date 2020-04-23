@@ -25,6 +25,7 @@ const lessonSessionList = props => {
         attendedAmount={session.attendedAmount}
         onBookSession={props.onBookSession}
         onAddCartLesson={props.onAddCartLesson}
+        editSessionField={props.editSessionField}
       />
     );
   });

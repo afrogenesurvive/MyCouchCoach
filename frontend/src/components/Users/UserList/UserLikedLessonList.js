@@ -4,7 +4,7 @@ import UserLikedLessonItem from './UserItem/UserLikedLessonItem';
 import './UserList.css';
 
 const userLikedLessonList = props => {
-  console.log(props.userLikedLessons)
+  // console.log(props.userLikedLessons)
   const likedLessons = props.userLikedLessons.map(likedLesson => {
     return (
       <UserLikedLessonItem

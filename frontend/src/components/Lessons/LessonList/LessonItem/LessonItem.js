@@ -1,11 +1,21 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useParams
+} from "react-router-dom";
 
 import './UserItem.css';
 
-const lessonItem = props => (
+export default function lesssonItem (props) {
+  return (
+  <Router>
   <li key={props.authId} className="users__list-item_detail users__list-item_detail4">
+
     <Card style={{ width: '18rem' }}>
 
     <Card.Body>
@@ -22,9 +32,12 @@ const lessonItem = props => (
       <Card.Text>
         leadInstructorId: {props.instructors[0]._id}
       </Card.Text>
+      <Link to={'lessons/'+props.lesson.title+''}>
       <Button variant="primary" onClick={props.onDetail.bind(this, props._id)}>
         Details
       </Button>
+      </Link>
+
       <Button variant="primary" onClick={props.onSelectNoDetail.bind(this, props.lesson)}>
         Select
       </Button>
@@ -37,6 +50,19 @@ const lessonItem = props => (
     </Card>
 
   </li>
+  {
+    <Switch>
+    <Route path="/:id" children={<Child />} />
+  </Switch>
+}
+  </Router>
 );
+}
 
-export default lessonItem;
+function Child() {
+  let { id } = useParams();
+
+  return (
+    id
+  );
+}

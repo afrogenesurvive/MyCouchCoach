@@ -486,7 +486,7 @@ const publicUser = user.public.toString()
 
     </Tab>
 
-    {user.Role === "Instructor" && (
+    {user.role === "Instructor" || user.role === 'Admin' && (
     <Tab eventKey="taughtLessons" title="taughtLessons">
     {
       user.taughtLessons !== null &&

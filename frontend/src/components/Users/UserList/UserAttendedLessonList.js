@@ -6,7 +6,7 @@ import './UserList.css';
 const userAttendedLessonList = props => {
 
   const attendedLessons = props.userAttendedLessons.map(attendedLesson => {
-    console.log(attendedLesson.ref);
+    // console.log(attendedLesson.ref);
     const attendedLessonDate = new Date (attendedLesson.date.substr(0,10)*1000).toISOString().slice(0,10);;
     return (
       <UserAttendedLessonItem

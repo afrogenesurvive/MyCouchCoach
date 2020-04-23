@@ -7,6 +7,8 @@ import SignupPage from './pages/auth/Signup';
 import UserProfile from './pages/user/UserProfile';
 import UsersPage from './pages/user/Users';
 import LessonsPage from './pages/lesson/Lessons';
+import PublicLessonsPage from './pages/lesson/PublicLessons';
+import ProfileLessonViewer from './components/ProfileLessonViewer';
 
 import MainNavigation from './components/Navigation/MainNavigation';
 import AuthContext from './context/auth-context';
@@ -37,7 +39,9 @@ class App extends Component {
       activityId: activityId,
       role: role
     });
-
+    this.context.token = token;
+    this.context.activityId = activityId;
+    this.context.role = role;
     this.socket.emit('msg_subscribe', {user: activityId, room:'msg'+activityId});
   };
 
@@ -124,7 +128,7 @@ class App extends Component {
         {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle},interests,perks{_id},promos{_id},friends{_id,username},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id},bookedLessons{date,ref{_id,title}},attendedLessons{date,ref{_id,title}},taughtLessons{date,ref{_id,title}},wishlist{date,ref{_id,title},booked},cart{dateAdded,sessionDate,lesson{_id,title}},comments{_id},messages{_id},orders{_id},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
-    fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
+    fetch('http://localhost:8088/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
@@ -159,7 +163,7 @@ class App extends Component {
       {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle},interests,perks{_id},promos{_id},friends{_id,username},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id},bookedLessons{date,ref{_id,title}},attendedLessons{date,ref{_id,title}},taughtLessons{date,ref{_id,title}},wishlist{date,ref{_id,title},booked},cart{dateAdded,sessionDate,lesson{_id,title}},comments{_id},messages{_id},orders{_id},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
-    fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
+    fetch('http://localhost:8088/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
@@ -220,23 +224,20 @@ class App extends Component {
             />
             <main className="main-content">
               <Switch>
+                {this.context.token && <Redirect from="/" to="/userProfile" exact />}
 
-                {this.state.token && <Redirect from="/" to="/userProfile" exact />}
+                {this.context.token && (<Route path="/userProfile" component={UserProfile} />)}
+                {this.context.token && (<Route path="/userProfile/LessonDetailViewer" component={ProfileLessonViewer} />)}
 
-                {this.state.token && (<Route path="/userProfile" component={UserProfile} />)}
+                {this.context.token && (<Redirect from="/login" to="/userProfile" exact />)}
 
-                {this.state.token && (<Redirect from="/auth" to="/userProfile" exact />)}
+                {this.context.token && (<Route path="/users" component={UsersPage} />)}
+                {this.context.token && (<Route path="/lessons" component={LessonsPage} />)}
 
-                {
-                  this.state.token && (<Route path="/users" component={UsersPage} />)
-                }
-                {
-                  this.state.token && (<Route path="/lessons" component={LessonsPage} />)
-                }
-
-                {!this.state.token && (<Route path="/auth" component={AuthPage} />)}
-                {!this.state.token && (<Route path="/signup" component={SignupPage} />)}
-                {!this.state.token && <Redirect to="/auth" exact />}
+                {!this.context.token && (<Route path="/publiclessons" component={PublicLessonsPage} />)}
+                {!this.context.token && (<Route path="/login" component={AuthPage} />)}
+                {!this.context.token && (<Route path="/signup" component={SignupPage} />)}
+                {!this.context.token && <Redirect to="/login" exact />}
               </Switch>
             </main>
 

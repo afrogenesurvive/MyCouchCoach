@@ -275,6 +275,8 @@ module.exports = buildSchema(`
     sessionInProgress: Boolean
     sessionFull: Boolean
     sessionUrl: String
+    sessionQuery: String
+    sessionField: String
   }
 
   type Order {
@@ -488,6 +490,8 @@ module.exports = buildSchema(`
 
     getThisUser(activityId: ID!): User
 
+    getAllPublicLessons: [Lesson]
+    getPublicLessonsByField: [Lesson]
     getAllLessons(activityId: ID!): [Lesson]
     getLessonById(activityId: ID!, lessonId: ID!): Lesson
     getLessonsByField(activityId: ID!, field: String!, query: String!): [Lesson]
@@ -641,6 +645,7 @@ module.exports = buildSchema(`
     addLessonPromo(activityId: ID!, lessonId: ID!, promoId: ID!): Lesson
 
     updateSessionUrl(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
+    updateSessionField(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
     addLessonBooking(activityId: ID!, lessonId: ID!, userId: ID!, lessonInput: LessonInput!): Lesson
     addLessonAttendance(activityId: ID!, lessonId: ID!, userId: ID!, lessonInput: LessonInput!): Lesson
 

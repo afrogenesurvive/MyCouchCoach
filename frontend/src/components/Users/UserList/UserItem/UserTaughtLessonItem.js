@@ -22,7 +22,7 @@ const userTaughtLessonItem = props => (
         Title: {props.lesson.title}
       </Card.Text>
 
-      <Button variant="primary" onClick={props.viewLessonDetails.bind(this, props.lesson)}>
+      <Button variant="primary" onClick={props.viewLessonDetails.bind(this, props.taughtLesson)}>
         View Details
       </Button>
       { props.canDelete === true && (

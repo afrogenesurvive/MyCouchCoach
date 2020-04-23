@@ -12,7 +12,7 @@ import LessonScheduleList from './Lessons/LessonList/LessonScheduleList';
 import CreateLessonSessionForm from './Forms/lesson/CreateLessonSessionForm';
 import UpdateLessonBasicForm from './Forms/lesson/UpdateLessonBasicForm';
 import UpdateLessonFieldForm from './Forms/lesson/UpdateLessonFieldForm';
-
+import UpdateSessionFieldForm from './Forms/lesson/UpdateSessionFieldForm';
 
 // import AuthContext from '../../context/auth-context';
 
@@ -151,11 +151,21 @@ const ProfileLessonViewer = (props) => {
             props.showSessionState === true && (
             <LessonSessionList
             lessonSessions={lesson.sessions}
+            editSessionField={props.startEditSessionField}
             />
           )}
           </Col>
 
           <Col className="detailCardCol">
+          {props.editingSessionField === true && (
+            <UpdateSessionFieldForm
+              authId={props.authId}
+              session={props.session}
+              onConfirm={props.editSessionField}
+              onCancel={props.cancelEditSessionField}
+            />
+          )}
+
           <Button variant="primary" onClick={props.startCreateSession.bind(this, lesson._id)}>
             New Session
           </Button>
@@ -167,6 +177,7 @@ const ProfileLessonViewer = (props) => {
             />
           )}
           </Col>
+
 
         </Row>
       )}

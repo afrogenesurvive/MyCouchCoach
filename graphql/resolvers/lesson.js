@@ -21,6 +21,40 @@ const { pocketVariables } = require('../../helpers/pocketVars');
 
 
 module.exports = {
+  // getAllPublicLessons: async () => {
+  //   console.log('getAllPublicLessons...');
+  //   try {
+  //     const lessons = await Lesson.find({})
+  //     .populate('instructors')
+  //     .populate('reviews');
+  //
+  //     return lessons.map(lesson => {
+  //       return transformLesson(lesson,);
+  //     });
+  //   } catch (err) {
+  //     throw err;
+  //   }
+  // },
+  // getPublicLessonsByField: async () => {
+  //   console.log('getPublicLessonsByField...');
+  //   try {
+  //     let resolverField = args.field;
+  //     // let resolverQuery = args.query;
+  //     let resolverField = args.field;
+  //     const regExpQuery = new RegExp(args.query)
+  //     let resolverQuery = {$regex: regExpQuery, $options: 'i'};
+  //     const query = {[resolverField]:resolverQuery};
+  //     const lessons = await Lesson.find(query)
+  //     .populate('instructors')
+  //     .populate('reviews');
+  //
+  //     return lessons.map(lesson => {
+  //       return transformLesson(lesson,);
+  //     });
+  //   } catch (err) {
+  //     throw err;
+  //   }
+  // },
   getAllLessons: async (args, req) => {
 
     console.log("Resolver: getAllLessons...");
@@ -1287,6 +1321,34 @@ module.exports = {
       const lesson = await Lesson.findOneAndUpdate(
         {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate },
         {$set: {'sessions.$.url': args.lessonInput.sessionUrl}},
+        {new: true, useFindAndModify: false})
+      .populate('instructors')
+      .populate('reviews')
+      .populate('sessions.booked')
+      .populate('sessions.attended');
+
+        return {
+            ...lesson._doc,
+            _id: lesson.id,
+            title: lesson.title
+        };
+    } catch (err) {
+      throw err;
+    }
+  },
+  updateSessionField: async (args, req) => {
+    console.log("Resolver: updateSessionField...");
+
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      const field = 'sessions.$.'+args.lessonInput.sessionField+'';
+      // console.log(field);
+      const lesson = await Lesson.findOneAndUpdate(
+        {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate },
+        {$set: {[field]: args.lessonInput.sessionQuery}},
+        // {'sessions.$.url': args.lessonInput.sessionQuery},
         {new: true, useFindAndModify: false})
       .populate('instructors')
       .populate('reviews')

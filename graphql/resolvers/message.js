@@ -147,8 +147,8 @@ module.exports = {
   createMessage: async (args, req) => {
 
     try {
-      const date = new Date().toISOString().substr(0,10);
-      const time = new Date().toISOString().substr(11,5);
+      const date = new Date().toLocaleDateString().substr(0,10);
+      const time = new Date().toLocaleDateString().substr(11,5);
       let sender = await User.findById({_id: args.senderId});
       let receiver = await User.findById({_id: args.receiverId});
 

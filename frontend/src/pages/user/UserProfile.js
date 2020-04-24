@@ -62,6 +62,8 @@ class UserProfile extends Component {
     editingLessonField: false,
     editingSessionField: false,
     session: null,
+    sessionBookedState: false,
+    sessionAttendedState: false,
   };
 
   isActive = true;
@@ -1408,7 +1410,6 @@ class UserProfile extends Component {
     const token = this.context.token;
     const activityId = this.context.activityId;
   };
-
   addAddressToOrder = (event) => {
     event.preventDefault();
     // const address = JSON.stringify(event);
@@ -1615,7 +1616,7 @@ class UserProfile extends Component {
     const senderId = activityId;
     const senderName = this.state.user.username;
     const date = new Date();
-    const timeString1 = date.toISOString().slice(11,16);
+    const timeString1 = date.toLocaleDateString().slice(11,16);
     const timeString2 = date.toLocaleString().slice(11,16);
     const type = event.target.formGridTypeSelect.value;
     const subject = event.target.formGridSubject.value;
@@ -1944,7 +1945,6 @@ class UserProfile extends Component {
         this.setState({userAlert: err});
       });
   }
-
   closeProfileLessonView = () => {
     this.setState({profileLessonViewer: false, profileLessonViewerData: null})
   }
@@ -1976,9 +1976,9 @@ class UserProfile extends Component {
     const lessonId = this.state.profileLessonViewerData._id;
 
     const sessionTitle = event.target.formGridTitle.value;
-    // const sessionDate = new Date (event.target.patientReferralCalendarVisitDate.value.substr(0,10)*1000).toISOString().slice(0,10);
+    // const sessionDate = new Date (event.target.patientReferralCalendarVisitDate.value.substr(0,10)*1000).toLocaleDateString().slice(0,10);
     let sessionDate = event.target.CalendarDate.value;
-    sessionDate = new Date(sessionDate).toISOString().slice(0,10);
+    sessionDate = new Date(sessionDate).toLocaleDateString().slice(0,10);
     const sessionTime = event.target.formGridTime.value;
     const sessionLimit = event.target.formGridLimit.value;
     const sessionAmount = 0;
@@ -2145,7 +2145,6 @@ class UserProfile extends Component {
   startEditSessionField = (args) => {
     this.setState({editingSessionField: true, session: args})
   }
-
   cancelEditSessionField = () => {
     this.setState({editingSessionField: false, session: null})
   }
@@ -2201,6 +2200,19 @@ class UserProfile extends Component {
 
   }
 
+  showSessionBooked = () => {
+    this.setState({sessionBookedState: true})
+  }
+  showSessionAttended = () => {
+    console.log("beep");
+    this.setState({sessionAttendedState: true})
+  }
+  hideSessionBooked = () => {
+    this.setState({sessionBookedState: false})
+  }
+  hideSessionAttended = () => {
+    this.setState({sessionAttendedState: false})
+  }
 
   componentWillUnmount() {
     this.isActive = false;
@@ -2260,6 +2272,12 @@ class UserProfile extends Component {
             editSessionField={this.editSessionField}
             cancelEditSessionField={this.cancelEditSessionField}
             session={this.state.session}
+            showSessionBooked={this.showSessionBooked}
+            showSessionAttended={this.showSessionAttended}
+            hideSessionBooked={this.hideSessionBooked}
+            hideSessionAttended={this.hideSessionAttended}
+            sessionBookedState={this.state.sessionBookedState}
+            sessionAttendedState={this.state.sessionAttendedState}
 
             editingLesson={this.state.editingLesson}
             onStartEditLessonBasic={this.onStartEditLessonBasic}

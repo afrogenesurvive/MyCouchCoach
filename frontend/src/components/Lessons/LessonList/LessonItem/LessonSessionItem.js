@@ -1,10 +1,13 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import SessionBookedList from '../SessionBookedList';
+import SessionAttendedList from '../SessionAttendedList';
 
 import './UserItem.css';
 
-const lessonSessionItem = props => (
+export default function lessonSessionItem (props) {
+  return (
   <li key={props.authId} className="users__list-item_detail users__list-item_detail4">
     <Card style={{ width: '18rem' }}>
 
@@ -36,6 +39,28 @@ const lessonSessionItem = props => (
       </Card.Text>
     </Card.Body>
 
+    <Button variant="primary" onClick={props.showSessionBooked}>
+      Show Booked
+    </Button>
+    <Button variant="primary" onClick={props.hideSessionBooked}>
+      Hide Booked
+    </Button>
+    <Button variant="primary" onClick={props.showSessionAttended}>
+      Show Attended
+    </Button>
+    <Button variant="primary" onClick={props.hideSessionAttended}>
+      Hide Attended
+    </Button>
+
+    {props.sessionBookedState === true && (
+      <SessionBookedList
+      booked={props.booked}
+    />)}
+    {props.sessionAttendedState === true && (
+      <SessionAttendedList
+      attended={props.attended}
+    />)}
+
     {props.onBookSession && (<Button variant="primary" onClick={props.onBookSession.bind(this, props.session)}>
           Book
         </Button>)}
@@ -49,5 +74,4 @@ const lessonSessionItem = props => (
 
   </li>
 );
-
-export default lessonSessionItem;
+}

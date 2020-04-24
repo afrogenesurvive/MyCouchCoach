@@ -491,7 +491,7 @@ module.exports = buildSchema(`
     getThisUser(activityId: ID!): User
 
     getAllPublicLessons: [Lesson]
-    getPublicLessonsByField: [Lesson]
+    getPublicLessonsByField(field: String!, query: String!): [Lesson]
     getAllLessons(activityId: ID!): [Lesson]
     getLessonById(activityId: ID!, lessonId: ID!): Lesson
     getLessonsByField(activityId: ID!, field: String!, query: String!): [Lesson]

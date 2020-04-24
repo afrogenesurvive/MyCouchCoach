@@ -7,8 +7,8 @@ const userBookedLessonList = props => {
 
   const bookedLessons = props.userBookedLessons.map(bookedLesson => {
 
-    const dateBooked = new Date (bookedLesson.date.substr(0,10)*1000).toISOString().slice(0,10);;
-    const sessionDate = new Date (bookedLesson.session.date.substr(0,10)*1000).toISOString().slice(0,10);;
+    const dateBooked = new Date (bookedLesson.date.substr(0,10)*1000).toLocaleDateString().slice(0,10);;
+    const sessionDate = new Date (bookedLesson.session.date.substr(0,10)*1000).toLocaleDateString().slice(0,10);;
     return (
       <UserBookedLessonItem
         key={bookedLesson.ref}

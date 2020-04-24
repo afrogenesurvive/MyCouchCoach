@@ -1239,7 +1239,7 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
-      const now = new Date().toISOString().substr(0,10);
+      const now = new Date().toLocaleDateString().substr(0,10);
       const invitee = await User.findById({_id: args.receiverId});
       const sender = await User.findById({_id: args.senderId});
       const friendRequest = {
@@ -1345,7 +1345,7 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
-      const date = new Date().toISOString().substr(0,10);
+      const date = new Date().toLocaleDateString().substr(0,10);
       const request = args.userInput.activityRequest;
       const activity = {
         date: date,
@@ -1490,8 +1490,8 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
-      const date = new Date().toISOString().substr(0,10);
-      // const time = date.toISOString().substr(11,5);
+      const date = new Date().toLocaleDateString().substr(0,10);
+      // const time = date.toLocaleDateString().substr(11,5);
       const lesson = await Lesson.findById({_id: args.lessonId});
       const bookedLesson = {
         date: date,
@@ -1534,9 +1534,9 @@ module.exports = {
     }
     try {
         const date = args.date;
-        // const iSOString = new Date().toISOString().substr(0,10);
+        // const iSOString = new Date().toLocaleDateString().substr(0,10);
         const lesson = await Lesson.findById({_id: args.lessonId});
-        // console.log("args.date",date,"toISOString",iSOString,"x",preUser.bookedLessons[0].date.toISOString().substr(0,10));
+        // console.log("args.date",date,"toLocaleDateString",iSOString,"x",preUser.bookedLessons[0].date.toLocaleDateString().substr(0,10));
         const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { bookedLessons: {date: date, ref: lesson} }},{new: true, useFindAndModify: false})
         .populate('perks')
         .populate('promos')
@@ -1569,8 +1569,8 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
-      const date = new Date().toISOString().substr(0,10);
-      // const time = date.toISOString().substr(11,5);
+      const date = new Date().toLocaleDateString().substr(0,10);
+      // const time = date.toLocaleDateString().substr(11,5);
       const lesson = await Lesson.findById({_id: args.lessonId});
       const attendedLesson = {
         date: date,
@@ -1609,7 +1609,7 @@ module.exports = {
     }
     try {
       const date = args.date;
-      // const iSOString = new Date().toISOString().substr(0,10);
+      // const iSOString = new Date().toLocaleDateString().substr(0,10);
       const lesson = await Lesson.findById({_id: args.lessonId});
       const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { attendedLessons: {date: date, ref: lesson} }},{new: true, useFindAndModify: false})
       .populate('perks')
@@ -1643,8 +1643,8 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
-      const date = new Date().toISOString().substr(0,10);
-      // const time = date.toISOString().substr(11,5);
+      const date = new Date().toLocaleDateString().substr(0,10);
+      // const time = date.toLocaleDateString().substr(11,5);
       const lesson = await Lesson.findById({_id: args.lessonId});
       const taughtLesson = {
         date: date,
@@ -1683,7 +1683,7 @@ module.exports = {
     }
     try {
       const date = args.date;
-      // const iSOString = new Date().toISOString().substr(0,10);
+      // const iSOString = new Date().toLocaleDateString().substr(0,10);
       const lesson = await Lesson.findById({_id: args.lessonId});
       const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { taughtLessons: {date: date, ref: lesson} }},{new: true, useFindAndModify: false})
       .populate('perks')
@@ -1717,8 +1717,8 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
-      const date = new Date().toISOString().substr(0,10);
-      // const time = date.toISOString().substr(11,5);
+      const date = new Date().toLocaleDateString().substr(0,10);
+      // const time = date.toLocaleDateString().substr(11,5);
       const lesson = await Lesson.findById({_id: args.lessonId});
       const cartLesson = {
         dateAdded: date,
@@ -1759,7 +1759,7 @@ module.exports = {
     try {
       const dateAdded = args.dateAdded;
       const sessionDate = args.sessionDate;
-      // const iSOString = new Date().toISOString().substr(0,10);
+      // const iSOString = new Date().toLocaleDateString().substr(0,10);
       const lesson = await Lesson.findById({_id: args.lessonId});
       const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { cart: {sessionDate: sessionDate, lesson: lesson} }},{new: true, useFindAndModify: false})
       .populate('perks')
@@ -1793,8 +1793,8 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
-      const date = new Date().toISOString().substr(0,10);
-      // const time = date.toISOString().substr(11,5);
+      const date = new Date().toLocaleDateString().substr(0,10);
+      // const time = date.toLocaleDateString().substr(11,5);
       const lesson = await Lesson.findById({_id: args.lessonId});
       const wishlistLesson = {
         date: date,

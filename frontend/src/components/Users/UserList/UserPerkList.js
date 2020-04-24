@@ -8,7 +8,7 @@ const userPerkList = props => {
 
     let perkDate = 0;
     if (perk.date !== null && perk.date !== "") {
-      perkDate = new Date (perk.date.substr(0,10)*1000).toISOString().slice(0,10);
+      perkDate = new Date (perk.date.substr(0,10)*1000).toLocaleDateString().slice(0,10);
     }
 
     return (

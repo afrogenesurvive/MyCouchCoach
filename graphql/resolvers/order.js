@@ -541,8 +541,8 @@ module.exports = {
 
       const buyer = await User.findById({_id: args.buyerId}).populate('cart.lesson.ref');
       const receiver = await User.findById({_id: args.receiverId});
-      const date = new Date().toISOString().substr(0,10);
-      const time = new Date().toISOString().substr(11,5);
+      const date = new Date().toLocaleDateString().substr(0,10);
+      const time = new Date().toLocaleDateString().substr(11,5);
       const preCart = buyer.cart;
       if (preCart.length === 0) {
         throw new Error('Ummm just no! Your cart is empty...')

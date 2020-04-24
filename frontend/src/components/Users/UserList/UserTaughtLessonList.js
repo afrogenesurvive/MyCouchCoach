@@ -6,7 +6,7 @@ import './UserList.css';
 const userTaughtLessonList = props => {
 
   const taughtLessons = props.userTaughtLessons.map(taughtLesson => {
-    const taughtLessonDate = new Date (taughtLesson.date.substr(0,10)*1000).toISOString().slice(0,10);;
+    const taughtLessonDate = new Date (taughtLesson.date.substr(0,10)*1000).toLocaleDateString().slice(0,10);;
     // console.log(taughtLesson.ref);
     return (
       <UserTaughtLessonItem

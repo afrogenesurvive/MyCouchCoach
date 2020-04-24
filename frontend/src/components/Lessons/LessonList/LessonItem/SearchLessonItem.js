@@ -24,9 +24,9 @@ const searchLessonItem = props => (
     <Button variant="primary" onClick={props.onDetail.bind(this, props._id)}>
           Details
         </Button>
-        <Button variant="primary" onClick={props.onSelectNoDetail.bind(this, props.lesson)}>
+        {props.onSelectNoDetail && (<Button variant="primary" onClick={props.onSelectNoDetail.bind(this, props.lesson)}>
           Select
-        </Button>
+        </Button>)}
     </div>
   </li>
 );

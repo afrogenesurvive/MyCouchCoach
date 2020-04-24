@@ -19,7 +19,7 @@ const UserDetail = (props) => {
   // console.log(profileImages);
   const interests = user.interests;
 
-  // let userDob = new Date(user.dob.substr(0,9) * 1000).toISOString().slice(0,10);
+  // let userDob = new Date(user.dob.substr(0,9) * 1000).toLocaleDateString().slice(0,10);
 
   return (
     <div className={"UserDetailBox1"}>

@@ -33,6 +33,12 @@ return (
       showSchedule={props.showSchedule}
       showScheduleState={props.showScheduleState}
       hideSchedule={props.hideSchedule}
+      showSessionBooked={props.showSessionBooked}
+      showSessionAttended={props.showSessionAttended}
+      hideSessionBooked={props.hideSessionBooked}
+      hideSessionAttended={props.hideSessionAttended}
+      sessionBookedState={props.sessionBookedState}
+      sessionAttendedState={props.sessionAttendedState}
     />
 
     </div>

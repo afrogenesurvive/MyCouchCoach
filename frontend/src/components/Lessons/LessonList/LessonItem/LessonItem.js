@@ -32,15 +32,16 @@ export default function lesssonItem (props) {
       <Card.Text>
         leadInstructorId: {props.instructors[0]._id}
       </Card.Text>
-      <Link to={'lessons/'+props.lesson.title+''}>
+
       <Button variant="primary" onClick={props.onDetail.bind(this, props._id)}>
         Details
       </Button>
-      </Link>
 
+      {props.onSelectNoDetail && (
       <Button variant="primary" onClick={props.onSelectNoDetail.bind(this, props.lesson)}>
         Select
       </Button>
+      )}
       {props.canReport === true && (
         <Button variant="danger" onClick={props.onReport.bind(this, props._id)}>
         Report
@@ -50,19 +51,6 @@ export default function lesssonItem (props) {
     </Card>
 
   </li>
-  {
-    <Switch>
-    <Route path="/:id" children={<Child />} />
-  </Switch>
-}
   </Router>
 );
-}
-
-function Child() {
-  let { id } = useParams();
-
-  return (
-    id
-  );
 }

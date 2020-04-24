@@ -21,7 +21,7 @@ import './UserDetail.css';
 const LessonDetail = (props) => {
 
   const {...lesson} = props.lesson;
-  // let userDob = new Date(user.dob.substr(0,9) * 1000).toISOString().slice(0,10);
+  // let userDob = new Date(user.dob.substr(0,9) * 1000).toLocaleDateString().slice(0,10);
   const instructorIds = lesson.instructors.map(x => x._id)
   const isInstructor = instructorIds.includes(props.authId);
   return (
@@ -107,6 +107,12 @@ const LessonDetail = (props) => {
           lessonSessions={lesson.sessions}
           onBookSession={props.onBookSession}
           onAddCartLesson={props.onAddCartLesson}
+          showSessionBooked={props.showSessionBooked}
+          showSessionAttended={props.showSessionAttended}
+          hideSessionBooked={props.hideSessionBooked}
+          hideSessionAttended={props.hideSessionAttended}
+          sessionBookedState={props.sessionBookedState}
+          sessionAttendedState={props.sessionAttendedState}
         />
       )}
         </Col>

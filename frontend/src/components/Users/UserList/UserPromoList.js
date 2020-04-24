@@ -7,11 +7,11 @@ const userPromoList = props => {
   const userPromos = props.userPromos.map(promo => {
     let promoStartDate = 0;
     if (promo.startDate !== null && promo.startDate !== "") {
-      promoStartDate = new Date (promo.startDate.substr(0,10)*1000).toISOString().slice(0,10);
+      promoStartDate = new Date (promo.startDate.substr(0,10)*1000).toLocaleDateString().slice(0,10);
     }
     let promoEndDate = 0;
     if (promo.endDate !== null && promo.endDate !== "") {
-      promoEndDate = new Date (promo.endDate.substr(0,10)*1000).toISOString().slice(0,10);
+      promoEndDate = new Date (promo.endDate.substr(0,10)*1000).toLocaleDateString().slice(0,10);
     }
 
     return (

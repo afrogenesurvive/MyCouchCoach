@@ -234,7 +234,7 @@ class App extends Component {
                 {this.context.token && (<Route path="/users" component={UsersPage} />)}
                 {this.context.token && (<Route path="/lessons" component={LessonsPage} />)}
 
-                {!this.context.token && (<Route path="/publiclessons" component={PublicLessonsPage} />)}
+                {!this.context.token && (<Route path="/lessons/public" component={PublicLessonsPage} />)}
                 {!this.context.token && (<Route path="/login" component={AuthPage} />)}
                 {!this.context.token && (<Route path="/signup" component={SignupPage} />)}
                 {!this.context.token && <Redirect to="/login" exact />}

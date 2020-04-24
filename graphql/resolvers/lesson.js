@@ -21,40 +21,40 @@ const { pocketVariables } = require('../../helpers/pocketVars');
 
 
 module.exports = {
-  // getAllPublicLessons: async () => {
-  //   console.log('getAllPublicLessons...');
-  //   try {
-  //     const lessons = await Lesson.find({})
-  //     .populate('instructors')
-  //     .populate('reviews');
-  //
-  //     return lessons.map(lesson => {
-  //       return transformLesson(lesson,);
-  //     });
-  //   } catch (err) {
-  //     throw err;
-  //   }
-  // },
-  // getPublicLessonsByField: async () => {
-  //   console.log('getPublicLessonsByField...');
-  //   try {
-  //     let resolverField = args.field;
-  //     // let resolverQuery = args.query;
-  //     let resolverField = args.field;
-  //     const regExpQuery = new RegExp(args.query)
-  //     let resolverQuery = {$regex: regExpQuery, $options: 'i'};
-  //     const query = {[resolverField]:resolverQuery};
-  //     const lessons = await Lesson.find(query)
-  //     .populate('instructors')
-  //     .populate('reviews');
-  //
-  //     return lessons.map(lesson => {
-  //       return transformLesson(lesson,);
-  //     });
-  //   } catch (err) {
-  //     throw err;
-  //   }
-  // },
+  getAllPublicLessons: async () => {
+    console.log('getAllPublicLessons...');
+    try {
+      const lessons = await Lesson.find({})
+      .populate('instructors')
+      .populate('reviews');
+
+      return lessons.map(lesson => {
+        return transformLesson(lesson,);
+      });
+    } catch (err) {
+      throw err;
+    }
+  },
+  getPublicLessonsByField: async (args) => {
+    console.log('getPublicLessonsByField...');
+    try {
+      // let resolverField = args.field;
+      // let resolverQuery = args.query;
+      let resolverField = args.field;
+      const regExpQuery = new RegExp(args.query)
+      let resolverQuery = {$regex: regExpQuery, $options: 'i'};
+      const query = {[resolverField]:resolverQuery};
+      const lessons = await Lesson.find(query)
+      .populate('instructors')
+      .populate('reviews');
+
+      return lessons.map(lesson => {
+        return transformLesson(lesson,);
+      });
+    } catch (err) {
+      throw err;
+    }
+  },
   getAllLessons: async (args, req) => {
 
     console.log("Resolver: getAllLessons...");
@@ -358,7 +358,7 @@ module.exports = {
       const sessionReminders = sessions2.map(x => ({
         message: `
           Don't forget !!! You have a class: ${x.lessonTitle},
-          session: ${x.title}, on: ${x.date.toISOString()}, at: ${x.time},
+          session: ${x.title}, on: ${x.date.toLocaleDateString()}, at: ${x.time},
           wake that ass up!!
         `,
         recipients: x.booked,
@@ -1120,7 +1120,7 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
-      const today = new Date().toISOString().substr(0,10);
+      const today = new Date().toLocaleDateString().substr(0,10);
       const user = await User.findById({_id: args.userId});
       const preLesson = await Lesson.findById({_id: args.lessonId});
       const userBookings = user.bookedLessons.map(x => x.ref);
@@ -1209,7 +1209,7 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
-      const today = new Date().toISOString().substr(0,10);
+      const today = new Date().toLocaleDateString().substr(0,10);
       const user = await User.findById({_id: args.userId});
       // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$all: [user]} },
       // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$nin: user} },
@@ -1244,7 +1244,7 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
-      const today = new Date().toISOString().substr(0,10);
+      const today = new Date().toLocaleDateString().substr(0,10);
       const user = await User.findById({_id: args.userId});
       // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$all: [user]} },
       // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$nin: user} },

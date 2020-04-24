@@ -6,7 +6,7 @@ import './UserList.css';
 const lessonScheduleList = props => {
 
   const dates = props.lessonSchedule.map(date => {
-    // const scheduleDate = new Date (date.substr(0,10)*1000).toISOString().slice(0,10);
+    // const scheduleDate = new Date (date.substr(0,10)*1000).toLocaleDateString().slice(0,10);
     // console.log(date);
     return (
       <LessonScheduleItem

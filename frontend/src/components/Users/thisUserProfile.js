@@ -55,7 +55,7 @@ import './thisUserProfile.css';
 const thisUserProfile = (props) => {
 const {...user} = props.user;
 const userAddress = user.address;
-const userDob = new Date(user.dob.substr(0,9)*1000).toISOString().slice(0,10);
+const userDob = new Date(user.dob.substr(0,9)*1000).toLocaleDateString().slice(0,10);
 
 let sentRequests = [];
 let receivedRequests = [];

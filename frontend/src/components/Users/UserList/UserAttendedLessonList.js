@@ -7,7 +7,7 @@ const userAttendedLessonList = props => {
 
   const attendedLessons = props.userAttendedLessons.map(attendedLesson => {
     // console.log(attendedLesson.ref);
-    const attendedLessonDate = new Date (attendedLesson.date.substr(0,10)*1000).toISOString().slice(0,10);;
+    const attendedLessonDate = new Date (attendedLesson.date.substr(0,10)*1000).toLocaleDateString().slice(0,10);;
     return (
       <UserAttendedLessonItem
         key={attendedLesson.ref}

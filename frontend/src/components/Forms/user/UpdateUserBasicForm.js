@@ -12,7 +12,7 @@ const UpdateUserBasicForm = (props) => {
 
   const {...user} = props.user;
   const [dob, setDob] = useState(new Date());
-  const prevDob = new Date(user.dob.substr(0,9)*1000).toISOString().slice(0,10)
+  const prevDob = new Date(user.dob.substr(0,9)*1000).toLocaleDateString().slice(0,10)
 
   const handleChangeDob = date => {
     setDob(date);

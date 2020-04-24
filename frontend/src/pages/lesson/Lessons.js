@@ -69,6 +69,8 @@ class LessonsPage extends Component {
     sidebarShow: true,
     mCol1Size: 3,
     mCol2Size: 9,
+    sessionBookedState: false,
+    sessionAttendedState: false,
   };
   isActive = true;
   static contextType = AuthContext;
@@ -317,7 +319,6 @@ class LessonsPage extends Component {
     this.setState({editingLesson: true})
   }
   onStartEditLessonField = () => {
-    console.log('beep!');
     this.setState({editingLessonField: true})
   }
   cancelEditBasic = () => {
@@ -440,7 +441,7 @@ class LessonsPage extends Component {
     const requestBody = {
       query: `
         query {getAllLessons(activityId:"${activityId}")
-        {_id,title,subtitle,type,category,price,sku,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{phone,phone2,email}},tags}}
+        {_id,title,subtitle,type,category,price,sku,points,description,notes,duration,schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email}},tags}}
         `};
 
     fetch('http://localhost:8088/graphql', {
@@ -489,7 +490,7 @@ class LessonsPage extends Component {
           activityId:"${activityId}",
           lessonId:"${lessonId}"
         )
-        {_id,title,subtitle,type,category,price,sku,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{phone,phone2,email}},tags,sessions{title,date,time,limit,inProgress,full}}}
+        {_id,title,subtitle,type,category,price,sku,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{phone,phone2,email}},tags,sessions{title,date,time,limit,amount,url,bookedAmount,attendedAmount                                    ,booked{_id,username},attended{_id,username},inProgress,full}}}
         `};
 
     fetch('http://localhost:8088/graphql', {
@@ -531,7 +532,7 @@ class LessonsPage extends Component {
     const userId = activityId;
     const lessonId = this.state.selectedLesson._id;
     const sessionTitle = args.title;
-    const sessionDate = new Date (args.date.substr(0,10)*1000).toISOString().slice(0,10);
+    const sessionDate = new Date (args.date.substr(0,10)*1000).toLocaleDateString().slice(0,10);
 
     const requestBody = {
       query: `
@@ -578,7 +579,7 @@ class LessonsPage extends Component {
     const userId = activityId;
     const lessonId = this.state.selectedLesson._id;
     const sessionTitle = args.title;
-    const sessionDate = new Date (args.date.substr(0,10)*1000).toISOString().slice(0,10);
+    const sessionDate = new Date (args.date.substr(0,10)*1000).toLocaleDateString().slice(0,10);
     const sessionTime = args.time;
 
     const requestBody = {
@@ -638,9 +639,9 @@ class LessonsPage extends Component {
     const lessonId = this.state.selectedLesson._id;
 
     const sessionTitle = event.target.formGridTitle.value;
-    // const sessionDate = new Date (event.target.patientReferralCalendarVisitDate.value.substr(0,10)*1000).toISOString().slice(0,10);
+    // const sessionDate = new Date (event.target.patientReferralCalendarVisitDate.value.substr(0,10)*1000).toLocaleDateString().slice(0,10);
     let sessionDate = event.target.CalendarDate.value;
-    sessionDate = new Date(sessionDate).toISOString().slice(0,10);
+    sessionDate = new Date(sessionDate).toLocaleDateString().slice(0,10);
     const sessionTime = event.target.formGridTime.value;
     const sessionLimit = event.target.formGridLimit.value;
     const sessionAmount = 0;
@@ -687,6 +688,20 @@ class LessonsPage extends Component {
         }
       });
   };
+
+  showSessionBooked = () => {
+    this.setState({sessionBookedState: true})
+  }
+  showSessionAttended = () => {
+    console.log("beep");
+    this.setState({sessionAttendedState: true})
+  }
+  hideSessionBooked = () => {
+    this.setState({sessionBookedState: false})
+  }
+  hideSessionAttended = () => {
+    this.setState({sessionAttendedState: false})
+  }
 
   deleteListLesson = (lessonId) => {
     console.log("delete listed lesson", lessonId);
@@ -783,6 +798,12 @@ class LessonsPage extends Component {
           showScheduleState={this.state.showSchedule}
           showSchedule={this.showSchedule}
           hideSchedule={this.hideSchedule}
+          showSessionBooked={this.showSessionBooked}
+          showSessionAttended={this.showSessionAttended}
+          hideSessionBooked={this.hideSessionBooked}
+          hideSessionAttended={this.hideSessionAttended}
+          sessionBookedState={this.state.sessionBookedState}
+          sessionAttendedState={this.state.sessionAttendedState}
         />
       )}
       <SidebarControl

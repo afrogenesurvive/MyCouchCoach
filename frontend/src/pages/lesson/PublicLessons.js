@@ -14,13 +14,12 @@ import Card from 'react-bootstrap/Card';
 import AuthContext from '../../context/auth-context';
 import LessonList from '../../components/Lessons/LessonList/LessonList';
 import SearchLessonList from '../../components/Lessons/LessonList/SearchLessonList';
-import LessonDetail from '../../components/Lessons/LessonDetail';
 import SearchSession from '../../components/Lessons/LessonList/LessonItem/SearchSession';
 
 import Spinner from '../../components/Spinner/Spinner';
 import AlertBox from '../../components/AlertBox';
 import LoadingOverlay from '../../components/LoadingOverlay';
-import LessonDetailViewer from '../../components/LessonDetailViewer';
+import PublicLessonDetailViewer from '../../components/PublicLessonDetailViewer';
 
 import SearchPublicLessonForm from '../../components/Forms/lesson/SearchPublicLessonForm';
 
@@ -60,15 +59,9 @@ class PublicLessonsPage extends Component {
 
   modalConfirmPublicSearchHandler = (event) => {
     event.preventDefault();
-    let activityId = this.context.activityId;
     const token = this.context.token;
-    let field = null;
+    let field = event.target.formBasicFieldSelect.value;
     let query = event.target.formBasicQuery.value;
-    if (event.target.formBasicFieldSelect.value === "select") {
-      field = event.target.formBasicField.value;
-    } else {
-      field = event.target.formBasicFieldSelect.value;
-    }
 
     this.setState({
       userSearchField: field,
@@ -88,7 +81,11 @@ class PublicLessonsPage extends Component {
     const search = { field, query };
     const requestBody = {
       query: `
-
+        query {getPublicLessonsByField(
+          field:"${field}",
+          query:"${query}"
+        )
+        {_id,title,subtitle,type,category,price,points,description,duration,schedule{date,time},gallery{name,type,path},instructors{_id,username},tags}}
       `}
 
     fetch('http://localhost:8088/graphql', {
@@ -105,8 +102,8 @@ class PublicLessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data.getLessonsByFieldRegex).slice(0,8);
-        const searchLessons = resData.data.getLessonsByFieldRegex;
+        const responseAlert = JSON.stringify(resData.data.getPublicLessonsByField).slice(0,8);
+        const searchLessons = resData.data.getPublicLessonsByField;
         this.setState({ searchLessons: searchLessons, userAlert: responseAlert})
       })
       .catch(err => {
@@ -119,11 +116,11 @@ class PublicLessonsPage extends Component {
   };
 
   fetchLessonsPublic() {
-    const activityId = this.state.guestId;
-    this.setState({ isLoading: true, userAlert: "Fetching Lesson Master List..." });
+    this.setState({ isLoading: true, userAlert: "Fetching Public Lesson Master List..." });
     const requestBody = {
       query: `
-
+          query {getAllPublicLessons
+            {_id,title,subtitle,type,category,price,points,description,duration,schedule{date,time},gallery{name,type,path},instructors{_id,username},tags}}
         `};
 
     fetch('http://localhost:8088/graphql', {
@@ -142,7 +139,7 @@ class PublicLessonsPage extends Component {
       })
       .then(resData => {
         const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, lessons: resData.data.getAllLessons, isLoading: false});
+        this.setState({userAlert: responseAlert, lessons: resData.data.getAllPublicLessons, isLoading: false});
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -160,9 +157,10 @@ class PublicLessonsPage extends Component {
   };
 
   showDetailHandler = lessonId => {
+    console.log('beep',lessonId);
   this.setState(prevState => {
     const selectedLesson = prevState.lessons.find(e => e._id === lessonId);
-    this.context.selectedLesson = selectedLesson;
+    // this.context.selectedLesson = selectedLesson;
     this.setState({selectedLesson: selectedLesson, showDetail: true});
     return { selectedLesson: selectedLesson };
   });
@@ -187,8 +185,7 @@ class PublicLessonsPage extends Component {
         alert={this.state.guestId}
       />
       {this.state.showDetail === true && (
-        <LessonDetailViewer
-          authId={this.state.guestId}
+        <PublicLessonDetailViewer
           lesson={this.state.selectedLesson}
           onHideLessonDetail={this.hideDetailHandler}
           showScheduleState={this.state.showSchedule}
@@ -210,6 +207,7 @@ class PublicLessonsPage extends Component {
         <Col md={this.state.mCol2Size} className="MasterCol2">
             <Container className="containerCombinedDetail1">
             <h1>Visitor lesson list</h1>
+            
               <Tab.Container id="left-tabs-example" defaultActiveKey="MasterList">
                 <Row>
                   <Col sm={2} className="userListSubMenuCol">
@@ -233,6 +231,7 @@ class PublicLessonsPage extends Component {
                            <Spinner />
                          ) : (
                            <LessonList
+                           public
                             canReport={this.state.canReport}
                             onReport={this.reportLesson}
                              lessons={this.state.lessons}
@@ -254,7 +253,7 @@ class PublicLessonsPage extends Component {
                           canCancel
                             canConfirm
                             onCancel={this.modalCancelHandler}
-                            onConfirm={this.modalConfirmSearchRegexHandler}
+                            onConfirm={this.modalConfirmPublicSearchHandler}
                             confirmText="Search"
                           />
                         </Tab>

@@ -7,8 +7,8 @@ const UserCartItemList = props => {
 
   const cart = props.userCartItems.map(cartItem => {
     
-    const cartItemDateAdded = new Date (cartItem.dateAdded.substr(0,10)*1000).toISOString().slice(0,10);;
-    const cartItemSessionDate = new Date (cartItem.sessionDate.substr(0,10)*1000).toISOString().slice(0,10);;
+    const cartItemDateAdded = new Date (cartItem.dateAdded.substr(0,10)*1000).toLocaleDateString().slice(0,10);;
+    const cartItemSessionDate = new Date (cartItem.sessionDate.substr(0,10)*1000).toLocaleDateString().slice(0,10);;
     
     return (
       <UserCartItemItem

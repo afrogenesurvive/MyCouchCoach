@@ -13,7 +13,6 @@ return (
   <Form.Group className="searchInput" controlId="formBasicFieldSelect">
   <Form.Label>Regex Field</Form.Label>
   <Form.Control as="select">
-  <option>select</option>
   <option>title</option>
   <option>type</option>
   <option>category</option>

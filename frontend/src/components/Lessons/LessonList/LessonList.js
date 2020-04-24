@@ -23,6 +23,7 @@ const lessonList = props => {
         onDetail={props.onViewDetail}
         canReport={props.canReport}
         onReport={props.onReport}
+        puplic={props.public}
       />
     );
   });

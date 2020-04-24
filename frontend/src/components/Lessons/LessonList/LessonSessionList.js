@@ -6,7 +6,8 @@ import './UserList.css';
 const lessonSessionList = props => {
 
   const lessons = props.lessonSessions.map(session => {
-    const sessionDate = new Date (session.date.substr(0,10)*1000).toISOString().slice(0,10);;
+    // console.log(session);
+    const sessionDate = new Date (session.date.substr(0,10)*1000).toLocaleDateString().slice(0,10);;
     return (
       <LessonSessionItem
         key={session.title}
@@ -26,6 +27,12 @@ const lessonSessionList = props => {
         onBookSession={props.onBookSession}
         onAddCartLesson={props.onAddCartLesson}
         editSessionField={props.editSessionField}
+        showSessionBooked={props.showSessionBooked}
+        showSessionAttended={props.showSessionAttended}
+        hideSessionBooked={props.hideSessionBooked}
+        hideSessionAttended={props.hideSessionAttended}
+        sessionBookedState={props.sessionBookedState}
+        sessionAttendedState={props.sessionAttendedState}
       />
     );
   });

@@ -21,7 +21,7 @@ import './AttachmentViewer.css';
 const ProfileLessonViewer = (props) => {
 
   const {...lesson} = props.profileLesson;
-  // let userDob = new Date(user.dob.substr(0,9) * 1000).toISOString().slice(0,10);
+  // let userDob = new Date(user.dob.substr(0,9) * 1000).toLocaleDateString().slice(0,10);
   const instructorIds = lesson.instructors.map(x => x._id)
   const isInstructor = instructorIds.includes(props.authId);
   // console.log(lesson.sessions);
@@ -152,6 +152,12 @@ const ProfileLessonViewer = (props) => {
             <LessonSessionList
             lessonSessions={lesson.sessions}
             editSessionField={props.startEditSessionField}
+            showSessionBooked={props.showSessionBooked}
+            showSessionAttended={props.showSessionAttended}
+            hideSessionBooked={props.hideSessionBooked}
+            hideSessionAttended={props.hideSessionAttended}
+            sessionBookedState={props.sessionBookedState}
+            sessionAttendedState={props.sessionAttendedState}
             />
           )}
           </Col>

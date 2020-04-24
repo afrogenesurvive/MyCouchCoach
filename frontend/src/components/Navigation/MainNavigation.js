@@ -44,6 +44,13 @@ const mainNavigation = props => (
                   </li>
                 </React.Fragment>
               )}
+              {!context.token && (
+                <React.Fragment>
+                  <li>
+                    <NavLink to="/lessons/public">Lessons</NavLink>
+                  </li>
+                </React.Fragment>
+              )}
             </ul>
           </nav>
         </header>

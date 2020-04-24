@@ -178,8 +178,8 @@ module.exports = {
       //   throw new Error('Ummm no! Only users whove attended a session of this class can review it');
       // }
       //
-      // const today = new Date().toISOString().substr(0,10);
-      // const time = new Date().toISOString().substr(11,5);
+      // const today = new Date().toLocaleDateString().substr(0,10);
+      // const time = new Date().toLocaleDateString().substr(11,5);
       // const author = await User.findById({_id: args.userId});
       // const lesson = await Lesson.findById({_id: args.lessonId});
       //

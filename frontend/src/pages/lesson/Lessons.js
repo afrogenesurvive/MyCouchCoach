@@ -245,6 +245,7 @@ class LessonsPage extends Component {
       .then(resData => {
         const responseAlert = JSON.stringify(resData.data.getLessonSession).slice(0,8);
         const searchSession = resData.data.getLessonSession;
+        console.log(searchSession);
         this.setState({ searchSession: searchSession, userAlert: responseAlert})
       })
       .catch(err => {

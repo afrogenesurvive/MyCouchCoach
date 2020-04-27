@@ -613,6 +613,7 @@ const publicUser = user.public.toString();
         authId={props.authId}
         session={props.session}
         startEditSessionField={props.startEditSessionField}
+        cancelEditSessionField={props.cancelEditSessionField}
         editingSessionField={props.editingSessionField}
         editSessionField={props.editSessionField}
         showSessionBooked={props.showSessionBooked}

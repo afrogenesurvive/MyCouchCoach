@@ -426,35 +426,53 @@ module.exports = {
       const preLesson = await Lesson.findById({_id: args.lessonId});
       const session = await Lesson.aggregate([
               {$unwind: '$sessions'},
+              {$lookup:
+                {
+                   from: "users",
+                   localField: 'sessions.booked',
+                   foreignField: '_id',
+                   as: "sessions.booked"
+                 }
+               },
+              {$lookup:
+                {
+                   from: "users",
+                   localField: 'sessions.attended',
+                   foreignField: '_id',
+                   as: "sessions.attended"
+                 }
+               },
               {$group: {_id:{
                 // lessonId: '$_id',
                 lessonId: '$_id',
                 lessonTitle: '$title',
+                lessonInstructors: '$instructors',
                 date:'$sessions.date',
                 title:'$sessions.title',
                 time:'$sessions.time',
                 limit:'$sessions.limit',
                 bookedAmount: '$sessions.bookedAmount',
                 booked: '$sessions.booked',
-                full: '$sessions.full'
+                attendedAmount: '$sessions.attendedAmount',
+                attended: '$sessions.attended',
+                full: '$sessions.full',
               }}},
+
               // {$group: {_id:{date:'$sessions.date',title:'$sessions.title'},booked: { $addToSet: '$sessions.booked'}}},
               {$match:
                 {
                   // '_id.lessonId': {$ne: args.lessonId},
                   '_id.lessonId': {$eq: preLesson._id},
                   '_id.title': {$eq: args.lessonInput.sessionTitle }
-                }}
+                }},
               // {$match: {'_id.lessonId': args.lessonId, '_id.title': {$eq: args.lessonInput.sessionTitle }}}
             ]);
             const session2 = session[0]._id;
             console.log(session2);
+
             return {
               ...session2
             }
-        // return lessons.map(lesson => {
-        //   return transformLesson(lesson);
-        // });
     } catch (err) {
       throw err;
     }

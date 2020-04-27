@@ -2148,7 +2148,7 @@ class UserProfile extends Component {
     this.setState({editingSessionField: true, session: args})
   };
   cancelEditSessionField = () => {
-    this.setState({editingSessionField: false, session: null})
+    this.setState({editingSessionField: false})
   };
   editSessionField = (event) => {
     event.preventDefault();
@@ -2203,6 +2203,7 @@ class UserProfile extends Component {
   };
 
   showSessionBooked = () => {
+    console.log('beeep');
     this.setState({sessionBookedState: true})
   };
   showSessionAttended = () => {
@@ -2220,7 +2221,13 @@ class UserProfile extends Component {
     this.setState({userAlert: '...adding session attendance...'})
     const activityId = this.context.activityId;
     const userId = attendance.user._id;
-    const lessonId = this.state.profileLessonViewerData._id;
+    let lessonId = null;
+    if (this.state.sessionDetailViewer === true ) {
+      lessonId = this.state.session.lessonId;
+    } else {
+      lessonId = this.state.profileLessonViewerData._id;
+    }
+
     const sessionDate = attendance.sessionDate;
     const sessionTitle = attendance.sessionTitle;
 
@@ -2336,7 +2343,7 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        console.log(resData.data.getLessonSession);
+        // console.log(resData.data.getLessonSession);
         const newSession = {
           title: resData.data.getLessonSession.title,
           date: resData.data.getLessonSession.date,
@@ -2354,7 +2361,7 @@ class UserProfile extends Component {
           lessonTitle: session.lessonTitle,
           lessonInstructors: session.lessonInstructors,
         };
-
+        console.log(newSession);
         const responseAlert = JSON.stringify(resData.data).slice(0,8);
         this.setState({userAlert: responseAlert, session: newSession, sessionDetailViewer: true});
       })

@@ -224,20 +224,20 @@ class App extends Component {
             />
             <main className="main-content">
               <Switch>
-                {this.context.token && <Redirect from="/" to="/userProfile" exact />}
+                {this.state.token && <Redirect from="/" to="/userProfile" exact />}
 
-                {this.context.token && (<Route path="/userProfile" component={UserProfile} />)}
-                {this.context.token && (<Route path="/userProfile/LessonDetailViewer" component={ProfileLessonViewer} />)}
+                {this.state.token && (<Route path="/userProfile" component={UserProfile} />)}
+                {this.state.token && (<Route path="/userProfile/LessonDetailViewer" component={ProfileLessonViewer} />)}
 
-                {this.context.token && (<Redirect from="/login" to="/userProfile" exact />)}
+                {this.state.token && (<Redirect from="/login" to="/userProfile" exact />)}
 
-                {this.context.token && (<Route path="/users" component={UsersPage} />)}
-                {this.context.token && (<Route path="/lessons" component={LessonsPage} />)}
+                {this.state.token && (<Route path="/users" component={UsersPage} />)}
+                {this.state.token && (<Route path="/lessons" component={LessonsPage} />)}
 
-                {!this.context.token && (<Route path="/lessons/public" component={PublicLessonsPage} />)}
-                {!this.context.token && (<Route path="/login" component={AuthPage} />)}
-                {!this.context.token && (<Route path="/signup" component={SignupPage} />)}
-                {!this.context.token && <Redirect to="/login" exact />}
+                {!this.state.token && (<Route path="/lessons/public" component={PublicLessonsPage} />)}
+                {!this.state.token && (<Route path="/login" component={AuthPage} />)}
+                {!this.state.token && (<Route path="/signup" component={SignupPage} />)}
+                {!this.state.token && <Redirect to="/login" exact />}
               </Switch>
             </main>
 

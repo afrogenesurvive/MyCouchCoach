@@ -4,10 +4,12 @@ import Card from 'react-bootstrap/Card';
 
 import './UserItem.css';
 
-const searchSession = props => (
+export default function searchSession (props) {
+  console.log('boop', props.session);
+  return (
   <li key={props.authId} className="users__list-item_detail users__list-item_detail4">
     <Card style={{ width: '18rem' }}>
-
+    <p>here</p>
     <Card.Body>
       <Card.Title>{props.session.title}</Card.Title>
       <Card.Text>
@@ -21,5 +23,4 @@ const searchSession = props => (
 
   </li>
 );
-
-export default searchSession;
+}

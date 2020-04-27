@@ -2156,7 +2156,13 @@ class UserProfile extends Component {
     this.setState({editingSessionField: false, userAlert: 'updating session by field'})
     let activityId = this.context.activityId;
     const creatorId = activityId;
-    const lessonId = this.state.profileLessonViewerData._id;
+    // const lessonId = this.state.session.lessonId;
+    let lessonId = null;
+    if (this.state.sessionDetailViewer === true ) {
+      lessonId = this.state.session.lessonId;
+    } else {
+      lessonId = this.state.profileLessonViewerData._id;
+    }
     const token = this.context.token;
 
     const sessionTitle = this.state.session.title;
@@ -2193,8 +2199,30 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
+        const lesson = resData.data.updateSessionField;
+        const sessions = resData.data.updateSessionField.sessions;
+        const session = sessions.filter(x => x.title === sessionTitle)
+        const session2 = session[0];
+        console.log(session);
+        const newSession = {
+            title: session2.title,
+            date: session2.date,
+            time: session2.time,
+            limit: session2.limit,
+            amount: session2.amount,
+            bookedAmount: session2.bookedAmount,
+            booked: session2.booked,
+            attended: session2.attended,
+            attendedAmount: session2.attendedAmount,
+            inProgress: session2.inProgress,
+            full: session2.full,
+            url: session2.url,
+            lessonId: lesson._id,
+            lessonTitle: lesson.title,
+            lessonInstructors: lesson.instructors,
+          };
         const responseAlert = JSON.stringify(resData.data.updateSessionField).slice(0,8);
-        this.setState({ profileLessonViewerData: resData.data.updateSessionField, userAlert: responseAlert, session: null})
+        this.setState({ sessionDetailViewer: true, session: newSession, profileLessonViewerData: resData.data.updateSessionField, userAlert: responseAlert})
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -2203,7 +2231,6 @@ class UserProfile extends Component {
   };
 
   showSessionBooked = () => {
-    console.log('beeep');
     this.setState({sessionBookedState: true})
   };
   showSessionAttended = () => {
@@ -2324,7 +2351,7 @@ class UserProfile extends Component {
               sessionTitle:"${sessionTitle}",
               sessionDate:"${sessionDate}"
             })
-            {title,date,time,limit,amount,bookedAmount,attendedAmount,booked{_id,username},attended{_id,username},inProgress,full,url}}
+            {title,date,time,limit,amount,bookedAmount,booked{_id,username},attendedAmount,attended{_id,username},inProgress,full,url,lessonId,lessonTitle,lessonInstructors,userId}}
         `}
 
     fetch('http://localhost:8088/graphql', {
@@ -2361,7 +2388,7 @@ class UserProfile extends Component {
           lessonTitle: session.lessonTitle,
           lessonInstructors: session.lessonInstructors,
         };
-        console.log(newSession);
+        console.log('beep',newSession);
         const responseAlert = JSON.stringify(resData.data).slice(0,8);
         this.setState({userAlert: responseAlert, session: newSession, sessionDetailViewer: true});
       })

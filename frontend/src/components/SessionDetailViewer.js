@@ -9,7 +9,7 @@ import "./AttachmentViewer.css"
 
 const SessionDetailViewer = (props) =>{
   const {...session} = props.session
-  console.log("beep",session, session.booked,props.sessionBookedState,session.attended);
+  // console.log("beep",session, session.booked,props.sessionBookedState,session.attended);
   const sessionDate = new Date (session.date.substr(0,10)*1000).toLocaleDateString().slice(0,10);;
   let isInstructor = false;
   if ( session.lessonInstructors.includes(props.authId) === true) {

@@ -225,7 +225,7 @@ class LessonsPage extends Component {
             sessionTitle:"${sessionTitle}",
             sessionDate:"${sessionDate}"
           })
-          {title,date,time,limit,amount,bookedAmount,attendedAmount,booked{_id,username},attended{_id,username},inProgress,full,url}}
+          {title,date,time,limit,amount,bookedAmount,booked{_id,username},attendedAmount,attended{_id,username},inProgress,full,url,lessonId,lessonTitle,lessonInstructors,userId}}
       `}
 
     fetch('http://localhost:8088/graphql', {
@@ -245,7 +245,7 @@ class LessonsPage extends Component {
       .then(resData => {
         const responseAlert = JSON.stringify(resData.data.getLessonSession).slice(0,8);
         const searchSession = resData.data.getLessonSession;
-        console.log(searchSession);
+        console.log('baap',resData,searchSession);
         this.setState({ searchSession: searchSession, userAlert: responseAlert})
       })
       .catch(err => {

@@ -443,7 +443,6 @@ module.exports = {
                  }
                },
               {$group: {_id:{
-                // lessonId: '$_id',
                 lessonId: '$_id',
                 lessonTitle: '$title',
                 lessonInstructors: '$instructors',
@@ -457,7 +456,6 @@ module.exports = {
                 attended: '$sessions.attended',
                 full: '$sessions.full',
               }}},
-
               // {$group: {_id:{date:'$sessions.date',title:'$sessions.title'},booked: { $addToSet: '$sessions.booked'}}},
               {$match:
                 {

@@ -315,7 +315,7 @@ module.exports = {
   const today = '2020-04-24';
   const today2 = new Date(today);
   const user = await User.findById({_id: args.activityId});
-  console.log(today,today2, user._id);
+  // console.log(today,today2, user._id);
   const sessions = await Lesson.aggregate([
     {$unwind: '$sessions'},
     {$unwind: '$sessions.booked'},
@@ -344,7 +344,7 @@ module.exports = {
     }}
   ]);
   const sessions2 = sessions.map(x => x._id);
-  console.log(sessions2);
+  // console.log(sessions2);
   const sessions3 = sessions2.map(x => ({
     title: x.title,
     date: x.date,

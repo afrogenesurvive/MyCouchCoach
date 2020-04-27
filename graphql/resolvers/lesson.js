@@ -1167,7 +1167,7 @@ module.exports = {
         {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate },
         {
           $addToSet: {'sessions.$.booked': user},
-          $inc: {'sessions.$.bookedAmount': 1},
+          $inc: {'sessions.$.bookedAmount': 1,'sessions.$.amount': 1},
           $set: {'sessions.$.full': sessionFull}
         }
         ,{new: true, useFindAndModify: false})

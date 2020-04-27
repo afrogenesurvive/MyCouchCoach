@@ -150,6 +150,7 @@ const ProfileLessonViewer = (props) => {
           {lesson.sessions !== [] &&
             props.showSessionState === true && (
             <LessonSessionList
+            isInstructor={isInstructor}
             lessonSessions={lesson.sessions}
             editSessionField={props.startEditSessionField}
             showSessionBooked={props.showSessionBooked}
@@ -158,6 +159,7 @@ const ProfileLessonViewer = (props) => {
             hideSessionAttended={props.hideSessionAttended}
             sessionBookedState={props.sessionBookedState}
             sessionAttendedState={props.sessionAttendedState}
+            addSessionAttendance={props.addSessionAttendance}
             />
           )}
           </Col>

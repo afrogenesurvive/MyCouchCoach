@@ -44,38 +44,6 @@ module.exports = {
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
-
-      // const request = mailjet
-      // .post("send", {'version': 'v3.1'})
-      // .request({
-      //   "Messages":[
-      //     {
-      //       "From": {
-      //         "Email": "prof.black@africangeneticsurvival.net",
-      //         "Name": "Michael's Robot"
-      //       },
-      //       "To": [
-      //         {
-      //           "Email": "nataliegreid@gmail.com",
-      //           "Name": "Naturalie"
-      //         }
-      //       ],
-      //       "Subject": "Anika: Your horrorscope",
-      //       "TextPart": "My 5th Mailjet email",
-      //       "HTMLPart": "<h3>Dear passenger 1, welcome to <a href='https://www.mailjet.com/'>Mailjet</a>!</h3><br />May the delivery force be with you!",
-      //       "CustomID": "AppGettingStartedTest"
-      //     }
-      //   ]
-      // })
-      // request
-      //   .then((result) => {
-      //     console.log("here",result.body)
-      //   })
-      //   .catch((err) => {
-      //     console.log(err.statusCode)
-      //   })
-
-
       return users.map(user => {
         return transformUser(user,);
       });
@@ -332,6 +300,69 @@ module.exports = {
         email: user.contact.email ,
         name: user.name,
       };
+    } catch (err) {
+      throw err;
+    }
+  },
+  getUserBookedSessionsToday: async (args, req) => {
+    console.log("Resolver: getUserBookedSessionsToday...");
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+
+  // const today = new Date().toLocaleDateString().slice(0,10);
+  const today = '2020-04-24';
+  const today2 = new Date(today);
+  const user = await User.findById({_id: args.activityId});
+  console.log(today,today2, user._id);
+  const sessions = await Lesson.aggregate([
+    {$unwind: '$sessions'},
+    {$unwind: '$sessions.booked'},
+    {$group: {_id:{
+      userId: '$sessions.booked',
+      lessonId: '$_id',
+      lessonTitle: '$title',
+      lessonInstructors: '$instructors',
+      date:'$sessions.date',
+      title:'$sessions.title',
+      time:'$sessions.time',
+      limit:'$sessions.limit',
+      full:'$sessions.full',
+      amount:'$sessions.amount',
+      inProgress:'$sessions.inProgress',
+      url:'$sessions.url',
+      bookedAmount: '$sessions.bookedAmount',
+      booked: '$sessions.booked',
+      attendedAmount: '$sessions.attendedAmount',
+      attended: '$sessions.attended',
+    }}},
+    {$match: {
+      '_id.date': {$eq: today2 },
+      '_id.userId': {$eq: user._id },
+      '_id.booked': {$ne: [] }
+    }}
+  ]);
+  const sessions2 = sessions.map(x => x._id);
+  console.log(sessions2);
+  const sessions3 = sessions2.map(x => ({
+    title: x.title,
+    date: x.date,
+    time: x.time,
+    limit: x.limit,
+    amount: x.amount,
+    bookedAmount: x.bookedAmount,
+    attendedAmount: x.attendedAmount,
+    inProgress: x.inProgress,
+    full: x.full,
+    url: x.url,
+    lessonId: x.lessonId,
+    lessonTitle: x.lessonTitle,
+    lessonInstructors: x.lessonInstructors,
+    userId: x.userId
+  }))
+
+      return sessions3;
     } catch (err) {
       throw err;
     }

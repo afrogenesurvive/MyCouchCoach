@@ -104,6 +104,7 @@ const LessonDetail = (props) => {
         </Button>
         {props.sessionsLoaded === true && (
           <LessonSessionList
+          isInstructor={isInstructor}
           lessonSessions={lesson.sessions}
           onBookSession={props.onBookSession}
           onAddCartLesson={props.onAddCartLesson}
@@ -113,6 +114,7 @@ const LessonDetail = (props) => {
           hideSessionAttended={props.hideSessionAttended}
           sessionBookedState={props.sessionBookedState}
           sessionAttendedState={props.sessionAttendedState}
+          
         />
       )}
         </Col>

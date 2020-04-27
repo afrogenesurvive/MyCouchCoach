@@ -490,7 +490,7 @@ class LessonsPage extends Component {
           activityId:"${activityId}",
           lessonId:"${lessonId}"
         )
-        {_id,title,subtitle,type,category,price,sku,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{phone,phone2,email}},tags,sessions{title,date,time,limit,amount,url,bookedAmount,attendedAmount                                    ,booked{_id,username},attended{_id,username},inProgress,full}}}
+        {_id,title,subtitle,type,category,price,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{email,phone,phone2}},gallery{name,type,path},requirements,materials,files{name,type,size,path},reviews{_id},tags,sessions{title,date,time,limit,amount,booked{_id,username},bookedAmount,attended{_id,username},attendedAmount,inProgress,full,url},promos{_id}}}
         `};
 
     fetch('http://localhost:8088/graphql', {
@@ -631,6 +631,7 @@ class LessonsPage extends Component {
     this.setState({creatingSession: false})
   };
   createLessonSession = (event) => {
+    event.preventDefault();
     console.log('creating new lesson session');
     this.setState({userAlert: 'creating new lesson session'});
 
@@ -645,6 +646,7 @@ class LessonsPage extends Component {
     const sessionTime = event.target.formGridTime.value;
     const sessionLimit = event.target.formGridLimit.value;
     const sessionAmount = 0;
+    console.log(sessionDate);
 
     const requestBody = {
       query: `
@@ -678,7 +680,7 @@ class LessonsPage extends Component {
       })
       .then(resData => {
         const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonBooking, isLoading: false});
+        this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonSession, isLoading: false});
         this.context.selectedLesson = this.state.selectedLesson;
       })
       .catch(err => {
@@ -692,16 +694,13 @@ class LessonsPage extends Component {
   showSessionBooked = () => {
     this.setState({sessionBookedState: true})
   }
-  showSessionAttended = () => {
-    console.log("beep");
-    this.setState({sessionAttendedState: true})
-  }
   hideSessionBooked = () => {
     this.setState({sessionBookedState: false})
   }
   hideSessionAttended = () => {
     this.setState({sessionAttendedState: false})
   }
+
 
   deleteListLesson = (lessonId) => {
     console.log("delete listed lesson", lessonId);
@@ -847,6 +846,7 @@ class LessonsPage extends Component {
                   <Col sm={10} className="userListMainCol">
                     <Tab.Content>
 
+                      {this.state.lessons !== [] && (
                       <Tab.Pane eventKey="MasterList">
                         <Row className="userListRow">
 
@@ -864,6 +864,7 @@ class LessonsPage extends Component {
                          )}
                         </Row>
                       </Tab.Pane>
+                      )}
 
                       <Tab.Pane eventKey="SearchInput">
                         <Container className="containerSearchUserInput1">

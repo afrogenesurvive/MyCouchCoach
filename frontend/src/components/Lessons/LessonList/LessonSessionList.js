@@ -5,14 +5,14 @@ import './UserList.css';
 
 const lessonSessionList = props => {
 
-  const lessons = props.lessonSessions.map(session => {
-    // console.log(session);
+  const sessions = props.lessonSessions.map(session => {
     const sessionDate = new Date (session.date.substr(0,10)*1000).toLocaleDateString().slice(0,10);;
     return (
       <LessonSessionItem
         key={session.title}
         session={session}
         authId={props.authId}
+        isInstructor={props.isInstructor}
         title={session.title}
         date={sessionDate}
         time={session.time}
@@ -33,11 +33,12 @@ const lessonSessionList = props => {
         hideSessionAttended={props.hideSessionAttended}
         sessionBookedState={props.sessionBookedState}
         sessionAttendedState={props.sessionAttendedState}
+        addSessionAttendance={props.addSessionAttendance}
       />
     );
   });
 
-  return <ul className="user__list1_master">{lessons}</ul>;
+  return <ul className="user__list1_master">{sessions}</ul>;
 };
 
 export default lessonSessionList;

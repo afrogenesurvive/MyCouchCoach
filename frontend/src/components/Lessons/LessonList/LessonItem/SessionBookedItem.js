@@ -15,6 +15,11 @@ const sessionBookedItem = props => (
       <Card.Text>
         username: {props.username}
       </Card.Text>
+      {props.addSessionAttendance && props.isInstructor === true && props.userAttended === false && (
+        <Button variant="primary" onClick={props.addSessionAttendance.bind(this, props.attendance)}>
+          Add Attendance
+        </Button>
+      )}
     </Card.Body>
     </Card>
 

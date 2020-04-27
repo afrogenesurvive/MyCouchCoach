@@ -39,6 +39,7 @@ return (
       hideSessionAttended={props.hideSessionAttended}
       sessionBookedState={props.sessionBookedState}
       sessionAttendedState={props.sessionAttendedState}
+      addSessionAttendance={props.addSessionAttendance}
     />
 
     </div>

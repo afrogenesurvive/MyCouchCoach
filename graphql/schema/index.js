@@ -237,6 +237,10 @@ module.exports = buildSchema(`
     inProgress: Boolean
     full: Boolean
     url: String
+    lessonId: String
+    lessonTitle: String
+    lessonInstructors: [String]
+    userId: String
   }
 
   input LessonInput {
@@ -489,6 +493,7 @@ module.exports = buildSchema(`
     getUserByOrders(activityId: ID!, orderIds: [ID!]): User
 
     getThisUser(activityId: ID!): User
+    getUserBookedSessionsToday(activityId: ID!): [Session]
 
     getAllPublicLessons: [Lesson]
     getPublicLessonsByField(field: String!, query: String!): [Lesson]

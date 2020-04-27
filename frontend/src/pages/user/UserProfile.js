@@ -64,6 +64,9 @@ class UserProfile extends Component {
     session: null,
     sessionBookedState: false,
     sessionAttendedState: false,
+    meetingsLoaded: false,
+    meetingSessions: [],
+    sessionDetailViewer: false,
   };
 
   isActive = true;
@@ -92,7 +95,7 @@ class UserProfile extends Component {
     //       Msg:   ${data.message.message}`})
     // };
 
-  }
+  };
 
   onStartUpdate = () => {
     this.setState({ updating: true, userAddField: 'basic' });
@@ -102,23 +105,23 @@ class UserProfile extends Component {
   };
   onStartAdd = (args) => {
     this.setState({adding: true, userAddField: args})
-  }
+  };
   addUserField = (args) => {
     this.setState({adding: true, userAddField: args})
-  }
+  };
   startCreateMessage = () => {
     if (this.context.receiver === null) {
       this.setState({userAlert: "select a receiver 1st..."});
     }
     this.setState({adding: true, userAddField: "message"})
-  }
+  };
 
   startCartCheckout = () => {
     this.setState({creatingOrder: true})
-  }
+  };
   cancelCartCheckout = () => {
     this.setState({creatingOrder: false})
-  }
+  };
 
   userEditBasic = (event) => {
     this.setState({ updating: false, userAlert: "Updating selected Staff ..." });
@@ -254,7 +257,7 @@ class UserProfile extends Component {
         .catch(err => {
           this.setState({userAlert: err});
         });
-    }
+    };
   userAddPoints = (event) => {
         this.setState({ adding: false, userAddField: null, userAlert: "adding points for user..." });
         const token = this.context.token;
@@ -1002,7 +1005,7 @@ class UserProfile extends Component {
         //     this.setState({userAlert: err});
         //   });
 
-      }
+      };
   userDeletePerk = (args) => {
     this.setState({ deleting: true, userAlert: "deleting perk for user..." });
     const token = this.context.token;
@@ -1423,7 +1426,7 @@ class UserProfile extends Component {
       console.log('beep');
       this.setState({orderShippingAddress: event.target.value})
     }
-  }
+  };
   // orderStripePayment = () => {
     // const userCartLessonSkus = user.cart.map(x => x.lesson.sku)
     // console.log(userCartLessonSkus);
@@ -1517,7 +1520,7 @@ class UserProfile extends Component {
       .catch(err => {
         this.setState({userAlert: err});
       });
-  }
+  };
   userDeleteOrder = (args) => {
     this.setState({ deleting: true, userAlert: "deleting order for user..." });
     const token = this.context.token;
@@ -1617,7 +1620,7 @@ class UserProfile extends Component {
     const senderName = this.state.user.username;
     const date = new Date();
     const timeString1 = date.toLocaleDateString().slice(11,16);
-    const timeString2 = date.toLocaleString().slice(11,16);
+    const timeString2 = date.toLocaleDateString().slice(11,16);
     const type = event.target.formGridTypeSelect.value;
     const subject = event.target.formGridSubject.value;
     const message = event.target.formGridMessage.value;
@@ -1670,7 +1673,7 @@ class UserProfile extends Component {
       .catch(err => {
         this.setState({userAlert: err});
       });
-  }
+  };
   userDeleteMessage = (args) => {
     this.setState({ deleting: true, userAlert: "deleting message for user..." });
     const token = this.context.token;
@@ -1765,7 +1768,7 @@ class UserProfile extends Component {
           this.setState({ isLoading: false });
         }
       });
-  }
+  };
   logUserActivity() {
     console.log('logUserActivity...');
     this.setState({userAlert: 'logUserActivity...'})
@@ -1835,7 +1838,7 @@ class UserProfile extends Component {
     const addMessage = data => {
       this.setState({ userAlert: data.msg})
     };
-  }
+  };
   userDeleteActivity = (args) => {
     this.setState({ deleting: true, userAlert: "deleting promo for user..." });
     const token = this.context.token;
@@ -1889,13 +1892,13 @@ class UserProfile extends Component {
         sidebarShow: true,
         mCol2Size: 9
       })
-  }
+  };
   hideSidebar = () => {
       this.setState({
         sidebarShow: false,
         mCol2Size: 11
       })
-  }
+  };
   viewLessonDetails = (args) => {
     // console.log('retriving lesson details',args);
     this.setState({useAlert: 'retriving lesson details', isLoading: true})
@@ -1944,10 +1947,10 @@ class UserProfile extends Component {
       .catch(err => {
         this.setState({userAlert: err});
       });
-  }
+  };
   closeProfileLessonView = () => {
     this.setState({profileLessonViewer: false, profileLessonViewerData: null})
-  }
+  };
 
   showSchedule = () => {
     this.setState({showScheduleState: true})
@@ -2091,7 +2094,6 @@ class UserProfile extends Component {
         this.setState({userAlert: err});
       });
   };
-
   onStartEditLessonField = () => {
     this.setState({editingLessonField: true})
   };
@@ -2144,10 +2146,10 @@ class UserProfile extends Component {
 
   startEditSessionField = (args) => {
     this.setState({editingSessionField: true, session: args})
-  }
+  };
   cancelEditSessionField = () => {
     this.setState({editingSessionField: false, session: null})
-  }
+  };
   editSessionField = (event) => {
     event.preventDefault();
     console.log(event, 'updating session by field');
@@ -2198,21 +2200,171 @@ class UserProfile extends Component {
         this.setState({userAlert: err});
       });
 
-  }
+  };
 
   showSessionBooked = () => {
     this.setState({sessionBookedState: true})
-  }
+  };
   showSessionAttended = () => {
-    console.log("beep");
+    console.log("...attended session attendance...");
     this.setState({sessionAttendedState: true})
-  }
+  };
   hideSessionBooked = () => {
     this.setState({sessionBookedState: false})
-  }
+  };
   hideSessionAttended = () => {
     this.setState({sessionAttendedState: false})
-  }
+  };
+  addSessionAttendance = (attendance) => {
+
+    this.setState({userAlert: '...adding session attendance...'})
+    const activityId = this.context.activityId;
+    const userId = attendance.user._id;
+    const lessonId = this.state.profileLessonViewerData._id;
+    const sessionDate = attendance.sessionDate;
+    const sessionTitle = attendance.sessionTitle;
+
+    const requestBody = {
+      query: `
+          mutation {addLessonAttendance(
+            activityId:"${activityId}",
+            lessonId:"${lessonId}",
+            userId:"${userId}",
+            lessonInput:{
+              sessionTitle:"${sessionTitle}",
+              sessionDate:"${sessionDate}"
+            })
+            {_id,title,subtitle,type,category,price,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{email,phone,phone2}},gallery{name,type,path},requirements,materials,files{name,type,size,path},reviews{_id},tags,sessions{title,date,time,limit,amount,booked{_id,username},bookedAmount,attended{_id,username},attendedAmount,inProgress,full,url},promos{_id}}}
+        `};
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          this.setState({userAlert: 'Failed!'});
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+        this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.addLessonAttendance});
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
+  };
+
+  loadMeetings = () => {
+    this.setState({userAlert: '...retriving todays sessions'})
+    const activityId = this.context.activityId;
+
+    const requestBody = {
+      query: `
+          query {getUserBookedSessionsToday(
+            activityId:"${activityId}"
+          )
+          {title,date,time,limit,amount,bookedAmount,attendedAmount,inProgress,full,url,lessonId,lessonTitle,lessonInstructors,userId}}
+        `};
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          this.setState({userAlert: 'Failed!'});
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        console.log(resData.data.getUserBookedSessionsToday);
+        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+        this.setState({userAlert: responseAlert, meetingSessions: resData.data.getUserBookedSessionsToday, meetingsLoaded: true});
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
+  };
+  hideMeetings = () => {
+    this.setState({ meetingsLoaded: false, meetingSessions: []})
+  };
+  viewSessionDetails = (session) => {
+    // console.log('...rerieving session details...',session);
+    this.setState({userAlert: '...retriving todays sessions'})
+    const activityId = this.context.activityId;
+    const lessonId = session.lessonId;
+    const sessionTitle = session.title;
+    const sessionDate = session.date;
+
+      const requestBody = {
+        query: `
+          query {getLessonSession(
+            activityId:"${activityId}",
+            lessonId:"${lessonId}",
+            lessonInput:{
+              sessionTitle:"${sessionTitle}",
+              sessionDate:"${sessionDate}"
+            })
+            {title,date,time,limit,amount,bookedAmount,attendedAmount,booked{_id,username},attended{_id,username},inProgress,full,url}}
+        `}
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          this.setState({userAlert: 'Failed!'});
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        console.log(resData.data.getLessonSession);
+        const newSession = {
+          title: resData.data.getLessonSession.title,
+          date: resData.data.getLessonSession.date,
+          time: resData.data.getLessonSession.time,
+          limit: resData.data.getLessonSession.limit,
+          amount: resData.data.getLessonSession.amount,
+          bookedAmount: resData.data.getLessonSession.bookedAmount,
+          booked: resData.data.getLessonSession.booked,
+          attended: resData.data.getLessonSession.attended,
+          attendedAmount: resData.data.getLessonSession.attendedAmount,
+          inProgress: resData.data.getLessonSession.inProgress,
+          full: resData.data.getLessonSession.full,
+          url: resData.data.getLessonSession.url,
+          lessonId: session.lessonId,
+          lessonTitle: session.lessonTitle,
+          lessonInstructors: session.lessonInstructors,
+        };
+
+        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+        this.setState({userAlert: responseAlert, session: newSession, sessionDetailViewer: true});
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
+  };
+  hideSessionDetails = () => {
+    this.setState({session: null, sessionDetailViewer: false})
+  };
 
   componentWillUnmount() {
     this.isActive = false;
@@ -2278,6 +2430,7 @@ class UserProfile extends Component {
             hideSessionAttended={this.hideSessionAttended}
             sessionBookedState={this.state.sessionBookedState}
             sessionAttendedState={this.state.sessionAttendedState}
+            addSessionAttendance={this.addSessionAttendance}
 
             editingLesson={this.state.editingLesson}
             onStartEditLessonBasic={this.onStartEditLessonBasic}
@@ -2374,6 +2527,28 @@ class UserProfile extends Component {
                     requestingFriend={this.state.requestingFriend}
 
                     viewLessonDetails={this.viewLessonDetails}
+
+                    loadMeetings={this.loadMeetings}
+                    hideMeetings={this.hideMeetings}
+                    meetingsLoaded={this.state.meetingsLoaded}
+                    meetingSessions={this.state.meetingSessions}
+                    viewSessionDetails={this.viewSessionDetails}
+                    hideSessionDetails={this.hideSessionDetails}
+                    sessionDetailViewer={this.state.sessionDetailViewer}
+
+                    startEditSessionField={this.startEditSessionField}
+                    editingSessionField={this.state.editingSessionField}
+                    editSessionField={this.editSessionField}
+                    cancelEditSessionField={this.cancelEditSessionField}
+                    session={this.state.session}
+                    showSessionBooked={this.showSessionBooked}
+                    showSessionAttended={this.showSessionAttended}
+                    hideSessionBooked={this.hideSessionBooked}
+                    hideSessionAttended={this.hideSessionAttended}
+                    sessionBookedState={this.state.sessionBookedState}
+                    sessionAttendedState={this.state.sessionAttendedState}
+                    addSessionAttendance={this.addSessionAttendance}
+
                   />
                 )}
 

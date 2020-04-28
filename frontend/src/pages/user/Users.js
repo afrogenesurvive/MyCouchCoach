@@ -66,6 +66,7 @@ class UsersPage extends Component {
   static contextType = AuthContext;
 
   componentDidMount() {
+    console.log('...users component mounted...');
     if (this.context.user.role === "Admin"){
       this.setState({canDelete: true})
     }

@@ -120,7 +120,7 @@ class AuthPage extends Component {
     })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
-          // let foo = res.json();
+          let foo = res.json();
           // console.log(res,res.body,foo);
           throw new Error('Failed!');
         }
@@ -135,7 +135,8 @@ class AuthPage extends Component {
         //   errors = JSON.stringify({...resData.errors});
         //   this.setState({userAlert: "Something went wrong!!!"+errors+""})
         // }
-        console.log(resData.data.login.error);
+        console.log('*',resData);
+        console.log('*',resData.data.login.error);
         let responseAlert = JSON.stringify(resData.data).slice(2,25);
         let error = null;
         if (resData.data.login.error) {

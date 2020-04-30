@@ -77,6 +77,10 @@ const publicUser = user.public.toString();
 // get todays booked lessons, filter for sessions today, result = meeting list, to each, add get session and if isInstructor, update session componts & reqs
 
 // const bookedLessonSessions = user.bookedLessons
+let messagesSent = [];
+let messagesReceived = [];
+messagesSent = user.messages.filter(x => x.sender._id === props.authId);
+messagesReceived = user.messages.filter(x => x.receiver._id === props.authId);
 
   return (
 
@@ -561,17 +565,34 @@ const publicUser = user.public.toString();
           authId={props.authId}
           receiver={props.messageReceiver}
         />
-    )}
+      )}
 
-    {user.messages !== null &&
-      user.messages !== [] && (
-        <UserMessageList
-          userMessages={user.messages}
-          authId={props.authId}
-          canDelete={props.canDelete}
-          onDelete={props.userDeleteMessage}
-        />
-      ) }
+      <Tabs defaultActiveKey="received" id="uncontrolled-tab-example">
+        <Tab eventKey="received" title="received">
+          <p>Received</p>
+          {messagesReceived !== null &&
+            messagesReceived !== [] && (
+              <UserMessageList
+                userMessages={messagesReceived}
+                authId={props.authId}
+                canDelete={props.canDelete}
+                onDelete={props.userDeleteMessage}
+              />
+            )}
+        </Tab>
+        <Tab eventKey="sent" title="sent">
+          <p>Sent</p>
+          {messagesSent !== null &&
+            messagesSent !== [] && (
+              <UserMessageList
+                userMessages={messagesSent}
+                authId={props.authId}
+                canDelete={props.canDelete}
+                onDelete={props.userDeleteMessage}
+              />
+            )}
+        </Tab>
+      </Tabs>
 
     </Tab>
 

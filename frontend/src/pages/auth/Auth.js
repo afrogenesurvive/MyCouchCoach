@@ -31,6 +31,7 @@ class AuthPage extends Component {
     userSeshStore: false,
     user: {},
     model: {},
+    activityA: null,
   };
   static contextType = AuthContext;
 
@@ -42,6 +43,7 @@ class AuthPage extends Component {
   }
 
   retrieveLogin = () => {
+    // this.logUserActivity();
     // const activityId = sessionStorage.getItem('activityId');
     // const token = sessionStorage.getItem('token');
     //
@@ -120,13 +122,16 @@ class AuthPage extends Component {
     })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
-          let foo = res.json();
+          // let foo = res.json();
           // console.log(res,res.body,foo);
           throw new Error('Failed!');
         }
         return res.json();
       })
       .then(resData => {
+
+        // this.setState({ activityA: JSON.stringify(requestBody)})
+        // this.logUserActivity();
         // let errors = null;
         // if (
         //   resData.errors ||
@@ -135,8 +140,8 @@ class AuthPage extends Component {
         //   errors = JSON.stringify({...resData.errors});
         //   this.setState({userAlert: "Something went wrong!!!"+errors+""})
         // }
-        console.log('*',resData);
-        console.log('*',resData.data.login.error);
+        // console.log('*',resData);
+        // console.log('*',resData.data.login.error);
         let responseAlert = JSON.stringify(resData.data).slice(2,25);
         let error = null;
         if (resData.data.login.error) {
@@ -148,6 +153,8 @@ class AuthPage extends Component {
         let sessionStorageLoginInfo = null;
 
         if (resData.data.login.token !== "") {
+
+
           this.context.login(
             resData.data.login.token,
             resData.data.login.activityId,
@@ -158,6 +165,8 @@ class AuthPage extends Component {
          sessionStorage.setItem('activityId', resData.data.login.activityId);
          sessionStorage.setItem('role', resData.data.login.role);
          sessionStorage.setItem('tokenExpiration', resData.data.login.tokenExpiration);
+         // this.setState({ activityA: JSON.stringify(requestBody)})
+         // this.logUserActivity();
         }
       })
       .catch(err => {
@@ -185,87 +194,133 @@ class AuthPage extends Component {
         })
     }
 
-    getThisUser() {
-      console.log("get this user...");
-      const activityId = sessionStorage.getItem('activityId');
-      const token = sessionStorage.getItem('token');
-      const requestBody = {
-        query: `
-          query {getThisUser(activityId:"${activityId}")
-          {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
-        `};
+  getThisUser() {
+    console.log("get this user...");
+    const activityId = sessionStorage.getItem('activityId');
+    const token = sessionStorage.getItem('token');
+    const requestBody = {
+      query: `
+        query {getThisUser(activityId:"${activityId}")
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+      `};
 
-      fetch('http://localhost:8088/graphql', {
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      }})
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const thisUser = resData.data.getThisUser;
+        this.context.user = thisUser;
+        this.setState({ activityA: '...autoLogin by '+thisUser._id+''})
+        // this.logUserActivity();
+        this.retrieveLogin();
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
+  }
+  logUserActivity() {
+    console.log('logUserActivity...',sessionStorage.getItem('activityId'),this.state.activityA);
+    this.setState({userAlert: 'logUserActivity...'})
+    const activityId = sessionStorage.getItem('activityId');
+    const token = sessionStorage.getItem('token');
+    const userId = activityId;
+    const today = new Date().toLocaleDateString();
+    const request = this.state.activityA;
+
+    const requestBody = {
+      query:`
+          mutation {addUserActivity(
+            activityId:"${activityId}",
+            userId:"${userId}",
+            userInput:{
+              activityRequest:"${request}"
+            })
+          {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+      `};
+
+    fetch('http://localhost:8088/graphql', {
         method: 'POST',
         body: JSON.stringify(requestBody),
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + token
-        }})
-        .then(res => {
-          if (res.status !== 200 && res.status !== 201) {
-            throw new Error('Failed!');
-          }
-          return res.json();
+        }
+      })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!');
+          this.setState({userAlert: 'Failed!'});
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data.addUserActivity).slice(2,25);
+        // this.setState({userAlert: responseAlert, user: resData.data.addUserActivity})
+        // this.context.user = this.state.user;
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
+  };
+
+  verifyUser = (event) => {
+    event.preventDefault();
+    console.log('...verify user...');
+    const contactEmail = event.target.formGridEmail.value;
+    const verificationType = event.target.formGridType.value;
+    const verificationCode = event.target.formGridCode.value;
+
+    const requestBody = {
+      query: `
+      mutation {verifyUser(
+        userInput:{
+          contactEmail:"${contactEmail}",
+          verificationType:"${verificationType}",
+          verificationCode:"$verificationCode{}"
         })
-        .then(resData => {
-          const thisUser = resData.data.getThisUser;
-          this.context.user = thisUser;
-          // check verification herre??
-          this.retrieveLogin();
-        })
-        .catch(err => {
-          this.setState({userAlert: err});
-        });
-    }
+      {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        `};
 
-    verifyUser = (event) => {
-      event.preventDefault();
-      console.log('...verify user...');
-      const contactEmail = event.target.formGridEmail.value;
-      const verificationType = event.target.formGridType.value;
-      const verificationCode = event.target.formGridCode.value;
+      console.log(JSON.stringify(requestBody));
 
-      const requestBody = {
-        query: `
-        mutation {verifyUser(
-          userInput:{
-            contactEmail:"${contactEmail}",
-            verificationType:"${verificationType}",
-            verificationCode:"$verificationCode{}"
-          })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
-          `};
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+      }})
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        console.log(resData.data.verifyUser);
+        this.setState({userAlert: 'Verified...Please try loggin in again..'});
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
+  }
 
-        console.log(JSON.stringify(requestBody));
+  startVerification = () => {
+    this.setState({verifying: true})
+  };
+  closeVerification = () => {
+    this.setState({verifying: false})
+  };
 
-      fetch('http://localhost:8088/graphql', {
-        method: 'POST',
-        body: JSON.stringify(requestBody),
-        headers: {
-          'Content-Type': 'application/json',
-        }})
-        .then(res => {
-          if (res.status !== 200 && res.status !== 201) {
-            throw new Error('Failed!');
-          }
-          return res.json();
-        })
-        .then(resData => {
-          console.log(resData.data.verifyUser);
-          this.setState({userAlert: 'Verified...Please try loggin in again..'});
-        })
-        .catch(err => {
-          this.setState({userAlert: err});
-        });
-    }
-
-    startVerification = () => {
-      this.setState({verifying: true})
-    };
-    closeVerification = () => {
-      this.setState({verifying: false})
-    };
 
   render() {
     return (

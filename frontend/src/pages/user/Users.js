@@ -60,6 +60,7 @@ class UsersPage extends Component {
     sidebarShow: true,
     mCol1Size: 3,
     mCol2Size: 9,
+    activityA: null,
   };
   isActive = true;
 
@@ -135,7 +136,7 @@ class UsersPage extends Component {
       .then(resData => {
         const responseAlert = JSON.stringify(resData.data.getUsersByField).slice(0,8);
         const searchUsers = resData.data.getUsersByField;
-        this.setState({ searchUsers: searchUsers, userAlert: responseAlert})
+        this.setState({ searchUsers: searchUsers, userAlert: responseAlert, activityA: requestBody})
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -197,11 +198,11 @@ class UsersPage extends Component {
         const responseAlert = JSON.stringify(resData.data.getUsersByFieldRegex).slice(0,8);
         const searchUsers = resData.data.getUsersByFieldRegex;
         if (searchUsers === [] ) {
-          this.setState({ userAlert: '... nothing found soz...'})
+          this.setState({ userAlert: '... nothing found soz...', activityA: requestBody})
         } else {
-          this.setState({ searchUsers: searchUsers, userAlert: responseAlert})
+          this.setState({ searchUsers: searchUsers, userAlert: responseAlert, activityA: requestBody})
         }
-
+        this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -241,8 +242,9 @@ class UsersPage extends Component {
       })
       .then(resData => {
         const responseAlert = JSON.stringify(resData.data.getAllUsers).slice(0,8);
-        this.setState({userAlert: responseAlert, users: resData.data.getAllUsers, isLoading: false});
+        this.setState({userAlert: responseAlert, users: resData.data.getAllUsers, isLoading: false, activityA: requestBody});
         this.context.users = this.state.users;
+        this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -310,7 +312,8 @@ class UsersPage extends Component {
       .then(resData => {
         console.log(JSON.stringify(resData.data.createMessage));
         const responseAlert = JSON.stringify(resData.data.createMessage).slice(0,8);
-        this.setState({userAlert: responseAlert});
+        this.setState({userAlert: responseAlert, activityA: requestBody});
+        this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -350,8 +353,9 @@ showDetailHandler = userId => {
     })
     .then(resData => {
       const responseAlert = JSON.stringify(resData.data.getUserById).slice(0,8);
-      this.setState({userAlert: responseAlert, selectedUser: resData.data.getUserById, detailsLoaded:true, isLoading: false});
+      this.setState({userAlert: responseAlert, selectedUser: resData.data.getUserById, detailsLoaded:true, isLoading: false, activityA: requestBody});
       this.context.selectedUser = this.state.selectedUser;
+      this.logUserActivity();
     })
     .catch(err => {
       this.setState({userAlert: err});
@@ -406,7 +410,7 @@ hideDetailHandler = () => {
       .then(resData => {
         console.log(JSON.stringify(resData.data.sendFriendRequest.friendRequests));
         const responseAlert = JSON.stringify(resData.data.sendFriendRequest).slice(0,8);
-        this.setState({userAlert: responseAlert});
+        this.setState({userAlert: responseAlert, activityA: requestBody});
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -450,6 +454,52 @@ hideDetailHandler = () => {
         mCol2Size: 11
       })
   }
+
+  logUserActivity() {
+    console.log('logUserActivity...');
+    this.setState({userAlert: 'logUserActivity...'})
+    const activityId = this.context.activityId;
+    const userId = activityId;
+    const token = this.context.token;
+    const today = new Date();
+    const request = this.state.activityA;
+
+    const requestBody = {
+      query:`
+          mutation {addUserActivity(
+            activityId:"${activityId}",
+            userId:"${userId}",
+            userInput:{
+              activityRequest:"${request}"
+            })
+          {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price,requirementsg}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+      `};
+
+    fetch('http://localhost:8088/graphql', {
+        method: 'POST',
+        body: JSON.stringify(requestBody),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token
+        }
+      })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!');
+          this.setState({userAlert: 'Failed!'});
+        }
+        return res.json();
+      })
+      .then(resData => {
+
+        const responseAlert = JSON.stringify(resData.data.addUserActivity).slice(2,25);
+        this.setState({userAlert: responseAlert, user: resData.data.addUserActivity})
+        this.context.user = this.state.user;
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
+  };
 
   componentWillUnmount() {
     this.isActive = false;

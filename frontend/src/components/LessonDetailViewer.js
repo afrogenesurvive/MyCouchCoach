@@ -12,16 +12,20 @@ return (
     <LessonDetail
       authId={props.authId}
       lesson={props.lesson}
+
       sessionsLoaded={props.sessionsLoaded}
       onSessionLoad={props.onSessionLoad}
       onHideSessions={props.onHideSessions}
       onBookSession={props.onBookSession}
+
       onAddCartLesson={props.onAddCartLesson}
       onHideLessonDetail={props.onHideLessonDetail}
+
       startCreateSession={props.startCreateSession}
       creatingSession={props.creatingSession}
       cancelCreateSession={props.cancelCreateSession}
       createLessonSession={props.createLessonSession}
+
       onStartEditLessonBasic={props.onStartEditLessonBasic}
       onStartEditLessonField={props.onStartEditLessonField}
       editingLesson={props.editingLesson}
@@ -30,9 +34,10 @@ return (
       editLessonBasic={props.editLessonBasic}
       cancelEditField={props.cancelEditField}
       editLessonField={props.editLessonField}
-      showSchedule={props.showSchedule}
+
+      toggleSchedule={props.toggleSchedule}
       showScheduleState={props.showScheduleState}
-      hideSchedule={props.hideSchedule}
+
       showSessionBooked={props.showSessionBooked}
       showSessionAttended={props.showSessionAttended}
       hideSessionBooked={props.hideSessionBooked}
@@ -40,6 +45,15 @@ return (
       sessionBookedState={props.sessionBookedState}
       sessionAttendedState={props.sessionAttendedState}
       addSessionAttendance={props.addSessionAttendance}
+
+      toggleInstructors={props.toggleInstructors}
+      showInstructorsState={props.showInstructorsState}
+      toggleRequirements={props.toggleRequirements}
+      showRequirementsState={props.showRequirementsState}
+      toggleMaterials={props.toggleMaterials}
+      showMaterialsState={props.showMaterialsState}
+      toggleReviews={props.toggleReviews}
+      showReviewsState={props.showReviewsState}
     />
 
     </div>

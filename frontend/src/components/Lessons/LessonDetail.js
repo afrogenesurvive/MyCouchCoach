@@ -9,6 +9,10 @@ import Col from 'react-bootstrap/Col';
 
 import LessonSessionList from './LessonList/LessonSessionList';
 import LessonScheduleList from './LessonList/LessonScheduleList';
+import LessonInstructorList from './LessonList/LessonInstructorList';
+import LessonRequirementList from './LessonList/LessonRequirementList';
+import LessonMaterialList from './LessonList/LessonMaterialList';
+import LessonReviewList from './LessonList/LessonReviewList';
 import CreateLessonSessionForm from '../Forms/lesson/CreateLessonSessionForm';
 import UpdateLessonBasicForm from '../Forms/lesson/UpdateLessonBasicForm';
 import UpdateLessonFieldForm from '../Forms/lesson/UpdateLessonFieldForm';
@@ -21,7 +25,7 @@ import './UserDetail.css';
 const LessonDetail = (props) => {
 
   const {...lesson} = props.lesson;
-  // let userDob = new Date(user.dob.substr(0,9) * 1000).toLocaleDateString().slice(0,10);
+
   const instructorIds = lesson.instructors.map(x => x._id)
   const isInstructor = instructorIds.includes(props.authId);
   return (
@@ -70,32 +74,96 @@ const LessonDetail = (props) => {
           <Col className="detailCardCol">
           <Card.Text>
             <span className="bold">Main Instructor:</span>
-            {lesson.instructors[0]._id}
-            {lesson.instructors[0].username}
-            {lesson.instructors[0].contact.phone}
-            {lesson.instructors[0].contact.email}
           </Card.Text>
 
-          <Button variant="danger" onClick={props.showSchedule}>
-            See dates
-          </Button>
-          <Button variant="danger" onClick={props.hideSchedule}>
-            Hide dates
+          <Card.Text>
+          ID: {lesson.instructors[0]._id}
+          </Card.Text>
+          <Card.Text>
+          Username: {lesson.instructors[0].username}
+          </Card.Text>
+          <Card.Text>
+            Contact
+          </Card.Text>
+          <Card.Text>
+            Email: {lesson.instructors[0].contact.email}
+          </Card.Text>
+
+          </Col>
+
+        </Row>
+
+
+        <Row>
+          <Col>
+          <Card.Text>
+          Instructors
+          </Card.Text>
+            <Button variant="danger" onClick={props.toggleInstructors}>
+              Show/Hide
+            </Button>
+            {props.showInstructorsState === true && (
+              <LessonInstructorList
+                lessonInstructors={lesson.instructors}
+              />
+            )}
+          </Col>
+        </Row>
+
+        <Row>
+          <Col>
+          <Card.Text>
+          Schedule
+          </Card.Text>
+          <Button variant="danger" onClick={props.toggleSchedule}>
+            show/hide
           </Button>
           {props.showScheduleState === true && (
             <LessonScheduleList
               lessonSchedule={lesson.schedule}
             />
           )}
-
           </Col>
+        </Row>
 
+        <Row>
+          <Col>
+          <Card.Text>
+          Requirements
+          </Card.Text>
+            <Button variant="danger" onClick={props.toggleRequirements}>
+              Show/Hide
+            </Button>
+            {props.showRequirementsState === true && (
+              <LessonRequirementList
+                lessonRequirements={lesson.requirements}
+              />
+            )}
+          </Col>
+        </Row>
+
+        <Row>
+          <Col>
+          <Card.Text>
+          Materials
+          </Card.Text>
+            <Button variant="danger" onClick={props.toggleMaterials}>
+              Show/Hide
+            </Button>
+            {props.showMaterialsState === true && (
+              <LessonMaterialList
+                lessonMaterials={lesson.materials}
+              />
+            )}
+          </Col>
         </Row>
 
         <Row className="detailCardRow">
 
         <Col className="detailCardCol">
+        <Card.Text>
         Sessions:
+        </Card.Text>
         <Button variant="primary" onClick={props.onSessionLoad.bind(this, lesson._id)}>
           See Sessions
         </Button>
@@ -114,17 +182,17 @@ const LessonDetail = (props) => {
           hideSessionAttended={props.hideSessionAttended}
           sessionBookedState={props.sessionBookedState}
           sessionAttendedState={props.sessionAttendedState}
-          
+
         />
       )}
-        </Col>
 
           {isInstructor === true && (
-            <Col className="detailCardCol">
           <Button variant="primary" onClick={props.startCreateSession.bind(this, lesson._id)}>
             New Session
           </Button>
-          {props.creatingSession === true && (
+          )}
+          {props.creatingSession === true &&
+            isInstructor === true && (
             <CreateLessonSessionForm
               authId={props.authId}
               onCancel={props.cancelCreateSession}
@@ -132,9 +200,25 @@ const LessonDetail = (props) => {
             />
           )}
           </Col>
-        )}
 
         </Row>
+
+        <Row>
+          <Col>
+          <Card.Text>
+          Reviews
+          </Card.Text>
+            <Button variant="danger" onClick={props.toggleReviews}>
+              Show/Hide
+            </Button>
+            {props.showReviewsState === true && (
+              <LessonReviewList
+                lessonReviews={lesson.reviews}
+              />
+            )}
+          </Col>
+        </Row>
+
 
         {isInstructor === true && (
           <Row className="detailCardRow">

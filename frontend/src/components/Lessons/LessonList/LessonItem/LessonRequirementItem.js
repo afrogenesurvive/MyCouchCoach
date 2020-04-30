@@ -4,13 +4,13 @@ import Card from 'react-bootstrap/Card';
 
 import './UserItem.css';
 
-const lessonScheduleItem = props => (
+const lessonRequirementItem = props => (
   <li key={props.authId} className="users__list-item_detail users__list-item_detail4">
     <Card style={{ width: '18rem' }}>
 
     <Card.Body>
       <Card.Text>
-      Date: {props.date}, Time: {props.time}
+      {props.requirement}
       </Card.Text>
     </Card.Body>
     </Card>
@@ -18,4 +18,4 @@ const lessonScheduleItem = props => (
   </li>
 );
 
-export default lessonScheduleItem;
+export default lessonRequirementItem;

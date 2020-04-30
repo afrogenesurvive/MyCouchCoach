@@ -24,31 +24,25 @@ const userMessgeItem = props => (
           <li>
           <p className="userItemHeading"> sender:</p>
           <p className="userItemText">
-          {props.sender.role}: {props.sender.ref}
-          </p>
-          </li>
-          <li>
-          <p className="userItemHeading"> senderName:</p>
-          <p className="userItemText">
-          {props.sender.username}
+          {props.sender._id}
           </p>
           </li>
           <li>
           <p className="userItemHeading"> receiver:</p>
           <p className="userItemText">
-          {props.receiver.role}: {props.receiver.ref}
-          </p>
-          </li>
-          <li>
-          <p className="userItemHeading"> receiverName:</p>
-          <p className="userItemText">
-          {props.receiver.username}
+          {props.receiver._id}
           </p>
           </li>
           <li>
           <p className="userItemHeading"> time:</p>
           <p className="userItemText">
           {props.time}
+          </p>
+          </li>
+          <li>
+          <p className="userItemHeading"> type:</p>
+          <p className="userItemText">
+          {props.type}
           </p>
           </li>
           <li>
@@ -61,6 +55,12 @@ const userMessgeItem = props => (
           <p className="userItemHeading"> message:</p>
           <p className="userItemText">
           {props.messageMessage}
+          </p>
+          </li>
+          <li>
+          <p className="userItemHeading"> read:</p>
+          <p className="userItemText">
+          {props.read.toString()}
           </p>
           </li>
         </ul>

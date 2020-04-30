@@ -15,7 +15,16 @@ const userFriendItem = props => (
         _id: {props._id}
       </Card.Text>
       <Card.Text>
+        name: {props.name}
+      </Card.Text>
+      <Card.Text>
         username: {props.username}
+      </Card.Text>
+      <Card.Text>
+        phone: {props.phone}
+      </Card.Text>
+      <Card.Text>
+        email: {props.email}
       </Card.Text>
       <Card.Text>
         loggedIn: {props.loggedIn.toString()}
@@ -23,7 +32,9 @@ const userFriendItem = props => (
       <Card.Text>
         online: {props.online.toString()}
       </Card.Text>
-
+      <Card.Text>
+        SocialMedia: {props.socialMedia[0].platform} - {props.socialMedia[0].handle}
+      </Card.Text>
 
         <Button variant="primary" onClick={props.onSelect.bind(this, props.friend)}>
           Select

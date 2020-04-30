@@ -143,7 +143,7 @@ module.exports = {
   createReview: async (args, req) => {
     console.log("Resolver: createReview...");
     try {
-
+      const user = await User.findById({_id: args.userId})
       // const lessonAttendees = await Lesson.aggregate([
       //   // {$unwind: {path: '$sessions'}},
       //   {$unwind: '$sessions'},
@@ -169,37 +169,40 @@ module.exports = {
         {$unwind: '$attendees'},
         {$group: {_id: '$attendees'}}
       ]);
+      const lessonAttendees2 = lessonAttendees.map(x => x = x._id)
+      const lessonAttendees3 = JSON.stringify(lessonAttendees2)
       let x = {_id: args.userId};
-      let userIsLessonAttendee = lessonAttendees.includes(x);
-      // let userIsLessonAttendee = lessonAttendees.filter(x => x._id === args.userId);
+
+      let userIsLessonAttendee = lessonAttendees3.includes(user._id.toString());
+      // let userIsLessonAttendee = lessonAttendees2.filter(x => x === user._id);
       // let userIsLessonAttendee2 = userIsLessonAttendee !== [];
-      console.log('userId',x,'lessonAttendees',lessonAttendees,'userIsLessonAttendee',userIsLessonAttendee);
-      // if (userIsLessonAttendee2 !== true) {
-      //   throw new Error('Ummm no! Only users whove attended a session of this class can review it');
-      // }
-      //
-      // const today = new Date().toLocaleDateString().substr(0,10);
-      // const time = new Date().toLocaleDateString().substr(11,5);
-      // const author = await User.findById({_id: args.userId});
-      // const lesson = await Lesson.findById({_id: args.lessonId});
-      //
-      // const existingReview = await Review.findOne({author: author, lesson: lesson});
-      // if (existingReview) {
-      //   throw new Error('This user has already reviewed this lesson... One review per lesson per user please...');
-      // }
-      // const review = new Review({
-      //   date: today,
-      //   type: args.reviewInput.type,
-      //   title: args.reviewInput.title,
-      //   lesson: lesson,
-      //   author: author,
-      //   body: args.reviewInput.body,
-      //   rating: args.reviewInput.rating
-      // });
-      //
-      // const result = await review.save();
-      // const updateLesson = await Lesson.findOneAndUpdate({_id: args.lessonId},{$addToSet: {reviews: review} },{new: true, useFindAndModify: false})
-      // const updateAuthor = await User.findOneAndUpdate({_id: args.userId},{$addToSet: {reviews: review} },{new: true, useFindAndModify: false})
+      console.log('userId',user._id,'lessonAttendees',lessonAttendees3,'userIsLessonAttendee',userIsLessonAttendee);
+      if (userIsLessonAttendee !== true) {
+        throw new Error('Ummm no! Only users whove attended a session of this class can review it');
+      }
+
+      const today = new Date().toLocaleDateString().substr(0,10);
+      const time = new Date().toLocaleDateString().substr(11,5);
+      const author = user;
+      const lesson = await Lesson.findById({_id: args.lessonId});
+
+      const existingReview = await Review.findOne({author: author, lesson: lesson});
+      if (existingReview) {
+        throw new Error('This user has already reviewed this lesson... One review per lesson per user please...');
+      }
+      const review = new Review({
+        date: today,
+        type: args.reviewInput.type,
+        title: args.reviewInput.title,
+        lesson: lesson,
+        author: author,
+        body: args.reviewInput.body,
+        rating: args.reviewInput.rating
+      });
+
+      const result = await review.save();
+      const updateLesson = await Lesson.findOneAndUpdate({_id: args.lessonId},{$addToSet: {reviews: review} },{new: true, useFindAndModify: false})
+      const updateAuthor = await User.findOneAndUpdate({_id: args.userId},{$addToSet: {reviews: review} },{new: true, useFindAndModify: false})
 
       return {
         ...result._doc,

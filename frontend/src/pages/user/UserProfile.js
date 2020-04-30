@@ -18,7 +18,7 @@ import ThisUserProfile from '../../components/Users/thisUserProfile';
 import ProfileLessonViewer from '../../components/ProfileLessonViewer';
 
 import './Users.css';
-// import io from 'socket.io-client';
+import io from 'socket.io-client';
 
 class UserProfile extends Component {
   state = {
@@ -67,15 +67,19 @@ class UserProfile extends Component {
     meetingsLoaded: false,
     meetingSessions: [],
     sessionDetailViewer: false,
+    showInstructorsState: false,
+    showRequirementsState: false,
+    showMaterialsState: false,
+    showReviewsState: false,
   };
 
   isActive = true;
   static contextType = AuthContext;
 
-  // constructor(props){
-  //     super(props);
-  //     this.socket = io('http://localhost:7770');
-  //   }
+  constructor(props){
+      super(props);
+      this.socket = io('http://localhost:7770');
+    }
 
   componentDidMount() {
 
@@ -182,7 +186,7 @@ class UserProfile extends Component {
               contactPhone2:"${contactPhone2}",
               bio:"${bio}"
             })
-            {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+            {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
         `};
 
     fetch('http://localhost:8088/graphql', {
@@ -203,8 +207,8 @@ class UserProfile extends Component {
         this.context.user = updatedUser;
         const responseAlert = JSON.stringify(resData.data.updateUserBasic).slice(2,25);
 
-        this.setState({ userAlert: responseAlert, user: updatedUser, activityA: requestBody})
-        // logUserActivity();
+        this.setState({ userAlert: responseAlert, user: updatedUser, activityA: JSON.stringify(requestBody)})
+        this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -230,7 +234,7 @@ class UserProfile extends Component {
             userId:"${userId}",
             field:"${field}",
             query:"${query}")
-            {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+            {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
         `};
 
       fetch('http://localhost:8088/graphql', {
@@ -250,9 +254,9 @@ class UserProfile extends Component {
         })
         .then(resData => {
           const responseAlert = JSON.stringify(resData.data.updateUserByField).slice(2,25);
-          this.setState({ userAlert: responseAlert, user: resData.data.updateUserByField, activityA: requestBody})
+          this.setState({ userAlert: responseAlert, user: resData.data.updateUserByField, activityA: JSON.stringify(requestBody)})
           this.context.user = this.state.user;
-          // logUserActivity();
+          this.logUserActivity();
         })
         .catch(err => {
           this.setState({userAlert: err});
@@ -273,7 +277,7 @@ class UserProfile extends Component {
               userInput:{
                 points:${points}
               })
-              {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+              {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
           `};
 
         fetch('http://localhost:8088/graphql', {
@@ -294,9 +298,9 @@ class UserProfile extends Component {
           .then(resData => {
 
             const responseAlert = JSON.stringify(resData.data.addUserPoints).slice(2,25);
-            this.setState({userAlert: responseAlert, user: resData.data.addUserPoints, activityA: requestBody})
+            this.setState({userAlert: responseAlert, user: resData.data.addUserPoints, activityA: JSON.stringify(requestBody)})
             this.context.user = this.state.user;
-            // logUserActivity();
+            this.logUserActivity();
           })
           .catch(err => {
             this.setState({userAlert: err});
@@ -343,7 +347,7 @@ class UserProfile extends Component {
             addressCountry:"${addressCountry}",
             addressPostalCode:"${addressPostalCode}"
           })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -364,9 +368,9 @@ class UserProfile extends Component {
       .then(resData => {
 
         const responseAlert = JSON.stringify(resData.data.addUserAddress).slice(2,25);
-        this.setState({userAlert: responseAlert, user: resData.data.addUserAddress, activityA: requestBody})
+        this.setState({userAlert: responseAlert, user: resData.data.addUserAddress, activityA: JSON.stringify(requestBody)})
         this.context.user = this.state.user;
-        // logUserActivity();
+        this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -402,7 +406,7 @@ class UserProfile extends Component {
             addressPostalCode:"${addressPostalCode}",
             addressPrimary:${addressPrimary}
           })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -423,9 +427,9 @@ class UserProfile extends Component {
       .then(resData => {
 
         const responseAlert = JSON.stringify(resData.data.deleteUserAddress).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserAddress, activityA: requestBody})
+        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserAddress, activityA: JSON.stringify(requestBody)})
         this.context.user = this.state.user;
-        // logUserActivity();
+        this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -460,7 +464,7 @@ class UserProfile extends Component {
             addressCountry:"${addressCountry}",
             addressPostalCode:"${addressPostalCode}",
           })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -481,9 +485,9 @@ class UserProfile extends Component {
       .then(resData => {
 
         const responseAlert = JSON.stringify(resData.data.setUserAddressPrimary).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.setUserAddressPrimary, activityA: requestBody})
+        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.setUserAddressPrimary, activityA: JSON.stringify(requestBody)})
         this.context.user = this.state.user;
-        // logUserActivity();
+        this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -507,7 +511,7 @@ class UserProfile extends Component {
             profileImageType:"${profileImageType}",
             profileImagePath:"${profileImagePath}"
           })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -528,9 +532,9 @@ class UserProfile extends Component {
       .then(resData => {
 
         const responseAlert = JSON.stringify(resData.data.addUserProfileImage).slice(2,25);
-        this.setState({userAlert: responseAlert, user: resData.data.addUserProfileImage, activityA: requestBody})
+        this.setState({userAlert: responseAlert, user: resData.data.addUserProfileImage, activityA: JSON.stringify(requestBody)})
         this.context.user = this.state.user;
-        // logUserActivity();
+        this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -555,7 +559,7 @@ class UserProfile extends Component {
             profileImageType:"${profileImageType}",
             profileImagePath:"${profileImagePath}"
           })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -576,9 +580,9 @@ class UserProfile extends Component {
       .then(resData => {
 
         const responseAlert = JSON.stringify(resData.data.deleteUserProfileImage).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserProfileImage, activityA: requestBody})
+        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserProfileImage, activityA: JSON.stringify(requestBody)})
         this.context.user = this.state.user;
-        // logUserActivity();
+        this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -603,7 +607,7 @@ class UserProfile extends Component {
             socialMediaHandle:"${socialMediaHandle}",
             socialMediaLink:"${socialMediaLink}"
           })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -624,9 +628,9 @@ class UserProfile extends Component {
       .then(resData => {
 
         const responseAlert = JSON.stringify(resData.data.addUserSocialMedia).slice(2,25);
-        this.setState({userAlert: responseAlert, user: resData.data.addUserSocialMedia, activityA: requestBody})
+        this.setState({userAlert: responseAlert, user: resData.data.addUserSocialMedia, activityA: JSON.stringify(requestBody)})
         this.context.user = this.state.user;
-        // logUserActivity();
+        this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -652,7 +656,7 @@ class UserProfile extends Component {
             socialMediaHandle:"${socialMediaHandle}",
             socialMediaLink:"${socialMediaLink}"
           })
-          {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+          {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -673,9 +677,9 @@ class UserProfile extends Component {
       .then(resData => {
 
         const responseAlert = JSON.stringify(resData.data.deleteUserSocialMedia).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserSocialMedia, activityA: requestBody})
+        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserSocialMedia, activityA: JSON.stringify(requestBody)})
         this.context.user = this.state.user;
-        // logUserActivity();
+        this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -708,7 +712,7 @@ class UserProfile extends Component {
             paymentInfoValid:${paymentInfoValid},
             paymentInfoPrimary:${paymentInfoPrimary},
           })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -729,9 +733,9 @@ class UserProfile extends Component {
       .then(resData => {
 
         const responseAlert = JSON.stringify(resData.data.addUserPaymentInfo).slice(2,25);
-        this.setState({userAlert: responseAlert, user: resData.data.addUserPaymentInfo, activityA: requestBody})
+        this.setState({userAlert: responseAlert, user: resData.data.addUserPaymentInfo, activityA: JSON.stringify(requestBody)})
         this.context.user = this.state.user;
-        // logUserActivity();
+        this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -763,7 +767,7 @@ class UserProfile extends Component {
             paymentInfoValid:${paymentInfoValid},
             paymentInfoPrimary:${paymentInfoPrimary}
           })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -784,9 +788,9 @@ class UserProfile extends Component {
       .then(resData => {
 
         const responseAlert = JSON.stringify(resData.data.deleteUserPaymentInfo).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserPaymentInfo, activityA: requestBody})
+        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserPaymentInfo, activityA: JSON.stringify(requestBody)})
         this.context.user = this.state.user;
-        // logUserActivity();
+        this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -807,7 +811,7 @@ class UserProfile extends Component {
           userInput:{
             interests:"${interests}"
           })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -828,9 +832,9 @@ class UserProfile extends Component {
       .then(resData => {
         const activityLog = 'mutation_addUserInterests_origin_'+activityId+'_target_'+userId+'_body_'+interests+'';
         const responseAlert = JSON.stringify(resData.data.addUserInterests).slice(2,25);
-        this.setState({userAlert: responseAlert, user: resData.data.addUserInterests, activityA: activityLog})
+        this.setState({userAlert: responseAlert, user: resData.data.addUserInterests, activityA: JSON.stringify(requestBody)})
         this.context.user = this.state.user;
-        this.logUserActivity();
+        this.this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -851,7 +855,7 @@ class UserProfile extends Component {
           userInput:{
             interest:"${interest}"
           })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -872,9 +876,9 @@ class UserProfile extends Component {
       .then(resData => {
 
         const responseAlert = JSON.stringify(resData.data.deleteUserInterest).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserInterest, activityA: requestBody})
+        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserInterest, activityA: JSON.stringify(requestBody)})
         this.context.user = this.state.user;
-        // logUserActivity();
+        this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -895,7 +899,7 @@ class UserProfile extends Component {
         userInput:{
           tags:"${tags}"
         })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -916,9 +920,9 @@ class UserProfile extends Component {
       .then(resData => {
 
         const responseAlert = JSON.stringify(resData.data.addUserTags).slice(2,25);
-        this.setState({userAlert: responseAlert, user: resData.data.addUserTags, activityA: requestBody})
+        this.setState({userAlert: responseAlert, user: resData.data.addUserTags, activityA: JSON.stringify(requestBody)})
         this.context.user = this.state.user;
-        // logUserActivity();
+        this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -939,7 +943,7 @@ class UserProfile extends Component {
         userInput:{
           tag:"${tag}"
         })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -960,9 +964,9 @@ class UserProfile extends Component {
       .then(resData => {
 
         const responseAlert = JSON.stringify(resData.data.deleteUserTag).slice(2,25);
-        this.setState({userAlert: responseAlert, user: resData.data.deleteUserTag, activityA: requestBody})
+        this.setState({userAlert: responseAlert, user: resData.data.deleteUserTag, activityA: JSON.stringify(requestBody)})
         this.context.user = this.state.user;
-        // logUserActivity();
+        this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -997,9 +1001,9 @@ class UserProfile extends Component {
         //   .then(resData => {
         //
         //     const responseAlert = JSON.stringify(resData.data.addUserPerk).slice(2,25);
-        //     this.setState({userAlert: responseAlert, user: resData.data.addUserPerk, activityA: requestBody})
+        //     this.setState({userAlert: responseAlert, user: resData.data.addUserPerk, activityA: JSON.stringify(requestBody)})
         //     this.context.user = this.state.user;
-        //     // logUserActivity();
+        //     // this.logUserActivity();
         //   })
         //   .catch(err => {
         //     this.setState({userAlert: err});
@@ -1035,9 +1039,9 @@ class UserProfile extends Component {
     //   .then(resData => {
     //
     //     const responseAlert = JSON.stringify(resData.data.deleteUserPerk).slice(2,25);
-    //     this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserPerk, activityA: requestBody})
+    //     this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserPerk, activityA: JSON.stringify(requestBody)})
     //     this.context.user = this.state.user;
-    //     // logUserActivity();
+    //     // this.logUserActivity();
     //   })
     //   .catch(err => {
     //     this.setState({userAlert: err});
@@ -1072,9 +1076,9 @@ class UserProfile extends Component {
         //   .then(resData => {
         //
         //     const responseAlert = JSON.stringify(resData.data.addUserPromo).slice(2,25);
-        //     this.setState({userAlert: responseAlert, user: resData.data.addUserPromo, activityA: requestBody})
+        //     this.setState({userAlert: responseAlert, user: resData.data.addUserPromo, activityA: JSON.stringify(requestBody)})
         //     this.context.user = this.state.user;
-        //     // logUserActivity();
+        //     // this.logUserActivity();
         //   })
         //   .catch(err => {
         //     this.setState({userAlert: err});
@@ -1110,9 +1114,9 @@ class UserProfile extends Component {
     //   .then(resData => {
     //
     //     const responseAlert = JSON.stringify(resData.data.userDeletePromo).slice(2,25);
-    //     this.setState({deleting: false, userAlert: responseAlert, user: resData.data.userDeletePromo, activityA: requestBody})
+    //     this.setState({deleting: false, userAlert: responseAlert, user: resData.data.userDeletePromo, activityA: JSON.stringify(requestBody)})
     //     this.context.user = this.state.user;
-    //     // logUserActivity();
+    //     // this.logUserActivity();
     //   })
     //   .catch(err => {
     //     this.setState({userAlert: err});
@@ -1133,7 +1137,7 @@ class UserProfile extends Component {
         userId:"${userId}",
         friendId:"${friendId}"
       )
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -1154,9 +1158,9 @@ class UserProfile extends Component {
       .then(resData => {
         const activityLog = 'mutation_addUserFriend_origin_'+activityId+'_target_'+userId+'_body_'+friendId+'';
         const responseAlert = JSON.stringify(resData.data.addUserFriend).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.addUserFriend, activityA: activityLog})
+        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.addUserFriend, activityA: JSON.stringify(requestBody)})
         this.context.user = this.state.user;
-        this.logUserActivity();
+        this.this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -1188,7 +1192,7 @@ class UserProfile extends Component {
         senderId:"${senderId}",
         receiverId:"${receiverId}"
       )
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -1209,9 +1213,9 @@ class UserProfile extends Component {
       .then(resData => {
 
         const responseAlert = JSON.stringify(resData.data.deleteFriendRequest).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteFriendRequest, activityA: requestBody})
+        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteFriendRequest, activityA: JSON.stringify(requestBody)})
         this.context.user = this.state.user;
-        // logUserActivity();
+        this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -1231,7 +1235,7 @@ class UserProfile extends Component {
         userId:"${userId}",
         friendId:"${friendId}"
       )
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -1252,9 +1256,9 @@ class UserProfile extends Component {
       .then(resData => {
 
         const responseAlert = JSON.stringify(resData.data.addUserFriend).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.addUserFriend, activityA: requestBody})
+        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.addUserFriend, activityA: JSON.stringify(requestBody)})
         this.context.user = this.state.user;
-        // logUserActivity();
+        this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -1262,6 +1266,7 @@ class UserProfile extends Component {
   };
   userSelectFriend = (args) => {
     this.setState({userSelectedFriend: args});
+    this.context.receiver = args;
   };
   userDeleteFriend = (args) => {
     this.setState({ deleting: true, userAlert: "deleting friend for user..." });
@@ -1277,7 +1282,7 @@ class UserProfile extends Component {
           userId:"${userId}",
           friendId:"${friendId}"
         )
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -1298,9 +1303,9 @@ class UserProfile extends Component {
       .then(resData => {
 
         const responseAlert = JSON.stringify(resData.data.deleteUserFriend).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserFriend, activityA: requestBody})
+        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserFriend, activityA: JSON.stringify(requestBody)})
         this.context.user = this.state.user;
-        // logUserActivity();
+        this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -1324,7 +1329,7 @@ class UserProfile extends Component {
           dateAdded:"${dateAdded}",
           sessionDate:"${sessionDate}"
         )
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -1345,9 +1350,9 @@ class UserProfile extends Component {
       .then(resData => {
 
         const responseAlert = JSON.stringify(resData.data.deleteUserCartLesson).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserCartLesson, activityA: requestBody})
+        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserCartLesson, activityA: JSON.stringify(requestBody)})
         this.context.user = this.state.user;
-        // logUserActivity();
+        this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -1369,7 +1374,7 @@ class UserProfile extends Component {
           lessonId:"${lessonId}",
           date:"${date}"
         )
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -1390,9 +1395,9 @@ class UserProfile extends Component {
       .then(resData => {
 
         const responseAlert = JSON.stringify(resData.data.deleteUserBookedLesson).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserBookedLesson, activityA: requestBody})
+        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserBookedLesson, activityA: JSON.stringify(requestBody)})
         this.context.user = this.state.user;
-        // logUserActivity();
+        this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -1402,6 +1407,44 @@ class UserProfile extends Component {
     this.setState({ deleting: true, userAlert: "deleting likeLesson for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
+    const userId = activityId;
+    const lessonId = args._id;
+
+    const requestBody = {
+      query:`
+        mutation {deleteUserLikedLesson(
+          activityId:"${activityId}",
+          userId:"${userId}",
+          lessonId:"${lessonId}"
+        )
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+      `};
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!');
+          this.setState({userAlert: 'Failed!'});
+        }
+        return res.json();
+      })
+      .then(resData => {
+
+        const responseAlert = JSON.stringify(resData.data.deleteUserLikedLesson).slice(2,25);
+        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserLikedLesson, activityA: JSON.stringify(requestBody)})
+        this.context.user = this.state.user;
+        this.logUserActivity();
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
   };
   userDeleteAttendedLesson = (args) => {
     this.setState({ deleting: true, userAlert: "deleting attendedLesson for user..." });
@@ -1419,11 +1462,9 @@ class UserProfile extends Component {
     console.log(event.target.value.slice(9,16));
     let type = event.target.value.slice(9,16);
     if (type === 'Billing') {
-      console.log('beep');
       this.setState({orderBillingAddress: event.target.value})
     }
     if (type === 'Shipping') {
-      console.log('beep');
       this.setState({orderShippingAddress: event.target.value})
     }
   };
@@ -1492,7 +1533,7 @@ class UserProfile extends Component {
             shippingAddressCountry:"${shippingAddressCountry}",
             shippingAddressPostalCode:"${shippingAddressPostalCode}"
           })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -1513,9 +1554,9 @@ class UserProfile extends Component {
       .then(resData => {
 
         const responseAlert = JSON.stringify(resData.data.createOrder).slice(2,25);
-        this.setState({userAlert: responseAlert, user: resData.data.createOrder, activityA: requestBody})
+        this.setState({userAlert: responseAlert, user: resData.data.createOrder, activityA: JSON.stringify(requestBody)})
         this.context.user = this.state.user;
-        // logUserActivity();
+        this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -1535,7 +1576,7 @@ class UserProfile extends Component {
           userId:"${userId}",
           orderId:"${orderId}"
         )
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -1556,9 +1597,9 @@ class UserProfile extends Component {
       .then(resData => {
 
         const responseAlert = JSON.stringify(resData.data.deleteUserOrder).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserOrder, activityA: requestBody})
+        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserOrder, activityA: JSON.stringify(requestBody)})
         this.context.user = this.state.user;
-        // logUserActivity();
+        this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -1578,7 +1619,7 @@ class UserProfile extends Component {
           userId:"${userId}",
           reviewId:"${reviewId}"
         )
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -1599,16 +1640,16 @@ class UserProfile extends Component {
       .then(resData => {
 
         const responseAlert = JSON.stringify(resData.data.deleteUserReview).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserReview, activityA: requestBody})
+        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserReview, activityA: JSON.stringify(requestBody)})
         this.context.user = this.state.user;
-        // logUserActivity();
+        this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
       });
   };
   userCreateMessage = (event) => {
-
+    event.preventDefault();
     this.setState({ adding: false });
     const token = this.context.token;
     const receiver = this.context.receiver;
@@ -1665,10 +1706,10 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        console.log("resData",resData.data.createMessage);
+        console.log("createMessage",resData.data.createMessage);
         const responseAlert = JSON.stringify(resData.data.createMessage).slice(2,25);;
-        this.setState({ userAlert: responseAlert, activityA: requestBody});
-        // logUserActivity();
+        this.setState({ userAlert: responseAlert, activityA: JSON.stringify(requestBody)});
+        this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -1706,9 +1747,9 @@ class UserProfile extends Component {
       .then(resData => {
 
         const responseAlert = JSON.stringify(resData.data.deleteMessage).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteMessage, activityA: requestBody})
+        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteMessage, activityA: JSON.stringify(requestBody)})
         this.context.user = this.state.user;
-        // logUserActivity();
+        this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -1721,7 +1762,7 @@ class UserProfile extends Component {
     const requestBody = {
       query: `
         query {getThisUser(activityId:"${activityId}")
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -1752,7 +1793,7 @@ class UserProfile extends Component {
           // console.log(thisUser);
           this.context.user = thisUser;
           if (this.isActive) {
-          this.setState({ user: thisUser, isLoading: false, activityA: requestBody });
+          this.setState({ user: thisUser, isLoading: false, activityA: JSON.stringify(requestBody) });
           }
           if (sessionStorage.getItem('token')) {
             this.setState({userAlert: "Welcome Back..."})
@@ -1760,7 +1801,7 @@ class UserProfile extends Component {
           if (thisUser.name === "Lord-of-the-Manor"){
             this.setState({canDelete: true, userAlert: "Mi'Lord!!"})
           }
-          // logUserActivity();
+          // this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -1775,9 +1816,9 @@ class UserProfile extends Component {
     const activityId = this.context.activityId;
     const userId = activityId;
     const token = this.context.token;
-    const today = new Date();
+    const today = new Date().toLocaleDateString();
     const request = this.state.activityA;
-
+    // console.log(activityId,userId,request);
     const requestBody = {
       query:`
           mutation {addUserActivity(
@@ -1786,9 +1827,8 @@ class UserProfile extends Component {
             userInput:{
               activityRequest:"${request}"
             })
-          {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price,requirementsg}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+          {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
-
     fetch('http://localhost:8088/graphql', {
         method: 'POST',
         body: JSON.stringify(requestBody),
@@ -1856,7 +1896,7 @@ class UserProfile extends Component {
             activityDate:"${activityDate}",
             activityRequest:"${activityRequest}"
           })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price,requirementsg}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -1906,11 +1946,9 @@ class UserProfile extends Component {
     const activityId = this.context.activityId;
     let lessonId = null;
     if (args._id) {
-      // console.log('likedLessons');
       lessonId = args._id;
     }
     if (args.ref) {
-      // console.log('liked, booked, attended lessons..');
       lessonId = args.ref._id;
     }
 
@@ -1920,7 +1958,7 @@ class UserProfile extends Component {
           activityId:"${activityId}",
           lessonId:"${lessonId}"
         )
-        {_id,title,subtitle,type,category,price,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{email,phone,phone2}},gallery{name,type,path},requirements,materials,files{name,type,size,path},reviews{_id},tags,sessions{title,date,time,limit,amount,booked{_id,username},bookedAmount,attended{_id,username},attendedAmount,inProgress,full,url},promos{_id}}}
+        {_id,title,subtitle,type,category,price,sku,points,description,notes,requirements,materials,duration,schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email},socialMedia{platform,handle,link},profileImages{name,type,path}},tags,sessions{title,date,time,limit,amount,booked{_id,username},attended{_id,username},bookedAmount,attendedAmount,inProgress,full,url},reviews{_id,title,type,author{_id,username},lesson{_id,title},body,rating}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -1939,10 +1977,9 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        // console.log("beep",resData.data.getLessonById);
         const responseAlert = JSON.stringify(resData.data.getLessonById).slice(2,25);
         this.setState({isLoading: false, profileLessonViewer: true, profileLessonViewerData: resData.data.getLessonById})
-        // logUserActivity();
+        this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -1952,18 +1989,48 @@ class UserProfile extends Component {
     this.setState({profileLessonViewer: false, profileLessonViewerData: null})
   };
 
-  showSchedule = () => {
-    this.setState({showScheduleState: true})
-  };
-  hideSchedule = () => {
-    this.setState({showScheduleState: false})
-  };
-  showSessions = () => {
-    this.setState({showSessionState: true})
-  };
-  hideSessions = () => {
-    this.setState({showSessionState: false})
-  };
+  toggleSessions = () => {
+    if (this.state.showSessionState === false) {
+      this.setState({showSessionState: true})
+    } else {
+      this.setState({showSessionState: false})
+    }
+  }
+  toggleInstructors = () => {
+    if (this.state.showInstructorsState === false) {
+      this.setState({showInstructorsState: true})
+    } else {
+      this.setState({showInstructorsState: false})
+    }
+  }
+  toggleSchedule = () => {
+    if (this.state.showScheduleState === false) {
+      this.setState({showScheduleState: true})
+    } else {
+      this.setState({showScheduleState: false})
+    }
+  }
+  toggleRequirements = () => {
+    if (this.state.showRequirementsState === false) {
+      this.setState({showRequirementsState: true})
+    } else {
+      this.setState({showRequirementsState: false})
+    }
+  }
+  toggleMaterials = () => {
+    if (this.state.showMaterialsState === false) {
+      this.setState({showMaterialsState: true})
+    } else {
+      this.setState({showMaterialsState: false})
+    }
+  }
+  toggleReviews = () => {
+    if (this.state.showReviewsState === false) {
+      this.setState({showReviewsState: true})
+    } else {
+      this.setState({showReviewsState: false})
+    }
+  }
   startCreateSession = (args) => {
     this.setState({creatingSession: true})
   };
@@ -2422,8 +2489,8 @@ class UserProfile extends Component {
           onShowSidebar={this.showSidebar}
           onHideSidebar={this.hideSidebar}
         />
-        <Row>
 
+        <Row>
         {this.state.sidebarShow === true &&
           this.state.user !== null && (
           <Col md={2} className="MasterCol1">
@@ -2441,12 +2508,20 @@ class UserProfile extends Component {
             profileLesson={this.state.profileLessonViewerData}
             closeProfileLessonView={this.closeProfileLessonView}
 
-            hideSessions={this.hideSessions}
-            showSessions={this.showSessions}
+            toggleSessions={this.toggleSessions}
             showSessionState={this.state.showSessionState}
-            hideSchedule={this.hideSchedule}
-            showSchedule={this.showSchedule}
+
             showScheduleState={this.state.showScheduleState}
+            toggleSchedule={this.toggleSchedule}
+
+            toggleInstructors={this.toggleInstructors}
+            showInstructorsState={this.state.showInstructorsState}
+            toggleRequirements={this.toggleRequirements}
+            showRequirementsState={this.state.showRequirementsState}
+            toggleMaterials={this.toggleMaterials}
+            showMaterialsState={this.state.showMaterialsState}
+            toggleReviews={this.toggleReviews}
+            showReviewsState={this.state.showReviewsState}
 
             startCreateSession={this.startCreateSession}
             creatingSession={this.state.creatingSession}
@@ -2458,6 +2533,7 @@ class UserProfile extends Component {
             editSessionField={this.editSessionField}
             cancelEditSessionField={this.cancelEditSessionField}
             session={this.state.session}
+
             showSessionBooked={this.showSessionBooked}
             showSessionAttended={this.showSessionAttended}
             hideSessionBooked={this.hideSessionBooked}
@@ -2559,6 +2635,7 @@ class UserProfile extends Component {
                     selectedUser={this.context.selectedUser}
                     messageReceiver={this.context.receiver}
                     requestingFriend={this.state.requestingFriend}
+                    onStartCreateMessage={this.startCreateMessage}
 
                     viewLessonDetails={this.viewLessonDetails}
 
@@ -2575,6 +2652,7 @@ class UserProfile extends Component {
                     editSessionField={this.editSessionField}
                     cancelEditSessionField={this.cancelEditSessionField}
                     session={this.state.session}
+
                     showSessionBooked={this.showSessionBooked}
                     showSessionAttended={this.showSessionAttended}
                     hideSessionBooked={this.hideSessionBooked}

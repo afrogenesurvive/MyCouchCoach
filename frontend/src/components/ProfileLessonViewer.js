@@ -9,6 +9,10 @@ import Col from 'react-bootstrap/Col';
 
 import LessonSessionList from './Lessons/LessonList/LessonSessionList';
 import LessonScheduleList from './Lessons/LessonList/LessonScheduleList';
+import LessonInstructorList from './Lessons/LessonList/LessonInstructorList';
+import LessonRequirementList from './Lessons/LessonList/LessonRequirementList';
+import LessonMaterialList from './Lessons/LessonList/LessonMaterialList';
+import LessonReviewList from './Lessons/LessonList/LessonReviewList';
 import CreateLessonSessionForm from './Forms/lesson/CreateLessonSessionForm';
 import UpdateLessonBasicForm from './Forms/lesson/UpdateLessonBasicForm';
 import UpdateLessonFieldForm from './Forms/lesson/UpdateLessonFieldForm';
@@ -21,10 +25,9 @@ import './AttachmentViewer.css';
 const ProfileLessonViewer = (props) => {
 
   const {...lesson} = props.profileLesson;
-  // let userDob = new Date(user.dob.substr(0,9) * 1000).toLocaleDateString().slice(0,10);
   const instructorIds = lesson.instructors.map(x => x._id)
   const isInstructor = instructorIds.includes(props.authId);
-  // console.log(lesson.sessions);
+  console.log(lesson.sessions);
   return (
     <div className="attachmentViewerBg">
       <div className="attachmentViewer">
@@ -72,48 +75,104 @@ const ProfileLessonViewer = (props) => {
           <Col className="detailCardCol">
           <Card.Text>
             <span className="bold">Main Instructor:</span>
-            {lesson.instructors[0]._id}
-            {lesson.instructors[0].username}
-            {lesson.instructors[0].contact.phone}
-            {lesson.instructors[0].contact.email}
+          </Card.Text>
+
+          <Card.Text>
+          ID: {lesson.instructors[0]._id}
+          </Card.Text>
+          <Card.Text>
+          Username: {lesson.instructors[0].username}
+          </Card.Text>
+          <Card.Text>
+            Contact
+          </Card.Text>
+          <Card.Text>
+            Email: {lesson.instructors[0].contact.email}
           </Card.Text>
 
           </Col>
         </Row>
 
-        {isInstructor === true && (
-        <Row className="detailCardRow">
-          <Col className="detailCardCol">
+        <Row>
+          <Col>
+          <Card.Text>
+          Instructors
+          </Card.Text>
+            <Button variant="danger" onClick={props.toggleInstructors}>
+              Show/Hide
+            </Button>
+            {props.showInstructorsState === true && (
+              <LessonInstructorList
+                lessonInstructors={lesson.instructors}
+              />
+            )}
+          </Col>
+        </Row>
 
-          <Button variant="danger" onClick={props.onStartEditLessonBasic}>
-            Edit Basic
+        <Row>
+          <Col>
+          <Card.Text>
+          Schedule
+          </Card.Text>
+          <Button variant="danger" onClick={props.toggleSchedule}>
+            show/hide
           </Button>
-            {props.editingLesson === true && (
-              <UpdateLessonBasicForm
-              lesson={lesson}
-              onCancel={props.cancelEditBasic}
-              onConfirm={props.editLessonBasic}
+          {props.showScheduleState === true && (
+            <LessonScheduleList
+              lessonSchedule={lesson.schedule}
+            />
+          )}
+          </Col>
+        </Row>
+
+        <Row>
+          <Col>
+          <Card.Text>
+          Requirements
+          </Card.Text>
+            <Button variant="danger" onClick={props.toggleRequirements}>
+              Show/Hide
+            </Button>
+            {props.showRequirementsState === true && (
+              <LessonRequirementList
+                lessonRequirements={lesson.requirements}
               />
             )}
           </Col>
         </Row>
-        )}
-        {isInstructor === true && (
-        <Row className="detailCardRow">
-          <Col className="detailCardCol">
-          <Button variant="danger" onClick={props.onStartEditLessonField}>
-            Edit Field
-          </Button>
-            {props.editingLessonField === true && (
-              <UpdateLessonFieldForm
-              lesson={lesson}
-              onCancel={props.cancelEditField}
-              onConfirm={props.editLessonField}
+
+
+        <Row>
+          <Col>
+          <Card.Text>
+          Materials
+          </Card.Text>
+            <Button variant="danger" onClick={props.toggleMaterials}>
+              Show/Hide
+            </Button>
+            {props.showMaterialsState === true && (
+              <LessonMaterialList
+                lessonMaterials={lesson.materials}
               />
             )}
           </Col>
         </Row>
-        )}
+
+        <Row>
+          <Col>
+          <Card.Text>
+          Reviews
+          </Card.Text>
+            <Button variant="danger" onClick={props.toggleReviews}>
+              Show/Hide
+            </Button>
+            {props.showReviewsState === true && (
+              <LessonReviewList
+                lessonReviews={lesson.reviews}
+              />
+            )}
+          </Col>
+        </Row>
 
         <Row className="detailCardRow">
           <Col className="detailCardCol">
@@ -123,29 +182,14 @@ const ProfileLessonViewer = (props) => {
           </Col>
         </Row>
 
-        {isInstructor === true && (
+
           <Row className="detailCardRow">
 
-          <Col className="detailCardCol">
-          Schedule:
-          <Button variant="danger" onClick={props.showSchedule}>
-            See dates
-          </Button>
-          <Button variant="danger" onClick={props.hideSchedule}>
-            Hide dates
-          </Button>
-          {props.showScheduleState === true && (
-            <LessonScheduleList
-              lessonSchedule={lesson.schedule}
-            />
-          )}
+          <Col>
+          <p>Sessions:</p>
 
-          Sessions:
-          <Button variant="primary" onClick={props.showSessions}>
-            Show Sessions
-          </Button>
-          <Button variant="primary" onClick={props.hideSessions}>
-            X
+          <Button variant="primary" onClick={props.toggleSessions}>
+            Show/Hide
           </Button>
           {lesson.sessions !== [] &&
             props.showSessionState === true && (
@@ -163,6 +207,9 @@ const ProfileLessonViewer = (props) => {
             />
           )}
           </Col>
+
+
+          {isInstructor === true && (
 
           <Col className="detailCardCol">
           {props.editingSessionField === true && (
@@ -186,9 +233,44 @@ const ProfileLessonViewer = (props) => {
           )}
           </Col>
 
+          )}
 
         </Row>
-      )}
+
+        {isInstructor === true && (
+        <Row className="detailCardRow">
+          <Col className="detailCardCol">
+
+          <Button variant="danger" onClick={props.onStartEditLessonBasic}>
+            Edit Basic
+          </Button>
+            {props.editingLesson === true && (
+              <UpdateLessonBasicForm
+              lesson={lesson}
+              onCancel={props.cancelEditBasic}
+              onConfirm={props.editLessonBasic}
+              />
+            )}
+          </Col>
+        </Row>
+        )}
+
+        {isInstructor === true && (
+        <Row className="detailCardRow">
+          <Col className="detailCardCol">
+          <Button variant="danger" onClick={props.onStartEditLessonField}>
+            Edit Field
+          </Button>
+            {props.editingLessonField === true && (
+              <UpdateLessonFieldForm
+              lesson={lesson}
+              onCancel={props.cancelEditField}
+              onConfirm={props.editLessonField}
+              />
+            )}
+          </Col>
+        </Row>
+        )}
 
       </Card.Body>
       </Card>

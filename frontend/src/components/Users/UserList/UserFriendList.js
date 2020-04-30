@@ -11,10 +11,14 @@ const userFriendList = props => {
         key={friend._id}
         friend={friend}
         _id={friend._id}
+        name={friend.name}
         username={friend.username}
+        phone={friend.contact.phone}
+        email={friend.contact.email}
         loggedIn={friend.loggedIn}
         online={friend.clientConnected}
         profileImages={friend.profileImages}
+        socialMedia={friend.socialMedia}
         onSelect={props.onSelect}
         onDelete={props.onDelete}
         canDelete={props.canDelete}

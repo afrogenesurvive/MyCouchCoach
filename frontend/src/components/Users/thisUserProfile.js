@@ -49,9 +49,12 @@ import AddUserPromoForm from '../Forms/user/AddUserPromoForm';
 import AddUserFriendForm from '../Forms/user/AddUserFriendForm';
 import CreateMessageForm from '../Forms/message/CreateMessageForm';
 import CreateOrderForm from '../Forms/order/CreateOrderForm';
+import CreateReviewForm from '../Forms/review/CreateReviewForm';
 
 import MeetingSessionList from '../Lessons/LessonList/MeetingSessionList';
 import SessionDetailViewer from '../SessionDetailViewer';
+
+
 
 import './thisUserProfile.css';
 
@@ -81,6 +84,8 @@ let messagesSent = [];
 let messagesReceived = [];
 messagesSent = user.messages.filter(x => x.sender._id === props.authId);
 messagesReceived = user.messages.filter(x => x.receiver._id === props.authId);
+const reviewedLessonIds = user.reviews.map(x => x.lesson._id);
+// console.log(user.reviews.map(x => x.lesson._id));
 
   return (
 
@@ -487,14 +492,29 @@ messagesReceived = user.messages.filter(x => x.receiver._id === props.authId);
     </Tab>
     <Tab eventKey="attendedLessons" title="attendedLessons">
 
+    {props.creatingReview === true &&
+      props.reviewLesson !== null && (
+      <CreateReviewForm
+      authId={props.authId}
+      author={user}
+      lesson={props.reviewLesson}
+      canConfirm
+      canCancel
+      onCancel={props.cancelCreateReview}
+      onConfirm={props.createReview}
+      />
+    )}
+
     {user.attendedLessons !== null &&
       user.attendedLessons!== [] && (
         <UserAttendedLessonList
           userAttendedLessons={user.attendedLessons}
+          reviewedLessonIds={reviewedLessonIds}
           authId={props.authId}
           canDelete={props.canDelete}
           onDelete={props.userDeleteAttendedLesson}
           viewLessonDetails={props.viewLessonDetails}
+          startCreateReview={props.startCreateReview}
         />
       )}
 

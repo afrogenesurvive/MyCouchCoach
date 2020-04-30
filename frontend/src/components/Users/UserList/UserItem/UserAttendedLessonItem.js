@@ -4,7 +4,8 @@ import Card from 'react-bootstrap/Card';
 
 import './UserItem.css';
 
-const userAttendedLessonItem = props => (
+export default function userAttendedLessonItem (props) {
+  return (
   <li key={props.authId} className="users__list-item_detail users__list-item_detail4">
     <Card style={{ width: '18rem' }}>
 
@@ -25,6 +26,9 @@ const userAttendedLessonItem = props => (
       <Button variant="primary" onClick={props.viewLessonDetails.bind(this, props.attendedLesson)}>
         View Details
       </Button>
+      {props.hasReviewed !== true && (<Button variant="primary" onClick={props.startCreateReview.bind(this, props.attendedLesson)}>
+        Review
+      </Button>)}
       { props.canDelete === true && (
         <Button variant="danger" onClick={props.onDelete.bind(this, props.attendedLesson)}>
           Delete
@@ -37,4 +41,4 @@ const userAttendedLessonItem = props => (
   </li>
 );
 
-export default userAttendedLessonItem;
+}

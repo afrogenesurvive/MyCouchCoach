@@ -71,6 +71,8 @@ class UserProfile extends Component {
     showRequirementsState: false,
     showMaterialsState: false,
     showReviewsState: false,
+    creatingReview: false,
+    reviewLesson: null,
   };
 
   isActive = true;
@@ -2467,6 +2469,66 @@ class UserProfile extends Component {
     this.setState({session: null, sessionDetailViewer: false})
   };
 
+  startCreateReview = (args) => {
+    console.log('startCreateReview', args);
+    this.setState({creatingReview: true, reviewLesson: args.ref})
+  }
+  cancelCreateReview = () => {
+    this.setState({creatingReview: false, reviewLesson: null})
+  }
+  createReview = (event) => {
+    event.preventDefault();
+    console.log('...createing review...');
+    this.setState({userAlert: '...createing review...', creatingReview: false})
+    const lessonId = this.state.reviewLesson._id;
+    const activityId = this.context.activityId;
+    const userId = activityId;
+    const type = event.target.formGridTypeSelect.value;
+    const title = event.target.formGridTitle.value;
+    const body = event.target.formGridBody.value;
+    const rating = event.target.formGridRating.value;
+    //
+    const requestBody = {
+      query: `
+        mutation {createReview(
+          activityId:"${activityId}",
+          userId:"${userId}",
+          lessonId:"${lessonId}",
+          reviewInput:{
+            type:"${type}",
+            title:"${title}",
+            body:"${body}",
+            rating:${rating}
+          })
+        {_id,date,type,title,lesson{_id,title},author{_id,username},body,rating}}
+        `};
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          this.setState({userAlert: 'Failed!'});
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        console.log(resData.data.createReview);
+        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+        this.setState({userAlert: responseAlert, reviewLesson: null});
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
+  }
+
+
   componentWillUnmount() {
     this.isActive = false;
   }
@@ -2661,6 +2723,11 @@ class UserProfile extends Component {
                     sessionAttendedState={this.state.sessionAttendedState}
                     addSessionAttendance={this.addSessionAttendance}
 
+                    startCreateReview={this.startCreateReview}
+                    cancelCreateReview={this.cancelCreateReview}
+                    creatingReview={this.state.creatingReview}
+                    reviewLesson={this.state.reviewLesson}
+                    createReview={this.createReview}
                   />
                 )}
 

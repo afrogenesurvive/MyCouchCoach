@@ -86,20 +86,22 @@ class UserProfile extends Component {
   componentDidMount() {
 
     this.getThisUser();
-    // const conversationId = this.context.activityId;
+
+
+    const conversationId = this.context.activityId;
+    this.socket.emit('msg_subscribe', {user: this.context.activityId, room:'msg'+this.context.activityId});
     // this.socket.emit('msg_subscribe', 'msg'+conversationId);
-    // this.socket.emit('trans_subscribe', 'trans'+conversationId);
-    // console.log("listening for tokens & pms...");
-    // this.socket.on('conversation private post', function(data) {
-    //   console.log("you got a new message..",data);
-    //   addMessage(data);
-    // });
-    // const addMessage = data => {
-    //   this.setState({
-    //     userAlert: `New Msg!!
-    //       Fr:   ${data.message.senderName},
-    //       Msg:   ${data.message.message}`})
-    // };
+    console.log("listening for pms...");
+    this.socket.on('conversation private post', function(data) {
+      console.log("you got a new message..",data);
+      addMessage(data);
+    });
+    const addMessage = data => {
+      this.setState({
+        userAlert: `New Msg!!
+          Fr:   ${data.message.senderName},
+          Msg:   ${data.message.message}`})
+    };
 
   };
 
@@ -1874,6 +1876,7 @@ class UserProfile extends Component {
       message: message
     });
     this.socket.on("MESSAGE_SENT", function(data) {
+
       addMessage(data)
     })
 

@@ -42,7 +42,7 @@ class App extends Component {
     this.context.token = token;
     this.context.activityId = activityId;
     this.context.role = role;
-    this.socket.emit('msg_subscribe', {user: activityId, room:'msg'+activityId});
+    // this.socket.emit('msg_subscribe', {user: activityId, room:'msg'+activityId});
   };
 
   logout = () => {
@@ -99,16 +99,16 @@ class App extends Component {
     const conversationId = this.context.activityId;
     this.socket.emit('unauthorizedClientConnect');
     console.log("socket listening....");
-    this.socket.on('conversation private post', function(data) {
-      console.log("you got a new message..",data);
-      addMessage(data);
-    });
-    const addMessage = data => {
-      this.setState({
-        userAlert: `New Msg!!
-          Fr:   ${data.message.senderName},
-          Msg:   ${data.message.message}`})
-    };
+    // this.socket.on('conversation private post', function(data) {
+    //   console.log("you got a new message..",data);
+    //   addMessage(data);
+    // });
+    // const addMessage = data => {
+    //   this.setState({
+    //     userAlert: `New Msg!!
+    //       Fr:   ${data.message.senderName},
+    //       Msg:   ${data.message.message}`})
+    // };
 
     // this.userOnline();
   }

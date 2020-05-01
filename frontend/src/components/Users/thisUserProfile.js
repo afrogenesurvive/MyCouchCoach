@@ -424,6 +424,7 @@ const reviewedLessonIds = user.reviews.map(x => x.lesson._id);
           {user.friendRequests !== null &&
             user.friendRequests !== [] && (
               <UserFriendRequestList
+                received
                 userFriendRequests={receivedRequests}
                 authId={props.authId}
                 onReject={props.userRejectFriendRequest}

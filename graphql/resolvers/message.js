@@ -119,7 +119,7 @@ module.exports = {
     }
   },
   deleteMessage: async (args, req) => {
-
+    console.log("Resolver: deleteMessage...");
     if (!req.isAuth) {
       throw new Error('Unauthenticated!');
     }

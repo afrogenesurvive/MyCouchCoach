@@ -71,6 +71,7 @@ const userOnline = async function (args) {
 };
 
 let connectedClients = [];
+
 io.on('connection', (socket) => {
 
     socket.on('unauthorizedClientConnect', function(data) {
@@ -92,6 +93,7 @@ io.on('connection', (socket) => {
           message: data.message
       });
       socket.emit("MESSAGE_SENT", {msg: "message sent!!"});
+      console.log('sender confirmation sent');
     });
     socket.on('disconnect', function(){
       let clientToRemove = connectedClients.find(x => x.socket === socket.id);

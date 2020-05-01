@@ -13,7 +13,13 @@ const userReviewItem = props => (
         ID: {props._id}
       </Card.Text>
       <Card.Text>
-        Lesson: {props.lesson._id}
+        Lesson:
+      </Card.Text>
+      <Card.Text>
+        ID: {props.lesson._id}
+      </Card.Text>
+      <Card.Text>
+        Title: {props.lesson.title}
       </Card.Text>
       <Card.Text>
         Date: {props.date}

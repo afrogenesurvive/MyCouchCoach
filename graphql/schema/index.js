@@ -696,7 +696,7 @@ module.exports = buildSchema(`
     addCommentChild(commentId: ID!, childId: ID!): Comment
     deleteComment(commentId: ID!): Comment
 
-    createReview(activityId: ID!, userId: ID!,lessonId: ID!, reviewInput: ReviewInput!): Review
+    createReview(activityId: ID!, userId: ID!,lessonId: ID!, reviewInput: ReviewInput!): User
     updateReviewBasic(activityId: ID!, reviewId: ID!, reviewInput: ReviewInput!): Review
     updateReviewByField(activityId: ID!,reviewId: ID!, field: String!, query: String!): Review
     deleteReview(activityId: ID!, reviewId: ID!): Review

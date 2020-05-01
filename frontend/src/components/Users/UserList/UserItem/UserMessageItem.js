@@ -26,11 +26,17 @@ const userMessgeItem = props => (
           <p className="userItemText">
           {props.sender._id}
           </p>
+          <p className="userItemText">
+          {props.sender.username}
+          </p>
           </li>
           <li>
           <p className="userItemHeading"> receiver:</p>
           <p className="userItemText">
           {props.receiver._id}
+          </p>
+          <p className="userItemText">
+          {props.receiver.username}
           </p>
           </li>
           <li>

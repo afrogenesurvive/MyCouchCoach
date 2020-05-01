@@ -205,15 +205,21 @@ module.exports = {
       const updateAuthor = await User.findOneAndUpdate({_id: args.userId},{$addToSet: {reviews: review} },{new: true, useFindAndModify: false})
 
       return {
-        ...result._doc,
-        date: result.date,
-        type: result.type,
-        title: result.title,
-        lesson: result.lesson,
-        author: result.author,
-        body: result.body,
-        rating: result.rating
+        ...updateAuthor._doc,
+        _id: updateAuthor.id,
+        email: updateAuthor.contact.email ,
+        name: updateAuthor.name,
       };
+      // return {
+      //   ...result._doc,
+      //   date: result.date,
+      //   type: result.type,
+      //   title: result.title,
+      //   lesson: result.lesson,
+      //   author: result.author,
+      //   body: result.body,
+      //   rating: result.rating
+      // };
     } catch (err) {
       throw err;
     }

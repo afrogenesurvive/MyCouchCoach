@@ -418,15 +418,32 @@ const reviewedLessonIds = user.reviews.map(x => x.lesson._id);
 
     <Tab eventKey="friendRequests" title="friendRequests">
 
-    {user.friendRequests !== null &&
-      user.friendRequests !== [] && (
-        <UserFriendRequestList
-          userFriendRequests={receivedRequests}
-          authId={props.authId}
-          onReject={props.userRejectFriendRequest}
-          onAccept={props.userAcceptFriendRequest}
-        />
-      )}
+      <Tabs defaultActiveKey="received" id="uncontrolled-tab-example">
+        <Tab eventKey="received" title="received">
+          <p>Received</p>
+          {user.friendRequests !== null &&
+            user.friendRequests !== [] && (
+              <UserFriendRequestList
+                userFriendRequests={receivedRequests}
+                authId={props.authId}
+                onReject={props.userRejectFriendRequest}
+                onAccept={props.userAcceptFriendRequest}
+              />
+            )}
+        </Tab>
+        <Tab eventKey="sent" title="sent">
+          <p>Sent</p>
+          {user.friendRequests !== null &&
+            user.friendRequests !== [] && (
+              <UserFriendRequestList
+                userFriendRequests={sentRequests}
+                authId={props.authId}
+                onReject={props.userRejectFriendRequest}
+                onAccept={props.userAcceptFriendRequest}
+              />
+            )}
+        </Tab>
+      </Tabs>
 
     </Tab>
 

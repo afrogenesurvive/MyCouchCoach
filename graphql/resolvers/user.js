@@ -38,8 +38,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -68,10 +92,33 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('comments')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
-      .populate('reviews')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -105,10 +152,33 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('comments')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
-      .populate('reviews')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -142,8 +212,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -191,8 +285,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -212,7 +330,45 @@ module.exports = {
     try {
 
       const tags = args.tags;
-      const users = await User.find({'tags': {$all: tags}});
+      const users = await User.find({'tags': {$all: tags}})
+      .populate('perks')
+      .populate('promos')
+      .populate('friends')
+      .populate('likedLessons')
+      .populate('bookedLessons.ref')
+      .populate('attendedLessons.ref')
+      .populate('taughtLessons.ref')
+      .populate('wishlist.ref')
+      .populate('cart.lesson')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
       return users.map(user => {
         return transformUser(user);
@@ -228,7 +384,45 @@ module.exports = {
     }
     try {
       const perkIds = args.perkIds;
-      const users = await User.find({'perks._id': {$all: perkIds}});
+      const users = await User.find({'perks._id': {$all: perkIds}})
+      .populate('perks')
+      .populate('promos')
+      .populate('friends')
+      .populate('likedLessons')
+      .populate('bookedLessons.ref')
+      .populate('attendedLessons.ref')
+      .populate('taughtLessons.ref')
+      .populate('wishlist.ref')
+      .populate('cart.lesson')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
       return users.map(user => {
         return transformUser(user);
@@ -245,7 +439,45 @@ module.exports = {
     try {
 
       const promoIds = args.promoIds;
-      const users = await User.find({'promos._id': {$all: promoIds}});
+      const users = await User.find({'promos._id': {$all: promoIds}})
+      .populate('perks')
+      .populate('promos')
+      .populate('friends')
+      .populate('likedLessons')
+      .populate('bookedLessons.ref')
+      .populate('attendedLessons.ref')
+      .populate('taughtLessons.ref')
+      .populate('wishlist.ref')
+      .populate('cart.lesson')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
       return users.map(user => {
         return transformUser(user);
@@ -262,7 +494,45 @@ module.exports = {
     try {
 
       const friends = args.friendIds;
-      const users = await User.find({'friends._id': friends});
+      const users = await User.find({'friends._id': friends})
+      .populate('perks')
+      .populate('promos')
+      .populate('friends')
+      .populate('likedLessons')
+      .populate('bookedLessons.ref')
+      .populate('attendedLessons.ref')
+      .populate('taughtLessons.ref')
+      .populate('wishlist.ref')
+      .populate('cart.lesson')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
       return users.map(user => {
         return transformUser(user);
@@ -279,7 +549,45 @@ module.exports = {
     try {
       const upper = args.upperLimit;
       const lower = args.lowerLimit;
-      const users = await User.find({points: {$gte: lower, $lte: upper}});
+      const users = await User.find({points: {$gte: lower, $lte: upper}})
+      .populate('perks')
+      .populate('promos')
+      .populate('friends')
+      .populate('likedLessons')
+      .populate('bookedLessons.ref')
+      .populate('attendedLessons.ref')
+      .populate('taughtLessons.ref')
+      .populate('wishlist.ref')
+      .populate('cart.lesson')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
+      .populate('orders')
+      .populate('friendRequests.sender')
+      .populate('friendRequests.receiver');
 
       return users.map(user => {
         return transformUser(user);
@@ -304,8 +612,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -412,8 +744,32 @@ module.exports = {
         .populate('taughtLessons.ref')
         .populate('wishlist.ref')
         .populate('cart.lesson')
-        .populate('reviews')
-        .populate('messages')
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'author',
+            model: 'User'
+          }
+        })
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'sender',
+            model: 'User'
+          }})
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'receiver',
+            model: 'User'
+          }})
         .populate('orders')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
@@ -452,8 +808,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -492,8 +872,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -537,8 +941,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -583,8 +1011,32 @@ module.exports = {
         .populate('taughtLessons.ref')
         .populate('wishlist.ref')
         .populate('cart.lesson')
-        .populate('reviews')
-        .populate('messages')
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'author',
+            model: 'User'
+          }
+        })
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'sender',
+            model: 'User'
+          }})
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'receiver',
+            model: 'User'
+          }})
         .populate('orders')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
@@ -667,12 +1119,35 @@ module.exports = {
         .populate('taughtLessons.ref')
         .populate('wishlist.ref')
         .populate('cart.lesson')
-        .populate('reviews')
-        .populate('messages')
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'author',
+            model: 'User'
+          }
+        })
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'sender',
+            model: 'User'
+          }})
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'receiver',
+            model: 'User'
+          }})
         .populate('orders')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
-        console.log('user2',user.addresses);
 
         return {
           ...user._doc,
@@ -708,8 +1183,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -749,8 +1248,32 @@ module.exports = {
         .populate('taughtLessons.ref')
         .populate('wishlist.ref')
         .populate('cart.lesson')
-        .populate('reviews')
-        .populate('messages')
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'author',
+            model: 'User'
+          }
+        })
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'sender',
+            model: 'User'
+          }})
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'receiver',
+            model: 'User'
+          }})
         .populate('orders')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
@@ -789,8 +1312,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -830,8 +1377,32 @@ module.exports = {
         .populate('taughtLessons.ref')
         .populate('wishlist.ref')
         .populate('cart.lesson')
-        .populate('reviews')
-        .populate('messages')
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'author',
+            model: 'User'
+          }
+        })
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'sender',
+            model: 'User'
+          }})
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'receiver',
+            model: 'User'
+          }})
         .populate('orders')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
@@ -871,8 +1442,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -915,8 +1510,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -949,7 +1568,45 @@ module.exports = {
           valid: args.userInput.paymentInfoValid,
           primary: args.userInput.paymentInfoPrimary,
         };
-        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { 'paymentInfo': paymentInfo }},{new: true, useFindAndModify: false});
+        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { 'paymentInfo': paymentInfo }},{new: true, useFindAndModify: false})
+        .populate('perks')
+        .populate('promos')
+        .populate('friends')
+        .populate('likedLessons')
+        .populate('bookedLessons.ref')
+        .populate('attendedLessons.ref')
+        .populate('taughtLessons.ref')
+        .populate('wishlist.ref')
+        .populate('cart.lesson')
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'author',
+            model: 'User'
+          }
+        })
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'sender',
+            model: 'User'
+          }})
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'receiver',
+            model: 'User'
+          }})
+        .populate('orders')
+        .populate('friendRequests.sender')
+        .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -979,8 +1636,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -1002,7 +1683,45 @@ module.exports = {
     }
     try {
         const tag = args.userInput.tag;
-        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { tags: tag }},{new: true, useFindAndModify: false});
+        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { tags: tag }},{new: true, useFindAndModify: false})
+        .populate('perks')
+        .populate('promos')
+        .populate('friends')
+        .populate('likedLessons')
+        .populate('bookedLessons.ref')
+        .populate('attendedLessons.ref')
+        .populate('taughtLessons.ref')
+        .populate('wishlist.ref')
+        .populate('cart.lesson')
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'author',
+            model: 'User'
+          }
+        })
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'sender',
+            model: 'User'
+          }})
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'receiver',
+            model: 'User'
+          }})
+        .populate('orders')
+        .populate('friendRequests.sender')
+        .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -1032,8 +1751,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -1055,7 +1798,45 @@ module.exports = {
     }
     try {
         const interest = args.userInput.interest;
-        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { interests: interest }},{new: true, useFindAndModify: false});
+        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { interests: interest }},{new: true, useFindAndModify: false})
+        .populate('perks')
+        .populate('promos')
+        .populate('friends')
+        .populate('likedLessons')
+        .populate('bookedLessons.ref')
+        .populate('attendedLessons.ref')
+        .populate('taughtLessons.ref')
+        .populate('wishlist.ref')
+        .populate('cart.lesson')
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'author',
+            model: 'User'
+          }
+        })
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'sender',
+            model: 'User'
+          }})
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'receiver',
+            model: 'User'
+          }})
+        .populate('orders')
+        .populate('friendRequests.sender')
+        .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -1084,8 +1865,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -1107,7 +1912,45 @@ module.exports = {
     }
     try {
         const perk = await Perk.findById({_id: args.perkId});
-        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { perks: perk }},{new: true, useFindAndModify: false});
+        const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { perks: perk }},{new: true, useFindAndModify: false})
+        .populate('perks')
+        .populate('promos')
+        .populate('friends')
+        .populate('likedLessons')
+        .populate('bookedLessons.ref')
+        .populate('attendedLessons.ref')
+        .populate('taughtLessons.ref')
+        .populate('wishlist.ref')
+        .populate('cart.lesson')
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'author',
+            model: 'User'
+          }
+        })
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'sender',
+            model: 'User'
+          }})
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'receiver',
+            model: 'User'
+          }})
+        .populate('orders')
+        .populate('friendRequests.sender')
+        .populate('friendRequests.receiver');
 
         return {
           ...user._doc,
@@ -1136,8 +1979,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -1169,8 +2036,32 @@ module.exports = {
         .populate('taughtLessons.ref')
         .populate('wishlist.ref')
         .populate('cart.lesson')
-        .populate('reviews')
-        .populate('messages')
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'author',
+            model: 'User'
+          }
+        })
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'sender',
+            model: 'User'
+          }})
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'receiver',
+            model: 'User'
+          }})
         .populate('orders')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
@@ -1206,11 +2097,36 @@ module.exports = {
         .populate('taughtLessons.ref')
         .populate('wishlist.ref')
         .populate('cart.lesson')
-        .populate('reviews')
-        .populate('messages')
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'author',
+            model: 'User'
+          }
+        })
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'sender',
+            model: 'User'
+          }})
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'receiver',
+            model: 'User'
+          }})
         .populate('orders')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
+
       // console.log(user.friends);
       // const user2 = await User.findOneAndUpdate({_id: args.userId},{
       //   $pull: {friendRequests: {sender: friend._id}}
@@ -1264,8 +2180,32 @@ module.exports = {
         .populate('taughtLessons.ref')
         .populate('wishlist.ref')
         .populate('cart.lesson')
-        .populate('reviews')
-        .populate('messages')
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'author',
+            model: 'User'
+          }
+        })
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'sender',
+            model: 'User'
+          }})
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'receiver',
+            model: 'User'
+          }})
         .populate('orders')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
@@ -1305,8 +2245,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -1350,8 +2314,32 @@ module.exports = {
         .populate('taughtLessons.ref')
         .populate('wishlist.ref')
         .populate('cart.lesson')
-        .populate('reviews')
-        .populate('messages')
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'author',
+            model: 'User'
+          }
+        })
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'sender',
+            model: 'User'
+          }})
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'receiver',
+            model: 'User'
+          }})
         .populate('orders')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
@@ -1369,8 +2357,32 @@ module.exports = {
         .populate('taughtLessons.ref')
         .populate('wishlist.ref')
         .populate('cart.lesson')
-        .populate('reviews')
-        .populate('messages')
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'author',
+            model: 'User'
+          }
+        })
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'sender',
+            model: 'User'
+          }})
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'receiver',
+            model: 'User'
+          }})
         .populate('orders')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
@@ -1409,8 +2421,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -1449,8 +2485,32 @@ module.exports = {
         .populate('taughtLessons.ref')
         .populate('wishlist.ref')
         .populate('cart.lesson')
-        .populate('reviews')
-        .populate('messages')
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'author',
+            model: 'User'
+          }
+        })
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'sender',
+            model: 'User'
+          }})
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'receiver',
+            model: 'User'
+          }})
         .populate('orders')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
@@ -1482,8 +2542,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -1515,8 +2599,32 @@ module.exports = {
         .populate('taughtLessons.ref')
         .populate('wishlist.ref')
         .populate('cart.lesson')
-        .populate('reviews')
-        .populate('messages')
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'author',
+            model: 'User'
+          }
+        })
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'sender',
+            model: 'User'
+          }})
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'receiver',
+            model: 'User'
+          }})
         .populate('orders')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
@@ -1558,8 +2666,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -1594,8 +2726,32 @@ module.exports = {
         .populate('taughtLessons.ref')
         .populate('wishlist.ref')
         .populate('cart.lesson')
-        .populate('reviews')
-        .populate('messages')
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'author',
+            model: 'User'
+          }
+        })
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'sender',
+            model: 'User'
+          }})
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'receiver',
+            model: 'User'
+          }})
         .populate('orders')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
@@ -1633,8 +2789,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -1668,8 +2848,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -1707,8 +2911,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -1742,8 +2970,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -1782,8 +3034,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -1818,8 +3094,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -1858,8 +3158,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -1895,8 +3219,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -1928,8 +3276,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -1961,8 +3333,32 @@ module.exports = {
         .populate('taughtLessons.ref')
         .populate('wishlist.ref')
         .populate('cart.lesson')
-        .populate('reviews')
-        .populate('messages')
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'author',
+            model: 'User'
+          }
+        })
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'sender',
+            model: 'User'
+          }})
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'receiver',
+            model: 'User'
+          }})
         .populate('orders')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
@@ -1994,8 +3390,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -2027,8 +3447,32 @@ module.exports = {
         .populate('taughtLessons.ref')
         .populate('wishlist.ref')
         .populate('cart.lesson')
-        .populate('reviews')
-        .populate('messages')
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'author',
+            model: 'User'
+          }
+        })
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'sender',
+            model: 'User'
+          }})
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'receiver',
+            model: 'User'
+          }})
         .populate('orders')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
@@ -2060,8 +3504,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -2093,8 +3561,32 @@ module.exports = {
         .populate('taughtLessons.ref')
         .populate('wishlist.ref')
         .populate('cart.lesson')
-        .populate('reviews')
-        .populate('messages')
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'author',
+            model: 'User'
+          }
+        })
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'sender',
+            model: 'User'
+          }})
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'receiver',
+            model: 'User'
+          }})
         .populate('orders')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
@@ -2126,8 +3618,32 @@ module.exports = {
       .populate('taughtLessons.ref')
       .populate('wishlist.ref')
       .populate('cart.lesson')
-      .populate('reviews')
-      .populate('messages')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
@@ -2160,8 +3676,32 @@ module.exports = {
         .populate('taughtLessons.ref')
         .populate('wishlist.ref')
         .populate('cart.lesson')
-        .populate('reviews')
-        .populate('messages')
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'author',
+            model: 'User'
+          }
+        })
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'sender',
+            model: 'User'
+          }})
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'receiver',
+            model: 'User'
+          }})
         .populate('orders')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');

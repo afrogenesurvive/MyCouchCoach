@@ -2519,9 +2519,9 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        console.log(resData.data.createReview);
+        // console.log(resData.data.createReview);
         const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, reviewLesson: null});
+        this.setState({userAlert: responseAlert, user: resData.data.createReview, reviewLesson: null});
       })
       .catch(err => {
         this.setState({userAlert: err});

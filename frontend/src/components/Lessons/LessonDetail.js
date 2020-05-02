@@ -28,7 +28,7 @@ import './UserDetail.css';
 const LessonDetail = (props) => {
 
   const {...lesson} = props.lesson;
-  console.log('beep',lesson.files);
+  // console.log('beep',lesson.files);
   const instructorIds = lesson.instructors.map(x => x._id)
   const isInstructor = instructorIds.includes(props.authId);
   return (

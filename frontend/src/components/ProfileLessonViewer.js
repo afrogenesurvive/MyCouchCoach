@@ -13,6 +13,8 @@ import LessonInstructorList from './Lessons/LessonList/LessonInstructorList';
 import LessonRequirementList from './Lessons/LessonList/LessonRequirementList';
 import LessonMaterialList from './Lessons/LessonList/LessonMaterialList';
 import LessonTagList from './Lessons/LessonList/LessonTagList';
+import LessonImageList from './Lessons/LessonList/LessonImageList';
+import LessonFileList from './Lessons/LessonList/LessonFileList';
 import LessonReviewList from './Lessons/LessonList/LessonReviewList';
 import CreateLessonSessionForm from './Forms/lesson/CreateLessonSessionForm';
 import UpdateLessonBasicForm from './Forms/lesson/UpdateLessonBasicForm';
@@ -266,6 +268,69 @@ const ProfileLessonViewer = (props) => {
         </Card>
         </Tab>
 
+        <Tab eventKey="images" title="images">
+        <Card className="UserDetailCard">
+        <Card.Body>
+
+          <Row>
+            <Col>
+            <Card.Text>
+            Images
+            </Card.Text>
+              <Button variant="danger" onClick={props.toggleImages}>
+                Show/Hide
+              </Button>
+              <Button variant="danger" onClick={props.startLessonAdd.bind(this, 'images')}>
+                Add
+              </Button>
+              {props.lessonAddField === 'images' && (
+                <p>addLessonImagesForm</p>
+                // cancelLessonAdd={props.cancelLessonAdd}
+                // addLessonImages={props.addLessonImages}
+              )}
+              {props.showImagesState === true && (
+                <LessonImageList
+                  lessonImages={lesson.gallery}
+                />
+              )}
+            </Col>
+          </Row>
+
+        </Card.Body>
+        </Card>
+        </Tab>
+
+        <Tab eventKey="files" title="files">
+        <Card className="UserDetailCard">
+        <Card.Body>
+
+          <Row>
+            <Col>
+            <Card.Text>
+            Files
+            </Card.Text>
+              <Button variant="danger" onClick={props.toggleFiles}>
+                Show/Hide
+              </Button>
+              <Button variant="danger" onClick={props.startLessonAdd.bind(this, 'files')}>
+                Add
+              </Button>
+              {props.lessonAddField === 'files' && (
+                <p>addLessonFilesForm</p>
+                // cancelLessonAdd={props.cancelLessonAdd}
+                // addLessonFiles={props.addLessonFiles}
+              )}
+              {props.showFilesState === true && (
+                <LessonFileList
+                  lessonFiles={lesson.files}
+                />
+              )}
+            </Col>
+          </Row>
+
+        </Card.Body>
+        </Card>
+        </Tab>
 
         <Tab eventKey="instructors" title="instructors">
         <Card className="UserDetailCard">

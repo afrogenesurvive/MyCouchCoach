@@ -71,6 +71,8 @@ class UserProfile extends Component {
     showRequirementsState: false,
     showMaterialsState: false,
     showTagsState: false,
+    showFilesState: false,
+    showImagesState: false,
     showReviewsState: false,
     creatingReview: false,
     reviewLesson: null,
@@ -2003,7 +2005,7 @@ class UserProfile extends Component {
           activityId:"${activityId}",
           lessonId:"${lessonId}"
         )
-        {_id,title,subtitle,type,category,price,sku,points,description,notes,requirements,materials,duration,schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email},socialMedia{platform,handle,link},profileImages{name,type,path}},tags,sessions{title,date,time,limit,amount,booked{_id,username},attended{_id,username},bookedAmount,attendedAmount,inProgress,full,url},reviews{_id,title,type,author{_id,username},lesson{_id,title},body,rating}}}
+        {_id,title,subtitle,type,category,price,sku,points,description,notes,requirements,materials,duration,files{name,type,size,path},gallery{name,type,path},schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email},socialMedia{platform,handle,link},profileImages{name,type,path}},tags,reviews{_id,title,type,author{_id,username},lesson{_id,title},body,rating}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -2081,6 +2083,20 @@ class UserProfile extends Component {
       this.setState({showTagsState: true})
     } else {
       this.setState({showTagsState: false})
+    }
+  }
+  toggleImages = () => {
+    if (this.state.showImagesState === false) {
+      this.setState({showImagesState: true})
+    } else {
+      this.setState({showImagesState: false})
+    }
+  }
+  toggleFiles = () => {
+    if (this.state.showFilesState === false) {
+      this.setState({showFilesState: true})
+    } else {
+      this.setState({showFilesState: false})
     }
   }
 
@@ -2595,6 +2611,12 @@ class UserProfile extends Component {
   addLessonRequirements = () => {
     console.log('...adding lesson requirements ...');
   }
+  addLessonImages = () => {
+    console.log('...adding lesson Images ...');
+  }
+  addLessonFiles = () => {
+    console.log('...adding lesson Files ...');
+  }
   addLessonInstructor = () => {
     console.log('...adding lesson instructor ...');
   }
@@ -2654,8 +2676,13 @@ class UserProfile extends Component {
             showMaterialsState={this.state.showMaterialsState}
             toggleReviews={this.toggleReviews}
             showReviewsState={this.state.showReviewsState}
+
             toggleTags={this.toggleTags}
             showTagsState={this.state.showTagsState}
+            toggleImages={this.toggleImages}
+            showImagesState={this.state.showImagesState}
+            toggleFiles={this.toggleFiles}
+            showFilesState={this.state.showFilesState}
 
             startCreateSession={this.startCreateSession}
             creatingSession={this.state.creatingSession}

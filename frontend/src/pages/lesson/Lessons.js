@@ -75,7 +75,11 @@ class LessonsPage extends Component {
     showInstructorsState: false,
     showRequirementsState: false,
     showMaterialsState: false,
+    showTagsState: false,
+    showFilesState: false,
+    showImagesState: false,
     showReviewsState: false,
+    lessonAddField: null,
   };
   isActive = true;
   static contextType = AuthContext;
@@ -453,7 +457,7 @@ class LessonsPage extends Component {
     const requestBody = {
       query: `
         query {getAllLessons(activityId:"${activityId}")
-        {_id,title,subtitle,type,category,price,sku,points,description,notes,requirements,materials,duration,schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email},socialMedia{platform,handle,link},profileImages{name,type,path}},tags,reviews{_id,title,type,author{_id,username},lesson{_id,title},body,rating}}}
+        {_id,title,subtitle,type,category,price,sku,points,description,notes,requirements,materials,duration,files{name,type,size,path},gallery{name,type,path},schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email},socialMedia{platform,handle,link},profileImages{name,type,path}},tags,reviews{_id,title,type,author{_id,username},lesson{_id,title},body,rating}}}
         `};
 
     fetch('http://localhost:8088/graphql', {
@@ -837,12 +841,62 @@ class LessonsPage extends Component {
       this.setState({showMaterialsState: false})
     }
   }
+  toggleTags = () => {
+    if (this.state.showTagsState === false) {
+      this.setState({showTagsState: true})
+    } else {
+      this.setState({showTagsState: false})
+    }
+  }
+  toggleImages = () => {
+    if (this.state.showImagesState === false) {
+      this.setState({showImagesState: true})
+    } else {
+      this.setState({showImagesState: false})
+    }
+  }
+  toggleFiles = () => {
+    if (this.state.showFilesState === false) {
+      this.setState({showFilesState: true})
+    } else {
+      this.setState({showFilesState: false})
+    }
+  }
   toggleReviews = () => {
     if (this.state.showReviewsState === false) {
       this.setState({showReviewsState: true})
     } else {
       this.setState({showReviewsState: false})
     }
+  }
+
+  startLessonAdd = (args) => {
+    console.log(args);
+    this.setState({lessonAddField: args})
+  }
+  cancelLessonAdd = (args) => {
+    this.setState({lessonAddField: null})
+  }
+  addLessonMaterials = () => {
+    console.log('...adding lesson materials...');
+  }
+  addLessonTags = () => {
+    console.log('...adding lesson tags...');
+  }
+  addLessonRequirements = () => {
+    console.log('...adding lesson requirements ...');
+  }
+  addLessonImages = () => {
+    console.log('...adding lesson Images ...');
+  }
+  addLessonFiles = () => {
+    console.log('...adding lesson Files ...');
+  }
+  addLessonInstructor = () => {
+    console.log('...adding lesson instructor ...');
+  }
+  likeLesson = (args) => {
+    console.log('...adding lesson like...',args);
   }
 
   componentWillUnmount() {
@@ -909,6 +963,25 @@ class LessonsPage extends Component {
           showMaterialsState={this.state.showMaterialsState}
           toggleReviews={this.toggleReviews}
           showReviewsState={this.state.showReviewsState}
+
+          toggleTags={this.toggleTags}
+          showTagsState={this.state.showTagsState}
+          toggleImages={this.toggleImages}
+          showImagesState={this.state.showImagesState}
+          toggleFiles={this.toggleFiles}
+          showFilesState={this.state.showFilesState}
+
+          startLessonAdd={this.startLessonAdd}
+          cancelLessonAdd={this.cancelLessonAdd}
+          lessonAddField={this.state.lessonAddField}
+          addLessonMaterials={this.addLessonMaterials}
+          addLessonRequirements={this.addLessonRequirements}
+          addLessonTags={this.addLessonTags}
+          addLessonImages={this.addLessonImages}
+          addLessonFiles={this.addLessonFiles}
+          addLessonInstructor={this.addLessonInstructor}
+
+          onLikeLesson={this.likeLesson}
         />
       )}
       <SidebarControl

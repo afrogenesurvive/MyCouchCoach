@@ -222,7 +222,7 @@ class UsersPage extends Component {
           query {getAllUsers(
             activityId:"${activityId}"
           )
-          {_id,role,username,public,clientConnected}}
+          {_id,role,username,public,clientConnected,loggedIn}}
         `};
 
     fetch('http://localhost:8088/graphql', {
@@ -333,7 +333,7 @@ showDetailHandler = userId => {
           activityId:"${activityId}",
           userId:"${userId}"
         )
-        {_id,role,username,public,clientConnected,age,bio,socialMedia{platform,handle,link},profileImages{name,type,path},interests,tags}}
+        {_id,role,username,public,clientConnected,loggedIn,age,bio,socialMedia{platform,handle,link},profileImages{name,type,path},interests,tags}}
       `};
 
   fetch('http://localhost:8088/graphql', {

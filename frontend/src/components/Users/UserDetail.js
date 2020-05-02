@@ -16,7 +16,7 @@ const UserDetail = (props) => {
 
   const {...user} = props.user;
   const profileImages = user.profileImages;
-  // console.log(profileImages);
+  console.log('user.clientConnected',user.clientConnected,'user.loggedIn',user.loggedIn);
   const interests = user.interests;
 
   // let userDob = new Date(user.dob.substr(0,9) * 1000).toLocaleDateString().slice(0,10);
@@ -44,6 +44,12 @@ const UserDetail = (props) => {
           </Card.Text>
           <Card.Text>
             <span className="bold">Bio:</span> {user.bio}
+          </Card.Text>
+          <Card.Text>
+            <span className="bold">loggedIn:</span> {user.loggedIn.toString()}
+          </Card.Text>
+          <Card.Text>
+            <span className="bold">online:</span> {user.clientConnected.toString()}
           </Card.Text>
           </Col>
 

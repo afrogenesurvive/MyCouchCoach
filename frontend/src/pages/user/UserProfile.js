@@ -70,9 +70,11 @@ class UserProfile extends Component {
     showInstructorsState: false,
     showRequirementsState: false,
     showMaterialsState: false,
+    showTagsState: false,
     showReviewsState: false,
     creatingReview: false,
     reviewLesson: null,
+    lessonAddField: null,
   };
 
   isActive = true;
@@ -103,6 +105,7 @@ class UserProfile extends Component {
           Msg:   ${data.message.message}`})
     };
 
+    this.userOnline();
   };
 
   onStartUpdate = () => {
@@ -1884,6 +1887,43 @@ class UserProfile extends Component {
       this.setState({ userAlert: data.msg})
     };
   };
+  userOnline () {
+    console.log('...bringing user online...');
+    this.setState({userAlert: 'bringing user online...'})
+    const token = this.context.token;
+    const activityId = this.context.activityId;
+    const requestBody = {
+      query:`
+        mutation{userOnline(
+          activityId:"${activityId}",
+          userId:"${activityId}")
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle},interests,perks{_id},promos{_id},friends{_id,username},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id},bookedLessons{date,ref{_id,title}},attendedLessons{date,ref{_id,title}},taughtLessons{date,ref{_id,title}},wishlist{date,ref{_id,title},booked},cart{dateAdded,sessionDate,lesson{_id,title}},comments{_id},messages{_id},orders{_id},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+      `};
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!');
+          this.setState({userAlert: 'Failed!'});
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data.userOnline).slice(2,25);
+        // this.context.user = ;
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
+  }
+
   userDeleteActivity = (args) => {
     this.setState({ deleting: true, userAlert: "deleting promo for user..." });
     const token = this.context.token;
@@ -2036,6 +2076,14 @@ class UserProfile extends Component {
       this.setState({showReviewsState: false})
     }
   }
+  toggleTags = () => {
+    if (this.state.showTagsState === false) {
+      this.setState({showTagsState: true})
+    } else {
+      this.setState({showTagsState: false})
+    }
+  }
+
   startCreateSession = (args) => {
     this.setState({creatingSession: true})
   };
@@ -2531,6 +2579,26 @@ class UserProfile extends Component {
       });
   }
 
+  startLessonAdd = (args) => {
+    console.log(args);
+    this.setState({lessonAddField: args})
+  }
+  cancelLessonAdd = (args) => {
+    this.setState({lessonAddField: null})
+  }
+  addLessonMaterials = () => {
+    console.log('...adding lesson materials...');
+  }
+  addLessonTags = () => {
+    console.log('...adding lesson tags...');
+  }
+  addLessonRequirements = () => {
+    console.log('...adding lesson requirements ...');
+  }
+  addLessonInstructor = () => {
+    console.log('...adding lesson instructor ...');
+  }
+
   componentWillUnmount() {
     this.isActive = false;
   }
@@ -2586,6 +2654,8 @@ class UserProfile extends Component {
             showMaterialsState={this.state.showMaterialsState}
             toggleReviews={this.toggleReviews}
             showReviewsState={this.state.showReviewsState}
+            toggleTags={this.toggleTags}
+            showTagsState={this.state.showTagsState}
 
             startCreateSession={this.startCreateSession}
             creatingSession={this.state.creatingSession}
@@ -2615,6 +2685,15 @@ class UserProfile extends Component {
             onStartEditLessonField={this.onStartEditLessonField}
             editLessonField={this.editLessonField}
             cancelEditField={this.cancelEditField}
+
+            startLessonAdd={this.startLessonAdd}
+            cancelLessonAdd={this.cancelLessonAdd}
+            lessonAddField={this.state.lessonAddField}
+            addLessonMaterials={this.addLessonMaterials}
+            addLessonRequirements={this.addLessonRequirements}
+            addLessonTags={this.addLessonTags}
+            addLessonInstructor={this.addLessonInstructor}
+
           />
         )}
 

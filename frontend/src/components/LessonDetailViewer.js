@@ -54,6 +54,24 @@ return (
       showMaterialsState={props.showMaterialsState}
       toggleReviews={props.toggleReviews}
       showReviewsState={props.showReviewsState}
+      toggleTags={props.toggleTags}
+      showTagsState={props.showTagsState}
+      toggleImages={props.toggleImages}
+      showImagesState={props.showImagesState}
+      toggleFiles={props.toggleFiles}
+      showFilesState={props.showFilesState}
+
+      lessonAddField={props.lessonAddField}
+      startLessonAdd={props.startLessonAdd}
+      cancelLessonAdd={props.cancelLessonAdd}
+      addLessonInstructor={props.addLessonInstructor}
+      addLessonMaterials={props.addLessonMaterials}
+      addLessonTags={props.addLessonTags}
+      addLessonRequirements={props.addLessonRequirements}
+      addLessonImages={props.addLessonImages}
+      addLessonFiles={props.addLessonFiles}
+
+      onLikeLesson={props.onLikeLesson}
     />
 
     </div>

@@ -46,38 +46,7 @@ class App extends Component {
   };
 
   logout = () => {
-    this.setState({
-       token: null,
-       activityId: null,
-       role: null,
-       sessionCookiePresent: null
-      });
-    sessionStorage.clear();
-    this.context = {
-      token: null,
-      activityId: null,
-      activityA: null,
-      activityB: null,
-      activityC: null,
-      role: null,
-      userId: null,
-      user: {},
-      users:[],
-      selectedUser: null,
-      lesson: {},
-      lessons: [],
-      selectedLesson: null,
-      selectedPerk: null,
-      selectedPromo: null,
-      selectedReview: null,
-      sender: null,
-      receiver: null,
-      userAlert: "...",
-      file: null,
-      fancyDate: null,
-      login: this.login,
-      logout: this.logout,
-    }
+      this.logout2();
   };
 
 
@@ -99,33 +68,21 @@ class App extends Component {
     const conversationId = this.context.activityId;
     this.socket.emit('unauthorizedClientConnect');
     console.log("socket listening....");
-    // this.socket.on('conversation private post', function(data) {
-    //   console.log("you got a new message..",data);
-    //   addMessage(data);
-    // });
-    // const addMessage = data => {
-    //   this.setState({
-    //     userAlert: `New Msg!!
-    //       Fr:   ${data.message.senderName},
-    //       Msg:   ${data.message.message}`})
-    // };
-
-    // this.userOnline();
   }
 
   componentWillUnmount() {
-    // this.UserOffline();
+
   }
 
-  userOnline () {
+  logout2 () {
+    console.log('...logging you out...');
     const token = this.context.token;
     const activityId = this.context.activityId;
     const requestBody = {
       query:`
-        mutation{userOnline(
-          activityId:"${activityId}",
-          userId:"${activityId}")
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle},interests,perks{_id},promos{_id},friends{_id,username},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id},bookedLessons{date,ref{_id,title}},attendedLessons{date,ref{_id,title}},taughtLessons{date,ref{_id,title}},wishlist{date,ref{_id,title},booked},cart{dateAdded,sessionDate,lesson{_id,title}},comments{_id},messages{_id},orders{_id},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        query{logout(
+          activityId:"${activityId}")
+        {_id,loggedIn}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -144,15 +101,49 @@ class App extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data.userOnline).slice(2,25);
-        // this.context.user = ;
+
+        this.setState({
+           token: null,
+           activityId: null,
+           role: null,
+           sessionCookiePresent: null
+          });
+        sessionStorage.clear();
+        this.context = {
+          token: null,
+          activityId: null,
+          activityA: null,
+          activityB: null,
+          activityC: null,
+          role: null,
+          userId: null,
+          user: {},
+          users:[],
+          selectedUser: null,
+          lesson: {},
+          lessons: [],
+          selectedLesson: null,
+          selectedPerk: null,
+          selectedPromo: null,
+          selectedReview: null,
+          sender: null,
+          receiver: null,
+          userAlert: "...",
+          file: null,
+          fancyDate: null,
+          login: this.login,
+          logout: this.logout,
+        };
+
       })
       .catch(err => {
-        this.setState({userAlert: err});
+        console.log(err);
+        // this.setState({userAlert: err});
       });
   }
 
   userOffline () {
+    console.log('...taking user offline...');
     const token = this.context.token;
     const activityId = this.context.activityId;
     const requestBody = {

@@ -49,9 +49,9 @@ module.exports = {
 
     return { activityId: userLoggedIn.id, role: "User", token: token, tokenExpiration: 4 };
   },
-  logout: async ({ args }) => {
-
-    const userLogout = await User.findOneAndUpdate({ _id: args.userId },{loggedIn: false},{new: true, useFindAndModify: false});
+  logout: async (args) => {
+    console.log("Resolver: Logout...");
+    const userLogout = await User.findOneAndUpdate({ _id: args.activityId },{loggedIn: false, clientConnected: false},{new: true, useFindAndModify: false});
 
     return {
       ...userLogout._doc,

@@ -60,6 +60,7 @@ import './thisUserProfile.css';
 
 const thisUserProfile = (props) => {
 const {...user} = props.user;
+
 const userAddress = user.address;
 const userDob = new Date(user.dob.substr(0,9)*1000).toLocaleDateString().slice(0,10);
 
@@ -138,6 +139,9 @@ const reviewedLessonIds = user.reviews.map(x => x.lesson._id);
           </Card.Text>
           <Card.Text>
             <span className="bold">loggedIn :</span> {user.loggedIn.toString()}
+          </Card.Text>
+          <Card.Text>
+            <span className="bold">online :</span> {user.clientConnected.toString()}
           </Card.Text>
 
           <Card.Text>

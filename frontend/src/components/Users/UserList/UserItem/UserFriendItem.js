@@ -10,7 +10,9 @@ const userFriendItem = props => (
 
     <Card.Body>
       <Card.Title>{props.username}</Card.Title>
+      {props.profileImages !== [] && (
       <Card.Img variant="top" src={props.profileImages[0].path} />
+      )}
       <Card.Text>
         _id: {props._id}
       </Card.Text>
@@ -32,9 +34,11 @@ const userFriendItem = props => (
       <Card.Text>
         online: {props.online.toString()}
       </Card.Text>
+      {props.socialMedia !== [] && (
       <Card.Text>
         SocialMedia: {props.socialMedia[0].platform} - {props.socialMedia[0].handle}
       </Card.Text>
+      )}
 
         <Button variant="primary" onClick={props.onSelect.bind(this, props.friend)}>
           Select

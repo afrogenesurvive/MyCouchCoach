@@ -374,7 +374,7 @@ hideDetailHandler = () => {
 }
 
 
-  onFriendRequest = (args) => {
+onFriendRequest = (args) => {
     console.log("sending friend request...",args._id);
     this.setState({ userAlert: "sending friend request..."});
     const activityId = this.context.activityId;
@@ -421,7 +421,7 @@ hideDetailHandler = () => {
 
   }
 
-  onViewAttachment = (attachment) => {
+onViewAttachment = (attachment) => {
 
       this.setState({showAttachment: true})
 
@@ -431,7 +431,7 @@ hideDetailHandler = () => {
       this.setState({showThisAttachmentFile: file, showThisAttachmentType: type, })
   }
 
-  closeAttachmentView = () => {
+closeAttachmentView = () => {
 
       this.setState({showAttachment: false})
   }

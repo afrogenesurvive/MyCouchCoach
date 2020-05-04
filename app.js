@@ -38,8 +38,8 @@ app.use(
     graphiql: true
   })
 );
-// mongoose.connect("mongodb+srv://profBlack:FoiH8muN5lZAWdNT@cluster0-knrho.mongodb.net/test?retryWrites=true&w=majority",
-mongoose.connect('mongodb://localhost:27017/my_couch_coach',
+mongoose.connect("mongodb+srv://profBlack:FoiH8muN5lZAWdNT@cluster0-knrho.mongodb.net/test?retryWrites=true&w=majority",
+// mongoose.connect('mongodb://localhost:27017/my_couch_coach',
 {useNewUrlParser: true, useUnifiedTopology: true})
   .then(() => {
     console.log(`

@@ -85,7 +85,7 @@ class App extends Component {
         {_id,loggedIn}}
       `};
 
-    fetch('http://localhost:8088/graphql', {
+    fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
@@ -154,7 +154,7 @@ class App extends Component {
       {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle},interests,perks{_id},promos{_id},friends{_id,username},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id},bookedLessons{date,ref{_id,title}},attendedLessons{date,ref{_id,title}},taughtLessons{date,ref{_id,title}},wishlist{date,ref{_id,title},booked},cart{dateAdded,sessionDate,lesson{_id,title}},comments{_id},messages{_id},orders{_id},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
-    fetch('http://localhost:8088/graphql', {
+    fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {

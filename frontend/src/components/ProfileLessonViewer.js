@@ -21,6 +21,13 @@ import UpdateLessonBasicForm from './Forms/lesson/UpdateLessonBasicForm';
 import UpdateLessonFieldForm from './Forms/lesson/UpdateLessonFieldForm';
 import UpdateSessionFieldForm from './Forms/lesson/UpdateSessionFieldForm';
 
+import AddLessonRequirementsForm from './Forms/lesson/AddLessonRequirementsForm';
+import AddLessonMaterialsForm from './Forms/lesson/AddLessonMaterialsForm';
+import AddLessonTagsForm from './Forms/lesson/AddLessonTagsForm';
+import AddLessonImageForm from './Forms/lesson/AddLessonImageForm';
+import AddLessonFileForm from './Forms/lesson/AddLessonFileForm';
+import AddLessonInstructorForm from './Forms/lesson/AddLessonInstructorForm';
+
 // import AuthContext from '../../context/auth-context';
 
 import './AttachmentViewer.css';
@@ -224,13 +231,17 @@ const ProfileLessonViewer = (props) => {
               <Button variant="danger" onClick={props.toggleRequirements}>
                 Show/Hide
               </Button>
+              {isInstructor === true && (
               <Button variant="danger" onClick={props.startLessonAdd.bind(this, 'requirements')}>
                 Add
               </Button>
+              )}
               {props.lessonAddField === 'requirements' && (
-                <p>addLessonRequirementsForm</p>
-                // cancelLessonAdd={props.cancelLessonAdd}
-                // addLessonRequirements={props.addLessonRequirements}
+                <AddLessonRequirementsForm
+                authId={props.authId}
+                onCancel={props.cancelLessonAdd}
+                onConfirm={props.addLessonRequirements}
+                />
               )}
               {props.showRequirementsState === true && (
                 <LessonRequirementList
@@ -248,13 +259,17 @@ const ProfileLessonViewer = (props) => {
               <Button variant="danger" onClick={props.toggleMaterials}>
                 Show/Hide
               </Button>
+              {isInstructor === true && (
               <Button variant="danger" onClick={props.startLessonAdd.bind(this, 'materials')}>
                 Add
               </Button>
+              )}
               {props.lessonAddField === 'materials' && (
-                <p>addLessonMaterialsForm</p>
-                // cancelLessonAdd={props.cancelLessonAdd}
-                // addLessonMaterials={props.addLessonMaterials}
+                <AddLessonMaterialsForm
+                authId={props.authId}
+                onCancel={props.cancelLessonAdd}
+                onConfirm={props.addLessonMaterials}
+                />
               )}
               {props.showMaterialsState === true && (
                 <LessonMaterialList
@@ -280,13 +295,17 @@ const ProfileLessonViewer = (props) => {
               <Button variant="danger" onClick={props.toggleImages}>
                 Show/Hide
               </Button>
+              {isInstructor === true && (
               <Button variant="danger" onClick={props.startLessonAdd.bind(this, 'images')}>
                 Add
               </Button>
+              )}
               {props.lessonAddField === 'images' && (
-                <p>addLessonImagesForm</p>
-                // cancelLessonAdd={props.cancelLessonAdd}
-                // addLessonImages={props.addLessonImages}
+                <AddLessonImageForm
+                authId={props.authId}
+                onCancel={props.cancelLessonAdd}
+                onConfirm={props.addLessonImage}
+                />
               )}
               {props.showImagesState === true && (
                 <LessonImageList
@@ -312,13 +331,17 @@ const ProfileLessonViewer = (props) => {
               <Button variant="danger" onClick={props.toggleFiles}>
                 Show/Hide
               </Button>
+              {isInstructor === true && (
               <Button variant="danger" onClick={props.startLessonAdd.bind(this, 'files')}>
                 Add
               </Button>
+              )}
               {props.lessonAddField === 'files' && (
-                <p>addLessonFilesForm</p>
-                // cancelLessonAdd={props.cancelLessonAdd}
-                // addLessonFiles={props.addLessonFiles}
+                <AddLessonFileForm
+                authId={props.authId}
+                onCancel={props.cancelLessonAdd}
+                onConfirm={props.addLessonFile}
+                />
               )}
               {props.showFilesState === true && (
                 <LessonFileList
@@ -344,13 +367,25 @@ const ProfileLessonViewer = (props) => {
               <Button variant="danger" onClick={props.toggleInstructors}>
                 Show/Hide
               </Button>
+              {isInstructor === true &&
+                JSON.stringify(props.selectedInstructor) === "{}" && (
+              <Button variant="warning">
+                Select an Instructor to Add
+              </Button>
+              )}
+              {isInstructor === true &&
+                JSON.stringify(props.selectedInstructor) !== "{}" && (
               <Button variant="danger" onClick={props.startLessonAdd.bind(this, 'instructors')}>
                 Add
               </Button>
-              {props.lessonAddField === 'instructors' && (
-                <p>addLessonInstructorForm</p>
-                // cancelLessonAdd={props.cancelLessonAdd}
-                // addLessonInstructor={props.addLessonInstructor}
+              )}
+              {props.lessonAddField === 'instructors' &&  (
+                <AddLessonInstructorForm
+                selectedInstructor={props.selectedInstructor}
+                authId={props.authId}
+                onCancel={props.cancelLessonAdd}
+                onConfirm={props.addLessonInstructor}
+                />
               )}
               {props.showInstructorsState === true && (
                 <LessonInstructorList
@@ -375,13 +410,17 @@ const ProfileLessonViewer = (props) => {
             <Button variant="danger" onClick={props.toggleTags}>
               Show/Hide
             </Button>
+            {isInstructor === true && (
             <Button variant="danger" onClick={props.startLessonAdd.bind(this, 'tags')}>
               Add
             </Button>
+            )}
             {props.lessonAddField === 'tags' && (
-              <p>addLessonTagsForm</p>
-              // cancelLessonAdd={props.cancelLessonAdd}
-              // addLessonTags={props.addLessonTags}
+              <AddLessonTagsForm
+              authId={props.authId}
+              onCancel={props.cancelLessonAdd}
+              onConfirm={props.addLessonTags}
+              />
             )}
             {props.showTagsState === true && (
               <LessonTagList

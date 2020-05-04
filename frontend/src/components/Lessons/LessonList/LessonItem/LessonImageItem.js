@@ -9,6 +9,7 @@ const lessonImageItem = props => (
     <Card style={{ width: '18rem' }}>
 
     <Card.Body>
+    <Card.Img variant="top" src={props.path} />
       <Card.Text>
         Name: {props.name}
       </Card.Text>

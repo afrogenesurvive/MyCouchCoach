@@ -134,7 +134,7 @@ class LessonsPage extends Component {
           {_id,title,subtitle,type,category,price,sku,points,description,notes,duration,schedule{date,time},instructors{_id,username},attendees{_id,username},gallery{name,type,path},requirements,materials,files{name,type,size,path},reviews{_id,title,author{_id}},tags,sessions{title,date,time,limit,amount,booked{_id,username},bookedAmount,attended{_id,username},attendedAmount,inProgress,full,url},promos{_id}}}
       `}
 
-    fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
+    fetch('http://localhost:8088/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
@@ -195,7 +195,7 @@ class LessonsPage extends Component {
           {_id,title,subtitle,type,category,price,sku,points,description,notes,duration,schedule{date,time},instructors{_id,username},attendees{_id,username},gallery{name,type,path},requirements,materials,files{name,type,size,path},reviews{_id,title,author{_id}},tags,sessions{title,date,time,limit,amount,booked{_id,username},bookedAmount,attended{_id,username},attendedAmount,inProgress,full,url},promos{_id}}}
       `}
 
-    fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
+    fetch('http://localhost:8088/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
@@ -239,7 +239,7 @@ class LessonsPage extends Component {
           {title,date,time,limit,amount,bookedAmount,booked{_id,username},attendedAmount,attended{_id,username},inProgress,full,url,lessonId,lessonTitle,lessonInstructors,userId}}
       `}
 
-    fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
+    fetch('http://localhost:8088/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
@@ -305,7 +305,7 @@ class LessonsPage extends Component {
         {_id,title,subtitle,type,category,price,points,description,notes,duration,schedule{date,time},instructors{_id,username},gallery{name,type,path},requirements,materials,files{name,type,size,path},reviews{_id,title,author{_id}},tags,sessions{title,date,time,limit,amount,booked{_id,username},bookedAmount,attended{_id,username},attendedAmount,inProgress,full},promos{_id}}}
       `}
 
-    fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
+    fetch('http://localhost:8088/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
@@ -380,7 +380,7 @@ class LessonsPage extends Component {
     {_id,title,subtitle,type,category,price,sku,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{phone,phone2,email}},tags}}
     `}
 
-    fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
+    fetch('http://localhost:8088/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
@@ -424,7 +424,7 @@ class LessonsPage extends Component {
          {_id,title,subtitle,type,category,price,sku,points,description,notes,duration,schedule{date,time},instructors{_id,username},gallery{name,type,path},requirements,materials,files{name,type,size,path},reviews{_id,title,author{_id}},tags,sessions{title,date,time,limit,amount,booked{_id,username},bookedAmount,attended{_id,username},attendedAmount,inProgress,full},promos{_id}}}
           `}
 
-    fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
+    fetch('http://localhost:8088/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
@@ -460,7 +460,7 @@ class LessonsPage extends Component {
         {_id,title,subtitle,type,category,price,sku,points,description,notes,requirements,materials,duration,files{name,type,size,path},gallery{name,type,path},schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email},socialMedia{platform,handle,link},profileImages{name,type,path}},tags,reviews{_id,title,type,author{_id,username},lesson{_id,title},body,rating}}}
         `};
 
-    fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
+    fetch('http://localhost:8088/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
@@ -503,7 +503,7 @@ class LessonsPage extends Component {
         {_id,title,subtitle,type,category,price,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{email,phone,phone2}},gallery{name,type,path},requirements,materials,files{name,type,size,path},reviews{_id},tags,sessions{title,date,time,limit,amount,booked{_id,username},bookedAmount,attended{_id,username},attendedAmount,inProgress,full,url},promos{_id}}}
         `};
 
-    fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
+    fetch('http://localhost:8088/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
@@ -555,7 +555,7 @@ class LessonsPage extends Component {
             {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
         `};
 
-    fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
+    fetch('http://localhost:8088/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
@@ -608,7 +608,7 @@ class LessonsPage extends Component {
             {_id,title,subtitle,type,category,price,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{phone,phone2,email}},gallery{name,type,path},requirements,materials,files{name,type,size,path},reviews{_id},tags,sessions{title,date,time,limit,amount,booked{_id},bookedAmount,attended{_id},attendedAmount,inProgress,full},promos{_id}}}
         `};
 
-    fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
+    fetch('http://localhost:8088/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
@@ -676,7 +676,7 @@ class LessonsPage extends Component {
             {_id,title,subtitle,type,category,price,sku,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{phone,phone2,email}},tags,sessions{title,date,time,limit,inProgress,full}}}
         `};
 
-    fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
+    fetch('http://localhost:8088/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
@@ -714,7 +714,6 @@ class LessonsPage extends Component {
   hideSessionAttended = () => {
     this.setState({sessionAttendedState: false})
   }
-
 
   deleteListLesson = (lessonId) => {
     console.log("delete listed lesson", lessonId);
@@ -787,7 +786,7 @@ class LessonsPage extends Component {
           {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price,requirementsg}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
-    fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
+    fetch('http://localhost:8088/graphql', {
         method: 'POST',
         body: JSON.stringify(requestBody),
         headers: {
@@ -871,32 +870,351 @@ class LessonsPage extends Component {
   }
 
   startLessonAdd = (args) => {
-    console.log(args);
+    // console.log(args);
     this.setState({lessonAddField: args})
   }
   cancelLessonAdd = (args) => {
     this.setState({lessonAddField: null})
   }
-  addLessonMaterials = () => {
-    console.log('...adding lesson materials...');
+
+  addLessonMaterials = (event) => {
+    event.preventDefault();
+    this.setState({userAlert: '...adding lesson materials...', lessonAddField: null });
+    const activityId = this.context.activityId;
+    const lessonId = this.state.selectedLesson._id;
+
+    const materials = event.target.formGridMaterials.value;
+
+    const requestBody = {
+      query: `
+          mutation {addLessonMaterials(
+            activityId:"${activityId}",
+            lessonId:"${lessonId}",
+            lessonInput:{
+              materials: "${materials}"
+            })
+            {_id,title,subtitle,type,category,price,sku,points,description,notes,requirements,materials,duration,files{name,type,size,path},gallery{name,type,path},schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email},socialMedia{platform,handle,link},profileImages{name,type,path}},tags,reviews{_id,title,type,author{_id,username},lesson{_id,title},body,rating}}}
+        `};
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          this.setState({userAlert: 'Failed!'});
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+        this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonMaterials, activityA: requestBody});
+        this.context.selectedLesson = this.state.selectedLesson;
+        // this.logUserActivity();
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+        if (this.isActive) {
+          this.setState({ isLoading: false });
+        }
+      });
   }
-  addLessonTags = () => {
+  addLessonTags = (event) => {
+    event.preventDefault();
     console.log('...adding lesson tags...');
+    this.setState({userAlert: '...adding lesson tags...', lessonAddField: null });
+    const activityId = this.context.activityId;
+    const lessonId = this.state.selectedLesson._id;
+
+    const tags = event.target.formGridTags.value;
+
+    const requestBody = {
+      query: `
+          mutation {addLessonTags(
+            activityId:"${activityId}",
+            lessonId:"${lessonId}",
+            lessonInput:{
+              tags: "${tags}"
+            })
+            {_id,title,subtitle,type,category,price,sku,points,description,notes,requirements,materials,duration,files{name,type,size,path},gallery{name,type,path},schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email},socialMedia{platform,handle,link},profileImages{name,type,path}},tags,reviews{_id,title,type,author{_id,username},lesson{_id,title},body,rating}}}
+        `};
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          this.setState({userAlert: 'Failed!'});
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+        this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonTags, activityA: requestBody});
+        this.context.selectedLesson = this.state.selectedLesson;
+        // this.logUserActivity();
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+        if (this.isActive) {
+          this.setState({ isLoading: false });
+        }
+      });
   }
-  addLessonRequirements = () => {
-    console.log('...adding lesson requirements ...');
+  addLessonRequirements = (event) => {
+    event.preventDefault();
+    // console.log('...adding lesson requirements ...');
+    this.setState({userAlert: '...adding lesson requirements ...', lessonAddField: null });
+    const activityId = this.context.activityId;
+    const lessonId = this.state.selectedLesson._id;
+
+    const requirements = event.target.formGridRequirements.value;
+
+    const requestBody = {
+      query: `
+          mutation {addLessonRequirements(
+            activityId:"${activityId}",
+            lessonId:"${lessonId}",
+            lessonInput:{
+              requirements: "${requirements}"
+            })
+            {_id,title,subtitle,type,category,price,sku,points,description,notes,requirements,materials,duration,files{name,type,size,path},gallery{name,type,path},schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email},socialMedia{platform,handle,link},profileImages{name,type,path}},tags,reviews{_id,title,type,author{_id,username},lesson{_id,title},body,rating}}}
+        `};
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          this.setState({userAlert: 'Failed!'});
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+        this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonRequirements, activityA: requestBody});
+        this.context.selectedLesson = this.state.selectedLesson;
+        // this.logUserActivity();
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+        if (this.isActive) {
+          this.setState({ isLoading: false });
+        }
+      });
   }
-  addLessonImages = () => {
+  addLessonImage = (event) => {
+    event.preventDefault();
     console.log('...adding lesson Images ...');
+    this.setState({userAlert: '...adding lesson Images ...', lessonAddField: null });
+    const activityId = this.context.activityId;
+    const lessonId = this.state.selectedLesson._id;
+
+    const imageName = event.target.formGridImagename.value;
+    const imageType = event.target.formGridImagetype.value;
+    const imagePath = event.target.formGridImagepath.value;
+
+    const requestBody = {
+      query: `
+          mutation {addLessonImage(
+            activityId:"${activityId}",
+            lessonId:"${lessonId}",
+            lessonInput:{
+              imageName: "${imageName}"
+              imageType: "${imageType}"
+              imagePath: "${imagePath}"
+            })
+            {_id,title,subtitle,type,category,price,sku,points,description,notes,requirements,materials,duration,files{name,type,size,path},gallery{name,type,path},schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email},socialMedia{platform,handle,link},profileImages{name,type,path}},tags,reviews{_id,title,type,author{_id,username},lesson{_id,title},body,rating}}}
+        `};
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          this.setState({userAlert: 'Failed!'});
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+        this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonImage, activityA: requestBody});
+        this.context.selectedLesson = this.state.selectedLesson;
+        // this.logUserActivity();
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+        if (this.isActive) {
+          this.setState({ isLoading: false });
+        }
+      });
+
   }
-  addLessonFiles = () => {
-    console.log('...adding lesson Files ...');
+  addLessonFile = (event) => {
+    event.preventDefault();
+    // console.log('...adding lesson Files ...');
+    this.setState({userAlert: '...adding lesson Files ...', lessonAddField: null });
+    const activityId = this.context.activityId;
+    const lessonId = this.state.selectedLesson._id;
+
+    const fileName = event.target.formGridFilename.value;
+    const fileType = event.target.formGridFilesize.value;
+    const fileSize = event.target.formGridFiletype.value;
+    const filePath = event.target.formGridFilepath.value;
+
+    const requestBody = {
+      query: `
+          mutation {addLessonFile(
+            activityId:"${activityId}",
+            lessonId:"${lessonId}",
+            lessonInput:{
+              fileName: "${fileName}"
+              fileType: "${fileType}"
+              fileSize: "${fileSize}"
+              filePath: "${filePath}"
+            })
+            {_id,title,subtitle,type,category,price,sku,points,description,notes,requirements,materials,duration,files{name,type,size,path},gallery{name,type,path},schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email},socialMedia{platform,handle,link},profileImages{name,type,path}},tags,reviews{_id,title,type,author{_id,username},lesson{_id,title},body,rating}}}
+        `};
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          this.setState({userAlert: 'Failed!'});
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+        this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonFile, activityA: requestBody});
+        this.context.selectedLesson = this.state.selectedLesson;
+        // this.logUserActivity();
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+        if (this.isActive) {
+          this.setState({ isLoading: false });
+        }
+      });
+
   }
-  addLessonInstructor = () => {
+  addLessonInstructor = (event) => {
+    event.preventDefault();
     console.log('...adding lesson instructor ...');
+    this.setState({userAlert: '...adding lesson instructor ...', lessonAddField: null });
+    const activityId = this.context.activityId;
+    const instructorId = this.context.selectedUser._id;
+    const lessonId = this.state.selectedLesson._id;
+
+    const requestBody = {
+      query: `
+          mutation {addLessonInstructor(
+            activityId:"${activityId}",
+            lessonId:"${lessonId}"
+            instructorId: "${instructorId}")
+            {_id,title,subtitle,type,category,price,sku,points,description,notes,requirements,materials,duration,files{name,type,size,path},gallery{name,type,path},schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email},socialMedia{platform,handle,link},profileImages{name,type,path}},tags,reviews{_id,title,type,author{_id,username},lesson{_id,title},body,rating}}}
+        `};
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          this.setState({userAlert: 'Failed!'});
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+        this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonInstructor, activityA: requestBody});
+        this.context.selectedLesson = this.state.selectedLesson;
+        // this.logUserActivity();
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+        if (this.isActive) {
+          this.setState({ isLoading: false });
+        }
+      });
+
   }
+
   likeLesson = (args) => {
-    console.log('...adding lesson like...',args);
+    // console.log('...adding lesson like...',args);
+    this.setState({userAlert: '...adding lesson like...'})
+    const activityId = this.context.activityId;
+    const userId = activityId;
+    const lessonId = this.state.selectedLesson._id;
+
+    const requestBody = {
+      query: `
+          mutation {addUserLikedLesson(
+            activityId:"${activityId}",
+            userId: "${userId}",
+            lessonId:"${lessonId}",)
+    {_id,role,username,public,clientConnected,loggedIn}}
+        `};
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          this.setState({userAlert: 'Failed!'});
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+        if (this.isActive) {
+          this.setState({ isLoading: false });
+        }
+      });
   }
 
   componentWillUnmount() {
@@ -977,8 +1295,9 @@ class LessonsPage extends Component {
           addLessonMaterials={this.addLessonMaterials}
           addLessonRequirements={this.addLessonRequirements}
           addLessonTags={this.addLessonTags}
-          addLessonImages={this.addLessonImages}
-          addLessonFiles={this.addLessonFiles}
+          addLessonImage={this.addLessonImage}
+          addLessonFile={this.addLessonFile}
+          selectedInstructor={this.context.selectedUser}
           addLessonInstructor={this.addLessonInstructor}
 
           onLikeLesson={this.likeLesson}

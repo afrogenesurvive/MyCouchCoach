@@ -64,12 +64,13 @@ return (
       lessonAddField={props.lessonAddField}
       startLessonAdd={props.startLessonAdd}
       cancelLessonAdd={props.cancelLessonAdd}
+      selectedInstructor={props.selectedInstructor}
       addLessonInstructor={props.addLessonInstructor}
       addLessonMaterials={props.addLessonMaterials}
       addLessonTags={props.addLessonTags}
       addLessonRequirements={props.addLessonRequirements}
-      addLessonImages={props.addLessonImages}
-      addLessonFiles={props.addLessonFiles}
+      addLessonImage={props.addLessonImage}
+      addLessonFile={props.addLessonFile}
 
       onLikeLesson={props.onLikeLesson}
     />

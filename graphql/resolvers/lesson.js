@@ -580,7 +580,11 @@ module.exports = {
     }
     try {
         const tag = args.lessonInput.tag;
-        const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: { tags: tag }},{new: true, useFindAndModify: false});
+        const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: { tags: tag }},{new: true, useFindAndModify: false})
+        .populate('instructors')
+        .populate('reviews')
+        .populate('sessions.booked')
+        .populate('sessions.attended');
 
         return {
             ...lesson._doc,
@@ -621,7 +625,11 @@ module.exports = {
     }
     try {
         const requirement = args.lessonInput.requirement;
-        const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: { requirements: requirement }},{new: true, useFindAndModify: false});
+        const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: { requirements: requirement }},{new: true, useFindAndModify: false})
+        .populate('instructors')
+        .populate('reviews')
+        .populate('sessions.booked')
+        .populate('sessions.attended');
 
         return {
             ...lesson._doc,
@@ -662,7 +670,11 @@ module.exports = {
     }
     try {
         const material = args.lessonInput.material;
-        const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: { materials: material }},{new: true, useFindAndModify: false});
+        const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: { materials: material }},{new: true, useFindAndModify: false})
+        .populate('instructors')
+        .populate('reviews')
+        .populate('sessions.booked')
+        .populate('sessions.attended');
 
         return {
             ...lesson._doc,

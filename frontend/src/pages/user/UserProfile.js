@@ -55,6 +55,7 @@ class UserProfile extends Component {
     orderShippingAddress: null,
     profileLessonViewer: false,
     profileLessonViewerData: null,
+    profileLessonType: null,
     showSessionState: false,
     showScheduleState: false,
     creatingSession: false,
@@ -1987,16 +1988,16 @@ class UserProfile extends Component {
       })
   };
   viewLessonDetails = (args) => {
-    // console.log('retriving lesson details',args);
+    console.log('retriving lesson details',args.lesson);
     this.setState({useAlert: 'retriving lesson details', isLoading: true})
     const token = this.context.token;
     const activityId = this.context.activityId;
     let lessonId = null;
-    if (args._id) {
-      lessonId = args._id;
+    if (args.lesson._id) {
+      lessonId = args.lesson._id;
     }
-    if (args.ref) {
-      lessonId = args.ref._id;
+    if (args.lesson.ref) {
+      lessonId = args.lesson.ref._id;
     }
 
     const requestBody = {
@@ -2025,7 +2026,7 @@ class UserProfile extends Component {
       })
       .then(resData => {
         const responseAlert = JSON.stringify(resData.data.getLessonById).slice(2,25);
-        this.setState({isLoading: false, profileLessonViewer: true, profileLessonViewerData: resData.data.getLessonById})
+        this.setState({isLoading: false, profileLessonViewer: true, profileLessonViewerData: resData.data.getLessonById, profileLessonType: args.type})
         this.logUserActivity();
       })
       .catch(err => {
@@ -2904,6 +2905,292 @@ class UserProfile extends Component {
 
   }
 
+  deleteLessonTag = (args) => {
+    console.log('...deleting lesson tag...',args);
+    this.setState({userAlert: '...adding lesson instructor ...', lessonAddField: null });
+    const activityId = this.context.activityId;
+    const lessonId = this.state.profileLessonViewerData._id;
+    const tag = args;
+
+    const requestBody = {
+      query: `
+          mutation {deleteLessonTag(
+            activityId:"${activityId}",
+            lessonId:"${lessonId}",
+            lessonInput:{
+              tag:"${tag}"
+            })
+            {_id,title,subtitle,type,category,price,sku,points,description,notes,requirements,materials,duration,files{name,type,size,path},gallery{name,type,path},schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email},socialMedia{platform,handle,link},profileImages{name,type,path}},tags,reviews{_id,title,type,author{_id,username},lesson{_id,title},body,rating}}}
+        `};
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          this.setState({userAlert: 'Failed!'});
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        console.log(resData.data.deleteLessonTag);
+        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+        this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.deleteLessonTag, activityA: requestBody});
+        // this.logUserActivity();
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+        if (this.isActive) {
+          this.setState({ isLoading: false });
+        }
+      });
+  }
+  deleteLessonRequirement = (args) => {
+    console.log('...deleting lesson requirement...',args);
+    this.setState({userAlert: '...adding lesson instructor ...', lessonAddField: null });
+    const activityId = this.context.activityId;
+    const lessonId = this.state.profileLessonViewerData._id;
+    const requirement = args;
+
+    const requestBody = {
+      query: `
+          mutation {deleteLessonRequirement(
+            activityId:"${activityId}",
+            lessonId:"${lessonId}",
+            lessonInput:{
+              requirement:"${requirement}"
+            })
+            {_id,title,subtitle,type,category,price,sku,points,description,notes,requirements,materials,duration,files{name,type,size,path},gallery{name,type,path},schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email},socialMedia{platform,handle,link},profileImages{name,type,path}},tags,reviews{_id,title,type,author{_id,username},lesson{_id,title},body,rating}}}
+        `};
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          this.setState({userAlert: 'Failed!'});
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+        this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.deleteLessonRequirement, activityA: requestBody});
+        // this.logUserActivity();
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+        if (this.isActive) {
+          this.setState({ isLoading: false });
+        }
+      });
+  }
+  deleteLessonMaterial = (args) => {
+    console.log('...deleting lesson material...',args);
+    this.setState({userAlert: '...adding lesson instructor ...', lessonAddField: null });
+    const activityId = this.context.activityId;
+    const lessonId = this.state.profileLessonViewerData._id;
+    const material = args;
+
+    const requestBody = {
+      query: `
+          mutation {deleteLessonMaterial(
+            activityId:"${activityId}",
+            lessonId:"${lessonId}",
+            lessonInput:{
+              material:"${material}"
+            })
+            {_id,title,subtitle,type,category,price,sku,points,description,notes,requirements,materials,duration,files{name,type,size,path},gallery{name,type,path},schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email},socialMedia{platform,handle,link},profileImages{name,type,path}},tags,reviews{_id,title,type,author{_id,username},lesson{_id,title},body,rating}}}
+        `};
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          this.setState({userAlert: 'Failed!'});
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+        this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.deleteLessonMaterial, activityA: requestBody});
+        // this.context.selectedLesson = this.state.selectedLesson;
+        // this.logUserActivity();
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+        if (this.isActive) {
+          this.setState({ isLoading: false });
+        }
+      });
+  }
+  deleteLessonImage = (args) => {
+    console.log('...deleting lesson image...',args);
+    this.setState({userAlert: '...adding lesson instructor ...', lessonAddField: null });
+    const activityId = this.context.activityId;
+    const lessonId = this.state.profileLessonViewerData._id;
+    const imageName = args.name;
+    const imageType = args.type;
+    const imagePath = args.path;
+
+    const requestBody = {
+      query: `
+          mutation {deleteLessonImage(
+            activityId:"${activityId}",
+            lessonId:"${lessonId}",
+            lessonInput:{
+              imageName: "${imageName}",
+              imageType: "${imageType}",
+              imagePath: "${imagePath}"
+            })
+            {_id,title,subtitle,type,category,price,sku,points,description,notes,requirements,materials,duration,files{name,type,size,path},gallery{name,type,path},schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email},socialMedia{platform,handle,link},profileImages{name,type,path}},tags,reviews{_id,title,type,author{_id,username},lesson{_id,title},body,rating}}}
+        `};
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          this.setState({userAlert: 'Failed!'});
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+        this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.deleteLessonImage, activityA: requestBody});
+        // this.context.selectedLesson = this.state.selectedLesson;
+        // this.logUserActivity();
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+        if (this.isActive) {
+          this.setState({ isLoading: false });
+        }
+      });
+  }
+  deleteLessonFile = (args) => {
+    console.log('...deleting lesson file...',args);
+    this.setState({userAlert: '...adding lesson instructor ...', lessonAddField: null });
+    const activityId = this.context.activityId;
+    const lessonId = this.state.profileLessonViewerData._id;
+
+    const fileName = args.name;
+    const fileType = args.type;
+    const fileSize = args.size;
+    const filePath = args.path;
+
+    const requestBody = {
+      query: `
+          mutation {deleteLessonFile(
+            activityId:"${activityId}",
+            lessonId:"${lessonId}",
+            lessonInput:{
+              fileName: "${fileName}",
+              fileType: "${fileType}",
+              fileSize: "${fileSize}",
+              filePath: "${filePath}"
+            })
+            {_id,title,subtitle,type,category,price,sku,points,description,notes,requirements,materials,duration,files{name,type,size,path},gallery{name,type,path},schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email},socialMedia{platform,handle,link},profileImages{name,type,path}},tags,reviews{_id,title,type,author{_id,username},lesson{_id,title},body,rating}}}
+        `};
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          this.setState({userAlert: 'Failed!'});
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+        this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.deleteLessonFile, activityA: requestBody});
+        // this.context.selectedLesson = this.state.selectedLesson;
+        // this.logUserActivity();
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+        if (this.isActive) {
+          this.setState({ isLoading: false });
+        }
+      });
+  }
+  deleteLessonInstructor = (args) => {
+    console.log('...deleting lesson instructor...',args);
+    this.setState({userAlert: '...adding lesson instructor ...', lessonAddField: null });
+    const activityId = this.context.activityId;
+    const lessonId = this.state.profileLessonViewerData._id;
+    const instructorId = args._id;
+
+    const requestBody = {
+      query: `
+          mutation {deleteLessonInstructor(
+            activityId:"${activityId}",
+            lessonId:"${lessonId}",
+            instructorId: "${instructorId}"
+          )
+            {_id,title,subtitle,type,category,price,sku,points,description,notes,requirements,materials,duration,files{name,type,size,path},gallery{name,type,path},schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email},socialMedia{platform,handle,link},profileImages{name,type,path}},tags,reviews{_id,title,type,author{_id,username},lesson{_id,title},body,rating}}}
+        `};
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          this.setState({userAlert: 'Failed!'});
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+        this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.deleteLessonInstructor, activityA: requestBody});
+        // this.logUserActivity();
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+        if (this.isActive) {
+          this.setState({ isLoading: false });
+        }
+      });
+  }
+
+
   componentWillUnmount() {
     this.isActive = false;
   }
@@ -2942,6 +3229,7 @@ class UserProfile extends Component {
           this.state.profileLessonViewerData !== null && (
           <ProfileLessonViewer
             authId={this.context.activityId}
+            lessonType={this.state.profileLessonType}
             profileLesson={this.state.profileLessonViewerData}
             closeProfileLessonView={this.closeProfileLessonView}
 
@@ -3007,6 +3295,13 @@ class UserProfile extends Component {
             addLessonFile={this.addLessonFile}
             selectedInstructor={this.context.selectedUser}
             addLessonInstructor={this.addLessonInstructor}
+
+            deleteLessonTag={this.deleteLessonTag}
+            deleteLessonRequirement={this.deleteLessonRequirement}
+            deleteLessonMaterial={this.deleteLessonMaterial}
+            deleteLessonImage={this.deleteLessonImage}
+            deleteLessonFile={this.deleteLessonFile}
+            deleteLessonInstructor={this.deleteLessonInstructor}
           />
         )}
 

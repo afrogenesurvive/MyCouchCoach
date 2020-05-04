@@ -34,9 +34,14 @@ import './AttachmentViewer.css';
 
 const ProfileLessonViewer = (props) => {
 
+  const lessonType = props.lessonType;
   const {...lesson} = props.profileLesson;
   const instructorIds = lesson.instructors.map(x => x._id)
   const isInstructor = instructorIds.includes(props.authId);
+  let canDelete = false;
+  if (isInstructor === true ) {
+    canDelete = true
+  }
   // console.log(lesson.sessions);
   return (
 
@@ -163,7 +168,8 @@ const ProfileLessonViewer = (props) => {
           </Col>
 
 
-          {isInstructor === true && (
+          {isInstructor === true &&
+            lessonType === 'booked' && (
 
           <Col className="detailCardCol">
           {props.editingSessionField === true && (
@@ -246,6 +252,8 @@ const ProfileLessonViewer = (props) => {
               {props.showRequirementsState === true && (
                 <LessonRequirementList
                   lessonRequirements={lesson.requirements}
+                  canDelete
+                  onDelete={props.deleteLessonRequirement}
                 />
               )}
             </Col>
@@ -274,6 +282,8 @@ const ProfileLessonViewer = (props) => {
               {props.showMaterialsState === true && (
                 <LessonMaterialList
                   lessonMaterials={lesson.materials}
+                  canDelete
+                  onDelete={props.deleteLessonMaterial}
                 />
               )}
             </Col>
@@ -310,6 +320,8 @@ const ProfileLessonViewer = (props) => {
               {props.showImagesState === true && (
                 <LessonImageList
                   lessonImages={lesson.gallery}
+                  canDelete
+                  onDelete={props.deleteLessonImage}
                 />
               )}
             </Col>
@@ -331,7 +343,7 @@ const ProfileLessonViewer = (props) => {
               <Button variant="danger" onClick={props.toggleFiles}>
                 Show/Hide
               </Button>
-              {isInstructor === true && (
+              {isInstructor === true &&  (
               <Button variant="danger" onClick={props.startLessonAdd.bind(this, 'files')}>
                 Add
               </Button>
@@ -346,6 +358,8 @@ const ProfileLessonViewer = (props) => {
               {props.showFilesState === true && (
                 <LessonFileList
                   lessonFiles={lesson.files}
+                  canDelete
+                  onDelete={props.deleteLessonFile}
                 />
               )}
             </Col>
@@ -390,6 +404,8 @@ const ProfileLessonViewer = (props) => {
               {props.showInstructorsState === true && (
                 <LessonInstructorList
                   lessonInstructors={lesson.instructors}
+                  canDelete
+                  onDelete={props.deleteLessonInstructor}
                 />
               )}
             </Col>
@@ -425,6 +441,8 @@ const ProfileLessonViewer = (props) => {
             {props.showTagsState === true && (
               <LessonTagList
                 lessonTags={lesson.tags}
+                canDelete
+                onDelete={props.deleteLessonTag}
               />
             )}
           </Col>

@@ -19,6 +19,12 @@ const lessonImageItem = props => (
       <Card.Text>
         Path: {props.path}
       </Card.Text>
+
+      { props.canDelete === true && (
+        <Button variant="danger" onClick={props.onDelete.bind(this, props.image)}>
+          Delete
+        </Button>
+      )}
     </Card.Body>
     </Card>
 

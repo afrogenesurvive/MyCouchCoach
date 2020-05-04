@@ -34,7 +34,7 @@ const userBookedLessonItem = props => (
         Time: {props.sessionTime}
       </Card.Text>
 
-      <Button variant="primary" onClick={props.viewLessonDetails.bind(this, props.bookedLesson)}>
+      <Button variant="primary" onClick={props.viewLessonDetails.bind(this, {type: 'booked', lesson: props.bookedLesson})}>
         View Details
       </Button>
 

@@ -19,7 +19,7 @@ const userLikedLessonItem = props => (
         Title: {props.title}
       </Card.Text>
 
-      <Button variant="primary" onClick={props.viewLessonDetails.bind(this, props.likedLesson)}>
+      <Button variant="primary" onClick={props.viewLessonDetails.bind(this, {type: 'liked', lesson: props.likedLesson})}>
         View Details
       </Button>
       { props.canDelete === true && (

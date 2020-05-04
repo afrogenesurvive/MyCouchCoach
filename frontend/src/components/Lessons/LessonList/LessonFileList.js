@@ -15,6 +15,8 @@ const lessonFileList = props => {
         size={file.size}
         path={file.path}
         authId={props.authId}
+        canDelete={props.canDelete}
+        onDelete={props.onDelete}
       />
     );
   });

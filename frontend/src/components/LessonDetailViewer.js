@@ -74,6 +74,12 @@ return (
       addLessonFile={props.addLessonFile}
 
       onLikeLesson={props.onLikeLesson}
+      deleteLessonTag={props.deleteLessonTag}
+      deleteLessonRequirement={props.deleteLessonRequirement}
+      deleteLessonMaterial={props.deleteLessonMaterial}
+      deleteLessonImage={props.deleteLessonImage}
+      deleteLessonFile={props.deleteLessonFile}
+      deleteLessonInstructor={props.deleteLessonInstructor}
     />
 
     </div>

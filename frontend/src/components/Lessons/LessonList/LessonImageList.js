@@ -9,11 +9,13 @@ const lessonImageList = props => {
     return (
       <LessonImageItem
         key={image}
-        file={image}
+        image={image}
         name={image.name}
         type={image.type}
         path={image.path}
         authId={props.authId}
+        canDelete={props.canDelete}
+        onDelete={props.onDelete}
       />
     );
   });

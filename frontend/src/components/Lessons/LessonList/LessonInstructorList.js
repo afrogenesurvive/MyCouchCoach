@@ -16,6 +16,8 @@ const lessonInstructorList = props => {
         socialMedia={instructor.socialMedia}
         profileImages={instructor.profileImages}
         authId={props.authId}
+        canDelete={props.canDelete}
+        onDelete={props.onDelete}
       />
     );
   });

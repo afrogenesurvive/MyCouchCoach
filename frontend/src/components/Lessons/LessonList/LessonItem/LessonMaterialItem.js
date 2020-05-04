@@ -13,6 +13,12 @@ const lessonMaterialItem = props => (
       {props.material}
       </Card.Text>
     </Card.Body>
+
+    { props.canDelete === true && (
+      <Button variant="danger" onClick={props.onDelete.bind(this, props.material)}>
+        Delete
+      </Button>
+    )}
     </Card>
 
   </li>

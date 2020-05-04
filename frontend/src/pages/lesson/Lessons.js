@@ -1218,6 +1218,294 @@ class LessonsPage extends Component {
       });
   }
 
+  deleteLessonTag = (args) => {
+    console.log('...deleting lesson tag...',args);
+    this.setState({userAlert: '...adding lesson instructor ...', lessonAddField: null });
+    const activityId = this.context.activityId;
+    const lessonId = this.state.selectedLesson._id;
+    const tag = args;
+
+    const requestBody = {
+      query: `
+          mutation {deleteLessonTag(
+            activityId:"${activityId}",
+            lessonId:"${lessonId}",
+            lessonInput:{
+              tag:"${tag}"
+            })
+            {_id,title,subtitle,type,category,price,sku,points,description,notes,requirements,materials,duration,files{name,type,size,path},gallery{name,type,path},schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email},socialMedia{platform,handle,link},profileImages{name,type,path}},tags,reviews{_id,title,type,author{_id,username},lesson{_id,title},body,rating}}}
+        `};
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          this.setState({userAlert: 'Failed!'});
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        console.log(resData.data.deleteLessonTag);
+        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+        this.setState({userAlert: responseAlert, selectedLesson: resData.data.deleteLessonTag, activityA: requestBody});
+        this.context.selectedLesson = this.state.selectedLesson;
+        // this.logUserActivity();
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+        if (this.isActive) {
+          this.setState({ isLoading: false });
+        }
+      });
+  }
+  deleteLessonRequirement = (args) => {
+    console.log('...deleting lesson requirement...',args);
+    this.setState({userAlert: '...adding lesson instructor ...', lessonAddField: null });
+    const activityId = this.context.activityId;
+    const lessonId = this.state.selectedLesson._id;
+    const requirement = args;
+
+    const requestBody = {
+      query: `
+          mutation {deleteLessonRequirement(
+            activityId:"${activityId}",
+            lessonId:"${lessonId}",
+            lessonInput:{
+              requirement:"${requirement}"
+            })
+            {_id,title,subtitle,type,category,price,sku,points,description,notes,requirements,materials,duration,files{name,type,size,path},gallery{name,type,path},schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email},socialMedia{platform,handle,link},profileImages{name,type,path}},tags,reviews{_id,title,type,author{_id,username},lesson{_id,title},body,rating}}}
+        `};
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          this.setState({userAlert: 'Failed!'});
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+        this.setState({userAlert: responseAlert, selectedLesson: resData.data.deleteLessonRequirement, activityA: requestBody});
+        this.context.selectedLesson = this.state.selectedLesson;
+        // this.logUserActivity();
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+        if (this.isActive) {
+          this.setState({ isLoading: false });
+        }
+      });
+  }
+  deleteLessonMaterial = (args) => {
+    console.log('...deleting lesson material...',args);
+    this.setState({userAlert: '...adding lesson instructor ...', lessonAddField: null });
+    const activityId = this.context.activityId;
+    const lessonId = this.state.selectedLesson._id;
+    const material = args;
+
+    const requestBody = {
+      query: `
+          mutation {deleteLessonMaterial(
+            activityId:"${activityId}",
+            lessonId:"${lessonId}",
+            lessonInput:{
+              material:"${material}"
+            })
+            {_id,title,subtitle,type,category,price,sku,points,description,notes,requirements,materials,duration,files{name,type,size,path},gallery{name,type,path},schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email},socialMedia{platform,handle,link},profileImages{name,type,path}},tags,reviews{_id,title,type,author{_id,username},lesson{_id,title},body,rating}}}
+        `};
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          this.setState({userAlert: 'Failed!'});
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+        this.setState({userAlert: responseAlert, selectedLesson: resData.data.deleteLessonMaterial, activityA: requestBody});
+        this.context.selectedLesson = this.state.selectedLesson;
+        // this.logUserActivity();
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+        if (this.isActive) {
+          this.setState({ isLoading: false });
+        }
+      });
+  }
+  deleteLessonImage = (args) => {
+    console.log('...deleting lesson image...',args);
+    this.setState({userAlert: '...adding lesson instructor ...', lessonAddField: null });
+    const activityId = this.context.activityId;
+    const lessonId = this.state.selectedLesson._id;
+    const imageName = args.name;
+    const imageType = args.type;
+    const imagePath = args.path;
+
+    const requestBody = {
+      query: `
+          mutation {deleteLessonImage(
+            activityId:"${activityId}",
+            lessonId:"${lessonId}",
+            lessonInput:{
+              imageName: "${imageName}",
+              imageType: "${imageType}",
+              imagePath: "${imagePath}"
+            })
+            {_id,title,subtitle,type,category,price,sku,points,description,notes,requirements,materials,duration,files{name,type,size,path},gallery{name,type,path},schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email},socialMedia{platform,handle,link},profileImages{name,type,path}},tags,reviews{_id,title,type,author{_id,username},lesson{_id,title},body,rating}}}
+        `};
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          this.setState({userAlert: 'Failed!'});
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+        this.setState({userAlert: responseAlert, selectedLesson: resData.data.deleteLessonImage, activityA: requestBody});
+        this.context.selectedLesson = this.state.selectedLesson;
+        // this.logUserActivity();
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+        if (this.isActive) {
+          this.setState({ isLoading: false });
+        }
+      });
+  }
+  deleteLessonFile = (args) => {
+    console.log('...deleting lesson file...',args);
+    this.setState({userAlert: '...adding lesson instructor ...', lessonAddField: null });
+    const activityId = this.context.activityId;
+    const lessonId = this.state.selectedLesson._id;
+
+    const fileName = args.name;
+    const fileType = args.type;
+    const fileSize = args.size;
+    const filePath = args.path;
+
+    const requestBody = {
+      query: `
+          mutation {deleteLessonFile(
+            activityId:"${activityId}",
+            lessonId:"${lessonId}",
+            lessonInput:{
+              fileName: "${fileName}",
+              fileType: "${fileType}",
+              fileSize: "${fileSize}",
+              filePath: "${filePath}"
+            })
+            {_id,title,subtitle,type,category,price,sku,points,description,notes,requirements,materials,duration,files{name,type,size,path},gallery{name,type,path},schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email},socialMedia{platform,handle,link},profileImages{name,type,path}},tags,reviews{_id,title,type,author{_id,username},lesson{_id,title},body,rating}}}
+        `};
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          this.setState({userAlert: 'Failed!'});
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+        this.setState({userAlert: responseAlert, selectedLesson: resData.data.deleteLessonFile, activityA: requestBody});
+        this.context.selectedLesson = this.state.selectedLesson;
+        // this.logUserActivity();
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+        if (this.isActive) {
+          this.setState({ isLoading: false });
+        }
+      });
+  }
+  deleteLessonInstructor = (args) => {
+    console.log('...deleting lesson instructor...',args);
+    this.setState({userAlert: '...adding lesson instructor ...', lessonAddField: null });
+    const activityId = this.context.activityId;
+    const lessonId = this.state.selectedLesson._id;
+    const instructorId = args._id;
+
+    const requestBody = {
+      query: `
+          mutation {deleteLessonInstructor(
+            activityId:"${activityId}",
+            lessonId:"${lessonId}",
+            instructorId: "${instructorId}"
+          )
+            {_id,title,subtitle,type,category,price,sku,points,description,notes,requirements,materials,duration,files{name,type,size,path},gallery{name,type,path},schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email},socialMedia{platform,handle,link},profileImages{name,type,path}},tags,reviews{_id,title,type,author{_id,username},lesson{_id,title},body,rating}}}
+        `};
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          this.setState({userAlert: 'Failed!'});
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+        this.setState({userAlert: responseAlert, selectedLesson: resData.data.deleteLessonInstructor, activityA: requestBody});
+        this.context.selectedLesson = this.state.selectedLesson;
+        // this.logUserActivity();
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+        if (this.isActive) {
+          this.setState({ isLoading: false });
+        }
+      });
+  }
+
   componentWillUnmount() {
     this.isActive = false;
   }
@@ -1303,6 +1591,12 @@ class LessonsPage extends Component {
           addLessonInstructor={this.addLessonInstructor}
 
           onLikeLesson={this.likeLesson}
+          deleteLessonTag={this.deleteLessonTag}
+          deleteLessonRequirement={this.deleteLessonRequirement}
+          deleteLessonMaterial={this.deleteLessonMaterial}
+          deleteLessonImage={this.deleteLessonImage}
+          deleteLessonFile={this.deleteLessonFile}
+          deleteLessonInstructor={this.deleteLessonInstructor}
         />
       )}
       <SidebarControl

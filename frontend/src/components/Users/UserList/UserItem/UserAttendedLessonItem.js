@@ -23,7 +23,7 @@ export default function userAttendedLessonItem (props) {
         Title: {props.lesson.title}
       </Card.Text>
 
-      <Button variant="primary" onClick={props.viewLessonDetails.bind(this, props.attendedLesson)}>
+      <Button variant="primary" onClick={props.viewLessonDetails.bind(this, {type: 'attended', lesson: props.attendedLesson})}>
         View Details
       </Button>
       {props.hasReviewed !== true && (<Button variant="primary" onClick={props.startCreateReview.bind(this, props.attendedLesson)}>

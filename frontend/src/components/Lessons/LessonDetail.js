@@ -40,6 +40,10 @@ const LessonDetail = (props) => {
   const hasLiked = userLikedLessons.includes(lesson._id.toString());
   const instructorIds = lesson.instructors.map(x => x._id)
   const isInstructor = instructorIds.includes(props.authId);
+  let canDelete = false;
+  if (isInstructor === true ) {
+    canDelete = true
+  }
   return (
     <div className={"UserDetailBox1"}>
 
@@ -232,6 +236,8 @@ const LessonDetail = (props) => {
             {props.showRequirementsState === true && (
               <LessonRequirementList
                 lessonRequirements={lesson.requirements}
+                canDelete
+                onDelete={props.deleteLessonRequirement}
               />
             )}
           </Col>
@@ -260,6 +266,8 @@ const LessonDetail = (props) => {
             {props.showMaterialsState === true && (
               <LessonMaterialList
                 lessonMaterials={lesson.materials}
+                canDelete
+                onDelete={props.deleteLessonMaterial}
               />
             )}
           </Col>
@@ -297,6 +305,8 @@ const LessonDetail = (props) => {
             {props.showImagesState === true && (
               <LessonImageList
                 lessonImages={lesson.gallery}
+                canDelete
+                onDelete={props.deleteLessonImage}
               />
             )}
           </Col>
@@ -333,6 +343,8 @@ const LessonDetail = (props) => {
             {props.showFilesState === true && (
               <LessonFileList
                 lessonFiles={lesson.files}
+                canDelete
+                onDelete={props.deleteLessonFile}
               />
             )}
           </Col>
@@ -377,6 +389,8 @@ const LessonDetail = (props) => {
             )}
             {props.showInstructorsState === true && (
               <LessonInstructorList
+              canDelete
+              onDelete={props.deleteLessonInstructor}
                 lessonInstructors={lesson.instructors}
               />
             )}
@@ -413,6 +427,8 @@ const LessonDetail = (props) => {
           {props.showTagsState === true && (
             <LessonTagList
               lessonTags={lesson.tags}
+              canDelete
+              onDelete={props.deleteLessonTag}
             />
           )}
         </Col>

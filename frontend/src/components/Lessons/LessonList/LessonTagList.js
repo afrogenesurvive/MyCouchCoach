@@ -11,6 +11,8 @@ const lessonTagList = props => {
         key={tag}
         tag={tag}
         authId={props.authId}
+        canDelete={props.canDelete}
+        onDelete={props.onDelete}
       />
     );
   });

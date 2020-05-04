@@ -11,6 +11,8 @@ const lessonMaterialList = props => {
         key={material}
         material={material}
         authId={props.authId}
+        canDelete={props.canDelete}
+        onDelete={props.onDelete}
       />
     );
   });

@@ -25,6 +25,12 @@ const lessonInstructorItem = props => (
       <Card.Text>
       Email: {props.contact.email}
       </Card.Text>
+
+      { props.canDelete === true && (
+        <Button variant="danger" onClick={props.onDelete.bind(this, props.instructor)}>
+          Delete
+        </Button>
+      )}
     </Card.Body>
     </Card>
 

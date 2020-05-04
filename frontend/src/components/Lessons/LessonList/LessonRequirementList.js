@@ -11,6 +11,8 @@ const lessonRequirementList = props => {
         key={requirement}
         requirement={requirement}
         authId={props.authId}
+        canDelete={props.canDelete}
+        onDelete={props.onDelete}
       />
     );
   });

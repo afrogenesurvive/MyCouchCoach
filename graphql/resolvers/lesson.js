@@ -541,7 +541,7 @@ module.exports = {
     }
   },
   addLessonTags: async (args, req) => {
-    console.log("Resolver: addLessonTag...");
+    console.log("Resolver: addLessonTags...");
     if (!req.isAuth) {
       throw new Error('Unauthenticated!');
     }
@@ -557,12 +557,13 @@ module.exports = {
 
       const tags = args.lessonInput.tags;
       const splitTags = tags.split(",");
+      console.log('splitTags',splitTags);
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: { tags: {$each: splitTags} }},{new: true, useFindAndModify: false})
       .populate('instructors')
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended');
-
+      console.log(lesson.tags);
         return {
             ...lesson._doc,
             _id: lesson.id,

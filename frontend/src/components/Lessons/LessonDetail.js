@@ -34,7 +34,10 @@ import './UserDetail.css';
 const LessonDetail = (props) => {
 
   const {...lesson} = props.lesson;
-  // console.log('beep',lesson.files);
+  const {...user} = props.user;
+  const userLikedLessons = user.likedLessons.map(x => x._id);
+  // console.log('user',userLikedLessons,lesson._id.toString(),userLikedLessons.includes(lesson._id.toString()));
+  const hasLiked = userLikedLessons.includes(lesson._id.toString());
   const instructorIds = lesson.instructors.map(x => x._id)
   const isInstructor = instructorIds.includes(props.authId);
   return (
@@ -125,9 +128,11 @@ const LessonDetail = (props) => {
               x
             </Button>
 
+            {hasLiked !== true && (
             <Button variant="danger" onClick={props.onLikeLesson.bind(this, lesson._id)}>
               Like
             </Button>
+            )}
 
             { props.canDelete === true && (
               <Button variant="danger" onClick={props.onDelete.bind(this, lesson._id)}>

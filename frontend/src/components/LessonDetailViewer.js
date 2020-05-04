@@ -11,6 +11,7 @@ return (
     <div className="attachmentViewer">
     <LessonDetail
       authId={props.authId}
+      user={props.user}
       lesson={props.lesson}
 
       sessionsLoaded={props.sessionsLoaded}

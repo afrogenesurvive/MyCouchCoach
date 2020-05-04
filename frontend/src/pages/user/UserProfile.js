@@ -2607,7 +2607,7 @@ class UserProfile extends Component {
     event.preventDefault();
     this.setState({userAlert: '...adding lesson materials...', lessonAddField: null });
     const activityId = this.context.activityId;
-    const lessonId = this.context.selectedLesson._id;
+    const lessonId = this.state.profileLessonViewerData._id;
 
     const materials = event.target.formGridMaterials.value;
 
@@ -2640,7 +2640,7 @@ class UserProfile extends Component {
       .then(resData => {
         console.log(resData.data);
         const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, activityA: requestBody});
+        this.setState({userAlert: responseAlert, activityA: requestBody, profileLessonViewerData: resData.data.addLessonMaterials});
         // this.context.selectedLesson = this.state.selectedLesson;
         // this.logUserActivity();
       })
@@ -2656,7 +2656,7 @@ class UserProfile extends Component {
     console.log('...adding lesson tags...');
     this.setState({userAlert: '...adding lesson tags...', lessonAddField: null });
     const activityId = this.context.activityId;
-    const lessonId = this.context.selectedLesson._id;
+    const lessonId = this.state.profileLessonViewerData._id;
 
     const tags = event.target.formGridTags.value;
 
@@ -2666,7 +2666,7 @@ class UserProfile extends Component {
             activityId:"${activityId}",
             lessonId:"${lessonId}",
             lessonInput:{
-              tags: "${tags}"
+              tags:"${tags}"
             })
             {_id,title,subtitle,type,category,price,sku,points,description,notes,requirements,materials,duration,files{name,type,size,path},gallery{name,type,path},schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email},socialMedia{platform,handle,link},profileImages{name,type,path}},tags,reviews{_id,title,type,author{_id,username},lesson{_id,title},body,rating}}}
         `};
@@ -2688,7 +2688,7 @@ class UserProfile extends Component {
       })
       .then(resData => {
         const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, activityA: requestBody});
+        this.setState({userAlert: responseAlert, activityA: requestBody, profileLessonViewerData: resData.data.addLessonTags});
         // this.context.selectedLesson = this.state.selectedLesson;
         // this.logUserActivity();
       })
@@ -2704,7 +2704,7 @@ class UserProfile extends Component {
     // console.log('...adding lesson requirements ...');
     this.setState({userAlert: '...adding lesson requirements ...', lessonAddField: null });
     const activityId = this.context.activityId;
-    const lessonId = this.context.selectedLesson._id;
+    const lessonId = this.state.profileLessonViewerData._id;
 
     const requirements = event.target.formGridRequirements.value;
 
@@ -2736,7 +2736,7 @@ class UserProfile extends Component {
       })
       .then(resData => {
         const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, activityA: requestBody});
+        this.setState({userAlert: responseAlert, activityA: requestBody, profileLessonViewerData: resData.data.addLessonRequirements});
         // this.context.selectedLesson = this.state.selectedLesson;
         // this.logUserActivity();
       })
@@ -2749,10 +2749,10 @@ class UserProfile extends Component {
   }
   addLessonImage = (event) => {
     event.preventDefault();
-    console.log('...adding lesson Images ...');
+    console.log('...adding lesson Image ...');
     this.setState({userAlert: '...adding lesson Images ...', lessonAddField: null });
     const activityId = this.context.activityId;
-    const lessonId = this.context.selectedLesson._id;
+    const lessonId = this.state.profileLessonViewerData._id;
 
     const imageName = event.target.formGridImagename.value;
     const imageType = event.target.formGridImagetype.value;
@@ -2764,9 +2764,9 @@ class UserProfile extends Component {
             activityId:"${activityId}",
             lessonId:"${lessonId}",
             lessonInput:{
-              imageName: "${imageName}"
-              imageType: "${imageType}"
-              imagePath: "${imagePath}"
+              imageName:"${imageName}",
+              imageType:"${imageType}",
+              imagePath:"${imagePath}"
             })
             {_id,title,subtitle,type,category,price,sku,points,description,notes,requirements,materials,duration,files{name,type,size,path},gallery{name,type,path},schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email},socialMedia{platform,handle,link},profileImages{name,type,path}},tags,reviews{_id,title,type,author{_id,username},lesson{_id,title},body,rating}}}
         `};
@@ -2787,10 +2787,12 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
+        console.log('resData.data.addLessonImage',resData.data.addLessonImage);
         const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, activityA: requestBody});
+        this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.addLessonImage, activityA: requestBody});
         // this.context.selectedLesson = this.state.selectedLesson;
         // this.logUserActivity();
+        // this.getThisUser();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -2805,7 +2807,7 @@ class UserProfile extends Component {
     console.log('...adding lesson Files ...');
     this.setState({userAlert: '...adding lesson Files ...', lessonAddField: null });
     const activityId = this.context.activityId;
-    const lessonId = this.context.selectedLesson._id;
+    const lessonId = this.state.profileLessonViewerData._id;
 
     const fileName = event.target.formGridFilename.value;
     const fileType = event.target.formGridFilesize.value;
@@ -2843,7 +2845,7 @@ class UserProfile extends Component {
       })
       .then(resData => {
         const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, activityA: requestBody});
+        this.setState({userAlert: responseAlert, activityA: requestBody, profileLessonViewerData: resData.data.addLessonFile});
         // this.context.selectedLesson = this.state.selectedLesson;
         // this.logUserActivity();
       })
@@ -2861,7 +2863,7 @@ class UserProfile extends Component {
     this.setState({userAlert: '...adding lesson instructor ...', lessonAddField: null });
     const activityId = this.context.activityId;
     const instructorId = this.context.selectedUser._id;
-    const lessonId = this.context.selectedLesson._id;
+    const lessonId = this.state.profileLessonViewerData._id;
 
     const requestBody = {
       query: `
@@ -2889,7 +2891,7 @@ class UserProfile extends Component {
       })
       .then(resData => {
         const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, activityA: requestBody});
+        this.setState({userAlert: responseAlert, activityA: requestBody, profileLessonViewerData: resData.data.addLessonInstructor});
         // this.context.selectedLesson = this.state.selectedLesson;
         // this.logUserActivity();
       })

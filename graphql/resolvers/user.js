@@ -3016,12 +3016,13 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
-      const date = new Date().toLocaleDateString().substr(0,10);
+      const date = new Date().toISOString().substr(0,10);
       // const time = date.toLocaleDateString().substr(11,5);
       const lesson = await Lesson.findById({_id: args.lessonId});
       const cartLesson = {
         dateAdded: date,
         sessionDate: args.sessionDate,
+        sessionTitle: args.sessionTitle,
         lesson: lesson
       };
       const user = await User.findOneAndUpdate({_id:args.userId},{$addToSet: { cart: cartLesson }},{new: true, useFindAndModify: false})

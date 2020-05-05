@@ -87,6 +87,7 @@ const userSchema = new Schema({
   cart: [{
     dateAdded: {type: Date},
     sessionDate: {type: Date},
+    sessionTitle: {type: String},
     lesson: {type: Schema.Types.ObjectId,ref: 'Lesson'},
     _id : false
   }],

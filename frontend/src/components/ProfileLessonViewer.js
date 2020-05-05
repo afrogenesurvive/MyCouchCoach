@@ -42,7 +42,7 @@ const ProfileLessonViewer = (props) => {
   if (isInstructor === true ) {
     canDelete = true
   }
-  // console.log(lesson.sessions);
+  console.log(lesson);
   return (
 
       <div className="attachmentViewerBg">
@@ -147,9 +147,11 @@ const ProfileLessonViewer = (props) => {
           <Col>
           <p>Sessions:</p>
 
+          {lesson.sessions !== [] && (
           <Button variant="primary" onClick={props.toggleSessions}>
             Show/Hide
           </Button>
+          )}
           {lesson.sessions !== [] &&
             props.showSessionState === true && (
             <LessonSessionList

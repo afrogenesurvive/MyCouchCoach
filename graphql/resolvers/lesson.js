@@ -1153,7 +1153,7 @@ module.exports = {
       const user = await User.findById({_id: args.userId});
       const preLesson = await Lesson.findById({_id: args.lessonId});
       const userBookings = user.bookedLessons.map(x => x.ref);
-      console.log(args.lessonId,preLesson._id);
+      // console.log(args.lessonId,preLesson._id);
       // console.log(userBookings, userBookings.includes(args.lessonId));
       const session = await Lesson.aggregate([
         {$unwind: '$sessions'},
@@ -1178,6 +1178,8 @@ module.exports = {
         // {$match: {'_id.lessonId': args.lessonId, '_id.title': {$eq: args.lessonInput.sessionTitle }}}
       ]);
 
+      // console.log(session);
+
       if (session[0]._id.booked.toString().split(',').includes(args.userId) === true) {
         throw new Error('...umm no.. youve already booked this session');
       }
@@ -1187,11 +1189,11 @@ module.exports = {
         sessionFull = true;
         throw new Error('...sorry this session is full..')
       }
-      // if (session[0]._id.bookedAmount < (session[0]._id.limit - 1)) {
-      //   console.log('...spaces open...');
-      // }
+      if (session[0]._id.bookedAmount < (session[0]._id.limit - 1)) {
+        console.log('...spaces open...');
+      }
       // console.log(session,session[0]._id.limit,session[0]._id.bookedAmount,sessionFull,session[0]._id.booked,session[0]._id.booked.toString(),session[0]._id.booked.toString().split(','),user._id,args.userId,session[0]._id.booked.includes(user._id),session[0]._id.booked.includes(args.userId),session[0]._id.booked.toString().search(args.userId),session[0]._id.booked.toString().split(',').includes(args.userId),session[0]._id.booked.filter(x => x === user._id));
-
+      // console.log(args.lessonInput.sessionDate);
       const lesson = await Lesson.findOneAndUpdate(
         {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate },
         {
@@ -1204,6 +1206,7 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended');
+      // console.log(lesson);
 
       const instructors = lesson.instructors.map(x => x._id);
       const bookingRef = {

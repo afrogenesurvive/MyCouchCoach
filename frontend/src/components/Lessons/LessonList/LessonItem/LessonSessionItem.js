@@ -81,7 +81,8 @@ export default function lessonSessionItem (props) {
     {props.onBookSession && (<Button variant="primary" onClick={props.onBookSession.bind(this, props.session)}>
           Book
         </Button>)}
-    {props.editSessionField && (<Button variant="primary" onClick={props.editSessionField.bind(this, props.session)}>
+    {props.editSessionField &&
+      props.isInstructor === true && (<Button variant="primary" onClick={props.editSessionField.bind(this, props.session)}>
           Edit
         </Button>)}
     {props.onAddCartLesson && (<Button variant="secondary" onClick={props.onAddCartLesson.bind(this, props.session)}>

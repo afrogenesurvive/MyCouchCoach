@@ -16,6 +16,7 @@ const UserDetail = (props) => {
 
   const {...user} = props.user;
   const profileImages = user.profileImages;
+  console.log(profileImages);
   console.log('user.clientConnected',user.clientConnected,'user.loggedIn',user.loggedIn);
   const interests = user.interests;
 
@@ -32,7 +33,9 @@ const UserDetail = (props) => {
         <Card.Title><span className="ul">User Details</span></Card.Title>
         <Row className="detailCardRow">
           <Col className="detailCardCol">
-          <Card.Img variant="top" src={user.profileImages[0].path} />
+          {profileImages.length !== 0 && (
+            <Card.Img variant="top" src={profileImages[0].path} />
+          )}
           <Card.Text>
             <span className="bold">ID:</span> {user._id}
           </Card.Text>

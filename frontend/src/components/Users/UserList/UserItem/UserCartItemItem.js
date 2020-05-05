@@ -16,6 +16,9 @@ const userCartItemItem = props => (
         sessionDate: {props.sessionDate}
       </Card.Text>
       <Card.Text>
+        sessionTitle: {props.sessionTitle}
+      </Card.Text>
+      <Card.Text>
         Lesson ID: {props.lesson._id}
       </Card.Text>
 

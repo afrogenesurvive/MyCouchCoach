@@ -35,9 +35,14 @@ const LessonDetail = (props) => {
 
   const {...lesson} = props.lesson;
   const {...user} = props.user;
-  const userLikedLessons = user.likedLessons.map(x => x._id);
-  // console.log('user',userLikedLessons,lesson._id.toString(),userLikedLessons.includes(lesson._id.toString()));
-  const hasLiked = userLikedLessons.includes(lesson._id.toString());
+  
+  let userLikedLessons = [];
+  let hasLiked = false;
+  if (user.likedLessons !== []) {
+    userLikedLessons = user.likedLessons.map(x => x._id);
+    hasLiked = userLikedLessons.includes(lesson._id.toString());
+  }
+
   const instructorIds = lesson.instructors.map(x => x._id)
   const isInstructor = instructorIds.includes(props.authId);
   let canDelete = false;

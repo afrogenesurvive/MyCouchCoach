@@ -87,6 +87,8 @@ messagesSent = user.messages.filter(x => x.sender._id === props.authId);
 messagesReceived = user.messages.filter(x => x.receiver._id === props.authId);
 const reviewedLessonIds = user.reviews.map(x => x.lesson._id);
 // console.log(user.reviews.map(x => x.lesson._id));
+let hasShippingAddress = user.addresses.filter(x => x.type === 'Shipping' && x.primary === true).length === 0;
+console.log(user.addresses,user.addresses.filter(x => x.type === 'Shipping'),hasShippingAddress);
 
   return (
 
@@ -455,9 +457,16 @@ const reviewedLessonIds = user.reviews.map(x => x.lesson._id);
     <Tab eventKey="cart" title="cart">
 
     {user.cart !== null &&
-      user.cart !== [] && (
+      user.cart !== [] &&
+      hasShippingAddress === false && (
     <Button variant="primary" onClick={props.startCartCheckout.bind(this, user.cart)}>
       Checkout
+    </Button>
+    )}
+
+    {hasShippingAddress === true && (
+    <Button variant="warning">
+      Can't Checkout...Add a shipping address 1st...and make sure it's a primary address...
     </Button>
     )}
 

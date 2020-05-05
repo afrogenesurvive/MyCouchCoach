@@ -12,6 +12,7 @@ const orderSchema = new Schema({
     sku: {type: String},
     price: {type: Number},
     date: {type: Date},
+    title: {type: String},
     ref: {type: Schema.Types.ObjectId,ref: 'Lesson'}
   }],
   totals: {

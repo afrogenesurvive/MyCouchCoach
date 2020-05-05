@@ -128,6 +128,7 @@ module.exports = buildSchema(`
   type CartItem {
     dateAdded: String
     sessionDate: String
+    sessionTitle: String
     lesson: Lesson
   }
   type PaymentInfoItem {
@@ -306,6 +307,7 @@ module.exports = buildSchema(`
     sku: String
     price: Float
     date: String
+    title: String
     ref: Lesson
   }
   type OrderTotals {

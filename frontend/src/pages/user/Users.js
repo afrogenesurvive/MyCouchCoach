@@ -202,7 +202,7 @@ class UsersPage extends Component {
         } else {
           this.setState({ searchUsers: searchUsers, userAlert: responseAlert, activityA: requestBody})
         }
-        this.logUserActivity();
+        // this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -244,7 +244,7 @@ class UsersPage extends Component {
         const responseAlert = JSON.stringify(resData.data.getAllUsers).slice(0,8);
         this.setState({userAlert: responseAlert, users: resData.data.getAllUsers, isLoading: false, activityA: requestBody});
         this.context.users = this.state.users;
-        this.logUserActivity();
+        // this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -313,7 +313,7 @@ class UsersPage extends Component {
         console.log(JSON.stringify(resData.data.createMessage));
         const responseAlert = JSON.stringify(resData.data.createMessage).slice(0,8);
         this.setState({userAlert: responseAlert, activityA: requestBody});
-        this.logUserActivity();
+        // this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -355,7 +355,7 @@ class UsersPage extends Component {
       const responseAlert = JSON.stringify(resData.data.getUserById).slice(0,8);
       this.setState({userAlert: responseAlert, selectedUser: resData.data.getUserById, detailsLoaded:true, isLoading: false, activityA: requestBody});
       this.context.selectedUser = this.state.selectedUser;
-      this.logUserActivity();
+      // this.logUserActivity();
     })
     .catch(err => {
       this.setState({userAlert: err});

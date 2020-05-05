@@ -152,7 +152,7 @@ class LessonsPage extends Component {
         const responseAlert = JSON.stringify(resData.data.getLessonsByFieldRegex).slice(0,8);
         const searchLessons = resData.data.getLessonsByFieldRegex;
         this.setState({ searchLessons: searchLessons, userAlert: responseAlert, activityA: requestBody})
-        this.logUserActivity();
+        // this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -213,7 +213,7 @@ class LessonsPage extends Component {
         const responseAlert = JSON.stringify(resData.data.getLessonsByField).slice(0,8);
         const searchLessons = resData.data.getLessonsByField;
         this.setState({ searchLessons: searchLessons, userAlert: responseAlert, activityA: requestBody})
-        this.logUserActivity();
+        // this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -258,7 +258,7 @@ class LessonsPage extends Component {
         const searchSession = resData.data.getLessonSession;
         // console.log('baap',resData,searchSession);
         this.setState({ searchSession: searchSession, userAlert: responseAlert, activityId: requestBody})
-        this.logUserActivity();
+        // this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -322,7 +322,7 @@ class LessonsPage extends Component {
       .then(resData => {
         const responseAlert = JSON.stringify(resData.data.createLesson).slice(0,8);
         this.setState({ lesson: resData.data.createLesson, userAlert: responseAlert, activityA: requestBody})
-        this.logUserActivity();
+        // this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -397,7 +397,7 @@ class LessonsPage extends Component {
       .then(resData => {
         const responseAlert = JSON.stringify(resData.data.updateLessonBasic).slice(0,8);
         this.setState({ lesson: resData.data.updateLessonBasic, userAlert: responseAlert, activityA: requestBody})
-        this.logUserActivity();
+        // this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -441,7 +441,7 @@ class LessonsPage extends Component {
       .then(resData => {
         const responseAlert = JSON.stringify(resData.data.updateLessonByField).slice(0,8);
         this.setState({ lesson: resData.data.updateLessonByField, userAlert: responseAlert, activityA: requestBody})
-        this.logUserActivity();
+        // this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -479,7 +479,7 @@ class LessonsPage extends Component {
         const responseAlert = JSON.stringify(resData.data).slice(0,8);
         this.setState({userAlert: responseAlert, lessons: resData.data.getAllLessons, isLoading: false, activityId: requestBody});
         this.context.lessons = this.state.lessons;
-        this.logUserActivity();
+        // this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -522,7 +522,7 @@ class LessonsPage extends Component {
         const responseAlert = JSON.stringify(resData.data).slice(0,8);
         this.setState({userAlert: responseAlert, selectedLesson: resData.data.getLessonById, isLoading: false, sessionsLoaded: true, activityId: requestBody});
         this.context.selectedLesson = this.state.selectedLesson;
-        this.logUserActivity();
+        // this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -543,7 +543,7 @@ class LessonsPage extends Component {
     const userId = activityId;
     const lessonId = this.state.selectedLesson._id;
     const sessionTitle = args.title;
-    const sessionDate = new Date (args.date.substr(0,10)*1000).toLocaleDateString().slice(0,10);
+    const sessionDate = new Date (args.date.substr(0,10)*1000).toISOString().slice(0,10);
 
     const requestBody = {
       query: `
@@ -551,9 +551,13 @@ class LessonsPage extends Component {
               activityId:"${activityId}",
               userId:"${userId}",
               lessonId:"${lessonId}",
-              sessionDate:"${sessionDate}")
+              sessionDate:"${sessionDate}",
+              sessionTitle:"${sessionTitle}"
+            )
             {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
         `};
+
+        console.log(JSON.stringify(requestBody));
 
     fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
       method: 'POST',
@@ -574,7 +578,7 @@ class LessonsPage extends Component {
         const responseAlert = JSON.stringify(resData.data).slice(0,8);
         this.setState({userAlert: responseAlert, isLoading: false, activityA: requestBody});
         this.context.selectedUser = resData.data.addUserCartLesson;
-        this.logUserActivity();
+        // this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -591,9 +595,10 @@ class LessonsPage extends Component {
     const userId = activityId;
     const lessonId = this.state.selectedLesson._id;
     const sessionTitle = args.title;
-    const sessionDate = new Date (args.date.substr(0,10)*1000).toLocaleDateString().slice(0,10);
+    // const sessionDate = args.date;
+    const sessionDate = new Date (args.date.substr(0,10)*1000).toISOString().slice(0,10);
     const sessionTime = args.time;
-
+// console.log(sessionDate);
     const requestBody = {
       query: `
             mutation {addLessonBooking(
@@ -624,10 +629,20 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonBooking, isLoading: false, activityA: requestBody});
-        this.context.selectedLesson = this.state.selectedLesson;
-        this.logUserActivity();
+        // console.log(resData);
+        let responseAlert = null;
+        if (resData.errors !== []) {
+          responseAlert = resData.errors[0].message;
+          // console.log(responseAlert);
+          this.setState({userAlert: responseAlert})
+        }
+        if (resData.data.addLessonBooking !== null) {
+          responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonBooking, isLoading: false, activityA: requestBody});
+          this.context.selectedLesson = this.state.selectedLesson;
+        }
+
+        // this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -693,9 +708,9 @@ class LessonsPage extends Component {
       })
       .then(resData => {
         const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonSession, isLoading: false, activityA: requestBody});
+        this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonSession, isLoading: false, creatingSession: false, activityA: requestBody});
         this.context.selectedLesson = this.state.selectedLesson;
-        this.logUserActivity();
+        // this.logUserActivity();
       })
       .catch(err => {
         this.setState({userAlert: err});

@@ -10,7 +10,7 @@ const userFriendItem = props => (
 
     <Card.Body>
       <Card.Title>{props.username}</Card.Title>
-      {props.profileImages !== [] && (
+      {props.profileImages.length !== 0 && (
       <Card.Img variant="top" src={props.profileImages[0].path} />
       )}
       <Card.Text>
@@ -34,7 +34,7 @@ const userFriendItem = props => (
       <Card.Text>
         online: {props.online.toString()}
       </Card.Text>
-      {props.socialMedia !== [] && (
+      {props.socialMedia.length !== 0 && (
       <Card.Text>
         SocialMedia: {props.socialMedia[0].platform} - {props.socialMedia[0].handle}
       </Card.Text>

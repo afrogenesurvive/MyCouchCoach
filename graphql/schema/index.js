@@ -588,7 +588,7 @@ module.exports = buildSchema(`
     addUserBookedLesson(activityId: ID!, userId: ID!, lessonId: ID!): User
     addUserAttendedLesson(activityId: ID!, userId: ID!, lessonId: ID!): User
     addUserTaughtLesson(activityId: ID!, userId: ID!, lessonId: ID!): User
-    addUserCartLesson(activityId: ID!, userId: ID!, lessonId: ID!, sessionDate: String!): User
+    addUserCartLesson(activityId: ID!, userId: ID!, lessonId: ID!, sessionDate: String!, sessionTitle: String!): User
     addUserWishlistLesson(activityId: ID!, userId: ID!, lessonId: ID!): User
 
     addUserComment(activityId: ID!, userId: ID!, commentId: ID!): User

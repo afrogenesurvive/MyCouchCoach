@@ -4,10 +4,9 @@ lessons - lesson viewer edit tab has reviews:done
 
 my profile - likedlessons details show sessions map of undefined :done
 
-add delete booking and attendance
+cart check out crash:done
 
-cart check out crash
-
-search user result details crash
-
-add reply function
+-fix delete cart item
+-add delete booking and attendance
+-search user result details crash
+-add reply function

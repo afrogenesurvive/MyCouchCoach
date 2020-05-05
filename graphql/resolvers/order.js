@@ -595,6 +595,12 @@ module.exports = {
           city: args.orderInput.shippingAddressCity,
           country: args.orderInput.shippingAddressCountry,
           postalCode: args.orderInput.shippingAddressPostalCode,
+        },
+        status: {
+          paid: {
+            value: true,
+            date: date
+          }
         }
       });
 
@@ -617,19 +623,15 @@ module.exports = {
         .populate('orders')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
-        // console.log(updateUser.cart);
-
+        
       return {
-        ...user._doc,
+        ...result._doc,
+        date: result.date,
+        time: result.time,
+        type: result.type,
+        buyer: result.buyer,
+        receiver: result.receiver
       };
-      // return {
-      //   ...result._doc,
-      //   date: result.date,
-      //   time: result.time,
-      //   type: result.type,
-      //   buyer: result.buyer,
-      //   receiver: result.receiver
-      // };
     } catch (err) {
       throw err;
     }

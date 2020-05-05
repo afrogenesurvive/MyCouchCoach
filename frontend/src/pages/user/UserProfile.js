@@ -1478,13 +1478,52 @@ class UserProfile extends Component {
       this.setState({orderShippingAddress: event.target.value})
     }
   };
-  // orderStripePayment = () => {
-    // const userCartLessonSkus = user.cart.map(x => x.lesson.sku)
-    // console.log(userCartLessonSkus);
-  // }
+  orderStripePayment = () => {
+    const userCartLessonSkus = this.state.user.cart.map(x => x.lesson.sku)
+    console.log(userCartLessonSkus);
+    // on failure returnor throw error
+  }
+  addMultipleBookings = () => {
+    console.log("...adding multiple bookings...");
+    this.setState({ userAlert: "...adding multiple bookings...", isLoading: true });
+
+    const token = this.context.token;
+    const activityId = this.context.activityId;
+    const requestBody = {
+      query:`
+        mutation {addMultipleBookings(
+          activityId:"${activityId}"
+          )
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+      `};
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!');
+          this.setState({userAlert: 'Failed!'});
+        }
+        return res.json();
+      })
+      .then(resData => {
+          console.log(resData);
+          this.setState({user: resData.data.addMultipleBookings, isLoading: false})
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
+
+  };
   createOrder = (event) => {
     event.preventDefault();
-    console.log(this.state.user.cart);
+    console.log("creating order for user...");
     this.setState({ creatingOrder: false, userAlert: "creating order for user..." });
 
     const token = this.context.token;
@@ -1563,12 +1602,12 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-
+        console.log(resData);
         const responseAlert = JSON.stringify(resData.data.createOrder).slice(2,25);
-        this.setState({userAlert: responseAlert, user: resData.data.createOrder, activityA: JSON.stringify(requestBody)})
-        this.context.user = this.state.user;
+        // this.setState({userAlert: responseAlert, user: resData.data.createOrder, activityA: JSON.stringify(requestBody)})
+        // this.context.user = this.state.user;
         // this.logUserActivity();
-        // this.completeOrderBooking()
+        this.addMultipleBookings();
       })
       .catch(err => {
         this.setState({userAlert: err});

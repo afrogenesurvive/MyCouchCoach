@@ -367,6 +367,13 @@ module.exports = buildSchema(`
     feedback: String
   }
 
+  input BookingInput {
+    userId: String
+    lessonId: String
+    sessionDate: String
+    sessionTitle: String
+  }
+
   type Comment {
     _id: ID!
     date: String
@@ -655,6 +662,7 @@ module.exports = buildSchema(`
     updateSessionField(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
     addLessonBooking(activityId: ID!, lessonId: ID!, userId: ID!, lessonInput: LessonInput!): Lesson
     addLessonAttendance(activityId: ID!, lessonId: ID!, userId: ID!, lessonInput: LessonInput!): Lesson
+    addMultipleBookings(activityId: ID!): [Lesson]
 
     deleteLessonBooking(activityId: ID!, lessonId: ID!, userId: ID!, lessonInput: LessonInput!): Lesson
     deleteLessonAttendance(activityId: ID!, lessonId: ID!, userId: ID!, lessonInput: LessonInput!): Lesson

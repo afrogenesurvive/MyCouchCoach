@@ -868,6 +868,13 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
+      const preLesson = await Lesson.findById({_id: args.lessonId});
+      const preLessonSessions = preLesson.sessions;
+      const existingSessionTitles = preLessonSessions.map(x => x.title);
+      const sessionTitleExists = existingSessionTitles.filter(x => x === args.lessonInput.sessionTitle).length > 0;
+      if (sessionTitleExists === true ) {
+        throw Error('...sessionTitleExists for this lesson ...please choose a different one')
+      }
       const session = {
         title: args.lessonInput.sessionTitle,
         date: args.lessonInput.sessionDate,
@@ -1230,6 +1237,161 @@ module.exports = {
             _id: lesson.id,
             title: lesson.title
         };
+    } catch (err) {
+      throw err;
+    }
+  },
+  addMultipleBookings: async (args, req) => {
+    console.log("Resolver: addMultipleBookings...");
+
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+
+      const today = new Date().toLocaleDateString().substr(0,10);
+      let bookedLessons = [];
+
+      const user = await User.findById({_id: args.activityId});
+      let bookingArray = user.cart.map(x => ({
+        userId: user._id,
+        lessonId: x.lesson,
+        sessionDate: x.sessionDate,
+        sessionTitle: x.sessionTitle
+      }))
+      // console.log(bookingArray);
+
+      console.log('start');
+      for (let index = 0; index < bookingArray.length; index++) {
+        const booking = bookingArray[index];
+
+        const user = await User.findById({_id: booking.userId});
+        const preLesson = await Lesson.findById({_id: booking.lessonId});
+        const userBookings = user.bookedLessons.map(x => x.ref);
+        let session = await Lesson.aggregate([
+          {$unwind: '$sessions'},
+          {$group: {_id:{
+            lessonId: '$_id',
+            lessonTitle: '$title',
+            date:'$sessions.date',
+            time: '$sessions.time',
+            title:'$sessions.title',
+            limit:'$sessions.limit',
+            bookedAmount: '$sessions.bookedAmount',
+            booked: '$sessions.booked',
+            full: '$sessions.full'
+          }}},
+          {$match:
+            {
+              '_id.lessonId': {$eq: preLesson._id},
+              '_id.title': {$eq: booking.sessionTitle },
+              // '_id.date': {$eq: new Date(booking.sessionDate.substr(0,10)*1000).toISOString() },
+            }}
+        ]);
+        console.log(index, 'booking',booking, 'session[0]._id',session[0]._id);
+
+          if (session[0]._id.booked.toString().split(',').includes(booking.userId.toString()) === true) {
+          // throw new Error('...umm no.. youve already booked this session');
+          console.log('...umm no.. youve already booked this session');
+          continue
+        }
+        let sessionFull = session[0]._id.full;
+        if (session[0]._id.bookedAmount >= (session[0]._id.limit - 1)) {
+          // console.log('...session full...');
+          sessionFull = true;
+          // throw new Error('...sorry this session is full..')
+          console.log('...sorry this session is full..')
+          continue
+        }
+        if (session[0]._id.bookedAmount < (session[0]._id.limit - 1)) {
+          console.log('...spaces open...');
+        }
+
+
+        const lesson = await Lesson.findOneAndUpdate(
+          {_id: session[0]._id.lessonId, 'sessions.title': session[0]._id.title, 'sessions.date': session[0]._id.date },
+          {
+            $addToSet: {'sessions.$.booked': user},
+            $inc: {'sessions.$.bookedAmount': 1,'sessions.$.amount': 1},
+            $set: {'sessions.$.full': sessionFull}
+          }
+          ,{new: true, useFindAndModify: false});
+        // .populate('instructors')
+        // .populate('reviews')
+        // .populate('sessions.booked')
+        // .populate('sessions.attended');
+        // console.log(lesson.sessions);
+        bookedLessons.push(lesson);
+
+        const instructors = lesson.instructors.map(x => x._id);
+        const bookingRef = {
+          date: today,
+          session: {
+            title: session[0]._id.title,
+            date: session[0]._id.date,
+            time: session[0]._id.time,
+          },
+          ref: lesson
+        };
+        const updateStudentBookedLessons = await User.findOneAndUpdate({_id: booking.userId},{$addToSet: {bookedLessons: bookingRef}},{new: true, useFindAndModify: false})
+        const updateStudentWishlist = await User.findOneAndUpdate(
+          {_id: booking.userId, 'wishlist.ref': booking.lessonId},
+          {$set: {'wishlist.$.booked': true}},
+          {new: true, useFindAndModify: false})
+          .populate('perks')
+          .populate('promos')
+          .populate('friends')
+          .populate('likedLessons')
+          .populate('bookedLessons.ref')
+          .populate('attendedLessons.ref')
+          .populate('taughtLessons.ref')
+          .populate('wishlist.ref')
+          .populate('cart.lesson')
+          .populate({
+            path:'reviews',
+            populate: {
+              path: 'author',
+              model: 'User'
+            }
+          })
+          .populate({
+            path:'reviews',
+            populate: {
+              path: 'lesson',
+              model: 'Lesson'
+            }
+          })
+          .populate({
+            path: 'messages',
+            populate: {
+              path: 'sender',
+              model: 'User'
+            }})
+          .populate({
+            path: 'messages',
+            populate: {
+              path: 'receiver',
+              model: 'User'
+            }})
+          .populate('orders')
+          .populate('friendRequests.sender')
+          .populate('friendRequests.receiver');
+
+        const updateInstructors = await User.updateMany({_id: {$in: instructors}},{$addToSet: {bookedLessons: bookingRef}},{new: true, useFindAndModify: false})
+
+      }
+      console.log('end');
+      if (bookedLessons.length === 0) {
+        console.log('...all of your requested sessions are either full or youve already booked them...');
+        throw new Error('...all of your requested sessions are either full or youve already booked them...')
+      }
+      console.log('bookedLessons',bookedLessons);
+      const user2 = updateStudentWishlist;
+      return {
+          ...user2._doc,
+          _id: user2.id,
+          name: user2.name
+      };
     } catch (err) {
       throw err;
     }

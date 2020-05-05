@@ -24,6 +24,7 @@ return (
       messageReceiver={props.messageReceiver}
       cancelMessage={props.cancelMessage}
       sendMessage={props.sendMessage}
+      myFriends={props.myFriends}
     />
 
     </div>

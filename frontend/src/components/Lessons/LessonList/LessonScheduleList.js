@@ -7,7 +7,7 @@ const lessonScheduleList = props => {
 
   const dates = props.lessonSchedule.map(date => {
     // console.log(date);
-    const scheduleDate = new Date (date.date.substr(0,10)*1000).toLocaleDateString().slice(0,10);;
+    const scheduleDate = new Date (date.date.substr(0,10)*1000).toISOString().slice(0,10);;
 
     return (
       <LessonScheduleItem

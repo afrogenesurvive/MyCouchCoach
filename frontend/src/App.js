@@ -9,6 +9,7 @@ import UsersPage from './pages/user/Users';
 import LessonsPage from './pages/lesson/Lessons';
 import PublicLessonsPage from './pages/lesson/PublicLessons';
 import ProfileLessonViewer from './components/ProfileLessonViewer';
+import ErrorPage from './components/ErrorPage';
 
 import MainNavigation from './components/Navigation/MainNavigation';
 import AuthContext from './context/auth-context';
@@ -229,6 +230,7 @@ class App extends Component {
                   {!this.state.token && (<Route path="/login" component={AuthPage} />)}
                   {!this.state.token && (<Route path="/signup" component={SignupPage} />)}
                   {!this.state.token && (<Redirect to="/login" exact />)}
+                  {!this.state.token && (<Route path="*" component={ErrorPage}/>)}
               </Switch>
             </main>
 

@@ -16,7 +16,8 @@ const UserDetail = (props) => {
 
   const {...user} = props.user;
   const profileImages = user.profileImages;
-  console.log(profileImages);
+  const isFriend = props.myFriends.filter(x => x === user._id).length > 0;
+  console.log(props.myFriends,isFriend);
   console.log('user.clientConnected',user.clientConnected,'user.loggedIn',user.loggedIn);
   const interests = user.interests;
 
@@ -64,12 +65,18 @@ const UserDetail = (props) => {
         </Row>
 
         <Row className="detailCardRow">
+
+        {isFriend === false && (
         <Button variant="secondary" onClick={props.onFriendRequest.bind(this, props.user)}>
           RequsetFriend
         </Button>
+        )}
+        {isFriend === true && (
         <Button variant="info" onClick={props.onStartSendMessage.bind(this, props.user)}>
           Message
         </Button>
+        )}
+
         <Button variant="danger" onClick={props.onHideUserDetail}>
           x
         </Button>

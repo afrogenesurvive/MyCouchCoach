@@ -598,7 +598,7 @@ class LessonsPage extends Component {
     // const sessionDate = args.date;
     const sessionDate = new Date (args.date.substr(0,10)*1000).toISOString().slice(0,10);
     const sessionTime = args.time;
-// console.log(sessionDate);
+    
     const requestBody = {
       query: `
             mutation {addLessonBooking(
@@ -674,7 +674,7 @@ class LessonsPage extends Component {
     const sessionTime = event.target.formGridTime.value;
     const sessionLimit = event.target.formGridLimit.value;
     const sessionAmount = 0;
-    console.log(sessionDate);
+    // console.log(sessionDate);
 
     const requestBody = {
       query: `
@@ -707,6 +707,7 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
+        console.log(resData);
         const responseAlert = JSON.stringify(resData.data).slice(0,8);
         this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonSession, isLoading: false, creatingSession: false, activityA: requestBody});
         this.context.selectedLesson = this.state.selectedLesson;

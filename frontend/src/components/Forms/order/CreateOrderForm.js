@@ -13,20 +13,20 @@ const CreateOrderForm = (props) => {
   const {...user} = props.user;
   const userCartLessonSkus = user.cart.map(x => x.lesson.sku)
 
-    const addressTypes = user.addresses.map(address => console.log(address.type));
+    // const addressTypes = user.addresses.map(address => console.log(address.type));
     const billingAddresses = user.addresses.filter(address => address.type === 'Billing');
     const shippingAddresses = user.addresses.filter(address => address.type === 'Shipping')
     const primaryShippingAddresses = shippingAddresses.filter(address => address.primary === true)
     const primaryBillingAddresses = billingAddresses.filter(address => address.primary === true)
     const primaryShippingAddress = primaryShippingAddresses[0];
     const primaryBillingAddress = primaryBillingAddresses[0];
-    console.log(`
-        addressTypes: ${addressTypes},
-        billingAddresses: ${billingAddresses.length}
-        shippingAddresses: ${shippingAddresses.length},
-        primaryShippingAddresses: ${primaryShippingAddresses.length},
-        primaryBillingAddresses: ${primaryBillingAddresses.length},
-      `);
+    // console.log(`
+    //     addressTypes: ${addressTypes},
+    //     billingAddresses: ${billingAddresses.length}
+    //     shippingAddresses: ${shippingAddresses.length},
+    //     primaryShippingAddresses: ${primaryShippingAddresses.length},
+    //     primaryBillingAddresses: ${primaryBillingAddresses.length},
+    //   `);
 
 return (
 <div className="CreateFormContainer">

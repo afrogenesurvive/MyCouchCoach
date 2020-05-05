@@ -310,7 +310,7 @@ class UsersPage extends Component {
         return res.json();
       })
       .then(resData => {
-        console.log(JSON.stringify(resData.data.createMessage));
+        // console.log(JSON.stringify(resData.data.createMessage));
         const responseAlert = JSON.stringify(resData.data.createMessage).slice(0,8);
         this.setState({userAlert: responseAlert, activityA: requestBody});
         // this.logUserActivity();
@@ -534,6 +534,7 @@ closeAttachmentView = () => {
           messageReceiver={this.state.messageReceiver}
           cancelMessage={this.cancelMessage}
           sendMessage={this.sendMessage}
+          myFriends={this.context.user.friends.map(x => x._id)}
         />
       )}
       <SidebarControl

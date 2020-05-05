@@ -624,7 +624,7 @@ module.exports = buildSchema(`
     deleteUserAttendedLesson(activityId: ID!, userId: ID!, lessonId: ID!, date: String!): User
     deleteUserTaughtLesson(activityId: ID!, userId: ID!, lessonId: ID!, date: String!): User
     deleteUserWishlistLesson(activityId: ID!, userId: ID!, lessonId: ID!): User
-    deleteUserCartLesson(activityId: ID!, userId: ID!, lessonId: ID!, dateAdded: String!, sessionDate: String!): User
+    deleteUserCartLesson(activityId: ID!, userId: ID!, lessonId: ID!, dateAdded: String!, sessionDate: String!, sessionTitle: String!): User
 
     deleteUserComment(activityId: ID!, userId: ID!, commentId: ID!): User
     deleteUserReview(activityId: ID!, userId: ID!, reviewId: ID!): User

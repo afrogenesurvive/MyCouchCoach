@@ -5,7 +5,7 @@ import './UserList.css';
 
 const userMessageList = props => {
   const userMessages = props.userMessages.map(message => {
-    const messageDate = new Date (message.date.substr(0,10)*1000).toLocaleDateString().slice(0,10);;
+    const messageDate = new Date (message.date.substr(0,10)*1000).toISOString().slice(0,10);;
       // console.log('msg',props.authId,message.sender._id,message.receiver._id);
     return (
       <UserMessageItem

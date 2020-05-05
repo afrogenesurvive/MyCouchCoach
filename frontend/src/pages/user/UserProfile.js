@@ -1321,14 +1321,15 @@ class UserProfile extends Component {
       });
   };
   userDeleteCartItem = (args) => {
-    this.setState({ deleting: true, userAlert: "deleting promo for user..." });
+    this.setState({ deleting: true, userAlert: "deleting cart item for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
     let userId = activityId;
-    const lessonId = args.lesson;
+    const lessonId = args.lesson._id;
     const dateAdded = args.dateAdded;
     const sessionDate = args.sessionDate;
-
+    const sessionTitle = args.sessionTitle;
+    console.log(sessionDate,lessonId,sessionTitle);
     const requestBody = {
       query:`
         mutation {deleteUserCartLesson(
@@ -1336,7 +1337,8 @@ class UserProfile extends Component {
           userId:"${userId}",
           lessonId:"${lessonId}",
           dateAdded:"${dateAdded}",
-          sessionDate:"${sessionDate}"
+          sessionDate:"${sessionDate}",
+          sessionTitle:"${sessionTitle}"
         )
         {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
@@ -1368,13 +1370,12 @@ class UserProfile extends Component {
       });
   };
   userDeleteBookedLesson = (args) => {
-    this.setState({ deleting: true, userAlert: "deleting promo for user..." });
+    this.setState({ deleting: true, userAlert: "deleting booked kesson for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
     let userId = activityId;
     const date = args.date;
     const lessonId = args.ref;
-
     const requestBody = {
       query:`
         mutation {deleteUserBookedLesson(
@@ -1402,7 +1403,7 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-
+        console.log('resData',resData);
         const responseAlert = JSON.stringify(resData.data.deleteUserBookedLesson).slice(2,25);
         this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserBookedLesson, activityA: JSON.stringify(requestBody)})
         this.context.user = this.state.user;
@@ -1484,93 +1485,94 @@ class UserProfile extends Component {
   createOrder = (event) => {
     event.preventDefault();
     console.log(this.state.user.cart);
-    // this.setState({ creatingOrder: false, userAlert: "creating order for user..." });
-    //
-    // const token = this.context.token;
-    // const activityId = this.context.activityId;
-    // let userId = activityId;
-    // const buyerId = activityId;
-    // const receiverId = activityId;
-    //
-    // const type = event.target.formGridType.value;
-    // const totalA = event.target.formGridTotalA.value;
-    // const totalB = event.target.formGridTotalB.value;
-    // const taxDescription = event.target.formGridTaxDescription.value;
-    // const taxAmount = event.target.formGridTaxAmount.value;
-    // const description = event.target.formGridDescription.value;
-    // const notes = event.target.formGridNotes.value;
-    // const payment = event.target.formGridPayment.value;
-    // const shipping = event.target.formGridShipping.value;
-    // const billingAddressNumber = event.target.formGridBillingAddressNumber.value;
-    // const billingAddressStreet = event.target.formGridBillingAddressStreet.value;
-    // const billingAddressTown = event.target.formGridBillingAddressTown.value;
-    // const billingAddressCity = event.target.formGridBillingAddressCity.value;
-    // const billingAddressCountry = event.target.formGridBillingAddressCountry.value;
-    // const billingAddressPostalCode = event.target.formGridBillingAddressPostalCode.value;
-    // const shippingAddressNumber = event.target.formGridShippingAddressNumber.value;
-    // const shippingAddressStreet = event.target.formGridShippingAddressStreet.value;
-    // const shippingAddressTown = event.target.formGridShippingAddressTown.value;
-    // const shippingAddressCity = event.target.formGridShippingAddressCity.value;
-    // const shippingAddressCountry = event.target.formGridShippingAddressCountry.value;
-    // const shippingAddressPostalCode = event.target.formGridShippingAddressPostalCode.value;
-    //
-    // const requestBody = {
-    //   query:`
-    //     mutation {createOrder(
-    //       activityId:"${activityId}",
-    //       buyerId:"${buyerId}",
-    //       receiverId:"${receiverId}",
-    //       orderInput:{
-    //         type:"${type}",
-    //         totalA:${totalA},
-    //         totalB:${totalB},
-    //         taxDescription:"${taxDescription}",
-    //         taxAmount:${taxAmount},
-    //         description:"${description}",
-    //         notes:"${notes}",
-    //         payment:"${payment}",
-    //         shipping:"${shipping}",
-    //         billingAddressNumber:${billingAddressNumber},
-    //         billingAddressStreet:"${billingAddressStreet}",
-    //         billingAddressTown:"${billingAddressTown}",
-    //         billingAddressCity:"${billingAddressCity}",
-    //         billingAddressCountry:"${billingAddressCountry}",
-    //         billingAddressPostalCode:"${billingAddressPostalCode}",
-    //         shippingAddressNumber:${shippingAddressNumber},
-    //         shippingAddressStreet:"${shippingAddressStreet}",
-    //         shippingAddressTown:"${shippingAddressTown}",
-    //         shippingAddressCity:"${shippingAddressCity}",
-    //         shippingAddressCountry:"${shippingAddressCountry}",
-    //         shippingAddressPostalCode:"${shippingAddressPostalCode}"
-    //       })
-    //     {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
-    //   `};
-    //
-    // fetch('http://localhost:8088/graphql', {
-    //   method: 'POST',
-    //   body: JSON.stringify(requestBody),
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     Authorization: 'Bearer ' + token
-    //   }
-    // })
-    //   .then(res => {
-    //     if (res.status !== 200 && res.status !== 201) {
-    //       throw new Error('Failed!');
-    //       this.setState({userAlert: 'Failed!'});
-    //     }
-    //     return res.json();
-    //   })
-    //   .then(resData => {
-    //
-    //     const responseAlert = JSON.stringify(resData.data.createOrder).slice(2,25);
-    //     this.setState({userAlert: responseAlert, user: resData.data.createOrder, activityA: JSON.stringify(requestBody)})
-    //     this.context.user = this.state.user;
-    //     // this.logUserActivity();
-    //   })
-    //   .catch(err => {
-    //     this.setState({userAlert: err});
-    //   });
+    this.setState({ creatingOrder: false, userAlert: "creating order for user..." });
+
+    const token = this.context.token;
+    const activityId = this.context.activityId;
+    let userId = activityId;
+    const buyerId = activityId;
+    const receiverId = activityId;
+
+    const type = event.target.formGridType.value;
+    const totalA = event.target.formGridTotalA.value;
+    const totalB = event.target.formGridTotalB.value;
+    const taxDescription = event.target.formGridTaxDescription.value;
+    const taxAmount = event.target.formGridTaxAmount.value;
+    const description = event.target.formGridDescription.value;
+    const notes = event.target.formGridNotes.value;
+    const payment = event.target.formGridPayment.value;
+    const shipping = event.target.formGridShipping.value;
+    const billingAddressNumber = event.target.formGridBillingAddressNumber.value;
+    const billingAddressStreet = event.target.formGridBillingAddressStreet.value;
+    const billingAddressTown = event.target.formGridBillingAddressTown.value;
+    const billingAddressCity = event.target.formGridBillingAddressCity.value;
+    const billingAddressCountry = event.target.formGridBillingAddressCountry.value;
+    const billingAddressPostalCode = event.target.formGridBillingAddressPostalCode.value;
+    const shippingAddressNumber = event.target.formGridShippingAddressNumber.value;
+    const shippingAddressStreet = event.target.formGridShippingAddressStreet.value;
+    const shippingAddressTown = event.target.formGridShippingAddressTown.value;
+    const shippingAddressCity = event.target.formGridShippingAddressCity.value;
+    const shippingAddressCountry = event.target.formGridShippingAddressCountry.value;
+    const shippingAddressPostalCode = event.target.formGridShippingAddressPostalCode.value;
+
+    const requestBody = {
+      query:`
+        mutation {createOrder(
+          activityId:"${activityId}",
+          buyerId:"${buyerId}",
+          receiverId:"${receiverId}",
+          orderInput:{
+            type:"${type}",
+            totalA:${totalA},
+            totalB:${totalB},
+            taxDescription:"${taxDescription}",
+            taxAmount:${taxAmount},
+            description:"${description}",
+            notes:"${notes}",
+            payment:"${payment}",
+            shipping:"${shipping}",
+            billingAddressNumber:${billingAddressNumber},
+            billingAddressStreet:"${billingAddressStreet}",
+            billingAddressTown:"${billingAddressTown}",
+            billingAddressCity:"${billingAddressCity}",
+            billingAddressCountry:"${billingAddressCountry}",
+            billingAddressPostalCode:"${billingAddressPostalCode}",
+            shippingAddressNumber:${shippingAddressNumber},
+            shippingAddressStreet:"${shippingAddressStreet}",
+            shippingAddressTown:"${shippingAddressTown}",
+            shippingAddressCity:"${shippingAddressCity}",
+            shippingAddressCountry:"${shippingAddressCountry}",
+            shippingAddressPostalCode:"${shippingAddressPostalCode}"
+          })
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+      `};
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!');
+          this.setState({userAlert: 'Failed!'});
+        }
+        return res.json();
+      })
+      .then(resData => {
+
+        const responseAlert = JSON.stringify(resData.data.createOrder).slice(2,25);
+        this.setState({userAlert: responseAlert, user: resData.data.createOrder, activityA: JSON.stringify(requestBody)})
+        this.context.user = this.state.user;
+        // this.logUserActivity();
+        // this.completeOrderBooking()
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
   };
   userDeleteOrder = (args) => {
     this.setState({ deleting: true, userAlert: "deleting order for user..." });

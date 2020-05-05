@@ -553,6 +553,7 @@ module.exports = {
         sku: lesson.sku,
         price: lesson.price,
         date: lesson.sessionDate,
+        title: lesson.sessionTitle,
         ref: lesson
       }));
       const orderLessons3 = orderLessons.map(x => x.price);

@@ -3082,10 +3082,12 @@ module.exports = {
     }
     try {
       const dateAdded = args.dateAdded;
-      const sessionDate = args.sessionDate;
-      // const iSOString = new Date().toLocaleDateString().substr(0,10);
+      // let sessionDate = args.sessionDate;
+
+      let sessionDate = new Date (args.sessionDate.substr(0,10)*1000).toISOString().slice(0,10);;
+      // console.log(sessionDate);
       const lesson = await Lesson.findById({_id: args.lessonId});
-      const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { cart: {sessionDate: sessionDate, lesson: lesson} }},{new: true, useFindAndModify: false})
+      const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { cart: {sessionDate: sessionDate, sessionTitle: args.sessionTitle, lesson: lesson} }},{new: true, useFindAndModify: false})
       .populate('perks')
       .populate('promos')
       .populate('friends')

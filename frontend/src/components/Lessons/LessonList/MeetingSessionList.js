@@ -6,7 +6,7 @@ import './UserList.css';
 const meetingSessionList = props => {
 
   const sessions = props.lessonSessions.map(session => {
-    const sessionDate = new Date (session.date.substr(0,10)*1000).toLocaleDateString().slice(0,10);;
+    const sessionDate = new Date (session.date.substr(0,10)*1000).toISOString().slice(0,10);;
     return (
       <MeetingSessionItem
         key={session.title}

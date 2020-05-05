@@ -88,7 +88,7 @@ messagesReceived = user.messages.filter(x => x.receiver._id === props.authId);
 const reviewedLessonIds = user.reviews.map(x => x.lesson._id);
 // console.log(user.reviews.map(x => x.lesson._id));
 let hasShippingAddress = user.addresses.filter(x => x.type === 'Shipping' && x.primary === true).length === 0;
-console.log(user.addresses,user.addresses.filter(x => x.type === 'Shipping'),hasShippingAddress);
+// console.log(user.addresses,user.addresses.filter(x => x.type === 'Shipping'),hasShippingAddress);
 
   return (
 

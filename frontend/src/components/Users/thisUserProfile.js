@@ -228,7 +228,7 @@ let userAddresses = [];
     {user.addresses !== null &&
       user.addresses !== [] && (
         <UserAddressList
-          userAddresses={userAddresses}
+          userAddresses={user.addresses}
           authId={props.authId}
           canDelete={props.canDelete}
           onDelete={props.userDeleteAddress}

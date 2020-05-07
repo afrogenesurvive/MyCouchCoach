@@ -623,7 +623,7 @@ module.exports = {
         .populate('orders')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
-        
+
       return {
         ...result._doc,
         date: result.date,

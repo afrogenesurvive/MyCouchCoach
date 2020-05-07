@@ -17,7 +17,7 @@ const { dateToString } = require('../../helpers/date');
 const { pocketVariables } = require('../../helpers/pocketVars');
 
 const mailjet = require ('node-mailjet')
-.connect('b34ad52fd810be3d7c9fd5159f36be82', '6dda635891e3fd08383004e54179f0d0')
+.connect(pocketVariables.mailjet.a, pocketVariables.mailjet.b)
 
 module.exports = {
   getAllUsers: async (args, req) => {

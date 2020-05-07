@@ -6,13 +6,15 @@ const graphQlResolvers = require('./graphql/resolvers/index');
 
 const { pocketVariables } = require('./helpers/pocketVars');
 
+let xmlParser = require('xml-js');
 const mongoose = require('mongoose');
 const mongodb = require('mongodb');
 const isAuth = require('./middleware/is-auth');
 const path = require('path');
-
+const request = require('request');
 const app = express();
 const server = require('http').Server(app);
+const https = require("https");
 const io = require('socket.io')(server);
 const User = require('./models/user');
 
@@ -128,3 +130,51 @@ app.get('/*', function(req, res) {
   // res.send("Hello World!");
   res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
 });
+
+//
+// const url = 'https://s3.amazonaws.com/tech.africangeneticsurvival.net/assets/couchCoach/mailjet.txt';
+//
+// https.get(url, res => {
+//   res.setEncoding("utf8");
+//   let body = "";
+//   res.on("data", data => {
+//     body += data;
+//   });
+//   res.on("end", () => {
+//     body = xmlParser.xml2json(body, {compact: true, spaces: 4})
+//     console.log(body);
+//   });
+// });
+
+// request.get(url, ( error, response, body) => {
+//   console.log('beep',response,body);
+//   // let json = JSON.parse(body);
+//   // console.log(json);
+// });
+// function get_creds() {
+//   console.log('fetching creds....');
+  // app.get('/tech.africangeneticsurvival.net/assets/couchCoach/mailjet.txt', function(req, res){
+  //   console.log('beep');
+  //     request('https://s3.amazonaws.com', function (error, response, body) {
+  //           console.log('error:', error); // Print the error if one occurred and handle it
+  //           console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+  //           res.send(body)
+  //     });
+  //
+  // })
+// }
+// function get_creds() {
+//   console.log('fetching creds....');
+//
+//   app.get(options, function(req,res) {
+//     console.log('beep',res);
+//   });
+
+  // fetch('https://s3.amazonaws.com/tech.africangeneticsurvival.net/assets/couchCoach/mailjet.txt')
+  // .then(response => response.text())
+  // .then((data) => {
+  //   // pocketVariables.mailjet = data;
+  //   console.log('data',data);
+  // })
+// }
+// get_creds();

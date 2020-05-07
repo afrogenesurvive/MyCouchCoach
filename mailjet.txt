@@ -1,0 +1,5 @@
+
+mailjet: {
+  a: 'test',
+  b: 'toast'
+}

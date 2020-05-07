@@ -5,6 +5,7 @@ import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
 
 import UserAddressList from './UserList/UserAddressList';
 import UserProfileImageList from './UserList/UserProfileImageList';
@@ -89,6 +90,17 @@ const reviewedLessonIds = user.reviews.map(x => x.lesson._id);
 // console.log(user.reviews.map(x => x.lesson._id));
 let hasShippingAddress = user.addresses.filter(x => x.type === 'Shipping' && x.primary === true).length === 0;
 // console.log(user.addresses,user.addresses.filter(x => x.type === 'Shipping'),hasShippingAddress);
+
+let userAddresses = [];
+// let userAddresses = [];
+// if (props.addressFilter === null) {
+//   userAddresses = user.addresses;
+// }
+// if (props.addressFilter === 'primary') {
+//   userAddresses = user.addresses.filter(x => x.primary === true);
+// }
+
+
 
   return (
 
@@ -200,6 +212,7 @@ let hasShippingAddress = user.addresses.filter(x => x.type === 'Shipping' && x.p
     </Tab>
 
     <Tab eventKey="address" title="address">
+
     <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.onStartAdd.bind(this, "address")}>+ Address</Button>
     {props.userAddField === "address" && (
         <AddUserAddressForm
@@ -215,7 +228,7 @@ let hasShippingAddress = user.addresses.filter(x => x.type === 'Shipping' && x.p
     {user.addresses !== null &&
       user.addresses !== [] && (
         <UserAddressList
-          userAddresses={user.addresses}
+          userAddresses={userAddresses}
           authId={props.authId}
           canDelete={props.canDelete}
           onDelete={props.userDeleteAddress}

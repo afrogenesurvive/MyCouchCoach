@@ -146,6 +146,6 @@ const url = 'https://s3.amazonaws.com/school.africangeneticsurvival.net/assets/c
 // });
 
 request.get(url, ( error, response, body) => {
-  // pocketVariables.mailjet = JSON.parse(body);
+  pocketVariables.mailjet = JSON.parse(body);
   console.log('beep',body,JSON.parse(body),pocketVariables);
 });

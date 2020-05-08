@@ -131,7 +131,7 @@ app.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
 });
 
-const url = 'https://s3.amazonaws.com/school.africangeneticsurvival.net/assets/couchCoach/mailjet.txt';
+const url = 'https://mycouchcoachstorage.s3.amazonaws.com/assets/creds/mailjet/mailJetApi.txt';
 //
 // https.get(url, res => {
 //   res.setEncoding("utf8");
@@ -147,4 +147,5 @@ const url = 'https://s3.amazonaws.com/school.africangeneticsurvival.net/assets/c
 
 request.get(url, ( error, response, body) => {
   pocketVariables.mailjet = JSON.parse(body);
+  console.log('beep',pocketVariables);
 });

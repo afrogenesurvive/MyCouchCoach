@@ -146,8 +146,10 @@ const url = 'https://mycouchcoachstorage.s3.amazonaws.com/assets/creds/mailjet/m
 // });
 
 request.get(url, ( error, response, body) => {
-  // pocketVariables.mailjet = JSON.parse(body);
-  console.log('beep',body.slice(0,3));
-  console.log('beep',body.slice(0,3) === '<?x');
-  console.log('boop',body.slice(0,3) === '{"a');
+  // console.log('beep',body.slice(0,3));
+  // console.log('beep',body.slice(0,3) === '<?x');
+  // console.log('boop',body.slice(0,3) === '{"a');
+  if (body.slice(0,3) === '{"a') {
+    pocketVariables.mailjet = JSON.parse(body);
+  }
 });

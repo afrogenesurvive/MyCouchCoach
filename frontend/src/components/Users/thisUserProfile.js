@@ -99,8 +99,10 @@ let userAddresses = [];
 // if (props.addressFilter === 'primary') {
 //   userAddresses = user.addresses.filter(x => x.primary === true);
 // }
-
-
+const orderSubtotal = user.cart.map(x => x.lesson);
+const orderSubtotal2 = orderSubtotal.map(x => x.price )
+const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
+// console.log(orderSubtotal,orderSubtotal2,orderSubtotal3);
 
   return (
 
@@ -486,6 +488,7 @@ let userAddresses = [];
     {props.creatingOrder === true && (
       <CreateOrderForm
         user={user}
+        subtotal={orderSubtotal3}
         onCancel={props.cancelCartCheckout}
         onConfirm={props.createOrder}
         addAddressToOrder={props.addAddressToOrder}

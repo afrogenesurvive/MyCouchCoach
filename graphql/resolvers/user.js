@@ -659,9 +659,10 @@ module.exports = {
     }
     try {
 
-  // const today = new Date().toLocaleDateString().slice(0,10);
-  const today = '2020-04-24';
+  const today = new Date().toLocaleDateString().slice(0,10);
+  // const today = '2020-04-24';
   const today2 = new Date(today);
+  console.log(today,today2);
   const user = await User.findById({_id: args.activityId});
   // console.log(today,today2, user._id);
   const sessions = await Lesson.aggregate([

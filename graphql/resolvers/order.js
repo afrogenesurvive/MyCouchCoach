@@ -558,7 +558,7 @@ module.exports = {
       }));
       const orderLessons3 = orderLessons.map(x => x.price);
       const orderLessons4 = orderLessons3.reduce((a, b) => a + b, 0);
-      console.log(orderLessons2,orderLessons4);
+      // console.log(orderLessons2,orderLessons4);
 
       const order = new Order({
         date: date,
@@ -570,7 +570,7 @@ module.exports = {
         totals:{
           a: args.orderInput.totalA,
           b: args.orderInput.totalB,
-          c: orderLessons4.toString(),
+          c: args.orderInput.totalC,
         },
         tax:{
           description: args.orderInput.taxDescription,
@@ -607,7 +607,7 @@ module.exports = {
       const result = await order.save();
       user = await User.findOneAndUpdate(
         {_id: buyer._id},
-        {$addToSet: {orders: order}, cart: []},
+        {$addToSet: {orders: order}},
         {new: true, useFindAndModify: false})
         .populate('perks')
         .populate('promos')
@@ -625,12 +625,7 @@ module.exports = {
         .populate('friendRequests.receiver');
 
       return {
-        ...result._doc,
-        date: result.date,
-        time: result.time,
-        type: result.type,
-        buyer: result.buyer,
-        receiver: result.receiver
+        ...user._doc,
       };
     } catch (err) {
       throw err;

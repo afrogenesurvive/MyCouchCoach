@@ -1,3 +1,14 @@
+on book session cannot read property 0 of undefined
+
+fix cart checkout w/piut orderStripePayment
+ show order total on frontedn create order form
+ fix get todays sessions date
+
+booked lessons === lessons i have bookedUsers
+created lessons : booked and non booked
+
+
+
 book session - lesson detail to string undefined :done
 
 lessons - lesson viewer edit tab has reviews:done
@@ -10,3 +21,26 @@ cart check out crash:done
 -add delete booking and attendance
 -search user result details crash
 -add reply function
+
+
+
+{
+    "Version": "2012-10-17",
+    "Id": "http referer policy example",
+    "Statement": [
+        {
+            "Sid": "Allow get requests originating from www.africangeneticsurvival.net and africangeneticsurvival.net.",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::tech.africangeneticsurvival.net/*",
+            "Condition": {
+                "StringLike": {
+                    "aws:Referer": [
+                        "https://www.africangeneticsurvival.net/*",
+                        "https://africangeneticsurvival.net/*"
+                    ]
+                }
+            }
+        }
+}

@@ -20,13 +20,6 @@ const CreateOrderForm = (props) => {
     const primaryBillingAddresses = billingAddresses.filter(address => address.primary === true)
     const primaryShippingAddress = primaryShippingAddresses[0];
     const primaryBillingAddress = primaryBillingAddresses[0];
-    // console.log(`
-    //     addressTypes: ${addressTypes},
-    //     billingAddresses: ${billingAddresses.length}
-    //     shippingAddresses: ${shippingAddresses.length},
-    //     primaryShippingAddresses: ${primaryShippingAddresses.length},
-    //     primaryBillingAddresses: ${primaryBillingAddresses.length},
-    //   `);
 
 return (
 <div className="CreateFormContainer">
@@ -46,22 +39,26 @@ return (
 <Form.Row>
 <Form.Group as={Col} controlId="formGridTotalA">
   <Form.Label>TotalA</Form.Label>
-  <Form.Control type="number"step="0.01" placeholder="Enter TotalA"/>
+  <Form.Control type="number"step="0.01" value={props.subtotal}/>
 </Form.Group>
 <Form.Group as={Col} controlId="formGridTotalB">
   <Form.Label>TotalB</Form.Label>
-  <Form.Control type="number"step="0.01" placeholder="Enter TotalB"/>
+  <Form.Control type="number"step="0.01" value={0}/>
+</Form.Group>
+<Form.Group as={Col} controlId="formGridTotalC">
+  <Form.Label>TotalC</Form.Label>
+  <Form.Control type="number"step="0.01" value={0}/>
 </Form.Group>
 </Form.Row>
 
 <Form.Row>
 <Form.Group as={Col} controlId="formGridTaxDescription">
   <Form.Label>TaxDescription</Form.Label>
-  <Form.Control as="textarea" rows="5" placeholder="Enter TaxDescription"/>
+  <Form.Control as="textarea" rows="3" placeholder='tax description'/>
 </Form.Group>
 <Form.Group as={Col} controlId="formGridTaxAmount">
   <Form.Label>TaxAmount</Form.Label>
-  <Form.Control type="number"step="0.01" placeholder="Enter TaxAmount"/>
+  <Form.Control type="number"step="0.01"value={0}/>
 </Form.Group>
 </Form.Row>
 

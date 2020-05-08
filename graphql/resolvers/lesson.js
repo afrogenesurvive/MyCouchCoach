@@ -1380,12 +1380,18 @@ module.exports = {
 
       }
       console.log('end');
+
+      const user2 = await User.findOneAndUpdate({_id: user._id},
+        {cart: []},
+        {new: true, useFindAndModify: false}
+      )
+
       if (bookedLessons.length === 0) {
         console.log('...all of your requested sessions are either full or youve already booked them...');
         throw new Error('...all of your requested sessions are either full or youve already booked them...')
       }
       console.log('bookedLessons',bookedLessons);
-      const user2 = updateStudentWishlist;
+
       return {
           ...user2._doc,
           _id: user2.id,

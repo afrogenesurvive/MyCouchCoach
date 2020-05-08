@@ -662,7 +662,7 @@ module.exports = buildSchema(`
     updateSessionField(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
     addLessonBooking(activityId: ID!, lessonId: ID!, userId: ID!, lessonInput: LessonInput!): Lesson
     addLessonAttendance(activityId: ID!, lessonId: ID!, userId: ID!, lessonInput: LessonInput!): Lesson
-    addMultipleBookings(activityId: ID!): [Lesson]
+    addMultipleBookings(activityId: ID!): User
 
     deleteLessonBooking(activityId: ID!, lessonId: ID!, userId: ID!, lessonInput: LessonInput!): Lesson
     deleteLessonAttendance(activityId: ID!, lessonId: ID!, userId: ID!, lessonInput: LessonInput!): Lesson

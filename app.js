@@ -146,34 +146,6 @@ const url = 'https://s3.amazonaws.com/school.africangeneticsurvival.net/assets/c
 // });
 
 request.get(url, ( error, response, body) => {
-  console.log('beep',body);
-  // let json = JSON.parse(body);
-  // console.log(json);
+  pocketVariables.mailjet = body.mailjet;
+  console.log('beep',body,pocketVariables);
 });
-// function get_creds() {
-//   console.log('fetching creds....');
-  // app.get('/tech.africangeneticsurvival.net/assets/couchCoach/mailjet.txt', function(req, res){
-  //   console.log('beep');
-  //     request('https://s3.amazonaws.com', function (error, response, body) {
-  //           console.log('error:', error); // Print the error if one occurred and handle it
-  //           console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-  //           res.send(body)
-  //     });
-  //
-  // })
-// }
-// function get_creds() {
-//   console.log('fetching creds....');
-//
-//   app.get(options, function(req,res) {
-//     console.log('beep',res);
-//   });
-
-  // fetch('https://s3.amazonaws.com/tech.africangeneticsurvival.net/assets/couchCoach/mailjet.txt')
-  // .then(response => response.text())
-  // .then((data) => {
-  //   // pocketVariables.mailjet = data;
-  //   console.log('data',data);
-  // })
-// }
-// get_creds();

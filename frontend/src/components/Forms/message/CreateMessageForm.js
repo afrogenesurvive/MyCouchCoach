@@ -21,14 +21,23 @@ return (
 </Form.Control>
 </Form.Group>
 
-<Form.Group as={Col} controlId="formGridSubject">
+{props.receiver && (<Form.Group as={Col} controlId="formGridSubject">
   <Form.Label>Subject</Form.Label>
   <Form.Control type="text" placeholder="Subject" />
-</Form.Group>
+</Form.Group>)}
 
-<Form.Group as={Col} controlId="formGridReceiver">
+{props.replyTo && (<Form.Group as={Col} controlId="formGridSubject">
+  <Form.Label>Subject</Form.Label>
+  <Form.Control type="text" value={props.replyTo.subject} />
+</Form.Group>)}
+
+{props.receiver && (<Form.Group as={Col} controlId="formGridReceiver">
   <Form.Label>Receiver: {props.receiver.username}</Form.Label>
-</Form.Group>
+</Form.Group>)}
+
+{props.replyTo && (<Form.Group as={Col} controlId="formGridReceiver">
+  <Form.Label>replyTo: {props.replyTo.sender.username}</Form.Label>
+</Form.Group>)}
 
 </Form.Row>
 

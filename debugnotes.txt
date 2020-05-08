@@ -1,8 +1,8 @@
-on book session cannot read property 0 of undefined
+on book session cannot read property 0 of undefined: done
 
-fix cart checkout w/piut orderStripePayment
- show order total on frontedn create order form
- fix get todays sessions date
+fix cart checkout w/piut orderStripePayment: done
+ show order total on frontedn create order form: done
+ fix get todays sessions date: done?
 
 booked lessons === lessons i have bookedUsers
 created lessons : booked and non booked
@@ -17,10 +17,10 @@ my profile - likedlessons details show sessions map of undefined :done
 
 cart check out crash:done
 
--fix delete cart item
+-fix delete cart item: done
 -add delete booking and attendance
--search user result details crash
--add reply function
+-search user result  details crash: done
+-add reply function: done
 
 
 

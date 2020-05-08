@@ -631,7 +631,7 @@ class LessonsPage extends Component {
       .then(resData => {
         // console.log(resData);
         let responseAlert = null;
-        if (resData.errors !== []) {
+        if (resData.errors) {
           responseAlert = resData.errors[0].message;
           // console.log(responseAlert);
           this.setState({userAlert: responseAlert})
@@ -670,7 +670,8 @@ class LessonsPage extends Component {
     const sessionTitle = event.target.formGridTitle.value;
     // const sessionDate = new Date (event.target.patientReferralCalendarVisitDate.value.substr(0,10)*1000).toLocaleDateString().slice(0,10);
     let sessionDate = event.target.CalendarDate.value;
-    sessionDate = new Date(sessionDate).toLocaleDateString().slice(0,10);
+    sessionDate = new Date(sessionDate).toISOString().slice(0,10);
+    // sessionDate = new Date(sessionDate).toLocaleDateString().slice(0,10);
     const sessionTime = event.target.formGridTime.value;
     const sessionLimit = event.target.formGridLimit.value;
     const sessionAmount = 0;

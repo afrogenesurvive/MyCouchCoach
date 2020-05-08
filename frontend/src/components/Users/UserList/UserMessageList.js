@@ -23,6 +23,8 @@ const userMessageList = props => {
         message={message}
         onDelete={props.onDelete}
         canDelete={props.canDelete}
+        received={props.received}
+        onStartReply={props.onStartReply}
       />
     );
   });

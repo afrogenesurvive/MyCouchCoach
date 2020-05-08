@@ -1200,8 +1200,10 @@ module.exports = {
       }
       // console.log(session,session[0]._id.limit,session[0]._id.bookedAmount,sessionFull,session[0]._id.booked,session[0]._id.booked.toString(),session[0]._id.booked.toString().split(','),user._id,args.userId,session[0]._id.booked.includes(user._id),session[0]._id.booked.includes(args.userId),session[0]._id.booked.toString().search(args.userId),session[0]._id.booked.toString().split(',').includes(args.userId),session[0]._id.booked.filter(x => x === user._id));
       // console.log(args.lessonInput.sessionDate);
+
       const lesson = await Lesson.findOneAndUpdate(
         {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate },
+        // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle },
         {
           $addToSet: {'sessions.$.booked': user},
           $inc: {'sessions.$.bookedAmount': 1,'sessions.$.amount': 1},

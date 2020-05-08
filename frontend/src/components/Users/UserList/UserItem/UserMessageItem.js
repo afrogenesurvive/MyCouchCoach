@@ -72,6 +72,12 @@ const userMessgeItem = props => (
           </Button>
         )}
 
+        {props.received && (
+          <Button variant="info" onClick={props.onStartReply.bind(this, props.message)}>
+            Reply
+          </Button>
+        )}
+
       </Card.Body>
     </Card>
     </div>

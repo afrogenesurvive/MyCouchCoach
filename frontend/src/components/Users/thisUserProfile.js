@@ -502,7 +502,7 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
         <UserCartItemList
           userCartItems={user.cart}
           authId={props.authId}
-          canDelete={props.canDelete}
+          canDelete={true}
           onDelete={props.userDeleteCartItem}
         />
       )}
@@ -637,6 +637,20 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
       <Tabs defaultActiveKey="received" id="uncontrolled-tab-example">
         <Tab eventKey="received" title="received">
           <p>Received</p>
+
+          {props.messageReplying === true && (
+            <CreateMessageForm
+              canCancel
+              canConfirm
+              onCancel={props.onCancelReply}
+              onConfirm={props.onReply}
+              confirmText="Confirm"
+              user={props.user}
+              authId={props.authId}
+              replyTo={props.replyTo}
+            />
+          )}
+
           {messagesReceived !== null &&
             messagesReceived !== [] && (
               <UserMessageList
@@ -644,6 +658,8 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
                 authId={props.authId}
                 canDelete={props.canDelete}
                 onDelete={props.userDeleteMessage}
+                received
+                onStartReply={props.onStartReply}
               />
             )}
         </Tab>

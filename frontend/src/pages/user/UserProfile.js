@@ -77,6 +77,8 @@ class UserProfile extends Component {
     showReviewsState: false,
     creatingReview: false,
     reviewLesson: null,
+    messageReplying: false,
+    replyTo: null,
   };
 
   isActive = true;
@@ -90,7 +92,6 @@ class UserProfile extends Component {
   componentDidMount() {
 
     this.getThisUser();
-
 
     const conversationId = this.context.activityId;
     this.socket.emit('msg_subscribe', {user: this.context.activityId, room:'msg'+this.context.activityId});
@@ -1511,7 +1512,7 @@ class UserProfile extends Component {
       })
       .then(resData => {
           // console.log(resData);
-          if (resData.errors[0].message) {
+          if (resData.errors) {
             this.setState({userAlert: resData.errors[0].message, isLoading: false})
           }
           if (resData.data.addMultipleBookings !== null) {
@@ -1810,6 +1811,80 @@ class UserProfile extends Component {
         this.setState({userAlert: err});
       });
   };
+  onStartReply = (args) => {
+    this.setState({messageReplying: true, replyTo: args});
+  };
+  onCancelReply = () => {
+    this.setState({messageReplying: false, replyTo: null});
+  };
+  onReply = (event) => {
+    event.preventDefault();
+    console.log('...replying to message...', this.state.replyTo,event.target);
+    this.setState({userAlert: '...replying to message...', messageReplying: false})
+
+    const token = this.context.token;
+    const receiver = this.state.replyTo.sender;
+    const receiverId = this.state.replyTo.sender._id;
+    const role = this.context.role;
+    const activityId = this.context.activityId;
+    const senderId = activityId;
+    const senderName = this.state.user.username;
+    const date = new Date();
+    const timeString1 = date.toLocaleDateString().slice(11,16);
+    const timeString2 = date.toLocaleDateString().slice(11,16);
+    const type = event.target.formGridTypeSelect.value;
+    const subject = event.target.formGridSubject.value;
+    const message = event.target.formGridMessage.value;
+    const msgObject = {
+      date: date,
+      time: timeString2,
+      type: type,
+      senderName: senderName,
+      subject: subject,
+      message: message,
+    };
+
+    const requestBody = {
+      query:`
+        mutation {createMessage(
+          activityId:"${activityId}",
+          senderId:"${senderId}",
+          receiverId:"${receiverId}",
+          messageInput:{
+            type:"${type}",
+            subject:"${subject}",
+            message:"${message}"
+          })
+        {_id,date,time,type,subject,sender{_id,username},receiver{_id,username},message,read}}
+      `};
+
+    this.sendSocketMessage(msgObject);
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!');
+          this.setState({userAlert: 'Failed!'});
+        }
+        return res.json();
+      })
+      .then(resData => {
+        console.log("reply Message",resData.data.createMessage);
+        const responseAlert = JSON.stringify(resData.data.createMessage).slice(2,25);;
+        this.setState({ userAlert: responseAlert, activityA: JSON.stringify(requestBody), replyTo: null});
+        // this.logUserActivity();
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
+  }
 
   getThisUser() {
     this.setState({ isLoading: true });
@@ -3465,6 +3540,11 @@ class UserProfile extends Component {
                     reviewLesson={this.state.reviewLesson}
                     createReview={this.createReview}
 
+                    messageReplying={this.state.messageReplying}
+                    onStartReply={this.onStartReply}
+                    onCancelReply={this.onCancelReply}
+                    onReply={this.onReply}
+                    replyTo={this.state.replyTo}
                   />
                 )}
 

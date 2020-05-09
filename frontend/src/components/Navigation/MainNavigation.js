@@ -30,6 +30,7 @@ const mainNavigation = props => (
               )}
               {context.token && (
                 <React.Fragment>
+
                   <li>
                     <NavLink to="/userProfile">My Profile</NavLink>
                   </li>

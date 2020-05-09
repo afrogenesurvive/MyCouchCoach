@@ -486,6 +486,8 @@ module.exports = buildSchema(`
 
     getPocketVars(activityId: ID!): PocketVariables
 
+    getPublicUserById(userId: ID!): User
+
     getAllUsers(activityId: ID!): [User]
     getUserById(activityId: ID!, userId: ID!): User
     getUsersByField(activityId: ID!, field: String!, query: String!): [User]
@@ -574,6 +576,8 @@ module.exports = buildSchema(`
   }
 
   type RootMutation {
+
+    resetUserPassword(userId: ID!, userInput: UserInput!):User
 
     createUser(userInput: UserInput!): User
     updateUserBasic(activityId: ID!, userId: ID!, userInput: UserInput!): User

@@ -1,51 +1,50 @@
-import React, { Component } from 'react';
-import Row from 'react-bootstrap/Row';
+import React from 'react';
 import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
-import { useParams } from 'react-router-dom';
+import ResetPasswordForm from '../../components/Forms/user/ResetPasswordForm'
+import { useParams, NavLink } from 'react-router-dom';
 
-// import CreateUserForm from '../../components/Forms/user/CreateUserForm';
-import LoadingOverlay from '../../components/LoadingOverlay';
-import './Auth.css';
+import "./AttachmentViewer.css"
 
-class PasswordReset extends Component {
-  state = {
+const PasswordReset = (props) => {
+  let {user} = useParams();
 
-  };
+return (
+  <div className="attachmentViewerBg">
+    <div className="attachmentViewer">
 
-  constructor(props){
-      super(props);
-      this.user = useParams();
-    }
+    <Row className="loginPageContainerRow2">
+    <Col className="loginPageContainerCol2">
+      <h1>Password Reset</h1>
 
-  componentDidMount() {
-    console.log('beep');
-  }
-
-  render() {
-    return (
-      <React.Fragment>
-
-      {this.state.overlay === true && (
-        <LoadingOverlay
-          status={this.state.overlayStatus}
-        />
+      {props.resetState === 'complete' && (
+        <h1>Success...Password reset...</h1>
       )}
-      <Container className="loginPageContainer">
 
-      <Row className="loginPageContainerRow2">
-      <Col className="loginPageContainerCol2">
-        <h1>Password Reset</h1>
-        <p>{this.user}</p>
+      {props.resetState === 'complete' && (
+        <NavLink to="/auth">
+        <Button variant="secondary">
+          Login
+        </Button>
+        </NavLink>
+      )}
 
-      </Col>
-      </Row>
-      </Container>
+      {props.resetState === 'incomplete' && (
+      <ResetPasswordForm
+        userId={user}
+        onConfirm={props.passwordReset}
+      />
+      )}
 
-      </React.Fragment>
-    );
-  }
+    </Col>
+    </Row>
+
+    </div>
+  </div>
+)
+
 }
+
 
 export default PasswordReset;

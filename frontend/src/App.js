@@ -10,7 +10,6 @@ import LessonsPage from './pages/lesson/Lessons';
 import PublicLessonsPage from './pages/lesson/PublicLessons';
 import ProfileLessonViewer from './components/ProfileLessonViewer';
 import ErrorPage from './components/ErrorPage';
-import PageA from './components/PageA';
 import PasswordReset from './pages/auth/PasswordReset';
 
 import MainNavigation from './components/Navigation/MainNavigation';
@@ -26,6 +25,7 @@ class App extends Component {
     role: null,
     context: this.context,
     sessionCookiePresent: false,
+    passwordResetState: 'incomplete'
   };
 
   static contextType = AuthContext;
@@ -55,8 +55,9 @@ class App extends Component {
 
   componentDidMount() {
     // console.log(this.socket.connected);
+    console.log('...app component mounted...');
 
-    if (sessionStorage.getItem('login info')) {
+    if (sessionStorage.getItem('login info') && this.state.token === null) {
 
       let seshStore = sessionStorage.getItem('login info');
       this.context.token = seshStore.token;
@@ -74,7 +75,7 @@ class App extends Component {
   }
 
   componentWillUnmount() {
-
+    // console.log('boop boop boop');
   }
 
   logout2 () {
@@ -88,7 +89,7 @@ class App extends Component {
         {_id,loggedIn}}
       `};
 
-    fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
+    fetch('http://localhost:8088/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
@@ -157,7 +158,7 @@ class App extends Component {
       {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle},interests,perks{_id},promos{_id},friends{_id,username},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id},bookedLessons{date,ref{_id,title}},attendedLessons{date,ref{_id,title}},taughtLessons{date,ref{_id,title}},wishlist{date,ref{_id,title},booked},cart{dateAdded,sessionDate,lesson{_id,title}},comments{_id},messages{_id},orders{_id},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
-    fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
+    fetch('http://localhost:8088/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
@@ -180,6 +181,44 @@ class App extends Component {
       .catch(err => {
         this.setState({userAlert: err});
       });
+  }
+
+  passwordReset = (event) => {
+    event.preventDefault();
+    console.log('...reset password submission...');
+      const userId = event.target.formGridUserId.value;
+      const password = event.target.formGridPassword.value;
+      const requestBody = {
+        query:`
+          mutation {resetUserPassword(
+            userId:"${userId}",
+            userInput:{
+              password:"${password}"
+            })
+            {_id,password}}
+        `};
+      console.log(JSON.stringify(requestBody));
+      fetch('http://localhost:8088/graphql', {
+        method: 'POST',
+        body: JSON.stringify(requestBody),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(res => {
+          if (res.status !== 200 && res.status !== 201) {
+            throw new Error('Failed!');
+          }
+          return res.json();
+        })
+        .then(resData => {
+          console.log(resData);
+
+        })
+        .catch(err => {
+          console.log(err);
+        });
+        this.setState({passwordResetState: 'complete' })
   }
 
   render() {
@@ -222,7 +261,14 @@ class App extends Component {
                     // this.state.token && (<Redirect from="/" to="/userProfile" exact />)
                   }
 
-                  {this.state.token && (<Route path="/pageA/:user" component={PageA} />)}
+                  {
+                    // !this.state.token && (<Route path="/passwordReset/:user" component={PasswordReset} />)
+                  }
+                  {!this.state.token && (<Route path="/passwordReset/:user" render={(props) => <PasswordReset {...props}
+                    passwordReset={this.passwordReset}
+                    resetState={this.state.passwordResetState}
+                    />}
+                  />)}
                   {this.state.token && (<Route path="/userProfile" component={UserProfile} />)}
                   {this.state.token && (<Route path="/userProfile/LessonDetailViewer" component={ProfileLessonViewer} />)}
 
@@ -236,7 +282,6 @@ class App extends Component {
                   {!this.state.token && (<Route path="/signup" component={SignupPage} />)}
                   {!this.state.token && (<Redirect to="/login" exact />)}
                   {!this.state.token && (<Route path="*" component={ErrorPage}/>)}
-                  {!this.state.token && (<Route path="/PasswordReset/:user" children={<PasswordReset />} />)}
               </Switch>
             </main>
 

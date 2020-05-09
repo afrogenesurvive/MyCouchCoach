@@ -258,8 +258,43 @@ module.exports = {
     try {
 
       const pocketVars = JSON.stringify(pocketVariables)
-      console.log(pocketVariables,pocketVars);
+      // console.log(pocketVariables,pocketVars);
       return {pocketVariables: pocketVars};
+    } catch (err) {
+      throw err;
+    }
+  },
+  getPublicUserById: async (args) => {
+    console.log('Resolver: getPublicUserById...');
+    try {
+
+      const user = await User.findById({_id: args.userId})
+
+      return {
+          ...user._doc,
+          _id: user.id,
+          name: user.name
+      };
+    } catch (err) {
+      throw err;
+    }
+  },
+  resetUserPassword: async (args) => {
+    console.log('Resolver: resetUserPassword...');
+    try {
+      const password = args.userInput.password;
+      const hashedPassword = await bcrypt.hash(password, 12);
+      const user = await User.findOneAndUpdate(
+        {_id: args.userId},
+        {password: hashedPassword},
+        {new: true, useFindAndModify: false}
+      )
+
+      return {
+          ...user._doc,
+          _id: user.id,
+          name: user.name
+      };
     } catch (err) {
       throw err;
     }

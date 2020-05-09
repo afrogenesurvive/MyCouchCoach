@@ -11,6 +11,7 @@ import PublicLessonsPage from './pages/lesson/PublicLessons';
 import ProfileLessonViewer from './components/ProfileLessonViewer';
 import ErrorPage from './components/ErrorPage';
 import PasswordReset from './pages/auth/PasswordReset';
+import LandingPage from './pages/Landing';
 
 import MainNavigation from './components/Navigation/MainNavigation';
 import AuthContext from './context/auth-context';
@@ -257,6 +258,7 @@ class App extends Component {
             />
             <main className="main-content">
               <Switch>
+                <Route path="/home" component={LandingPage} />
                   {
                     // this.state.token && (<Redirect from="/" to="/userProfile" exact />)
                   }
@@ -280,7 +282,12 @@ class App extends Component {
                   {!this.state.token && (<Route path="/lessons/public" component={PublicLessonsPage} />)}
                   {!this.state.token && (<Route path="/login" component={AuthPage} />)}
                   {!this.state.token && (<Route path="/signup" component={SignupPage} />)}
-                  {!this.state.token && (<Redirect to="/login" exact />)}
+                  {
+                    !this.state.token && (<Redirect from="/" to="/home" exact />)
+                  }
+                  {
+                    // !this.state.token && (<Redirect to="/login" exact />)
+                  }
                   {!this.state.token && (<Route path="*" component={ErrorPage}/>)}
               </Switch>
             </main>

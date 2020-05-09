@@ -47,7 +47,7 @@ module.exports = {
     // pocketVariables.token = token;
     // pocketVariables.userId = user.id;
 
-    return { activityId: userLoggedIn.id, role: "User", token: token, tokenExpiration: 4 };
+    return { activityId: userLoggedIn.id, role: userLoggedIn.role, token: token, tokenExpiration: 4 };
   },
   logout: async (args) => {
     console.log("Resolver: Logout...");

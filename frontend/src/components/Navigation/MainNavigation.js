@@ -18,9 +18,12 @@ const mainNavigation = props => (
           <nav className="main-navigation__items">
 
             <ul>
+            <li>
+              <NavLink to="/home">Home</NavLink>
+            </li>
               {!context.token && (
                 <li>
-                  <NavLink to="/auth">Login</NavLink>
+                  <NavLink to="/login">Login</NavLink>
                 </li>
               )}
               {!context.token && (

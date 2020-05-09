@@ -8,6 +8,7 @@ const lessonRequirementList = props => {
   const requirements = props.lessonRequirements.map(requirement => {
     return (
       <LessonRequirementItem
+        public={props.public}
         key={requirement}
         requirement={requirement}
         authId={props.authId}

@@ -120,7 +120,7 @@ class PublicLessonsPage extends Component {
     const requestBody = {
       query: `
           query {getAllPublicLessons
-            {_id,title,subtitle,type,category,price,points,description,duration,schedule{date,time},gallery{name,type,path},instructors{_id,username},tags}}
+            {_id,title,subtitle,type,category,price,points,description,duration,requirements,schedule{date,time},gallery{name,type,path},instructors{_id,username},tags,reviews{date,type,title,author{_id,username},body,rating}}}
         `};
 
     fetch('http://localhost:8088/graphql', {

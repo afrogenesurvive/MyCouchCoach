@@ -8,6 +8,7 @@ const lessonTagList = props => {
   const tags = props.lessonTags.map(tag => {
     return (
       <LessonTagItem
+        public={props.public}
         key={tag}
         tag={tag}
         authId={props.authId}

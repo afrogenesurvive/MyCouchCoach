@@ -19,7 +19,7 @@ return (
       <h1>Password Reset</h1>
 
       {props.resetState === 'complete' && (
-        <h1>Success...Password reset...</h1>
+        <p>Success...Password reset...</p>
       )}
 
       {props.resetState === 'complete' && (

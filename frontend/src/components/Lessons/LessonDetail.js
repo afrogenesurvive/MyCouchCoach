@@ -35,7 +35,7 @@ const LessonDetail = (props) => {
 
   const {...lesson} = props.lesson;
   const {...user} = props.user;
-  
+
   let userLikedLessons = [];
   let hasLiked = false;
   if (user.likedLessons !== []) {

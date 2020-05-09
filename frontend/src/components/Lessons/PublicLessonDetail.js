@@ -8,6 +8,10 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 import LessonScheduleList from './LessonList/LessonScheduleList';
+import LessonRequirementList from './LessonList/LessonRequirementList';
+import LessonImageList from './LessonList/LessonImageList';
+import LessonReviewList from './LessonList/LessonReviewList';
+import LessonTagList from './LessonList/LessonTagList';
 
 // import AuthContext from '../../context/auth-context';
 
@@ -82,6 +86,82 @@ const PublicLessonDetail = (props) => {
           </Col>
           </Row>
 
+
+      </Card.Body>
+      </Card>
+      </Tab>
+
+      <Tab eventKey="requirements" title="requirements">
+      <Card className="UserDetailCard">
+      <Card.Body>
+        <Row>
+          <Col>
+          <Card.Text>
+          Requirements
+          </Card.Text>
+              <LessonRequirementList
+                public
+                lessonRequirements={lesson.requirements}
+              />
+          </Col>
+        </Row>
+      </Card.Body>
+      </Card>
+      </Tab>
+
+      <Tab eventKey="images" title="images">
+      <Card className="UserDetailCard">
+      <Card.Body>
+        <Row>
+          <Col>
+          <Card.Text>
+          Images
+          </Card.Text>
+              <LessonImageList
+                public
+                lessonImages={lesson.gallery}
+              />
+          </Col>
+        </Row>
+
+      </Card.Body>
+      </Card>
+      </Tab>
+
+      <Tab eventKey="reviews" title="reviews">
+      <Card className="UserDetailCard">
+      <Card.Body>
+
+        <Row>
+          <Col>
+          <Card.Text>
+          Reviews
+          </Card.Text>
+              <LessonReviewList
+                lessonReviews={lesson.reviews}
+              />
+          </Col>
+        </Row>
+
+      </Card.Body>
+      </Card>
+      </Tab>
+
+      <Tab eventKey="tags" title="tags">
+      <Card className="UserDetailCard">
+      <Card.Body>
+      <Row>
+        <Col>
+        <Card.Text>
+        Tags
+        </Card.Text>
+
+            <LessonTagList
+              public
+              lessonTags={lesson.tags}
+            />
+        </Col>
+      </Row>
 
       </Card.Body>
       </Card>

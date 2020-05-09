@@ -8,6 +8,7 @@ const lessonImageList = props => {
   const images = props.lessonImages.map(image => {
     return (
       <LessonImageItem
+        public={props.public}
         key={image}
         image={image}
         name={image.name}

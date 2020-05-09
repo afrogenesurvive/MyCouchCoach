@@ -111,6 +111,41 @@ class UserProfile extends Component {
     this.userOnline();
   };
 
+  getPocketVars () {
+    console.log('...retriving pocketVars..');
+    const token = this.context.token;
+    const activityId = this.context.activityId;
+    const requestBody = {
+          query:`
+            query {getPocketVars(
+              activityId:"${activityId}")
+            {pocketVariables}}
+          `};
+
+    fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!');
+          this.setState({userAlert: 'Failed!'});
+        }
+        return res.json();
+      })
+      .then(resData => {
+        console.log('beep',resData.data.getPocketVars.pocketVariables,JSON.parse(resData.data.getPocketVars.pocketVariables));
+        this.setState({userAlert: resData.data.getPocketVars.pocketVariables})
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
+  }
+
   onStartUpdate = () => {
     this.setState({ updating: true, userAddField: 'basic' });
   };
@@ -1931,6 +1966,7 @@ class UserProfile extends Component {
           if (thisUser.name === "Lord-of-the-Manor"){
             this.setState({canDelete: true, userAlert: "Mi'Lord!!"})
           }
+          this.getPocketVars();
           // this.logUserActivity();
       })
       .catch(err => {

@@ -476,10 +476,15 @@ module.exports = buildSchema(`
     tokenExpiration: Int!
     error: String
   }
+  type PocketVariables {
+    pocketVariables: String
+  }
 
   type RootQuery {
     login(email: String!, password: String!): AuthData!
     logout( activityId: ID!): User!
+
+    getPocketVars(activityId: ID!): PocketVariables
 
     getAllUsers(activityId: ID!): [User]
     getUserById(activityId: ID!, userId: ID!): User

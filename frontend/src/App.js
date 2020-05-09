@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Redirect, Switch, useParams } from 'react-router-dom';
 
 import AuthPage from './pages/auth/Auth';
 import SignupPage from './pages/auth/Signup';
@@ -10,6 +10,8 @@ import LessonsPage from './pages/lesson/Lessons';
 import PublicLessonsPage from './pages/lesson/PublicLessons';
 import ProfileLessonViewer from './components/ProfileLessonViewer';
 import ErrorPage from './components/ErrorPage';
+import PageA from './components/PageA';
+import PasswordReset from './pages/auth/PasswordReset';
 
 import MainNavigation from './components/Navigation/MainNavigation';
 import AuthContext from './context/auth-context';
@@ -216,8 +218,11 @@ class App extends Component {
             />
             <main className="main-content">
               <Switch>
-                  {this.state.token && (<Redirect from="/" to="/userProfile" exact />)}
+                  {
+                    // this.state.token && (<Redirect from="/" to="/userProfile" exact />)
+                  }
 
+                  {this.state.token && (<Route path="/pageA/:user" component={PageA} />)}
                   {this.state.token && (<Route path="/userProfile" component={UserProfile} />)}
                   {this.state.token && (<Route path="/userProfile/LessonDetailViewer" component={ProfileLessonViewer} />)}
 
@@ -231,6 +236,7 @@ class App extends Component {
                   {!this.state.token && (<Route path="/signup" component={SignupPage} />)}
                   {!this.state.token && (<Redirect to="/login" exact />)}
                   {!this.state.token && (<Route path="*" component={ErrorPage}/>)}
+                  {!this.state.token && (<Route path="/PasswordReset/:user" children={<PasswordReset />} />)}
               </Switch>
             </main>
 

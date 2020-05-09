@@ -132,20 +132,10 @@ app.get('/*', function(req, res) {
 });
 
 const url = 'https://mycouchcoachstorage.s3.amazonaws.com/assets/creds/mailjet/mailJetApi.txt';
-//
-// https.get(url, res => {
-//   res.setEncoding("utf8");
-//   let body = "";
-//   res.on("data", data => {
-//     body += data;
-//   });
-//   res.on("end", () => {
-//     body = xmlParser.xml2json(body, {compact: true, spaces: 4})
-//     console.log(body);
-//   });
-// });
+
 
 request.get(url, ( error, response, body) => {
+  // body = xmlParser.xml2json(body, {compact: true, spaces: 4})
   // console.log('beep',body.slice(0,3));
   // console.log('beep',body.slice(0,3) === '<?x');
   // console.log('boop',body.slice(0,3) === '{"a');

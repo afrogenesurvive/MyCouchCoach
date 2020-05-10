@@ -287,6 +287,7 @@ class App extends Component {
                   }
                   {
                     // !this.state.token && (<Redirect to="/login" exact />)
+                    // !this.state.token && sessionStorage.getItem('login info') && (<Redirect to="/login" exact />)
                   }
                   {!this.state.token && (<Route path="*" component={ErrorPage}/>)}
               </Switch>

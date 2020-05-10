@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Tabs from 'react-bootstrap/Tabs';
@@ -91,14 +91,38 @@ const reviewedLessonIds = user.reviews.map(x => x.lesson._id);
 let hasShippingAddress = user.addresses.filter(x => x.type === 'Shipping' && x.primary === true).length === 0;
 // console.log(user.addresses,user.addresses.filter(x => x.type === 'Shipping'),hasShippingAddress);
 
-let userAddresses = [];
-// let userAddresses = [];
-// if (props.addressFilter === null) {
-//   userAddresses = user.addresses;
-// }
-// if (props.addressFilter === 'primary') {
-//   userAddresses = user.addresses.filter(x => x.primary === true);
-// }
+
+let userAddresses = user.addresses;
+
+// - filters
+//   - address
+//     - type
+//     - primary
+//   - friend
+//     -
+//   - message
+//     - asc/desc by date
+//     - by sender/receiver name
+//   - likedlesson
+//     - title
+//   - bookedLesson/attendedLesson/taughtLesson/wishlist
+//     - date
+//     - lesson title
+//   - order
+//     - date
+//   - paymentinfo
+//     - date
+//     - Type
+//     - valid
+//     - primary
+//   - friendRequests
+//     - date
+//     - sender/receiver name
+//   - review
+//     - date
+//     - lesson title
+
+
 const orderSubtotal = user.cart.map(x => x.lesson);
 const orderSubtotal2 = orderSubtotal.map(x => x.price )
 const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
@@ -214,6 +238,18 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
     </Tab>
 
     <Tab eventKey="address" title="address">
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'addresses', key: 'primary', value: true})}>
+      Filter by primary
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'addresses', key: 'type', value: 'Billing'})}>
+      Filter by type: Billing
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'addresses', key: 'type', value: 'Shipping'})}>
+      Filter by type: Shipping
+    </Button>
+    <Button variant="danger" onClick={props.setFilter.bind(this, {field: null, key: null, value: null })}>
+      clearFilter
+    </Button>
 
     <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.onStartAdd.bind(this, "address")}>+ Address</Button>
     {props.userAddField === "address" && (
@@ -230,7 +266,8 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
     {user.addresses !== null &&
       user.addresses !== [] && (
         <UserAddressList
-          userAddresses={user.addresses}
+          filter={props.filter}
+          userAddresses={userAddresses}
           authId={props.authId}
           canDelete={props.canDelete}
           onDelete={props.userDeleteAddress}
@@ -523,6 +560,7 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
       )}
 
     </Tab>
+
     <Tab eventKey="bookedLessons" title="bookedLessons">
 
     {user.bookedLessons !== null &&
@@ -537,6 +575,7 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
       )}
 
     </Tab>
+
     <Tab eventKey="attendedLessons" title="attendedLessons">
 
     {props.creatingReview === true &&

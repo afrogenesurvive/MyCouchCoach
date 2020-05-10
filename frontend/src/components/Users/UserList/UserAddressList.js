@@ -4,11 +4,26 @@ import UserAddressItem from './UserItem/UserAddressItem';
 import './UserList.css';
 
 const userAddressList = props => {
-  const userAddresses = props.userAddresses.map(address => {
 
+  const {...filter} = props.filter;
+  let userAddresses = [];
+  if (filter.field === 'addresses' && filter.key === 'primary') {
+    console.log('...filtered addresses...',filter);
+  }
+
+  if (filter.field === 'addresses' && filter.key === 'type') {
+    console.log('...filtered addresses...',filter);
+  }
+
+  if (filter.field === null && filter.key === null && filter.value === null) {
+    console.log('...unfiltered addresses...',filter);
+
+  }
+
+  userAddresses = props.userAddresses.map(address => {
     return (
       <UserAddressItem
-        key={address.path}
+        key={address.postalCode}
         authId={props.authId}
         type={address.type}
         number={address.number}
@@ -27,6 +42,8 @@ const userAddressList = props => {
       />
     );
   });
+
+
 
   return <ul className="user__list1_detail">{userAddresses}</ul>;
 };

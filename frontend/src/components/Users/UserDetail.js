@@ -59,8 +59,6 @@ const UserDetail = (props) => {
 
           <Col className="detailCardCol">
 
-
-
           </Col>
         </Row>
 

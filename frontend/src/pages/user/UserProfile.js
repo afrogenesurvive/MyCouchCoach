@@ -23,6 +23,7 @@ import io from 'socket.io-client';
 class UserProfile extends Component {
   state = {
     user: null,
+    userCopy: null,
     users: [],
     updating: false,
     adding: false,
@@ -79,6 +80,11 @@ class UserProfile extends Component {
     reviewLesson: null,
     messageReplying: false,
     replyTo: null,
+    filter: {
+      field: null,
+      key: null,
+      value: null
+    },
   };
 
   isActive = true;
@@ -183,7 +189,7 @@ class UserProfile extends Component {
           // console.log(thisUser);
           this.context.user = thisUser;
           if (this.isActive) {
-          this.setState({ user: thisUser, isLoading: false, activityA: JSON.stringify(requestBody) });
+          this.setState({ user: thisUser, userCopy: thisUser, isLoading: false, activityA: JSON.stringify(requestBody) });
           }
           if (sessionStorage.getItem('token')) {
             this.setState({userAlert: "Welcome Back..."})
@@ -2084,8 +2090,6 @@ class UserProfile extends Component {
       });
   }
 
-
-
   userDeleteActivity = (args) => {
     this.setState({ deleting: true, userAlert: "deleting promo for user..." });
     const token = this.context.token;
@@ -3349,7 +3353,27 @@ class UserProfile extends Component {
       });
   }
 
+  clearAddressFilters = () => {
+    this.setState({filter: {
+      field: null,
+      key: null,
+      value: null
+    },
+    userAlert: '..filters cleared..'
+  })
 
+  }
+
+  setFilter = (args) => {
+    this.setState({filter: {
+      field: args.field,
+      key: args.key,
+      value: args.value
+    },
+    userAlert: '..filter set'+JSON.stringify(args)
+  })
+
+  }
 
   componentWillUnmount() {
     this.isActive = false;
@@ -3583,6 +3607,9 @@ class UserProfile extends Component {
                     onCancelReply={this.onCancelReply}
                     onReply={this.onReply}
                     replyTo={this.state.replyTo}
+
+                    filter={this.state.filter}
+                    setFilter={this.setFilter}
                   />
                 )}
 

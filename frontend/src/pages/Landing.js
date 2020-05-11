@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
+// import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import { NavLink } from 'react-router-dom';
 
@@ -22,7 +22,7 @@ class LandingPage extends Component {
 
 componentDidMount () {
   // console.log(AuthContext._currentValue.activityId ,AuthContext._currentValue.activityId === null,AuthContext._currentValue.token === null);
-  if (AuthContext._currentValue.activityId !== null,AuthContext._currentValue.token !== null ) {
+  if (AuthContext._currentValue.activityId !== null && AuthContext._currentValue.token !== null ) {
     this.setState({isGuest: false})
     // console.log(this.state);
   }

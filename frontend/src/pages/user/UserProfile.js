@@ -2,9 +2,9 @@
 import React, { Component } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
-import Tab from 'react-bootstrap/Tab';
-import Nav from 'react-bootstrap/Nav';
+// import Button from 'react-bootstrap/Button';
+// import Tab from 'react-bootstrap/Tab';
+// import Nav from 'react-bootstrap/Nav';
 
 import AuthContext from '../../context/auth-context';
 import AlertBox from '../../components/AlertBox';
@@ -93,13 +93,13 @@ class UserProfile extends Component {
   constructor(props){
       super(props);
       this.socket = io('http://localhost:9099');
+      this.userCopy = null;
     }
 
   componentDidMount() {
     console.log('...user profile component mounted...');
     this.getThisUser();
 
-    const conversationId = this.context.activityId;
     this.socket.emit('msg_subscribe', {user: this.context.activityId, room:'msg'+this.context.activityId});
     // this.socket.emit('msg_subscribe', 'msg'+conversationId);
     console.log("listening for pms...");
@@ -140,7 +140,6 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
@@ -188,6 +187,7 @@ class UserProfile extends Component {
           const thisUser = resData.data.getThisUser;
           // console.log(thisUser);
           this.context.user = thisUser;
+          this.userCopy = thisUser;
           if (this.isActive) {
           this.setState({ user: thisUser, userCopy: thisUser, isLoading: false, activityA: JSON.stringify(requestBody) });
           }
@@ -213,7 +213,7 @@ class UserProfile extends Component {
     const activityId = this.context.activityId;
     const userId = activityId;
     const token = this.context.token;
-    const today = new Date().toLocaleDateString();
+    // const today = new Date().toLocaleDateString();
     const request = this.state.activityA;
     // console.log(activityId,userId,request);
     const requestBody = {
@@ -237,7 +237,6 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
@@ -302,12 +301,11 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data.userOnline).slice(2,25);
+        // const responseAlert = JSON.stringify(resData.data.userOnline).slice(2,25);
         // this.context.user = ;
       })
       .catch(err => {
@@ -462,7 +460,6 @@ class UserProfile extends Component {
         .then(res => {
           if (res.status !== 200 && res.status !== 201) {
             throw new Error('Failed!');
-            this.setState({userAlert: "Failed!"})
           }
           return res.json();
         })
@@ -505,7 +502,6 @@ class UserProfile extends Component {
           .then(res => {
             if (res.status !== 200 && res.status !== 201) {
               throw new Error('Failed!');
-              this.setState({userAlert: 'Failed!'});
             }
             return res.json();
           })
@@ -575,7 +571,6 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
@@ -634,7 +629,6 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
@@ -662,7 +656,7 @@ class UserProfile extends Component {
     const addressCity = args.city;
     const addressCountry = args.country;
     const addressPostalCode = args.postalCode;
-    const addressPrimary = args.primary;
+    // const addressPrimary = args.primary;
 
     const requestBody = {
       query:`
@@ -692,7 +686,6 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
@@ -739,7 +732,6 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
@@ -787,7 +779,6 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
@@ -835,7 +826,6 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
@@ -884,7 +874,6 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
@@ -940,7 +929,6 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
@@ -995,7 +983,6 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
@@ -1039,12 +1026,11 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
       .then(resData => {
-        const activityLog = 'mutation_addUserInterests_origin_'+activityId+'_target_'+userId+'_body_'+interests+'';
+        // const activityLog = 'mutation_addUserInterests_origin_'+activityId+'_target_'+userId+'_body_'+interests+'';
         const responseAlert = JSON.stringify(resData.data.addUserInterests).slice(2,25);
         this.setState({userAlert: responseAlert, user: resData.data.addUserInterests, activityA: JSON.stringify(requestBody)})
         this.context.user = this.state.user;
@@ -1083,7 +1069,6 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
@@ -1127,7 +1112,6 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
@@ -1171,7 +1155,6 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
@@ -1187,10 +1170,10 @@ class UserProfile extends Component {
       });
   };
   userAddPerk  = (event) => {
-        this.setState({ adding: false, userAddField: null, userAlert: "adding perk for user..." });
-        const token = this.context.token;
-        const activityId = this.context.activityId;
-        const perkId = this.context.selectedPerk._id;
+        // this.setState({ adding: false, userAddField: null, userAlert: "adding perk for user..." });
+        // const token = this.context.token;
+        // const activityId = this.context.activityId;
+        // const perkId = this.context.selectedPerk._id;
 
         // const requestBody = {
         //   query:`
@@ -1225,9 +1208,9 @@ class UserProfile extends Component {
 
       };
   userDeletePerk = (args) => {
-    this.setState({ deleting: true, userAlert: "deleting perk for user..." });
-    const token = this.context.token;
-    const activityId = this.context.activityId;
+    // this.setState({ deleting: true, userAlert: "deleting perk for user..." });
+    // const token = this.context.token;
+    // const activityId = this.context.activityId;
 
 
     // const requestBody = {
@@ -1262,10 +1245,10 @@ class UserProfile extends Component {
     //   });
   };
   userAddPromo  = (event) => {
-        this.setState({ adding: false, userAddField: null, userAlert: "adding promo for user..." });
-        const token = this.context.token;
-        const activityId = this.context.activityId;
-        const promoId = this.context.selectedPromo._id;
+        // this.setState({ adding: false, userAddField: null, userAlert: "adding promo for user..." });
+        // const token = this.context.token;
+        // const activityId = this.context.activityId;
+        // const promoId = this.context.selectedPromo._id;
 
         // const requestBody = {
         //   query:`
@@ -1300,9 +1283,9 @@ class UserProfile extends Component {
 
       }
   userDeletePromo = (args) => {
-    this.setState({ deleting: true, userAlert: "deleting promo for user..." });
-    const token = this.context.token;
-    const activityId = this.context.activityId;
+    // this.setState({ deleting: true, userAlert: "deleting promo for user..." });
+    // const token = this.context.token;
+    // const activityId = this.context.activityId;
 
 
     // const requestBody = {
@@ -1365,7 +1348,6 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
@@ -1396,7 +1378,7 @@ class UserProfile extends Component {
     const activityId = this.context.activityId;
     const senderId = args.sender._id;
     const receiverId = args.receiver._id;
-    const date = args.date;
+    // const date = args.date;
 
     const requestBody = {
       query:`
@@ -1419,7 +1401,6 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
@@ -1435,7 +1416,8 @@ class UserProfile extends Component {
       });
   };
   userAddFriend = (event) => {
-    this.setState({ adding: false, userAddField: null, userAlert: "adding friend for user..." });
+    console.log("...adding friend for user...");
+    this.setState({ adding: false, userAddField: null, userAlert: "...adding friend for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
     let userId = activityId;
@@ -1462,7 +1444,6 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
@@ -1482,7 +1463,8 @@ class UserProfile extends Component {
     this.context.receiver = args;
   };
   userDeleteFriend = (args) => {
-    this.setState({ deleting: true, userAlert: "deleting friend for user..." });
+    console.log("...deleting friend for user...");
+    this.setState({ deleting: true, userAlert: "...deleting friend for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
     let userId = activityId;
@@ -1509,7 +1491,6 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
@@ -1525,7 +1506,8 @@ class UserProfile extends Component {
       });
   };
   userDeleteCartItem = (args) => {
-    this.setState({ deleting: true, userAlert: "deleting cart item for user..." });
+    console.log("...deleting cart item for user...");
+    this.setState({ deleting: true, userAlert: "...deleting cart item for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
     let userId = activityId;
@@ -1533,7 +1515,7 @@ class UserProfile extends Component {
     const dateAdded = args.dateAdded;
     const sessionDate = args.sessionDate;
     const sessionTitle = args.sessionTitle;
-    console.log(sessionDate,lessonId,sessionTitle);
+    // console.log(sessionDate,lessonId,sessionTitle);
     const requestBody = {
       query:`
         mutation {deleteUserCartLesson(
@@ -1558,7 +1540,6 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
@@ -1602,7 +1583,6 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
@@ -1645,7 +1625,6 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
@@ -1661,16 +1640,19 @@ class UserProfile extends Component {
       });
   };
   userDeleteAttendedLesson = (args) => {
-    this.setState({ deleting: true, userAlert: "deleting attendedLesson for user..." });
-    const token = this.context.token;
-    const activityId = this.context.activityId;
+    console.log("...deleting attendedLesson for user...");
+    this.setState({ deleting: true, userAlert: "...deleting attendedLesson for user..." });
+    // const token = this.context.token;
+    // const activityId = this.context.activityId;
   };
   userDeleteTaughtLesson = (args) => {
-    this.setState({ deleting: true, userAlert: "deleting taughtLesson for user..." });
-    const token = this.context.token;
-    const activityId = this.context.activityId;
+    console.log("...deleting taughtLesson for user...");
+    this.setState({ deleting: true, userAlert: "...deleting taughtLesson for user..." });
+    // const token = this.context.token;
+    // const activityId = this.context.activityId;
   };
   addAddressToOrder = (event) => {
+    console.log('...add address to order...');
     event.preventDefault();
     // const address = JSON.stringify(event);
     console.log(event.target.value.slice(9,16));
@@ -1710,7 +1692,6 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
@@ -1736,14 +1717,14 @@ class UserProfile extends Component {
 
     const token = this.context.token;
     const activityId = this.context.activityId;
-    let userId = activityId;
+    // let userId = activityId;
     const buyerId = activityId;
     const receiverId = activityId;
 
     const type = event.target.formGridType.value;
     const totalA = event.target.formGridTotalA.value;
     const totalB = event.target.formGridTotalB.value;
-    const totalC = event.target.formGridTotalC.value;
+    // const totalC = event.target.formGridTotalC.value;
     const taxDescription = event.target.formGridTaxDescription.value;
     const taxAmount = event.target.formGridTaxAmount.value;
     const description = event.target.formGridDescription.value;
@@ -1806,13 +1787,12 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
       .then(resData => {
         // console.log(resData);
-        const responseAlert = JSON.stringify(resData.data.createOrder).slice(2,25);
+        // const responseAlert = JSON.stringify(resData.data.createOrder).slice(2,25);
         // this.setState({userAlert: responseAlert, user: resData.data.createOrder, activityA: JSON.stringify(requestBody)})
         // this.context.user = this.state.user;
         // this.logUserActivity();
@@ -1823,7 +1803,8 @@ class UserProfile extends Component {
       });
   };
   userDeleteOrder = (args) => {
-    this.setState({ deleting: true, userAlert: "deleting order for user..." });
+    console.log("...deleting order for user...");
+    this.setState({ deleting: true, userAlert: "...deleting order for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
     let userId = activityId;
@@ -1850,7 +1831,6 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
@@ -1866,7 +1846,8 @@ class UserProfile extends Component {
       });
   };
   userDeleteReview = (args) => {
-    this.setState({ deleting: true, userAlert: "deleting promo for user..." });
+    console.log("...deleting promo for user...");
+    this.setState({ deleting: true, userAlert: "...deleting promo for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
     let userId = activityId;
@@ -1893,7 +1874,6 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
@@ -1910,17 +1890,18 @@ class UserProfile extends Component {
   };
   userCreateMessage = (event) => {
     event.preventDefault();
+    console.log('...user create message ...');
     this.setState({ adding: false });
     const token = this.context.token;
-    const receiver = this.context.receiver;
+    // const receiver = this.context.receiver;
     const receiverId = this.context.receiver._id;
-    const receiverRole = this.context.receiver.role;
-    const role = this.context.role;
+    // const receiverRole = this.context.receiver.role;
+    // const role = this.context.role;
     const activityId = this.context.activityId;
     const senderId = activityId;
     const senderName = this.state.user.username;
     const date = new Date();
-    const timeString1 = date.toLocaleDateString().slice(11,16);
+    // const timeString1 = date.toLocaleDateString().slice(11,16);
     const timeString2 = date.toLocaleDateString().slice(11,16);
     const type = event.target.formGridTypeSelect.value;
     const subject = event.target.formGridSubject.value;
@@ -1961,12 +1942,11 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
       .then(resData => {
-        console.log("createMessage",resData.data.createMessage);
+        // console.log("createMessage",resData.data.createMessage);
         const responseAlert = JSON.stringify(resData.data.createMessage).slice(2,25);;
         this.setState({ userAlert: responseAlert, activityA: JSON.stringify(requestBody), userAddField: null});
         // this.logUserActivity();
@@ -1976,7 +1956,8 @@ class UserProfile extends Component {
       });
   };
   userDeleteMessage = (args) => {
-    this.setState({ deleting: true, userAlert: "deleting message for user..." });
+    console.log("...deleting message for user...");
+    this.setState({ deleting: true, userAlert: "...deleting message for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
     const messageId = args;
@@ -2000,7 +1981,6 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
@@ -2027,14 +2007,14 @@ class UserProfile extends Component {
     this.setState({userAlert: '...replying to message...', messageReplying: false})
 
     const token = this.context.token;
-    const receiver = this.state.replyTo.sender;
+    // const receiver = this.state.replyTo.sender;
     const receiverId = this.state.replyTo.sender._id;
-    const role = this.context.role;
+    // const role = this.context.role;
     const activityId = this.context.activityId;
     const senderId = activityId;
     const senderName = this.state.user.username;
     const date = new Date();
-    const timeString1 = date.toLocaleDateString().slice(11,16);
+    // const timeString1 = date.toLocaleDateString().slice(11,16);
     const timeString2 = date.toLocaleDateString().slice(11,16);
     const type = event.target.formGridTypeSelect.value;
     const subject = event.target.formGridSubject.value;
@@ -2075,7 +2055,6 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
@@ -2091,7 +2070,8 @@ class UserProfile extends Component {
   }
 
   userDeleteActivity = (args) => {
-    this.setState({ deleting: true, userAlert: "deleting promo for user..." });
+    console.log("...deleting activity for user...");
+    this.setState({ deleting: true, userAlert: "...deleting activity for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
     let userId = activityId;
@@ -2121,7 +2101,6 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
@@ -2151,7 +2130,7 @@ class UserProfile extends Component {
       })
   };
   viewLessonDetails = (args) => {
-    console.log('retriving lesson details',args.lesson);
+    console.log('...retriving lesson details...');
     this.setState({useAlert: 'retriving lesson details', isLoading: true})
     const token = this.context.token;
     const activityId = this.context.activityId;
@@ -2183,13 +2162,12 @@ class UserProfile extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
       .then(resData => {
         const responseAlert = JSON.stringify(resData.data.getLessonById).slice(2,25);
-        this.setState({isLoading: false, profileLessonViewer: true, profileLessonViewerData: resData.data.getLessonById, profileLessonType: args.type})
+        this.setState({userAlert: responseAlert, isLoading: false, profileLessonViewer: true, profileLessonViewerData: resData.data.getLessonById, profileLessonType: args.type})
         // this.logUserActivity();
       })
       .catch(err => {
@@ -2275,7 +2253,7 @@ class UserProfile extends Component {
     this.setState({userAlert: 'creating new lesson session'});
 
     const activityId = this.context.activityId;
-    const userId = activityId;
+    // const userId = activityId;
     const lessonId = this.state.profileLessonViewerData._id;
 
     const sessionTitle = event.target.formGridTitle.value;
@@ -2311,7 +2289,6 @@ class UserProfile extends Component {
     })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
-          this.setState({userAlert: 'Failed!'});
           throw new Error('Failed!');
         }
         return res.json();
@@ -2335,9 +2312,10 @@ class UserProfile extends Component {
   };
   editLessonBasic = (event) => {
     event.preventDefault();
-    this.setState({editingLesson: false})
+    console.log('...editing lesson basic...');
+    this.setState({editingLesson: false, userAlert: '...editing lesson basic...'})
     let activityId = this.context.activityId;
-    const creatorId = activityId;
+    // const creatorId = activityId;
     const lessonId = this.state.profileLessonViewerData._id;
     const token = this.context.token;
 
@@ -2402,9 +2380,10 @@ class UserProfile extends Component {
   };
   editLessonField = (event) => {
     event.preventDefault();
-    this.setState({editingLessonField: false})
+    console.log('...editing lesson field...');
+    this.setState({editingLessonField: false, userAlert: '...editing lesson field...'})
     let activityId = this.context.activityId;
-    const creatorId = activityId;
+    // const creatorId = activityId;
     const lessonId = this.state.profileLessonViewerData._id;
     const token = this.context.token;
 
@@ -2452,10 +2431,10 @@ class UserProfile extends Component {
   };
   editSessionField = (event) => {
     event.preventDefault();
-    console.log(event, 'updating session by field');
-    this.setState({editingSessionField: false, userAlert: 'updating session by field'})
+    console.log(event, '...updating session by field...');
+    this.setState({editingSessionField: false, userAlert: '...updating session by field...'})
     let activityId = this.context.activityId;
-    const creatorId = activityId;
+    // const creatorId = activityId;
     // const lessonId = this.state.session.lessonId;
     let lessonId = null;
     if (this.state.sessionDetailViewer === true ) {
@@ -2544,7 +2523,7 @@ class UserProfile extends Component {
     this.setState({sessionAttendedState: false})
   };
   addSessionAttendance = (attendance) => {
-
+    console.log('...adding session attendance...');
     this.setState({userAlert: '...adding session attendance...'})
     const activityId = this.context.activityId;
     const userId = attendance.user._id;
@@ -2581,7 +2560,6 @@ class UserProfile extends Component {
     })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
-          this.setState({userAlert: 'Failed!'});
           throw new Error('Failed!');
         }
         return res.json();
@@ -2596,7 +2574,8 @@ class UserProfile extends Component {
   };
 
   loadMeetings = () => {
-    this.setState({userAlert: '...retriving todays sessions'})
+    console.log('...retriving todays sessions...');
+    this.setState({userAlert: '...retriving todays sessions...'})
     const activityId = this.context.activityId;
 
     const requestBody = {
@@ -2617,13 +2596,12 @@ class UserProfile extends Component {
     })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
-          this.setState({userAlert: 'Failed!'});
           throw new Error('Failed!');
         }
         return res.json();
       })
       .then(resData => {
-        console.log(resData.data.getUserBookedSessionsToday);
+        // console.log(resData.data.getUserBookedSessionsToday);
         const responseAlert = JSON.stringify(resData.data).slice(0,8);
         this.setState({userAlert: responseAlert, meetingSessions: resData.data.getUserBookedSessionsToday, meetingsLoaded: true});
       })
@@ -2635,8 +2613,8 @@ class UserProfile extends Component {
     this.setState({ meetingsLoaded: false, meetingSessions: []})
   };
   viewSessionDetails = (session) => {
-    // console.log('...rerieving session details...',session);
-    this.setState({userAlert: '...retriving todays sessions'})
+    console.log('...rerieving session details...');
+    this.setState({userAlert: '...retriving todays sessions...'})
     const activityId = this.context.activityId;
     const lessonId = session.lessonId;
     const sessionTitle = session.title;
@@ -2664,7 +2642,6 @@ class UserProfile extends Component {
     })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
-          this.setState({userAlert: 'Failed!'});
           throw new Error('Failed!');
         }
         return res.json();
@@ -2688,7 +2665,7 @@ class UserProfile extends Component {
           lessonTitle: session.lessonTitle,
           lessonInstructors: session.lessonInstructors,
         };
-        console.log('beep',newSession);
+        // console.log('beep',newSession);
         const responseAlert = JSON.stringify(resData.data).slice(0,8);
         this.setState({userAlert: responseAlert, session: newSession, sessionDetailViewer: true});
       })
@@ -2744,7 +2721,6 @@ class UserProfile extends Component {
     })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
-          this.setState({userAlert: 'Failed!'});
           throw new Error('Failed!');
         }
         return res.json();
@@ -2769,6 +2745,7 @@ class UserProfile extends Component {
 
   addLessonMaterials = (event) => {
     event.preventDefault();
+    console.log('...adding lesson materials...');
     this.setState({userAlert: '...adding lesson materials...', lessonAddField: null });
     const activityId = this.context.activityId;
     const lessonId = this.state.profileLessonViewerData._id;
@@ -2796,13 +2773,12 @@ class UserProfile extends Component {
     })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
-          this.setState({userAlert: 'Failed!'});
           throw new Error('Failed!');
         }
         return res.json();
       })
       .then(resData => {
-        console.log(resData.data);
+        // console.log(resData.data);
         const responseAlert = JSON.stringify(resData.data).slice(0,8);
         this.setState({userAlert: responseAlert, activityA: requestBody, profileLessonViewerData: resData.data.addLessonMaterials});
         // this.context.selectedLesson = this.state.selectedLesson;
@@ -2845,7 +2821,6 @@ class UserProfile extends Component {
     })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
-          this.setState({userAlert: 'Failed!'});
           throw new Error('Failed!');
         }
         return res.json();
@@ -2865,7 +2840,7 @@ class UserProfile extends Component {
   }
   addLessonRequirements = (event) => {
     event.preventDefault();
-    // console.log('...adding lesson requirements ...');
+    console.log('...adding lesson requirements ...');
     this.setState({userAlert: '...adding lesson requirements ...', lessonAddField: null });
     const activityId = this.context.activityId;
     const lessonId = this.state.profileLessonViewerData._id;
@@ -2893,7 +2868,6 @@ class UserProfile extends Component {
     })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
-          this.setState({userAlert: 'Failed!'});
           throw new Error('Failed!');
         }
         return res.json();
@@ -2945,13 +2919,12 @@ class UserProfile extends Component {
     })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
-          this.setState({userAlert: 'Failed!'});
           throw new Error('Failed!');
         }
         return res.json();
       })
       .then(resData => {
-        console.log('resData.data.addLessonImage',resData.data.addLessonImage);
+        // console.log('resData.data.addLessonImage',resData.data.addLessonImage);
         const responseAlert = JSON.stringify(resData.data).slice(0,8);
         this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.addLessonImage, activityA: requestBody});
         // this.context.selectedLesson = this.state.selectedLesson;
@@ -3002,7 +2975,6 @@ class UserProfile extends Component {
     })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
-          this.setState({userAlert: 'Failed!'});
           throw new Error('Failed!');
         }
         return res.json();
@@ -3048,7 +3020,6 @@ class UserProfile extends Component {
     })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
-          this.setState({userAlert: 'Failed!'});
           throw new Error('Failed!');
         }
         return res.json();
@@ -3096,13 +3067,12 @@ class UserProfile extends Component {
     })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
-          this.setState({userAlert: 'Failed!'});
           throw new Error('Failed!');
         }
         return res.json();
       })
       .then(resData => {
-        console.log(resData.data.deleteLessonTag);
+        // console.log(resData.data.deleteLessonTag);
         const responseAlert = JSON.stringify(resData.data).slice(0,8);
         this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.deleteLessonTag, activityA: requestBody});
         // this.logUserActivity();
@@ -3142,7 +3112,6 @@ class UserProfile extends Component {
     })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
-          this.setState({userAlert: 'Failed!'});
           throw new Error('Failed!');
         }
         return res.json();
@@ -3187,7 +3156,6 @@ class UserProfile extends Component {
     })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
-          this.setState({userAlert: 'Failed!'});
           throw new Error('Failed!');
         }
         return res.json();
@@ -3237,7 +3205,6 @@ class UserProfile extends Component {
     })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
-          this.setState({userAlert: 'Failed!'});
           throw new Error('Failed!');
         }
         return res.json();
@@ -3290,7 +3257,6 @@ class UserProfile extends Component {
     })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
-          this.setState({userAlert: 'Failed!'});
           throw new Error('Failed!');
         }
         return res.json();
@@ -3335,7 +3301,6 @@ class UserProfile extends Component {
     })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
-          this.setState({userAlert: 'Failed!'});
           throw new Error('Failed!');
         }
         return res.json();
@@ -3359,20 +3324,16 @@ class UserProfile extends Component {
       key: null,
       value: null
     },
-    userAlert: '..filters cleared..'
+      userAlert: '..filters cleared..'
   })
-
-  }
-
+}
   setFilter = (args) => {
+    // console.log('...set filter...',{...args});
     this.setState({filter: {
       field: args.field,
       key: args.key,
       value: args.value
-    },
-    userAlert: '..filter set'+JSON.stringify(args)
-  })
-
+    }});
   }
 
   componentWillUnmount() {
@@ -3478,7 +3439,6 @@ class UserProfile extends Component {
             addLessonImage={this.addLessonImage}
             addLessonFile={this.addLessonFile}
             selectedInstructor={this.context.selectedUser}
-            addLessonInstructor={this.addLessonInstructor}
 
             deleteLessonTag={this.deleteLessonTag}
             deleteLessonRequirement={this.deleteLessonRequirement}
@@ -3498,7 +3458,7 @@ class UserProfile extends Component {
               <Col>
               {this.state.user !== null && (
                   <ThisUserProfile
-                    user={this.state.user}
+                    user={this.userCopy}
                     authId={this.context.activityId}
                     onCancel={this.modalCancelHandler}
                     canDelete={this.state.canDelete}
@@ -3541,7 +3501,6 @@ class UserProfile extends Component {
                     userDeleteFriend={this.userDeleteFriend}
                     userSelectFriend={this.userSelectFriend}
                     userAddFriend={this.userAddFriend}
-                    userDeleteFriend={this.userDeleteFriend}
 
                     userDeleteCartItem={this.userDeleteCartItem}
                     userDeleteLikedLesson={this.userDeleteLikedLesson}

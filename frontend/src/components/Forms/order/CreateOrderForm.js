@@ -1,18 +1,18 @@
-import React, {useState} from 'react';
+import React from 'react';
+// import React, {useState} from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
-import Accordion from 'react-bootstrap/Accordion';
-import DatePicker from "react-datepicker";
+// import Accordion from 'react-bootstrap/Accordion';
+// import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import './CreateUserForm.css';
 
-import UserAddressList from '../../Users/UserList/UserAddressList';
+// import UserAddressList from '../../Users/UserList/UserAddressList';
 
 const CreateOrderForm = (props) => {
   const {...user} = props.user;
-  const userCartLessonSkus = user.cart.map(x => x.lesson.sku)
-
+  // const userCartLessonSkus = user.cart.map(x => x.lesson.sku);
     // const addressTypes = user.addresses.map(address => console.log(address.type));
     const billingAddresses = user.addresses.filter(address => address.type === 'Billing');
     const shippingAddresses = user.addresses.filter(address => address.type === 'Shipping')

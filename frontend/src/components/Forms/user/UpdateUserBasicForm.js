@@ -1,23 +1,24 @@
-import React, {useState} from 'react';
+import React from 'react';
+// import React, {useState} from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
-import Accordion from 'react-bootstrap/Accordion';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+// import Accordion from 'react-bootstrap/Accordion';
+// import DatePicker from "react-datepicker";
+// import "react-datepicker/dist/react-datepicker.css";
 
 import './CreateUserForm.css';
 
 const UpdateUserBasicForm = (props) => {
 
   const {...user} = props.user;
-  const [dob, setDob] = useState(new Date());
+  // const [dob, setDob] = useState(new Date());
   const prevDob = new Date(user.dob.substr(0,9)*1000).toLocaleDateString().slice(0,10)
 
-  const handleChangeDob = date => {
-    setDob(date);
-    console.log(`Dob ${dob}`);
-   }
+  // const handleChangeDob = date => {
+  //   setDob(date);
+  //   console.log(`Dob ${dob}`);
+  //  }
 
 return (
 <div className="UpdateFormContainer">

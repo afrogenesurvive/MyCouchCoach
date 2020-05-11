@@ -1,24 +1,24 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
+// import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import { NavLink } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
-import Tabs from 'react-bootstrap/Tabs';
-import Tab from 'react-bootstrap/Tab';
+// import Tabs from 'react-bootstrap/Tabs';
+// import Tab from 'react-bootstrap/Tab';
 
 import Col from 'react-bootstrap/Col';
-import Nav from 'react-bootstrap/Nav';
+// import Nav from 'react-bootstrap/Nav';
 
 import './Auth.css';
 import AuthContext from '../../context/auth-context';
 import AlertBox from '../../components/AlertBox';
 import LoadingOverlay from '../../components/LoadingOverlay';
-import SidebarControl from '../../components/SidebarControl';
+// import SidebarControl from '../../components/SidebarControl';
 import VerifyUserForm from '../../components/Forms/user/VerifyUserForm';
 
-import UserProfile from '../user/UserProfile';
+// import UserProfile from '../user/UserProfile';
 
 class AuthPage extends Component {
   state = {
@@ -152,7 +152,7 @@ class AuthPage extends Component {
         }
 
         this.setState({userAlert: responseAlert})
-        let sessionStorageLoginInfo = null;
+        // let sessionStorageLoginInfo = null;
 
         if (resData.data.login.token !== "") {
 
@@ -236,7 +236,7 @@ class AuthPage extends Component {
     const activityId = sessionStorage.getItem('activityId');
     const token = sessionStorage.getItem('token');
     const userId = activityId;
-    const today = new Date().toLocaleDateString();
+    // const today = new Date().toLocaleDateString();
     const request = this.state.activityA;
 
     const requestBody = {
@@ -261,12 +261,11 @@ class AuthPage extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data.addUserActivity).slice(2,25);
+        // const responseAlert = JSON.stringify(resData.data.addUserActivity).slice(2,25);
         // this.setState({userAlert: responseAlert, user: resData.data.addUserActivity})
         // this.context.user = this.state.user;
       })
@@ -288,7 +287,7 @@ class AuthPage extends Component {
         userInput:{
           contactEmail:"${contactEmail}",
           verificationType:"${verificationType}",
-          verificationCode:"$verificationCode{}"
+          verificationCode:"${verificationCode}"
         })
       {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
         `};

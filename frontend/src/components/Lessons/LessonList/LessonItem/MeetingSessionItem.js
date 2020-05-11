@@ -1,8 +1,8 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import SessionBookedList from '../SessionBookedList';
-import SessionAttendedList from '../SessionAttendedList';
+// import SessionBookedList from '../SessionBookedList';
+// import SessionAttendedList from '../SessionAttendedList';
 
 import './UserItem.css';
 

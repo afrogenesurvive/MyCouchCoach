@@ -38,10 +38,10 @@ const ProfileLessonViewer = (props) => {
   const {...lesson} = props.profileLesson;
   const instructorIds = lesson.instructors.map(x => x._id)
   const isInstructor = instructorIds.includes(props.authId);
-  let canDelete = false;
-  if (isInstructor === true ) {
-    canDelete = true
-  }
+  // let canDelete = false;
+  // if (isInstructor === true ) {
+  //   canDelete = true
+  // }
   console.log(lesson);
   return (
 

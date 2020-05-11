@@ -1,10 +1,10 @@
-import S3 from 'react-aws-s3';
+// import S3 from 'react-aws-s3';
 import React, { Component } from 'react';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
+// import Button from 'react-bootstrap/Button';
 import Accordion from 'react-bootstrap/Accordion';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
@@ -14,7 +14,7 @@ import Card from 'react-bootstrap/Card';
 import AuthContext from '../../context/auth-context';
 import LessonList from '../../components/Lessons/LessonList/LessonList';
 import SearchLessonList from '../../components/Lessons/LessonList/SearchLessonList';
-import SearchSession from '../../components/Lessons/LessonList/LessonItem/SearchSession';
+// import SearchSession from '../../components/Lessons/LessonList/LessonItem/SearchSession';
 
 import Spinner from '../../components/Spinner/Spinner';
 import AlertBox from '../../components/AlertBox';
@@ -59,7 +59,7 @@ class PublicLessonsPage extends Component {
 
   modalConfirmPublicSearchHandler = (event) => {
     event.preventDefault();
-    const token = this.context.token;
+    // const token = this.context.token;
     let field = event.target.formBasicFieldSelect.value;
     let query = event.target.formBasicQuery.value;
 
@@ -78,7 +78,6 @@ class PublicLessonsPage extends Component {
       return;
     }
 
-    const search = { field, query };
     const requestBody = {
       query: `
         query {getPublicLessonsByField(

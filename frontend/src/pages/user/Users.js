@@ -1,10 +1,10 @@
-import S3 from 'react-aws-s3';
+// import S3 from 'react-aws-s3';
 import React, { Component } from 'react';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
+// import Button from 'react-bootstrap/Button';
 import Accordion from 'react-bootstrap/Accordion';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
@@ -14,7 +14,7 @@ import Card from 'react-bootstrap/Card';
 import AuthContext from '../../context/auth-context';
 import UserList from '../../components/Users/UserList/UserList';
 import SearchUserList from '../../components/Users/UserList/SearchUserList';
-import UserDetail from '../../components/Users/UserDetail';
+// import UserDetail from '../../components/Users/UserDetail';
 
 import Spinner from '../../components/Spinner/Spinner';
 import SidebarPage from '../Sidebar';
@@ -108,7 +108,6 @@ class UsersPage extends Component {
       return;
     }
 
-    const search = { field, query };
     const requestBody = {
       query: `
         query {getUsersByField(
@@ -169,7 +168,6 @@ class UsersPage extends Component {
       return;
     }
 
-    const search = { field, query };
     const requestBody = {
       query: `
         query {getUsersByFieldRegex(
@@ -460,7 +458,7 @@ closeAttachmentView = () => {
     const activityId = this.context.activityId;
     const userId = activityId;
     const token = this.context.token;
-    const today = new Date();
+    // const today = new Date();
     const request = this.state.activityA;
 
     const requestBody = {
@@ -485,7 +483,6 @@ closeAttachmentView = () => {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })

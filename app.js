@@ -40,8 +40,8 @@ app.use(
     graphiql: true
   })
 );
-// mongoose.connect("mongodb+srv://profBlack:FoiH8muN5lZAWdNT@cluster0-knrho.mongodb.net/test?retryWrites=true&w=majority",
-mongoose.connect('mongodb://localhost:27017/my_couch_coach',
+mongoose.connect("mongodb+srv://profBlack:FoiH8muN5lZAWdNT@cluster0-knrho.mongodb.net/test?retryWrites=true&w=majority",
+// mongoose.connect('mongodb://localhost:27017/my_couch_coach',
 {useNewUrlParser: true, useUnifiedTopology: true})
   .then(() => {
     console.log(`
@@ -133,13 +133,15 @@ app.get('/*', function(req, res) {
 
 const url = 'https://mycouchcoachstorage.s3.amazonaws.com/assets/creds/mailjet/mailJetApi.txt';
 
-
 request.get(url, ( error, response, body) => {
   // body = xmlParser.xml2json(body, {compact: true, spaces: 4})
   // console.log('beep',body.slice(0,3));
   // console.log('beep',body.slice(0,3) === '<?x');
   // console.log('boop',body.slice(0,3) === '{"a');
-  if (body.slice(0,3) === '{"a') {
-    pocketVariables.mailjet = JSON.parse(body);
+  if (body) {
+    if (body.slice(0,3) === '{"a') {
+      pocketVariables.mailjet = JSON.parse(body);
+    }
   }
+
 });

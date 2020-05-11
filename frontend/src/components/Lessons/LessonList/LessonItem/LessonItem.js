@@ -1,19 +1,18 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useParams
-} from "react-router-dom";
+// import {
+//   BrowserRouter as Router,
+//   Switch,
+//   Route,
+//   Link,
+//   useParams
+// } from "react-router-dom";
 
 import './UserItem.css';
 
 export default function lesssonItem (props) {
   return (
-  <Router>
   <li key={props.authId} className="users__list-item_detail users__list-item_detail4">
 
     <Card style={{ width: '18rem' }}>
@@ -51,6 +50,5 @@ export default function lesssonItem (props) {
     </Card>
 
   </li>
-  </Router>
 );
 }

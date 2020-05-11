@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Redirect, Switch, useParams } from 'react-router-dom';
+import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 
 import AuthPage from './pages/auth/Auth';
 import SignupPage from './pages/auth/Signup';
@@ -9,7 +9,7 @@ import UsersPage from './pages/user/Users';
 import LessonsPage from './pages/lesson/Lessons';
 import PublicLessonsPage from './pages/lesson/PublicLessons';
 import ProfileLessonViewer from './components/ProfileLessonViewer';
-import ErrorPage from './components/ErrorPage';
+// import ErrorPage from './components/ErrorPage';
 import PasswordReset from './pages/auth/PasswordReset';
 import LandingPage from './pages/Landing';
 
@@ -70,7 +70,7 @@ class App extends Component {
         });
     };
 
-    const conversationId = this.context.activityId;
+    // const conversationId = this.context.activityId;
     this.socket.emit('unauthorizedClientConnect');
     console.log("socket listening....");
   }
@@ -101,7 +101,6 @@ class App extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
@@ -170,13 +169,11 @@ class App extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
       .then(resData => {
-
-        const responseAlert = JSON.stringify(resData.data.userOffline).slice(2,25);
+        // const responseAlert = JSON.stringify(resData.data.userOffline).slice(2,25);
         // this.context.user = ;
       })
       .catch(err => {
@@ -283,13 +280,15 @@ class App extends Component {
                   {!this.state.token && (<Route path="/login" component={AuthPage} />)}
                   {!this.state.token && (<Route path="/signup" component={SignupPage} />)}
                   {
-                    !this.state.token && (<Redirect from="/" to="/home" exact />)
+                    !this.state.token && !sessionStorage.getItem('token') && (<Redirect from="*" to="/home" exact />)
                   }
                   {
                     // !this.state.token && (<Redirect to="/login" exact />)
-                    // !this.state.token && sessionStorage.getItem('login info') && (<Redirect to="/login" exact />)
+                    !this.state.token && sessionStorage.getItem('token') && (<Redirect to="/login" exact />)
                   }
-                  {!this.state.token && (<Route path="*" component={ErrorPage}/>)}
+                  {
+                    // !this.state.token && (<Route path="*" component={ErrorPage}/>)
+                  }
               </Switch>
             </main>
 

@@ -6,21 +6,37 @@ import './UserList.css';
 const userAddressList = props => {
 
   const {...filter} = props.filter;
-  let userAddresses = [];
+  // let userAddresses = [];
+  let userAddresses = props.userAddresses;
+  let propsUserAddresses = [];
+
   if (filter.field === 'addresses' && filter.key === 'primary') {
-    console.log('...filtered addresses...',filter);
-  }
+    propsUserAddresses = userAddresses.filter(x => x.primary === filter.value);
+    // userAddresses = propsUserAddresses;
+    console.log('...filter addresses...by...'+filter.key+'...'+filter.value);
+    console.log('...propsUserAddresses...'+propsUserAddresses.length,JSON.stringify(propsUserAddresses));
+    // console.log('...propsUserAddresses.filter stringify...',JSON.stringify(propsUserAddresses.filter(x => x.primary === filter.value)));
+    // console.log('...filter addresses...by...'+filter.key+'...'+filter.value+'...result length...'+propsUserAddresses.filter(x => x.primary === filter.value).length,'...result...',JSON.stringify(propsUserAddresses.filter(x => x.primary === filter.value)));
+    // console.log('...props.userAddresses filter ...',props.userAddresses.filter(x => x.primary === filter.value));
+    console.log('...props.userAddresses length...',props.userAddresses.length);
+    console.log('props.userAddresses',props.userAddresses);
+    console.log('let userAddresses',userAddresses);
 
+  }
   if (filter.field === 'addresses' && filter.key === 'type') {
-    console.log('...filtered addresses...',filter);
+    propsUserAddresses = props.userAddresses.filter(x => x.type === filter.value);
+  }
+  if (filter.field !== 'addresses') {
+    console.log('...no address filter...'+filter.key+'...'+filter.value);
+    console.log('let userAddresses',userAddresses);
+    console.log('propsUserAddresses',propsUserAddresses);
+    console.log('props.userAddresses',props.userAddresses);
+    userAddresses = props.userAddresses;
+    propsUserAddresses = userAddresses;
+    // propsUserAddresses = props.userAddresses;
   }
 
-  if (filter.field === null && filter.key === null && filter.value === null) {
-    console.log('...unfiltered addresses...',filter);
-
-  }
-
-  userAddresses = props.userAddresses.map(address => {
+  userAddresses =  propsUserAddresses.map(address => {
     return (
       <UserAddressItem
         key={address.postalCode}
@@ -42,8 +58,6 @@ const userAddressList = props => {
       />
     );
   });
-
-
 
   return <ul className="user__list1_detail">{userAddresses}</ul>;
 };

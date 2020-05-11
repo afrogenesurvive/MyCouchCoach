@@ -1,4 +1,4 @@
-import S3 from 'react-aws-s3';
+// import S3 from 'react-aws-s3';
 import React, { Component } from 'react';
 
 import Container from 'react-bootstrap/Container';
@@ -14,7 +14,7 @@ import Card from 'react-bootstrap/Card';
 import AuthContext from '../../context/auth-context';
 import LessonList from '../../components/Lessons/LessonList/LessonList';
 import SearchLessonList from '../../components/Lessons/LessonList/SearchLessonList';
-import LessonDetail from '../../components/Lessons/LessonDetail';
+// import LessonDetail from '../../components/Lessons/LessonDetail';
 import SearchSession from '../../components/Lessons/LessonList/LessonItem/SearchSession';
 
 import Spinner from '../../components/Spinner/Spinner';
@@ -124,7 +124,6 @@ class LessonsPage extends Component {
       return;
     }
 
-    const search = { field, query };
     const requestBody = {
       query: `
         query {getLessonsByFieldRegex(
@@ -185,7 +184,6 @@ class LessonsPage extends Component {
       return;
     }
 
-    const search = { field, query };
     const requestBody = {
       query: `
         query {getLessonsByField(
@@ -345,7 +343,7 @@ class LessonsPage extends Component {
     event.preventDefault();
     this.setState({editingLesson: false})
     let activityId = this.context.activityId;
-    const creatorId = activityId;
+    // const creatorId = activityId;
     const lessonId = this.state.selectedLesson._id;
     const token = this.context.token;
 
@@ -407,7 +405,7 @@ class LessonsPage extends Component {
     event.preventDefault();
     this.setState({editingLessonField: false})
     let activityId = this.context.activityId;
-    const creatorId = activityId;
+    // const creatorId = activityId;
     const lessonId = this.state.selectedLesson._id;
     const token = this.context.token;
 
@@ -664,7 +662,7 @@ class LessonsPage extends Component {
     this.setState({userAlert: 'creating new lesson session'});
 
     const activityId = this.context.activityId;
-    const userId = activityId;
+    // const userId = activityId;
     const lessonId = this.state.selectedLesson._id;
 
     const sessionTitle = event.target.formGridTitle.value;
@@ -789,7 +787,7 @@ class LessonsPage extends Component {
     const activityId = this.context.activityId;
     const userId = activityId;
     const token = this.context.token;
-    const today = new Date();
+    // const today = new Date();
     const request = this.state.activityA;
 
     const requestBody = {
@@ -814,7 +812,6 @@ class LessonsPage extends Component {
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Failed!');
-          this.setState({userAlert: 'Failed!'});
         }
         return res.json();
       })
@@ -1224,7 +1221,7 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+        // const responseAlert = JSON.stringify(resData.data).slice(0,8);
         this.context.user = resData.data.addUserLikedLesson;
       })
       .catch(err => {

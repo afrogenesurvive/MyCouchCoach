@@ -1,11 +1,12 @@
-import React, {useState} from 'react';
+import React from 'react';
+// import React, {useState} from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
+// import Form from 'react-bootstrap/Form';
 
 import UserAddressList from './UserList/UserAddressList';
 import UserProfileImageList from './UserList/UserProfileImageList';
@@ -62,7 +63,7 @@ import './thisUserProfile.css';
 const thisUserProfile = (props) => {
 const {...user} = props.user;
 
-const userAddress = user.address;
+// const userAddress = user.address;
 const userDob = new Date(user.dob.substr(0,9)*1000).toLocaleDateString().slice(0,10);
 
 let sentRequests = [];
@@ -73,7 +74,7 @@ if (user.friendRequests !== []) {
   receivedRequests = user.friendRequests.filter(request => request.receiver._id === user._id);
 }
 // console.log('sentRequests',sentRequests,'receivedRequests',receivedRequests);
-const publicUser = user.public.toString();
+// const publicUser = user.public.toString();
 // const today = new Date().toLocaleDateString().slice(0,10);
 // const today2 = new Date(today);
 
@@ -91,8 +92,22 @@ const reviewedLessonIds = user.reviews.map(x => x.lesson._id);
 let hasShippingAddress = user.addresses.filter(x => x.type === 'Shipping' && x.primary === true).length === 0;
 // console.log(user.addresses,user.addresses.filter(x => x.type === 'Shipping'),hasShippingAddress);
 
-
 let userAddresses = user.addresses;
+
+// const setFilter2 = (args) => {
+//   console.log('...setFilter2...',args);
+//   if (args.key === 'primary') {
+//     let test2 = userAddresses.filter(x => x.primary === true)
+//     userAddresses = test2;
+//     console.log(user.addresses,userAddresses,test2,args.value);
+//   }
+//   if (args.key === 'type') {
+//     let test2 = userAddresses.filter(x => x.type === args.value)
+//     userAddresses = test2;
+//     console.log(user.addresses,userAddresses,test2,args.value);
+//   }
+// }
+
 
 // - filters
 //   - address
@@ -238,6 +253,8 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
     </Tab>
 
     <Tab eventKey="address" title="address">
+
+
     <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'addresses', key: 'primary', value: true})}>
       Filter by primary
     </Button>
@@ -250,6 +267,7 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
     <Button variant="danger" onClick={props.setFilter.bind(this, {field: null, key: null, value: null })}>
       clearFilter
     </Button>
+
 
     <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.onStartAdd.bind(this, "address")}>+ Address</Button>
     {props.userAddField === "address" && (
@@ -606,21 +624,22 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
 
     </Tab>
 
-    {user.role === "Instructor" || user.role === 'Admin' && (
-    <Tab eventKey="taughtLessons" title="taughtLessons">
-    {
-      user.taughtLessons !== null &&
-      user.taughtLessons!== [] && (
-        <UserTaughtLessonList
-          userTaughtLessons={user.taughtLessons}
-          authId={props.authId}
-          canDelete={props.canDelete}
-          onDelete={props.userDeleteTaughtLesson}
-          viewLessonDetails={props.viewLessonDetails}
-        />
-      )}
+    {user.role === "Instructor" ||
+      user.role === 'Admin' && (
+      <Tab eventKey="taughtLessons" title="taughtLessons">
+      {
+        user.taughtLessons !== null &&
+        user.taughtLessons!== [] && (
+          <UserTaughtLessonList
+            userTaughtLessons={user.taughtLessons}
+            authId={props.authId}
+            canDelete={props.canDelete}
+            onDelete={props.userDeleteTaughtLesson}
+            viewLessonDetails={props.viewLessonDetails}
+          />
+        )}
 
-    </Tab>
+      </Tab>
     )}
 
     <Tab eventKey="paymentInfo" title="paymentInfo">

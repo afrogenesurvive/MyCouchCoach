@@ -19,7 +19,7 @@ const UserDetail = (props) => {
   const isFriend = props.myFriends.filter(x => x === user._id).length > 0;
   console.log(props.myFriends,isFriend);
   console.log('user.clientConnected',user.clientConnected,'user.loggedIn',user.loggedIn);
-  const interests = user.interests;
+  // const interests = user.interests;
 
   // let userDob = new Date(user.dob.substr(0,9) * 1000).toLocaleDateString().slice(0,10);
 

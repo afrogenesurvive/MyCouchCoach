@@ -479,8 +479,13 @@ module.exports = buildSchema(`
   type PocketVariables {
     pocketVariables: String
   }
+  type TestMail {
+    test: String
+  }
 
   type RootQuery {
+    testEmail: TestMail
+
     login(email: String!, password: String!): AuthData!
     logout( activityId: ID!): User!
 

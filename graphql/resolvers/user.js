@@ -20,6 +20,49 @@ const mailjet = require ('node-mailjet')
 .connect(pocketVariables.mailjet.a, pocketVariables.mailjet.b)
 
 module.exports = {
+  testEmail: async () => {
+
+    console.log("Resolver: test email...");
+
+      console.log(pocketVariables);
+    try {
+      const request = mailjet
+      .post("send", {'version': 'v3.1'})
+      .request({
+        "Messages":[
+          {
+            "From": {
+              "Email": "test@couchCoach.com",
+              "Name": "Michael"
+            },
+            "To": [
+              {
+                "Email": "michael.grandison@gmail.com",
+                "Name": "Michael"
+              }
+            ],
+            "Subject": "toast.",
+            "TextPart": "My first Mailjet email",
+            "HTMLPart": "<h3>Dear passenger 1, welcome to <a href='https://www.mailjet.com/'>Mailjet</a>!</h3><br />May the delivery force be with you!",
+            "CustomID": "AppGettingStartedTest"
+          }
+        ]
+      })
+      request
+        .then((result) => {
+          console.log("here",result.body)
+        })
+        .catch((err) => {
+          console.log(err.statusCode)
+        })
+
+      // return users.map(user => {
+      //   return transformUser(user,);
+      // });
+    } catch (err) {
+      throw err;
+    }
+  },
   getAllUsers: async (args, req) => {
 
     console.log("Resolver: getAllUsers...");
@@ -67,6 +110,7 @@ module.exports = {
       .populate('orders')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
+
 
       return users.map(user => {
         return transformUser(user,);

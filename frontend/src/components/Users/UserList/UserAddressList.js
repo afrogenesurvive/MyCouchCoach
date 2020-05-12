@@ -31,7 +31,7 @@ const userAddressList = props => {
     console.log('let userAddresses',userAddresses);
     console.log('propsUserAddresses',propsUserAddresses);
     console.log('props.userAddresses',props.userAddresses);
-    userAddresses = props.userAddresses;
+    // userAddresses = props.userAddresses;
     // propsUserAddresses = userAddresses;
     // propsUserAddresses = props.userAddresses;
   }

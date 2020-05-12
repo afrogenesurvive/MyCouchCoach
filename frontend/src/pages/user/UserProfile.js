@@ -3321,40 +3321,53 @@ class UserProfile extends Component {
   cancelSessionBooking = (args) => {
     console.log('...cancelling session...',args);
 
-    // this.setState({userAlert: '...cancelling lesson booking ...' });
-    // const activityId = this.context.activityId;
-    // const lessonId = this.state.profileLessonViewerData._id;
-    //
-    // const requestBody = {
-    //   query: `
-    //
-    //     `};
-    //
-    // fetch('http://localhost:8088/graphql', {
-    //   method: 'POST',
-    //   body: JSON.stringify(requestBody),
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     Authorization: 'Bearer ' + this.context.token
-    //   }
-    // })
-    //   .then(res => {
-    //     if (res.status !== 200 && res.status !== 201) {
-    //       throw new Error('Failed!');
-    //     }
-    //     return res.json();
-    //   })
-    //   .then(resData => {
-    //     const responseAlert = JSON.stringify(resData.data).slice(0,8);
-    //     this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.deleteLessonInstructor, activityA: requestBody});
-    //     // this.logUserActivity();
-    //   })
-    //   .catch(err => {
-    //     this.setState({userAlert: err});
-    //     if (this.isActive) {
-    //       this.setState({ isLoading: false });
-    //     }
-    //   });
+    this.setState({userAlert: '...cancelling lesson booking ...' });
+    const activityId = this.context.activityId;
+    const userId = activityId;
+    const lessonId = this.state.profileLessonViewerData._id;
+    const sessionTitle = args.session.title;
+    const sessionDate = args.session.date;
+    const cancellationReason = 'none';
+
+    const requestBody = {
+      query: `
+        mutation {deleteLessonBooking(
+          activityId:"${activityId}",
+          lessonId:"${lessonId}",
+          userId:"${userId}",
+          lessonInput:{
+            sessionTitle:"${sessionTitle}",
+            sessionDate:"${sessionDate}",
+            cancellationReason:"${cancellationReason}"
+          })
+          {_id,title,subtitle,type,category,price,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{email,phone,phone2}},gallery{name,type,path},requirements,materials,files{name,type,size,path},reviews{_id},tags,sessions{title,date,time,limit,amount,booked{_id,username},bookedAmount,attended{_id,username},attendedAmount,inProgress,full,url},promos{_id},reviews{date,type,title,body,author{_id,username},body,rating},cancellations{date,reason,sessionDate,sessionTitle,user{_id,username}}}}
+        `};
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        const responseAlert = JSON.stringify(resData.data).slice(0,8);
+        this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.deleteLessonBooking, activityA: requestBody});
+        // this.logUserActivity();
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+        if (this.isActive) {
+          this.setState({ isLoading: false });
+        }
+      });
 
   }
 

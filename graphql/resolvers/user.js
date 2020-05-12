@@ -122,6 +122,7 @@ module.exports = {
         }})
       .populate('orders')
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
 
@@ -177,6 +178,7 @@ module.exports = {
         }})
       .populate('orders')
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
         return {
@@ -236,6 +238,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -296,6 +299,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -475,6 +479,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -530,6 +535,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -584,6 +590,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -639,6 +646,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -694,6 +702,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -749,6 +758,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -802,6 +812,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -935,6 +946,7 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
+        .populate('cancellations.lesson')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
 
@@ -999,6 +1011,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -1063,6 +1076,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -1132,6 +1146,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -1202,6 +1217,7 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
+        .populate('cancellations.lesson')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
 
@@ -1310,6 +1326,7 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
+        .populate('cancellations.lesson')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
 
@@ -1374,6 +1391,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -1439,6 +1457,7 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
+        .populate('cancellations.lesson')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
 
@@ -1503,6 +1522,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -1568,6 +1588,7 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
+        .populate('cancellations.lesson')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
 
@@ -1633,6 +1654,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -1701,6 +1723,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -1769,6 +1792,7 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
+        .populate('cancellations.lesson')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
 
@@ -1827,6 +1851,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -1884,6 +1909,7 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
+        .populate('cancellations.lesson')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
 
@@ -1942,6 +1968,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -1999,6 +2026,7 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
+        .populate('cancellations.lesson')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
 
@@ -2056,6 +2084,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -2113,6 +2142,7 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
+        .populate('cancellations.lesson')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
 
@@ -2170,6 +2200,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -2227,6 +2258,7 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
+        .populate('cancellations.lesson')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
 
@@ -2288,6 +2320,7 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
+        .populate('cancellations.lesson')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
 
@@ -2371,6 +2404,7 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
+        .populate('cancellations.lesson')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
 
@@ -2436,6 +2470,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -2505,6 +2540,7 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
+        .populate('cancellations.lesson')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
 
@@ -2548,6 +2584,7 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
+        .populate('cancellations.lesson')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
 
@@ -2612,6 +2649,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -2676,6 +2714,7 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
+        .populate('cancellations.lesson')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
 
@@ -2733,6 +2772,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -2790,6 +2830,7 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
+        .populate('cancellations.lesson')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
 
@@ -2857,6 +2898,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -2917,6 +2959,7 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
+        .populate('cancellations.lesson')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
 
@@ -2980,6 +3023,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -3039,6 +3083,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -3102,6 +3147,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -3161,6 +3207,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -3226,6 +3273,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -3288,6 +3336,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -3352,6 +3401,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -3413,6 +3463,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -3470,6 +3521,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -3527,6 +3579,7 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
+        .populate('cancellations.lesson')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
 
@@ -3584,6 +3637,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -3641,6 +3695,7 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
+        .populate('cancellations.lesson')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
 
@@ -3698,6 +3753,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -3755,6 +3811,7 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
+        .populate('cancellations.lesson')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
 
@@ -3812,6 +3869,7 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate('cancellations.lesson')
       .populate('friendRequests.sender')
       .populate('friendRequests.receiver');
 
@@ -3870,6 +3928,7 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
+        .populate('cancellations.lesson')
         .populate('friendRequests.sender')
         .populate('friendRequests.receiver');
 
@@ -4051,69 +4110,6 @@ module.exports = {
       });
 
       const result = await user.save();
-
-      // const request = mailjet
-      // .post("send", {'version': 'v3.1'})
-      // .request({
-      //   "Messages":[
-      //     {
-      //       "From": {
-      //         "Email": "prof.black@africangeneticsurvival.net",
-      //         "Name": "Michael"
-      //       },
-      //       "To": [
-      //         {
-      //           "Email": "michael.grandison@gmail.com",
-      //           "Name": "Michael"
-      //         }
-      //       ],
-      //       "Subject": "toast.",
-      //       "TextPart": "My first Mailjet email",
-      //       "HTMLPart": "<h3>Dear passenger 1, welcome to <a href='https://www.mailjet.com/'>Mailjet</a>!</h3><br />May the delivery force be with you!",
-      //       "CustomID": "AppGettingStartedTest"
-      //     }
-      //   ]
-      // })
-      // request
-      //   .then((result) => {
-      //     console.log("here",result.body)
-      //   })
-      //   .catch((err) => {
-      //     console.log(err.statusCode)
-      //   })
-
-      // let transporter = nodemailer.createTransport({
-      //   host: "smtp.example.com",
-      //   port: 587,
-      //   secure: false, // upgrade later with STARTTLS
-      //   auth: {
-      //     user: "username",
-      //     pass: "password"
-      //   }
-      // });
-      //
-      // let transporter = nodemailer.createTransport({
-      //   service: 'gmail',
-      //   auth: {
-      //     user: 'stonedrone001@gmail.com',
-      //     pass: '18769095112'
-      //   }
-      // });
-      //
-      // let mailOptions = {
-      //   from: 'stonedrone001@gmail.com',
-      //   to: 'michael.grandison@gmail.com',
-      //   subject: 'Sending Email using Node.js',
-      //   text: 'That was easy!'
-      // };
-      //
-      // transporter.sendMail(mailOptions, function(error, info){
-      //   if (error) {
-      //     console.log(error);
-      //   } else {
-      //     console.log('Email sent: ' + info.response);
-      //   }
-      // });
 
       return {
         ...result._doc,

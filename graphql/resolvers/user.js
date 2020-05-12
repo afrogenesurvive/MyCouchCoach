@@ -323,14 +323,71 @@ module.exports = {
       throw err;
     }
   },
+  requestPasswordReset: async (args) => {
+    console.log('Resolver: requestPasswordReset...');
+    try {
+
+      const username = args.userInput.username;
+      const email = args.userInput.email;
+      const userExists = await User.findOne({username: args.userInput.username, 'contact.email': args.userInput.contactEmail})
+      if (!userExists) {
+        console.log('...user doesnt exist. Check your credentials and try again...');
+        throw new Error('...user doesnt exist. Check your credentials and try again...')
+      }
+      const verificationCode = 'VERF002';
+
+      const user = await User.findOneAndUpdate(
+        {_id: userExists._id},
+        {verification: {
+          verified: false,
+          type: 'passwordReset',
+          code: verificationCode
+        }},
+        {new: true, useFindAndModify: false}
+      )
+      const resetUrl = 'localhost:8088/passwordReset/'+userExists._id+'@'+verificationCode+'';
+      const userEmail = user.contact.email;
+      console.log('resetUrl',resetUrl);
+
+      return {
+          ...user._doc,
+          _id: user.id,
+          name: user.name
+      };
+    } catch (err) {
+      throw err;
+    }
+  },
   resetUserPassword: async (args) => {
     console.log('Resolver: resetUserPassword...');
     try {
+
+      const verificationChallengeCode = args.verification;
+      const preUser = await User.findById({_id: args.userId});
+      const verificationResponse = preUser.verification;
+      if (verificationResponse.type !== 'passwordReset') {
+        console.log('...umm no... reset request doesnt match our records... are you hacking??');
+        throw new Error('...umm no... reset request doesnt match our records... are you hacking??')
+      }
+      if (verificationResponse.code !== verificationChallengeCode) {
+        console.log('...there was an error with password reset verification... contact tech support or request a new reset email...');
+        throw new Error('...there was an error with password reset verification... contact tech support or request a new reset email...')
+      }
+      else {
+        console.log('...password reset verification success... resetting password...');
+      }
       const password = args.userInput.password;
       const hashedPassword = await bcrypt.hash(password, 12);
       const user = await User.findOneAndUpdate(
         {_id: args.userId},
-        {password: hashedPassword},
+        {
+          password: hashedPassword,
+          verification: {
+            verified: true,
+            type: null,
+            code: null
+          }
+        },
         {new: true, useFindAndModify: false}
       )
 

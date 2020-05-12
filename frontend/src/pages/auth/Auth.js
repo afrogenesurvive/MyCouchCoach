@@ -17,6 +17,7 @@ import AlertBox from '../../components/AlertBox';
 import LoadingOverlay from '../../components/LoadingOverlay';
 // import SidebarControl from '../../components/SidebarControl';
 import VerifyUserForm from '../../components/Forms/user/VerifyUserForm';
+import ForgotPasswordForm from '../../components/Forms/auth/ForgotPasswordForm';
 
 // import UserProfile from '../user/UserProfile';
 
@@ -32,6 +33,7 @@ class AuthPage extends Component {
     user: {},
     model: {},
     activityA: null,
+    requestingPasswordReset: false,
   };
   static contextType = AuthContext;
 
@@ -58,7 +60,7 @@ class AuthPage extends Component {
     //       {_id,password,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle},interests,perks{_id},promos{_id},friends{_id,username},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
     //     `};
     //
-    // fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
+    // fetch('http://localhost:8088/graphql', {
     //   method: 'POST',
     //   body: JSON.stringify(requestBody),
     //   headers: {
@@ -114,7 +116,7 @@ class AuthPage extends Component {
           {activityId,role,token,tokenExpiration,error}}
         `};
 
-    fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
+    fetch('http://localhost:8088/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
@@ -203,10 +205,10 @@ class AuthPage extends Component {
     const requestBody = {
       query: `
         query {getThisUser(activityId:"${activityId}")
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},toTeachLessons{_id,title,category,price},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
-    fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
+    fetch('http://localhost:8088/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
@@ -250,7 +252,7 @@ class AuthPage extends Component {
           {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,lesson{_id},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
       `};
 
-    fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
+    fetch('http://localhost:8088/graphql', {
         method: 'POST',
         body: JSON.stringify(requestBody),
         headers: {
@@ -292,9 +294,9 @@ class AuthPage extends Component {
       {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
         `};
 
-      console.log(JSON.stringify(requestBody));
+      // console.log(JSON.stringify(requestBody));
 
-    fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
+    fetch('http://localhost:8088/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
@@ -321,6 +323,57 @@ class AuthPage extends Component {
   closeVerification = () => {
     this.setState({verifying: false})
   };
+
+  startForgotPassword = () => {
+    this.setState({requestingPasswordReset: true})
+  }
+  cancelPasswordReset = () => {
+    this.setState({requestingPasswordReset: false})
+  }
+
+  requestPasswordReset = (event) => {
+    event.preventDefault();
+    console.log('...requesting password reset...');
+    this.setState({isLoading: true})
+
+    const username = event.target.formGridUsername.value;
+    const email = event.target.formGridEmail.value;
+
+    const requestBody = {
+      query: `
+         mutation {requestPasswordReset(
+           userInput:{
+             username:"${username}",
+             contactEmail:"${email}"
+           })
+           {_id,username,contact{email}verification{verified,type,code}}}
+        `};
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+      }})
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        // console.log(resData)
+        if (resData.errors) {
+          this.setState({userAlert: resData.errors[0].message});
+        } else {
+          this.setState({userAlert: '...password reset email sent...',isLoading: false, requestingPasswordReset: false});
+        }
+
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
+  }
 
 
   render() {
@@ -359,9 +412,23 @@ class AuthPage extends Component {
             <Button variant="outline-warning" className="loginButton" size="lg">
               <NavLink to="/signup">Signup</NavLink>
             </Button>
+            <Button variant="outline-secondary" className="loginButton" size="sm" onClick={this.startForgotPassword}>
+              ForgotPassword
+            </Button>
           </Form>
         </Col>
         </Row>
+
+        {this.state.requestingPasswordReset === true && (
+        <Row>
+          <Col>
+            <ForgotPasswordForm
+              onCancel={this.cancelPasswordReset}
+              onConfirm={this.requestPasswordReset}
+            />
+          </Col>
+        </Row>
+        )}
         <Row className="loginPageContainerRow2">
           <Col className="loginPageContainerCol2">
             <Button variant="outline-primary" onClick={this.startVerification}>Verify</Button>

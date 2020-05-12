@@ -8,7 +8,7 @@ import { useParams, NavLink } from 'react-router-dom';
 import "./AttachmentViewer.css"
 
 const PasswordReset = (props) => {
-  let {user} = useParams();
+  let {params} = useParams();
 
 return (
   <div className="attachmentViewerBg">
@@ -21,8 +21,12 @@ return (
       {props.resetState === 'complete' && (
         <p>Success...Password reset...</p>
       )}
+      {props.resetState === 'cancelled' && (
+        <p>Change your mind...? Request a new Password from the login page...</p>
+      )}
 
-      {props.resetState === 'complete' && (
+      {props.resetState === 'complete' ||
+        props.resetState === 'cancelled' && (
         <NavLink to="/auth">
         <Button variant="secondary">
           Login
@@ -32,8 +36,9 @@ return (
 
       {props.resetState === 'incomplete' && (
       <ResetPasswordForm
-        userId={user}
+        params={params}
         onConfirm={props.passwordReset}
+        onCancel={props.cancelPasswordReset}
       />
       )}
 

@@ -33,6 +33,7 @@ module.exports = buildSchema(`
     bookedLessons: [BookedLessonRef]
     attendedLessons: [LessonRef]
     taughtLessons: [LessonRef]
+    toTeachLessons: [Lesson]
     wishlist: [WishlistItem]
     cart: [CartItem]
     orders: [Order]
@@ -582,7 +583,8 @@ module.exports = buildSchema(`
 
   type RootMutation {
 
-    resetUserPassword(userId: ID!, userInput: UserInput!):User
+    requestPasswordReset(userInput: UserInput! ): User
+    resetUserPassword(userId: ID!, verification: String!, userInput: UserInput!):User
 
     createUser(userInput: UserInput!): User
     updateUserBasic(activityId: ID!, userId: ID!, userInput: UserInput!): User

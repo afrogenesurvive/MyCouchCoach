@@ -24,6 +24,7 @@ import UserCartItemList from './UserList/UserCartItemList';
 import UserBookedLessonList from './UserList/UserBookedLessonList';
 import UserLikedLessonList from './UserList/UserLikedLessonList';
 import UserAttendedLessonList from './UserList/UserAttendedLessonList';
+import UserToTeachLessonList from './UserList/UserToTeachLessonList';
 import UserTaughtLessonList from './UserList/UserTaughtLessonList';
 import UserPaymentInfoList from './UserList/UserPaymentInfoList';
 
@@ -142,6 +143,8 @@ const orderSubtotal = user.cart.map(x => x.lesson);
 const orderSubtotal2 = orderSubtotal.map(x => x.price )
 const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
 // console.log(orderSubtotal,orderSubtotal2,orderSubtotal3);
+
+console.log('user.toTeachLessons',user.toTeachLessons);
 
   return (
 
@@ -623,6 +626,22 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
       )}
 
     </Tab>
+
+    {user.role === "Instructor" ||
+      user.role === 'Admin' && (
+      <Tab eventKey="toTeachLessons" title="toTeachLessons">
+
+      {user.toTeachLessons !== null &&
+        user.toTeachLessons!== [] && (
+          <UserToTeachLessonList
+            userToTeachLessons={user.toTeachLessons}
+            authId={props.authId}
+            viewLessonDetails={props.viewLessonDetails}
+          />
+        )}
+
+      </Tab>
+    )}
 
     {user.role === "Instructor" ||
       user.role === 'Admin' && (

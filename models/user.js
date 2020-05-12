@@ -78,6 +78,7 @@ const userSchema = new Schema({
     ref: {type: Schema.Types.ObjectId,ref: 'Lesson'},
     _id : false
   }],
+  toTeachLessons: [{type: Schema.Types.ObjectId,ref: 'Lesson'}],
   wishlist: [{
     date: {type: Date},
     ref: {type: Schema.Types.ObjectId,ref: 'Lesson'},

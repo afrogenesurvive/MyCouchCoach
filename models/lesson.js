@@ -52,6 +52,13 @@ const lessonSchema = new Schema({
     url: {type: String},
     _id : false
   }],
+  cancellations: [{
+    date: {type: String},
+    reason: {type: String},
+    sessionDate: {type: Date},
+    sessionTitle: {type: String},
+    user: {type: Schema.Types.ObjectId,ref: 'User'}
+  }],
   promos: {type: Schema.Types.ObjectId,ref: 'Promo'}
 },
   { timestamps: true }

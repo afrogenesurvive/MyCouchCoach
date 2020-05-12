@@ -120,7 +120,14 @@ const userSchema = new Schema({
     }],
     reward: {type: Number},
     _id : false
-  }
+  },
+  cancellations: [{
+    date: {type: String},
+    reason: {type: String},
+    sessionDate: {type: Date},
+    sessionTitle: {type: String},
+    lesson: {type: Schema.Types.ObjectId,ref: 'Lesson'}
+  }]
 },
   { timestamps: true }
 );

@@ -6,6 +6,9 @@ const pocketVariables = {
     mailjet: {
       a: null,
       b: null
+    },
+    sendGrid: {
+      a: null
     }
 }
 exports.pocketVariables = pocketVariables;

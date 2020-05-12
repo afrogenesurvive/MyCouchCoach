@@ -131,7 +131,7 @@ app.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
 });
 
-const url = 'https://mycouchcoachstorage.s3.amazonaws.com/assets/creds/mailjet/mailJetApi.txt';
+const url = 'https://mycouchcoachstorage.s3.amazonaws.com/assets/creds/sendgrid/sendGridApi.txt';
 
 request.get(url, ( error, response, body) => {
   // body = xmlParser.xml2json(body, {compact: true, spaces: 4})
@@ -140,7 +140,7 @@ request.get(url, ( error, response, body) => {
   // console.log('boop',body.slice(0,3) === '{"a');
   if (body) {
     if (body.slice(0,3) === '{"a') {
-      pocketVariables.mailjet = JSON.parse(body);
+      pocketVariables.sendGrid = JSON.parse(body);
     }
   }
 

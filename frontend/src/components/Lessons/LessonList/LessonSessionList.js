@@ -34,6 +34,7 @@ const lessonSessionList = props => {
         sessionBookedState={props.sessionBookedState}
         sessionAttendedState={props.sessionAttendedState}
         addSessionAttendance={props.addSessionAttendance}
+        cancelSessionBooking={props.cancelSessionBooking}
       />
     );
   });

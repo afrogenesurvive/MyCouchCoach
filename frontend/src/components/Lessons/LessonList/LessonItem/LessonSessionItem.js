@@ -72,6 +72,7 @@ export default function lessonSessionItem (props) {
       booked={props.booked}
       attended={props.attended}
       addSessionAttendance={props.addSessionAttendance}
+      cancelSessionBooking={props.cancelSessionBooking}
     />)}
     {props.sessionAttendedState === true && (
       <SessionAttendedList

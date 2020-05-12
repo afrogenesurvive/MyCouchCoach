@@ -3318,6 +3318,47 @@ class UserProfile extends Component {
       });
   }
 
+  cancelSessionBooking = (args) => {
+    console.log('...cancelling session...',args);
+
+    // this.setState({userAlert: '...cancelling lesson booking ...' });
+    // const activityId = this.context.activityId;
+    // const lessonId = this.state.profileLessonViewerData._id;
+    //
+    // const requestBody = {
+    //   query: `
+    //
+    //     `};
+    //
+    // fetch('http://localhost:8088/graphql', {
+    //   method: 'POST',
+    //   body: JSON.stringify(requestBody),
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     Authorization: 'Bearer ' + this.context.token
+    //   }
+    // })
+    //   .then(res => {
+    //     if (res.status !== 200 && res.status !== 201) {
+    //       throw new Error('Failed!');
+    //     }
+    //     return res.json();
+    //   })
+    //   .then(resData => {
+    //     const responseAlert = JSON.stringify(resData.data).slice(0,8);
+    //     this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.deleteLessonInstructor, activityA: requestBody});
+    //     // this.logUserActivity();
+    //   })
+    //   .catch(err => {
+    //     this.setState({userAlert: err});
+    //     if (this.isActive) {
+    //       this.setState({ isLoading: false });
+    //     }
+    //   });
+
+  }
+
+
   clearAddressFilters = () => {
     this.setState({filter: {
       field: null,
@@ -3418,6 +3459,7 @@ class UserProfile extends Component {
             sessionBookedState={this.state.sessionBookedState}
             sessionAttendedState={this.state.sessionAttendedState}
             addSessionAttendance={this.addSessionAttendance}
+            cancelSessionBooking={this.cancelSessionBooking}
 
             editingLesson={this.state.editingLesson}
             onStartEditLessonBasic={this.onStartEditLessonBasic}

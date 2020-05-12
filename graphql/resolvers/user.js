@@ -19,6 +19,8 @@ const { pocketVariables } = require('../../helpers/pocketVars');
 const mailjet = require ('node-mailjet')
 .connect(pocketVariables.mailjet.a, pocketVariables.mailjet.b)
 
+const sgMail = require('@sendgrid/mail');
+
 module.exports = {
   testEmail: async () => {
 
@@ -26,6 +28,17 @@ module.exports = {
 
       console.log(pocketVariables);
     try {
+
+      // sgMail.setApiKey(pocketVariables.sendGrid.a);
+      // const msg = {
+      //   to: 'test@example.com',
+      //   from: 'test@example.com',
+      //   subject: 'Sending with Twilio SendGrid is Fun',
+      //   text: 'and easy to do anywhere, even with Node.js',
+      //   html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+      // };
+      // sgMail.send(msg);
+
       const request = mailjet
       .post("send", {'version': 'v3.1'})
       .request({

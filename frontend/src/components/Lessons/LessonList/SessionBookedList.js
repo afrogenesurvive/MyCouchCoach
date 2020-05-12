@@ -23,6 +23,7 @@ const sessionBookedList = props => {
     };
     return (
       <SessionBookedItem
+        session={props.session}
         key={user._id}
         attendance={attendance}
         user={user}
@@ -31,6 +32,7 @@ const sessionBookedList = props => {
         isInstructor={props.isInstructor}
         userAttended={userAttended}
         addSessionAttendance={props.addSessionAttendance}
+        cancelSessionBooking={props.cancelSessionBooking}
       />
     );
   });

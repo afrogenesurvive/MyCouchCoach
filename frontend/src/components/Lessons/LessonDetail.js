@@ -189,7 +189,6 @@ const LessonDetail = (props) => {
           hideSessionAttended={props.hideSessionAttended}
           sessionBookedState={props.sessionBookedState}
           sessionAttendedState={props.sessionAttendedState}
-
         />
       )}
 

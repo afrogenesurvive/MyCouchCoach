@@ -42,6 +42,7 @@ module.exports = buildSchema(`
     comments: [Comment]
     reviews: [Review]
     messages: [Message]
+    cancellations: [UserCancellation]
   }
 
   type Address {
@@ -140,6 +141,13 @@ module.exports = buildSchema(`
     valid: Boolean
     primary: Boolean
   }
+  type UserCancellation {
+    date: String
+    reason: String
+    sessionDate: String
+    sessionTitle: String
+    lesson: Lesson
+  }
   input UserInput {
     password: String
     name: String
@@ -214,6 +222,7 @@ module.exports = buildSchema(`
     tags: [String]
     sessions: [Session]
     promos: [Promo]
+    cancellations: [LessonCancellation]
   }
 
   type ScheduleItem {
@@ -243,6 +252,14 @@ module.exports = buildSchema(`
     lessonTitle: String
     lessonInstructors: [String]
     userId: String
+  }
+
+  type LessonCancellation {
+    date: String
+    reason: String
+    sessionDate: String
+    sessionTitle: String
+    user: User
   }
 
   input LessonInput {
@@ -283,6 +300,7 @@ module.exports = buildSchema(`
     sessionUrl: String
     sessionQuery: String
     sessionField: String
+    cancellationReason: String
   }
 
   type Order {
@@ -624,6 +642,10 @@ module.exports = buildSchema(`
     verifyUser( userInput: UserInput!): User
     userOnline(activityId: ID!, userId: ID! ): User
     userOffline(activityId: ID!, userId: ID! ): User
+
+    becomeAffiliate(activityId: ID!, userInput: UserInput!): User
+    addAffiliateReferrer(activityId: ID!, userInput: UserInput!): User
+    addAffiliateReferree(activityId: ID!, userInput: UserInput!): User
 
     deleteUserById(activityId: ID!, userId: ID!): User
     deleteUserObjectByField(activityId: ID!, userId: ID!, field: String!, userInput: UserInput!): User

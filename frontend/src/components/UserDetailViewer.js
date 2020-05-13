@@ -25,6 +25,11 @@ return (
       cancelMessage={props.cancelMessage}
       sendMessage={props.sendMessage}
       myFriends={props.myFriends}
+      profile={props.profile}
+      onStartSendMessage={props.onStartSendMessage}
+      sendingProfileMessage={props.sendingProfileMessage}
+      cancelProfileMessage={props.cancelProfileMessage}
+      sendProfileMessage={props.sendProfileMessage}
     />
 
     </div>

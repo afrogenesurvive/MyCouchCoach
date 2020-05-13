@@ -45,7 +45,7 @@ const ProfileLessonViewer = (props) => {
   // if (isInstructor === true ) {
   //   canDelete = true
   // }
-  console.log(lesson);
+  // console.log(lesson);
   return (
 
       <div className="attachmentViewerBg">

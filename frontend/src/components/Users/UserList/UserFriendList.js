@@ -22,6 +22,7 @@ const userFriendList = props => {
         onSelect={props.onSelect}
         onDelete={props.onDelete}
         canDelete={props.canDelete}
+        viewFriendDetails={props.viewFriendDetails}
       />
     );
   });

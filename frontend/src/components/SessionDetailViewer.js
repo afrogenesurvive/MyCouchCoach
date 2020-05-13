@@ -93,12 +93,14 @@ return (
 
 
 
-    {props.editSessionField && (
+    {props.editSessionField &&
+      isInstructor === true && (
       <Button variant="primary" onClick={props.startEditSessionField.bind(this, props.session)}>
           Edit
         </Button>
       )}
-    {props.editingSessionField === true && (
+    {props.editingSessionField === true &&
+      isInstructor === true && (
       <UpdateSessionFieldForm
         authId={props.authId}
         session={props.session}

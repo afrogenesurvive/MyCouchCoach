@@ -44,6 +44,10 @@ const userFriendItem = props => (
           Select
         </Button>
 
+        <Button variant="secondary" onClick={props.viewFriendDetails.bind(this, props.friend)}>
+          Details
+        </Button>
+
 
       { props.canDelete === true && (
         <Button variant="danger" onClick={props.onDelete.bind(this, props.friend)}>

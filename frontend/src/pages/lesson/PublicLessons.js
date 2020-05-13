@@ -87,7 +87,7 @@ class PublicLessonsPage extends Component {
         {_id,title,subtitle,type,category,price,points,description,duration,schedule{date,time},gallery{name,type,path},instructors{_id,username},tags}}
       `}
 
-    fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
+    fetch('http://localhost:8088/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
@@ -122,7 +122,7 @@ class PublicLessonsPage extends Component {
             {_id,title,subtitle,type,category,price,points,description,duration,requirements,schedule{date,time},gallery{name,type,path},instructors{_id,username},tags,reviews{date,type,title,author{_id,username},body,rating}}}
         `};
 
-    fetch('http://ec2-3-81-110-166.compute-1.amazonaws.com/graphql', {
+    fetch('http://localhost:8088/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {

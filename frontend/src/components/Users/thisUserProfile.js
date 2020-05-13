@@ -145,7 +145,6 @@ const orderSubtotal2 = orderSubtotal.map(x => x.price )
 const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
 // console.log(orderSubtotal,orderSubtotal2,orderSubtotal3);
 
-console.log('user.cancellations',user.cancellations);
 
   return (
 
@@ -491,6 +490,7 @@ console.log('user.cancellations',user.cancellations);
           canDelete={props.canDelete}
           onDelete={props.userDeleteFriend}
           onSelect={props.userSelectFriend}
+          viewFriendDetails={props.viewFriendDetails}
         />
       )}
 

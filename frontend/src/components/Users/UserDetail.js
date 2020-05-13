@@ -8,6 +8,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 import MessageUserListForm from '../Forms/user/MessageUserListForm';
+import MessageUserProfileForm from '../Forms/user/MessageUserProfileForm';
 // import AuthContext from '../../context/auth-context';
 
 import './UserDetail.css';
@@ -16,9 +17,13 @@ const UserDetail = (props) => {
 
   const {...user} = props.user;
   const profileImages = user.profileImages;
-  const isFriend = props.myFriends.filter(x => x === user._id).length > 0;
-  console.log(props.myFriends,isFriend);
-  console.log('user.clientConnected',user.clientConnected,'user.loggedIn',user.loggedIn);
+  let isFriend = false;
+  if ( props.myFriends) {
+    isFriend = props.myFriends.filter(x => x === user._id).length > 0;
+  }
+
+  // console.log(props.myFriends,isFriend);
+  // console.log('user.clientConnected',user.clientConnected,'user.loggedIn',user.loggedIn);
   // const interests = user.interests;
 
   // let userDob = new Date(user.dob.substr(0,9) * 1000).toLocaleDateString().slice(0,10);
@@ -58,21 +63,39 @@ const UserDetail = (props) => {
           </Col>
 
           <Col className="detailCardCol">
-
+            {props.pofile &&(
+              <p>Additional user info profile view</p>
+            )}
           </Col>
         </Row>
 
         <Row className="detailCardRow">
 
-        {isFriend === false && (
+        {props.myFriends &&
+          isFriend === false && (
         <Button variant="secondary" onClick={props.onFriendRequest.bind(this, props.user)}>
           RequsetFriend
         </Button>
         )}
-        {isFriend === true && (
+        {props.myFriends &&
+          isFriend === true && (
         <Button variant="info" onClick={props.onStartSendMessage.bind(this, props.user)}>
           Message
         </Button>
+        )}
+
+        {props.profile && (
+          <Button variant="info" onClick={props.onStartSendMessage.bind(this, props.user)}>
+            Message
+          </Button>
+        )}
+        {props.profile &&
+          props.sendingProfileMessage === true && (
+            <MessageUserProfileForm
+              receiver={user}
+              onCancel={props.cancelProfileMessage}
+              onConfirm={props.sendProfileMessage}
+            />
         )}
 
         <Button variant="danger" onClick={props.onHideUserDetail}>

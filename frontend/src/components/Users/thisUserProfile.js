@@ -31,6 +31,7 @@ import UserPaymentInfoList from './UserList/UserPaymentInfoList';
 import UserOrderList from './UserList/UserOrderList';
 import UserReviewList from './UserList/UserReviewList';
 import UserMessageList from './UserList/UserMessageList';
+import UserCancellationList from './UserList/UserCancellationList';
 import UserActivityList from './UserList/UserActivityList';
 
 import UpdateUserBasicForm from '../Forms/user/UpdateUserBasicForm';
@@ -817,6 +818,18 @@ console.log('user.cancellations',user.cancellations);
       )}
 
       <p>zoom mtg create button, dom element etc </p>
+    </Tab>
+
+    <Tab eventKey="cancellations" title="cancellations">
+
+    {user.cancellations !== null &&
+      user.cancellations !== [] && (
+        <UserCancellationList
+          userCancellations={user.cancellations}
+          authId={props.authId}
+        />
+      )}
+
     </Tab>
 
     <Tab eventKey="activity" title="activity">

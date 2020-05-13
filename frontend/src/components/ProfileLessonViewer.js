@@ -16,6 +16,9 @@ import LessonTagList from './Lessons/LessonList/LessonTagList';
 import LessonImageList from './Lessons/LessonList/LessonImageList';
 import LessonFileList from './Lessons/LessonList/LessonFileList';
 import LessonReviewList from './Lessons/LessonList/LessonReviewList';
+import LessonCancellationList from './Lessons/LessonList/LessonCancellationList';
+
+
 import CreateLessonSessionForm from './Forms/lesson/CreateLessonSessionForm';
 import UpdateLessonBasicForm from './Forms/lesson/UpdateLessonBasicForm';
 import UpdateLessonFieldForm from './Forms/lesson/UpdateLessonFieldForm';
@@ -494,6 +497,20 @@ const ProfileLessonViewer = (props) => {
 
               </Row>
             )}
+
+        </Card.Body>
+        </Card>
+        </Tab>
+
+        <Tab eventKey="cancellations" title="cancellations">
+        <Card className="UserDetailCard">
+        <Card.Body>
+          {isInstructor === true && (
+            <LessonCancellationList
+              lessonCancellations={lesson.cancellations}
+              authId={props.authId}
+            />
+          )}
 
         </Card.Body>
         </Card>

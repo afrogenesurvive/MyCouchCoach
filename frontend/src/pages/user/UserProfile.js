@@ -3635,8 +3635,8 @@ class UserProfile extends Component {
               onHideUserDetail={this.hideProfileFriendViewer}
               onStartSendMessage={this.onStartSendMessageProfile}
               sendingProfileMessage={this.state.sendingProfileMessage}
-              cancelProfileMessage={props.cancelProfileMessage}
-              sendProfileMessage={props.sendProfileMessage}
+              cancelProfileMessage={this.cancelProfileMessage}
+              sendProfileMessage={this.sendProfileMessage}
             />
         )}
 

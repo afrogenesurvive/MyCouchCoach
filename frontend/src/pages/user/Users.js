@@ -498,6 +498,14 @@ closeAttachmentView = () => {
       });
   };
 
+  toggleOverlay = () => {
+    if (this.state.overlay === true ) {
+      this.setState({overlay: false})
+    } else {
+      this.setState({overlay: true})
+    }
+  }
+
   componentWillUnmount() {
     this.isActive = false;
   }
@@ -535,15 +543,19 @@ closeAttachmentView = () => {
           myFriends={this.context.user.friends.map(x => x._id)}
         />
       )}
-      <SidebarControl
-        onShowSidebar={this.showSidebar}
-        onHideSidebar={this.hideSidebar}
-      />
+
       {this.state.overlay === true && (
-        <LoadingOverlay
-          status={this.state.overlayStatus}
-        />
-      )}
+          <LoadingOverlay
+            status={this.state.overlayStatus}
+            toggleOverlay={this.toggleOverlay}
+          />
+        )}
+
+            <SidebarControl
+              onShowSidebar={this.showSidebar}
+              onHideSidebar={this.hideSidebar}
+              toggleOverlay={this.toggleOverlay}
+            />
 
       <Accordion>
 

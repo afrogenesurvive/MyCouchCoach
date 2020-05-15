@@ -3548,6 +3548,15 @@ class UserProfile extends Component {
     })
   }
 
+
+  toggleOverlay = () => {
+    if (this.state.overlay === true ) {
+      this.setState({overlay: false})
+    } else {
+      this.setState({overlay: true})
+    }
+  }
+
   componentWillUnmount() {
     this.isActive = false;
   }
@@ -3563,12 +3572,14 @@ class UserProfile extends Component {
         {this.state.overlay === true && (
           <LoadingOverlay
             status={this.state.overlayStatus}
+            toggleOverlay={this.toggleOverlay}
           />
         )}
 
         <SidebarControl
           onShowSidebar={this.showSidebar}
           onHideSidebar={this.hideSidebar}
+          toggleOverlay={this.toggleOverlay}
         />
 
         <Row>

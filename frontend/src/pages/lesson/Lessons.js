@@ -1564,6 +1564,14 @@ class LessonsPage extends Component {
     })
   }
 
+  toggleOverlay = () => {
+    if (this.state.overlay === true ) {
+      this.setState({overlay: false})
+    } else {
+      this.setState({overlay: true})
+    }
+  }
+
   componentWillUnmount() {
     this.isActive = false;
   }
@@ -1662,15 +1670,19 @@ class LessonsPage extends Component {
           hideCalendarSessionDetail={this.hideCalendarSessionDetail}
         />
       )}
-      <SidebarControl
-        onShowSidebar={this.showSidebar}
-        onHideSidebar={this.hideSidebar}
-      />
+
       {this.state.overlay === true && (
         <LoadingOverlay
           status={this.state.overlayStatus}
+          toggleOverlay={this.toggleOverlay}
         />
       )}
+
+      <SidebarControl
+        onShowSidebar={this.showSidebar}
+        onHideSidebar={this.hideSidebar}
+        toggleOverlay={this.toggleOverlay}
+      />
 
       <Accordion>
 

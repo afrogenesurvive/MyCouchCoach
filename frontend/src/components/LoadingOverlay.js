@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from 'react-bootstrap/Button';
 
 import "./AttachmentViewer.css"
 
@@ -8,6 +9,7 @@ return (
   <div className="attachmentViewerBg">
     <div className="loadingOverlay">
       <h5 className="attachmentViewerTitle">status : {props.status} ...</h5>
+      <Button className="sidebarButton" variant="warning" onClick={props.toggleOverlay}>X</Button>
     </div>
   </div>
 )

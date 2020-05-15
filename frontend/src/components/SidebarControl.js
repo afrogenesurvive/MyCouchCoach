@@ -8,6 +8,7 @@ const SidebarControl = (props) =>{
     <div className="SidebarControl">
       <Button className="sidebarButton" variant="success" onClick={props.onShowSidebar}>+</Button>
       <Button className="sidebarButton" variant="danger" onClick={props.onHideSidebar}>-</Button>
+      <Button className="sidebarButton" variant="warning" onClick={props.toggleOverlay}>*</Button>
     </div>
   )
 }

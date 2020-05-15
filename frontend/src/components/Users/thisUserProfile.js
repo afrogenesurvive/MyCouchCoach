@@ -792,6 +792,7 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
 
       {props.sessionDetailViewer === true && (
         <SessionDetailViewer
+        meeting
         authId={props.authId}
         session={props.session}
         startEditSessionField={props.startEditSessionField}

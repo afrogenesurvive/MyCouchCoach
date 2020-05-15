@@ -8,7 +8,7 @@ const userLikedLessonList = props => {
   const likedLessons = props.userLikedLessons.map(likedLesson => {
     return (
       <UserLikedLessonItem
-        key={likedLesson}
+        key={likedLesson._id}
         likedLesson={likedLesson}
         _id={likedLesson._id}
         title={likedLesson.title}

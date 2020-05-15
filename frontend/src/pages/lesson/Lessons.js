@@ -80,6 +80,8 @@ class LessonsPage extends Component {
     showImagesState: false,
     showReviewsState: false,
     lessonAddField: null,
+    sessionDetailViewer: false,
+    calendarSession: null,
   };
   isActive = true;
   static contextType = AuthContext;
@@ -541,7 +543,12 @@ class LessonsPage extends Component {
     const userId = activityId;
     const lessonId = this.state.selectedLesson._id;
     const sessionTitle = args.title;
-    const sessionDate = new Date (args.date.substr(0,10)*1000).toISOString().slice(0,10);
+    let sessionDate = null;
+    if (this.state.sessionDetailViewer === true) {
+      sessionDate = args.date;
+    } else {
+      sessionDate = new Date (args.date.substr(0,10)*1000).toISOString().slice(0,10);
+    }
 
     const requestBody = {
       query: `
@@ -586,15 +593,20 @@ class LessonsPage extends Component {
       });
   };
   bookSession = (args) => {
-    console.log('booking lesson session');
+    console.log('booking lesson session',args.date);
+
     this.setState({userAlert: 'booking lesson session'});
 
     const activityId = this.context.activityId;
     const userId = activityId;
     const lessonId = this.state.selectedLesson._id;
     const sessionTitle = args.title;
-    // const sessionDate = args.date;
-    const sessionDate = new Date (args.date.substr(0,10)*1000).toISOString().slice(0,10);
+    let sessionDate = null;
+    if (this.state.sessionDetailViewer === true) {
+      sessionDate = args.date;
+    } else {
+      sessionDate = new Date (args.date.substr(0,10)*1000).toISOString().slice(0,10);
+    }
     const sessionTime = args.time;
 
     const requestBody = {
@@ -1520,6 +1532,38 @@ class LessonsPage extends Component {
       });
   }
 
+  viewCalendarSessionDetail = (args) => {
+    console.log('...viewCalendarSessionDetail..');
+    let preSession = args.event.extendedProps.props;
+    const calendarSession = {
+      title: preSession.title,
+      date: preSession.date,
+      lessonId: preSession.lessonId,
+      lessonTitle: preSession.lessonTitle,
+      lessonInstructors: preSession.lessonInstructors,
+      time: preSession.time,
+      limit: preSession.limit,
+      amount: preSession.amount,
+      booked: preSession.booked,
+      bookedAmount: preSession.bookedAmount,
+      attended: preSession.attended,
+      attendedAmount: preSession.attendedAmount,
+      inProgress: preSession.inProgress,
+      full: preSession.full,
+      url: preSession.url,
+    }
+    this.setState({
+      sessionDetailViewer: true,
+      calendarSession: calendarSession,
+    })
+  }
+  hideCalendarSessionDetail = () => {
+    this.setState({
+      sessionDetailViewer: false
+
+    })
+  }
+
   componentWillUnmount() {
     this.isActive = false;
   }
@@ -1611,6 +1655,11 @@ class LessonsPage extends Component {
           deleteLessonImage={this.deleteLessonImage}
           deleteLessonFile={this.deleteLessonFile}
           deleteLessonInstructor={this.deleteLessonInstructor}
+
+          viewCalendarSessionDetail={this.viewCalendarSessionDetail}
+          sessionDetailViewer={this.state.sessionDetailViewer}
+          calendarSession={this.state.calendarSession}
+          hideCalendarSessionDetail={this.hideCalendarSessionDetail}
         />
       )}
       <SidebarControl

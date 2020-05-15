@@ -6,10 +6,10 @@ import './UserList.css';
 const userActivityList = props => {
 
   const activity = props.userActivity.map(activity => {
-    const activityDate = new Date (activity.date.substr(0,10)*1000).toLocaleDateString().slice(0,10);
+    const activityDate = new Date (activity.date.substr(0,10)*1000).toLocaleDateString();
     return (
       <UserActivityItem
-        key={activity.request}
+        key={activityDate}
         activity={activity}
         date={activityDate}
         request={activity.request}

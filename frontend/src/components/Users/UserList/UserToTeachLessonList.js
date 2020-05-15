@@ -8,7 +8,7 @@ const userToTeachLessonList = props => {
   const toTeachLessons = props.userToTeachLessons.map(toTeachLesson => {
     return (
       <UserToTeachLessonItem
-        key={toTeachLesson}
+        key={toTeachLesson._id}
         toTeachLesson={toTeachLesson}
         _id={toTeachLesson._id}
         title={toTeachLesson.title}

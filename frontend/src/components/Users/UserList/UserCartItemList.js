@@ -12,7 +12,7 @@ const UserCartItemList = props => {
 
     return (
       <UserCartItemItem
-        key={cartItem.lesson}
+        key={cartItem.lesson._id}
         cartItem={cartItem}
         authId={props.authId}
         lesson={cartItem.lesson}

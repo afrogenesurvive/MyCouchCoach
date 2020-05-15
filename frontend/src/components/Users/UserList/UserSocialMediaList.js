@@ -8,7 +8,7 @@ const userSocialMediaList = props => {
 
     return (
       <UserSocialMediaItem
-        key={socialMediaAccount.path}
+        key={socialMediaAccount.handle}
         authId={props.authId}
         platform={socialMediaAccount.platform}
         handle={socialMediaAccount.handle}

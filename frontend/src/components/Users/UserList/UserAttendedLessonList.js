@@ -13,7 +13,7 @@ const userAttendedLessonList = props => {
     const attendedLessonDate = new Date (attendedLesson.date.substr(0,10)*1000).toLocaleDateString().slice(0,10);;
     return (
       <UserAttendedLessonItem
-        key={attendedLesson.ref}
+        key={attendedLesson.ref._id}
         attendedLesson={attendedLesson}
         date={attendedLessonDate}
         lesson={attendedLesson.ref}

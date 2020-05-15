@@ -10,7 +10,7 @@ const userTaughtLessonList = props => {
     // console.log(taughtLesson.ref);
     return (
       <UserTaughtLessonItem
-        key={taughtLesson.ref}
+        key={taughtLesson.ref._id}
         taughtLesson={taughtLesson}
         date={taughtLessonDate}
         lesson={taughtLesson.ref}

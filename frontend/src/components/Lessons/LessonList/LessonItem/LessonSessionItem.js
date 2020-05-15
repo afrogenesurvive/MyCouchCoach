@@ -39,22 +39,26 @@ export default function lessonSessionItem (props) {
       </Card.Text>
     </Card.Body>
 
-    {!props.meetings && (
+    {!props.meetings &&
+      props.profile && (
       <Button variant="primary" onClick={props.showSessionBooked}>
         Show Booked
       </Button>
     )}
-    {!props.meetings && (
+    {!props.meetings &&
+      props.profile && (
     <Button variant="primary" onClick={props.hideSessionBooked}>
       Hide Booked
     </Button>
     )}
-    {!props.meetings && (
+    {!props.meetings &&
+      props.profile && (
     <Button variant="primary" onClick={props.showSessionAttended}>
       Show Attended
     </Button>
     )}
-    {!props.meetings && (
+    {!props.meetings &&
+      props.profile && (
     <Button variant="primary" onClick={props.hideSessionAttended}>
       Hide Attended
     </Button>

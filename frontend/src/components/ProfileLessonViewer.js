@@ -31,7 +31,14 @@ import AddLessonImageForm from './Forms/lesson/AddLessonImageForm';
 import AddLessonFileForm from './Forms/lesson/AddLessonFileForm';
 import AddLessonInstructorForm from './Forms/lesson/AddLessonInstructorForm';
 
+import SessionDetailViewer from './SessionDetailViewer';
+
 // import AuthContext from '../../context/auth-context';
+
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import bootstrapPlugin from '@fullcalendar/bootstrap';
+import '../calendar.scss'
 
 import './AttachmentViewer.css';
 
@@ -45,7 +52,35 @@ const ProfileLessonViewer = (props) => {
   // if (isInstructor === true ) {
   //   canDelete = true
   // }
-  // console.log(lesson);
+  // console.log(lesson.sessions);
+
+  let lessonCalendarSessions = [];
+  if (lesson.sessions) {
+
+    lessonCalendarSessions = lesson.sessions.map(x => ({
+      title: x.title,
+      date: new Date (x.date.substr(0,10)*1000).toISOString().slice(0,10),
+      props: {
+        title: x.title,
+        date: new Date (x.date.substr(0,10)*1000).toISOString().slice(0,10),
+        lessonId: lesson._id,
+        lessonTitle: lesson.title,
+        lessonInstructors: lesson.instructors,
+        time: x.time,
+        limit: x.limit,
+        amount: x.amount,
+        booked: x.booked,
+        bookedAmount: x.bookedAmount,
+        attended: x.attended,
+        attendedAmount: x.attendedAmount,
+        inProgress: x.inProgress,
+        full: x.full,
+        url: x.url,
+      }
+    }))
+  }
+  // console.log('beep',props.calendarSession);
+
   return (
 
       <div className="attachmentViewerBg">
@@ -56,6 +91,15 @@ const ProfileLessonViewer = (props) => {
         <Card className="UserDetailCard">
         <Card.Body>
           <Card.Title><span className="ul">Lesson Details</span></Card.Title>
+
+          <Row className="detailCardRow">
+            <Col className="detailCardCol">
+              <Button variant="danger" onClick={props.closeProfileLessonView}>
+                x
+              </Button>
+            </Col>
+          </Row>
+
           <Row className="detailCardRow">
             <Col className="detailCardCol">
             {isInstructor === true &&(
@@ -128,14 +172,6 @@ const ProfileLessonViewer = (props) => {
             </Col>
           </Row>
 
-            <Row className="detailCardRow">
-              <Col className="detailCardCol">
-                <Button variant="danger" onClick={props.closeProfileLessonView}>
-                  x
-                </Button>
-              </Col>
-            </Row>
-
 
         </Card.Body>
         </Card>
@@ -144,6 +180,57 @@ const ProfileLessonViewer = (props) => {
         <Tab eventKey="sessions" title="sessions">
         <Card className="UserDetailCard">
         <Card.Body>
+
+        {props.showSessionState === true && (
+          <FullCalendar
+          defaultView="dayGridMonth"
+          plugins={[dayGridPlugin]}
+          events={lessonCalendarSessions}
+          eventClick={props.viewCalendarSessionDetail}
+          />
+        )}
+
+        {
+          // <SessionDetailViewer
+          // authId={props.authId}
+          // session={props.session}
+          // startEditSessionField={props.startEditSessionField}
+          // cancelEditSessionField={props.cancelEditSessionField}
+          // editingSessionField={props.editingSessionField}
+          // editSessionField={props.editSessionField}
+          // showSessionBooked={props.showSessionBooked}
+          // showSessionAttended={props.showSessionAttended}
+          // hideSessionBooked={props.hideSessionBooked}
+          // hideSessionAttended={props.hideSessionAttended}
+          // sessionBookedState={props.sessionBookedState}
+          // sessionAttendedState={props.sessionAttendedState}
+          // hideSessionDetails={props.hideSessionDetails}
+          // addSessionAttendance={props.addSessionAttendance}
+          // />
+        }
+        {
+          props.calendarSessionDetailViewer === true && (
+          <SessionDetailViewer
+          calendar
+          lessonType={props.lessonType}
+          authId={props.authId}
+          session={props.calendarSession}
+          hideCalendarSessionDetail={props.hideCalendarSessionDetail}
+          onBookSession={props.onBookSession}
+          onAddCartLesson={props.onAddCartLesson}
+          showSessionBooked={props.showSessionBooked}
+          hideSessionBooked={props.hideSessionBooked}
+          sessionBookedState={props.sessionBookedState}
+          showSessionAttended={props.showSessionAttended}
+          hideSessionAttended={props.hideSessionAttended}
+          sessionAttendedState={props.sessionAttendedState}
+          startEditSessionField={props.startEditSessionField}
+          cancelEditSessionField={props.cancelEditSessionField}
+          editingSessionField={props.editingSessionField}
+          editSessionField={props.editSessionField}
+          />
+        )
+      }
 
         <Row className="detailCardRow">
 
@@ -158,6 +245,7 @@ const ProfileLessonViewer = (props) => {
           {lesson.sessions !== [] &&
             props.showSessionState === true && (
             <LessonSessionList
+            profile
             isInstructor={isInstructor}
             lessonSessions={lesson.sessions}
             editSessionField={props.startEditSessionField}

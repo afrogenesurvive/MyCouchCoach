@@ -80,6 +80,11 @@ return (
       deleteLessonImage={props.deleteLessonImage}
       deleteLessonFile={props.deleteLessonFile}
       deleteLessonInstructor={props.deleteLessonInstructor}
+
+      viewCalendarSessionDetail={props.viewCalendarSessionDetail}
+      sessionDetailViewer={props.sessionDetailViewer}
+      calendarSession={props.calendarSession}
+      hideCalendarSessionDetail={props.hideCalendarSessionDetail}
     />
 
     </div>

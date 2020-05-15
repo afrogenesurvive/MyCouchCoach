@@ -1,4 +1,5 @@
-import React from 'react';
+// import React from 'react';
+import React, {useState} from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 // import Accordion from 'react-bootstrap/Accordion';
@@ -27,7 +28,14 @@ import AddLessonImageForm from '../Forms/lesson/AddLessonImageForm';
 import AddLessonFileForm from '../Forms/lesson/AddLessonFileForm';
 import AddLessonInstructorForm from '../Forms/lesson/AddLessonInstructorForm';
 
+import SessionDetailViewer from '../SessionDetailViewer';
+// import BigCalendar from 'react-big-calendar';
+// import moment from 'moment';
 // import AuthContext from '../../context/auth-context';
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import bootstrapPlugin from '@fullcalendar/bootstrap';
+import '../../calendar.scss'
 
 import './UserDetail.css';
 
@@ -49,6 +57,40 @@ const LessonDetail = (props) => {
   if (isInstructor === true ) {
     canDelete = true
   }
+
+  let lessonCalendarSessions = [];
+  if (lesson.sessions) {
+    lessonCalendarSessions = lesson.sessions.map(x => ({
+      title: x.title,
+      date: new Date (x.date.substr(0,10)*1000).toISOString().slice(0,10),
+      props: {
+        title: x.title,
+        date: new Date (x.date.substr(0,10)*1000).toISOString().slice(0,10),
+        lessonId: lesson._id,
+        lessonTitle: lesson.title,
+        lessonInstructors: lesson.instructors,
+        time: x.time,
+        limit: x.limit,
+        amount: x.amount,
+        booked: x.booked,
+        bookedAmount: x.bookedAmount,
+        attended: x.attended,
+        attendedAmount: x.attendedAmount,
+        inProgress: x.inProgress,
+        full: x.full,
+        url: x.url,
+      }
+    }))
+  }
+  // const lessonCalendarSessions = lesson.sessions.map(x => new Date (x.date.substr(0,10)*1000).toLocaleDateString().slice(0,10))
+  // console.log(...lessonCalendarSessions);
+  const [calEvent, clickEvent] = useState();
+  const handleEventClick = calEvent => {
+    // calEvent.preventDefault();
+    // console.log(calEvent.event);
+  }
+  console.log(props.sessionDetailViewer);
+
   return (
     <div className={"UserDetailBox1"}>
 
@@ -165,6 +207,53 @@ const LessonDetail = (props) => {
       <Card className="UserDetailCard">
       <Card.Body>
 
+      {props.sessionsLoaded === true && (
+        <FullCalendar
+        defaultView="dayGridMonth"
+        plugins={[dayGridPlugin]}
+        events={lessonCalendarSessions}
+        eventClick={props.viewCalendarSessionDetail}
+        />
+      )}
+
+      {
+        // events={lessonCalendarSessions}
+        // events={[
+        //   { title: 'event 1', date: '2020-05-01', foo: true, bar: 'toast',baz:'roast' },
+        //   { title: 'event 2', date: '2020-04-02', foo: true, bar: 'toast',baz:'roast' }
+        // ]}
+        // eventClick={props.viewCalendarSessionDetail}
+        // eventClick={handleEventClick}
+
+        // <SessionDetailViewer
+        // authId={props.authId}
+        // session={props.session}
+        // startEditSessionField={props.startEditSessionField}
+        // cancelEditSessionField={props.cancelEditSessionField}
+        // editingSessionField={props.editingSessionField}
+        // editSessionField={props.editSessionField}
+        // showSessionBooked={props.showSessionBooked}
+        // showSessionAttended={props.showSessionAttended}
+        // hideSessionBooked={props.hideSessionBooked}
+        // hideSessionAttended={props.hideSessionAttended}
+        // sessionBookedState={props.sessionBookedState}
+        // sessionAttendedState={props.sessionAttendedState}
+        // hideSessionDetails={props.hideSessionDetails}
+        // addSessionAttendance={props.addSessionAttendance}
+        // />
+      }
+
+      {props.sessionDetailViewer === true && (
+        <SessionDetailViewer
+        calendar
+        authId={props.authId}
+        session={props.calendarSession}
+        hideCalendarSessionDetail={props.hideCalendarSessionDetail}
+        onBookSession={props.onBookSession}
+        onAddCartLesson={props.onAddCartLesson}
+        />
+      )}
+
       <Row className="detailCardRow">
 
         <Col className="detailCardCol">
@@ -179,18 +268,18 @@ const LessonDetail = (props) => {
         </Button>
         {props.sessionsLoaded === true && (
           <LessonSessionList
-          isInstructor={isInstructor}
-          lessonSessions={lesson.sessions}
-          onBookSession={props.onBookSession}
-          onAddCartLesson={props.onAddCartLesson}
-          showSessionBooked={props.showSessionBooked}
-          showSessionAttended={props.showSessionAttended}
-          hideSessionBooked={props.hideSessionBooked}
-          hideSessionAttended={props.hideSessionAttended}
-          sessionBookedState={props.sessionBookedState}
-          sessionAttendedState={props.sessionAttendedState}
-        />
-      )}
+            isInstructor={isInstructor}
+            lessonSessions={lesson.sessions}
+            onBookSession={props.onBookSession}
+            onAddCartLesson={props.onAddCartLesson}
+            showSessionBooked={props.showSessionBooked}
+            showSessionAttended={props.showSessionAttended}
+            hideSessionBooked={props.hideSessionBooked}
+            hideSessionAttended={props.hideSessionAttended}
+            sessionBookedState={props.sessionBookedState}
+            sessionAttendedState={props.sessionAttendedState}
+          />
+        )}
 
           {isInstructor === true && (
           <Button variant="primary" onClick={props.startCreateSession.bind(this, lesson._id)}>

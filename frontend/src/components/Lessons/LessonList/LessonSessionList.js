@@ -9,6 +9,7 @@ const lessonSessionList = props => {
     const sessionDate = new Date (session.date.substr(0,10)*1000).toISOString().slice(0,10);;
     return (
       <LessonSessionItem
+        profile={props.profile}
         key={session.title}
         session={session}
         authId={props.authId}

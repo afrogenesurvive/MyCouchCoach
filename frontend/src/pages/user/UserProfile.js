@@ -88,7 +88,9 @@ class UserProfile extends Component {
       key: null,
       value: null
     },
-    sendingProfileMessage: false
+    sendingProfileMessage: false,
+    calendarSessionDetailViewer: false,
+    calendarSession: null,
   };
 
   isActive = true;
@@ -3512,6 +3514,40 @@ class UserProfile extends Component {
       });
   }
 
+  viewCalendarSessionDetail = (args) => {
+    console.log('...viewCalendarSessionDetail..');
+    let preSession = args.event.extendedProps.props;
+
+    const calendarSession = {
+      title: preSession.title,
+      date: preSession.date,
+      lessonId: preSession.lessonId,
+      lessonTitle: preSession.lessonTitle,
+      lessonInstructors: preSession.lessonInstructors,
+      time: preSession.time,
+      limit: preSession.limit,
+      amount: preSession.amount,
+      booked: preSession.booked,
+      bookedAmount: preSession.bookedAmount,
+      attended: preSession.attended,
+      attendedAmount: preSession.attendedAmount,
+      inProgress: preSession.inProgress,
+      full: preSession.full,
+      url: preSession.url,
+    }
+    // console.log(calendarSession);
+    this.setState({
+      calendarSessionDetailViewer: true,
+      calendarSession: calendarSession,
+    })
+  }
+  hideCalendarSessionDetail = () => {
+    this.setState({
+      calendarSessionDetailViewer: false
+
+    })
+  }
+
   componentWillUnmount() {
     this.isActive = false;
   }
@@ -3624,6 +3660,10 @@ class UserProfile extends Component {
             deleteLessonFile={this.deleteLessonFile}
             deleteLessonInstructor={this.deleteLessonInstructor}
 
+            viewCalendarSessionDetail={this.viewCalendarSessionDetail}
+            calendarSessionDetailViewer={this.state.calendarSessionDetailViewer}
+            calendarSession={this.state.calendarSession}
+            hideCalendarSessionDetail={this.hideCalendarSessionDetail}
           />
         )}
 

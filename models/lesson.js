@@ -5,7 +5,9 @@ const Schema = mongoose.Schema;
 const lessonSchema = new Schema({
   title: {type: String},
   subtitle: {type: String},
-  type: {type: String},
+  type: {type:String, enum: ['OneTime', 'Recurring']},
+  subType: {type:String, enum: ['OneDay', 'MultiDay']},
+  public: {type: Boolean},
   category: {type: String},
   price: {type: Number},
   points: {type: Number},
@@ -23,6 +25,7 @@ const lessonSchema = new Schema({
     name: {type: String},
     type: {type: String},
     path: {type: String},
+    public: {type: Boolean},
     _id : false
   }],
   requirements: [{type: String}],
@@ -32,6 +35,7 @@ const lessonSchema = new Schema({
     type: {type: String},
     size: {type: String},
     path: {type: String},
+    public: {type: Boolean},
     _id : false
   }],
   attendees: [{type: Schema.Types.ObjectId,ref: 'User'}],
@@ -40,6 +44,7 @@ const lessonSchema = new Schema({
   sessions: [{
     title: {type: String},
     date: {type: Date},
+    endDate: {type: Date},
     time: {type: String},
     limit: {type: Number},
     amount: {type: Number},
@@ -52,6 +57,7 @@ const lessonSchema = new Schema({
     url: {type: String},
     _id : false
   }],
+  reminders: [{type: Schema.Types.ObjectId,ref: 'Notification'}],
   cancellations: [{
     date: {type: String},
     reason: {type: String},

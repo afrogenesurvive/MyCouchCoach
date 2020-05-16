@@ -133,9 +133,14 @@ class UsersPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data.getUsersByField).slice(0,8);
-        const searchUsers = resData.data.getUsersByField;
-        this.setState({ searchUsers: searchUsers, userAlert: responseAlert, activityA: requestBody})
+
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.getUsersByField).slice(0,8);
+          const searchUsers = resData.data.getUsersByField;
+          this.setState({ searchUsers: searchUsers, userAlert: responseAlert, activityA: requestBody})
+        }
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -193,12 +198,17 @@ class UsersPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data.getUsersByFieldRegex).slice(0,8);
-        const searchUsers = resData.data.getUsersByFieldRegex;
-        if (searchUsers === [] ) {
-          this.setState({ userAlert: '... nothing found soz...', activityA: requestBody})
+
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
         } else {
-          this.setState({ searchUsers: searchUsers, userAlert: responseAlert, activityA: requestBody})
+          const responseAlert = JSON.stringify(resData.data.getUsersByFieldRegex).slice(0,8);
+          const searchUsers = resData.data.getUsersByFieldRegex;
+          if (searchUsers === [] ) {
+            this.setState({ userAlert: '... nothing found soz...', activityA: requestBody})
+          } else {
+            this.setState({ searchUsers: searchUsers, userAlert: responseAlert, activityA: requestBody})
+          }
         }
         // this.logUserActivity();
       })
@@ -239,9 +249,15 @@ class UsersPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data.getAllUsers).slice(0,8);
-        this.setState({userAlert: responseAlert, users: resData.data.getAllUsers, isLoading: false, activityA: requestBody});
-        this.context.users = this.state.users;
+
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.getAllUsers).slice(0,8);
+          this.setState({userAlert: responseAlert, users: resData.data.getAllUsers, isLoading: false, activityA: requestBody});
+          this.context.users = this.state.users;
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -308,9 +324,14 @@ class UsersPage extends Component {
         return res.json();
       })
       .then(resData => {
-        // console.log(JSON.stringify(resData.data.createMessage));
-        const responseAlert = JSON.stringify(resData.data.createMessage).slice(0,8);
-        this.setState({userAlert: responseAlert, activityA: requestBody});
+
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          // console.log(JSON.stringify(resData.data.createMessage));
+          const responseAlert = JSON.stringify(resData.data.createMessage).slice(0,8);
+          this.setState({userAlert: responseAlert, activityA: requestBody});
+        }
         // this.logUserActivity();
       })
       .catch(err => {
@@ -350,9 +371,14 @@ class UsersPage extends Component {
       return res.json();
     })
     .then(resData => {
-      const responseAlert = JSON.stringify(resData.data.getUserById).slice(0,8);
-      this.setState({userAlert: responseAlert, selectedUser: resData.data.getUserById, detailsLoaded:true, isLoading: false, activityA: requestBody});
-      this.context.selectedUser = this.state.selectedUser;
+      if (resData.errors.length > 0) {
+        this.setState({userAlert: resData.errors[0].message})
+      } else {
+        const responseAlert = JSON.stringify(resData.data.getUserById).slice(0,8);
+        this.setState({userAlert: responseAlert, selectedUser: resData.data.getUserById, detailsLoaded:true, isLoading: false, activityA: requestBody});
+        this.context.selectedUser = this.state.selectedUser;
+      }
+
       // this.logUserActivity();
     })
     .catch(err => {
@@ -406,9 +432,14 @@ onFriendRequest = (args) => {
         return res.json();
       })
       .then(resData => {
-        console.log(JSON.stringify(resData.data.sendFriendRequest.friendRequests));
-        const responseAlert = JSON.stringify(resData.data.sendFriendRequest).slice(0,8);
-        this.setState({userAlert: responseAlert, activityA: requestBody});
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          // console.log(JSON.stringify(resData.data.sendFriendRequest.friendRequests));
+          const responseAlert = JSON.stringify(resData.data.sendFriendRequest).slice(0,8);
+          this.setState({userAlert: responseAlert, activityA: requestBody});
+        }
+
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -429,7 +460,6 @@ onViewAttachment = (attachment) => {
 
       this.setState({showThisAttachmentFile: file, showThisAttachmentType: type, })
   }
-
 closeAttachmentView = () => {
 
       this.setState({showAttachment: false})
@@ -445,7 +475,6 @@ closeAttachmentView = () => {
         mCol2Size: 9
       })
   }
-
   hideSidebar = () => {
       this.setState({
         sidebarShow: false,

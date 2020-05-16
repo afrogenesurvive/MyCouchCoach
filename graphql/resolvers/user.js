@@ -10,6 +10,7 @@ const Perk = require('../../models/perk');
 const Promo = require('../../models/promo');
 const Comment = require('../../models/comment');
 const Message = require('../../models/message');
+const Notification = require('../../models/notification');
 const util = require('util');
 
 const { transformUser, transformMessage } = require('./merge');
@@ -121,6 +122,27 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
       .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
@@ -177,6 +199,27 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
       .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
@@ -238,8 +281,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
       return users.map(user => {
@@ -299,8 +363,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
       return users.map(user => {
@@ -479,8 +564,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
       return users.map(user => {
@@ -535,8 +641,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
       return users.map(user => {
@@ -590,8 +717,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
       return users.map(user => {
@@ -646,8 +794,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
       return users.map(user => {
@@ -702,8 +871,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
       return users.map(user => {
@@ -758,8 +948,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
       return users.map(user => {
@@ -812,8 +1023,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
       return {
@@ -848,6 +1080,7 @@ module.exports = {
       lessonTitle: '$title',
       lessonInstructors: '$instructors',
       date:'$sessions.date',
+      endDate:'$sessions.endDate',
       title:'$sessions.title',
       time:'$sessions.time',
       limit:'$sessions.limit',
@@ -871,6 +1104,7 @@ module.exports = {
   const sessions3 = sessions2.map(x => ({
     title: x.title,
     date: x.date,
+    endDate: x.endDate,
     time: x.time,
     limit: x.limit,
     amount: x.amount,
@@ -946,8 +1180,29 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
-        .populate('cancellations.lesson')
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('friendRequests.sender')
+        .populate('cancellations.lesson')
         .populate('friendRequests.receiver');
 
         return {
@@ -1011,8 +1266,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
       return {
@@ -1076,8 +1352,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
         return {
@@ -1146,8 +1443,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
       return {
@@ -1217,8 +1535,29 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
-        .populate('cancellations.lesson')
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('friendRequests.sender')
+        .populate('cancellations.lesson')
         .populate('friendRequests.receiver');
 
         return {
@@ -1326,8 +1665,29 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
-        .populate('cancellations.lesson')
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('friendRequests.sender')
+        .populate('cancellations.lesson')
         .populate('friendRequests.receiver');
 
         return {
@@ -1391,8 +1751,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
       return {
@@ -1457,8 +1838,29 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
-        .populate('cancellations.lesson')
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('friendRequests.sender')
+        .populate('cancellations.lesson')
         .populate('friendRequests.receiver');
 
 
@@ -1522,8 +1924,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
       return {
@@ -1588,8 +2011,29 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
-        .populate('cancellations.lesson')
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('friendRequests.sender')
+        .populate('cancellations.lesson')
         .populate('friendRequests.receiver');
 
         return {
@@ -1654,8 +2098,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
       return {
@@ -1723,8 +2188,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
       return {
@@ -1792,8 +2278,29 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
-        .populate('cancellations.lesson')
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('friendRequests.sender')
+        .populate('cancellations.lesson')
         .populate('friendRequests.receiver');
 
         return {
@@ -1851,8 +2358,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
         return {
@@ -1909,8 +2437,29 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
-        .populate('cancellations.lesson')
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('friendRequests.sender')
+        .populate('cancellations.lesson')
         .populate('friendRequests.receiver');
 
         return {
@@ -1968,8 +2517,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
         return {
@@ -2026,8 +2596,29 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
-        .populate('cancellations.lesson')
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('friendRequests.sender')
+        .populate('cancellations.lesson')
         .populate('friendRequests.receiver');
 
         return {
@@ -2084,8 +2675,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
         return {
@@ -2142,8 +2754,29 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
-        .populate('cancellations.lesson')
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('friendRequests.sender')
+        .populate('cancellations.lesson')
         .populate('friendRequests.receiver');
 
         return {
@@ -2200,8 +2833,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
         return {
@@ -2258,8 +2912,29 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
-        .populate('cancellations.lesson')
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('friendRequests.sender')
+        .populate('cancellations.lesson')
         .populate('friendRequests.receiver');
 
         return {
@@ -2320,8 +2995,29 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
-        .populate('cancellations.lesson')
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('friendRequests.sender')
+        .populate('cancellations.lesson')
         .populate('friendRequests.receiver');
 
       // console.log(user.friends);
@@ -2404,8 +3100,29 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
-        .populate('cancellations.lesson')
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('friendRequests.sender')
+        .populate('cancellations.lesson')
         .populate('friendRequests.receiver');
 
         return {
@@ -2470,8 +3187,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
       const updateInvitee = await User.findOneAndUpdate({_id: args.receiverId},{$addToSet: {friendRequests: friendRequest}},{new: true, useFindAndModify: false});
@@ -2540,8 +3278,29 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
-        .populate('cancellations.lesson')
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('friendRequests.sender')
+        .populate('cancellations.lesson')
         .populate('friendRequests.receiver');
 
       const receiver = await User.findOneAndUpdate(
@@ -2584,8 +3343,29 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
-        .populate('cancellations.lesson')
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('friendRequests.sender')
+        .populate('cancellations.lesson')
         .populate('friendRequests.receiver');
 
         return {
@@ -2649,8 +3429,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
       return {
@@ -2714,8 +3515,29 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
-        .populate('cancellations.lesson')
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('friendRequests.sender')
+        .populate('cancellations.lesson')
         .populate('friendRequests.receiver');
 
         return {
@@ -2772,8 +3594,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
         return {
@@ -2830,8 +3673,29 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
-        .populate('cancellations.lesson')
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('friendRequests.sender')
+        .populate('cancellations.lesson')
         .populate('friendRequests.receiver');
 
         return {
@@ -2898,8 +3762,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
         return {
@@ -2959,8 +3844,29 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
-        .populate('cancellations.lesson')
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('friendRequests.sender')
+        .populate('cancellations.lesson')
         .populate('friendRequests.receiver');
 
         return {
@@ -3023,8 +3929,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
         return {
@@ -3083,8 +4010,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
         return {
@@ -3147,8 +4095,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
         return {
@@ -3207,8 +4176,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
         return {
@@ -3217,6 +4207,28 @@ module.exports = {
           email: user.contact.email ,
           name: user.name,
         };
+    } catch (err) {
+      throw err;
+    }
+  },
+  addUserToTeachLesson: async (args, req) => {
+    console.log("Resolver: addUserToTeachLesson...");
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+
+    } catch (err) {
+      throw err;
+    }
+  },
+  deleteUserToTeachLesson: async (args, req) => {
+    console.log("Resolver: deleteUserToTeachLesson...");
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+
     } catch (err) {
       throw err;
     }
@@ -3273,8 +4285,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
         return {
@@ -3296,8 +4329,8 @@ module.exports = {
       const dateAdded = args.dateAdded;
       // let sessionDate = args.sessionDate;
 
-      let sessionDate = new Date (args.sessionDate.substr(0,10)*1000).toISOString().slice(0,10);;
-      // console.log(sessionDate);
+      let sessionDate = new Date (args.sessionDate.substr(0,10)*1000).toISOString().slice(0,10);
+
       const lesson = await Lesson.findById({_id: args.lessonId});
       const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { cart: {sessionDate: sessionDate, sessionTitle: args.sessionTitle, lesson: lesson} }},{new: true, useFindAndModify: false})
       .populate('perks')
@@ -3336,8 +4369,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
         return {
@@ -3401,8 +4455,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
         return {
@@ -3463,8 +4538,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
         return {
@@ -3521,8 +4617,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
         return {
@@ -3579,8 +4696,29 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
-        .populate('cancellations.lesson')
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('friendRequests.sender')
+        .populate('cancellations.lesson')
         .populate('friendRequests.receiver');
 
         return {
@@ -3637,8 +4775,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
         return {
@@ -3695,8 +4854,29 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
-        .populate('cancellations.lesson')
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('friendRequests.sender')
+        .populate('cancellations.lesson')
         .populate('friendRequests.receiver');
 
         return {
@@ -3753,8 +4933,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
         return {
@@ -3811,8 +5012,29 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
-        .populate('cancellations.lesson')
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('friendRequests.sender')
+        .populate('cancellations.lesson')
         .populate('friendRequests.receiver');
 
         return {
@@ -3869,8 +5091,29 @@ module.exports = {
           model: 'User'
         }})
       .populate('orders')
-      .populate('cancellations.lesson')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
 
@@ -3928,8 +5171,29 @@ module.exports = {
             model: 'User'
           }})
         .populate('orders')
-        .populate('cancellations.lesson')
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('friendRequests.sender')
+        .populate('cancellations.lesson')
         .populate('friendRequests.receiver');
 
         return {

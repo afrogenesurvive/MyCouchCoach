@@ -7,6 +7,7 @@ const Perk = require('../../models/perk');
 const Promo = require('../../models/promo');
 const Comment = require('../../models/comment');
 const Message = require('../../models/message');
+const Notification = require('../../models/notification');
 const { dateToString } = require('../../helpers/date');
 
 const userLoader = new DataLoader(userIds => {
@@ -32,6 +33,9 @@ const commentLoader = new DataLoader(commentIds => {
 });
 const messageLoader = new DataLoader(messageIds => {
   return messages(messageIds);
+});
+const notificationLoader = new DataLoader(notificationIds => {
+  return notifications(notificationIds);
 });
 
 
@@ -155,6 +159,21 @@ const messages = async messageIds => {
     throw err;
   }
 };
+const notifications = async notificationIds => {
+  try {
+    const notifications = await Notification.find({ _id: { $in: notificationIds } });
+    notifications.sort((a, b) => {
+      return (
+        notificationIds.indexOf(a._id.toString()) - notificationIds.indexOf(b._id.toString())
+      );
+    });
+    return notifications.map(notification => {
+      return transformNotification(notification);
+    });
+  } catch (err) {
+    throw err;
+  }
+};
 
 
 const singleUser = async userId => {
@@ -221,6 +240,14 @@ const singleMessage = async messageId => {
     throw err;
   }
 };
+const singleNotification = async notificationId => {
+  try {
+    const notification = await notificationLoader.load(notificationId.toString());
+    return notification;
+  } catch (err) {
+    throw err;
+  }
+};
 
 
 const transformUser = user => {
@@ -271,6 +298,15 @@ const transformMessage = message => {
     time: message.time,
   };
 };
+const transformNotification = notification => {
+  return {
+    ...notification._doc,
+    _id: notification.id,
+    createDate: notification.createDate,
+    sendDate: notification.sendDate,
+    title: notification.title,
+  };
+};
 const transformPerk = perk => {
   return {
     ...perk._doc,
@@ -288,12 +324,12 @@ const transformPromo = promo => {
   };
 };
 
-
 exports.transformUser = transformUser;
 exports.transformLesson = transformLesson;
 exports.transformOrder = transformOrder;
 exports.transformReview = transformReview;
 exports.transformComment = transformComment;
 exports.transformMessage = transformMessage;
+exports.transformNotification = transformNotification;
 exports.transformPerk = transformPerk;
 exports.transformPromo = transformPromo;

@@ -101,9 +101,14 @@ class PublicLessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data.getPublicLessonsByField).slice(0,8);
-        const searchLessons = resData.data.getPublicLessonsByField;
-        this.setState({ searchLessons: searchLessons, userAlert: responseAlert})
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.getPublicLessonsByField).slice(0,8);
+          const searchLessons = resData.data.getPublicLessonsByField;
+          this.setState({ searchLessons: searchLessons, userAlert: responseAlert})
+        }
+
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -137,8 +142,13 @@ class PublicLessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, lessons: resData.data.getAllPublicLessons, isLoading: false});
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, lessons: resData.data.getAllPublicLessons, isLoading: false});
+        }
+
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -156,7 +166,6 @@ class PublicLessonsPage extends Component {
   };
 
   showDetailHandler = lessonId => {
-    console.log('beep',lessonId);
   this.setState(prevState => {
     const selectedLesson = prevState.lessons.find(e => e._id === lessonId);
     // this.context.selectedLesson = selectedLesson;

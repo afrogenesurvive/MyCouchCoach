@@ -10,6 +10,7 @@ const Perk = require('../../models/perk');
 const Promo = require('../../models/promo');
 const Comment = require('../../models/comment');
 const Message = require('../../models/message');
+const Notification = require('../../models/notification');
 const util = require('util');
 
 const { transformPerk } = require('./merge');

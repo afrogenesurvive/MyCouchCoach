@@ -150,9 +150,14 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data.getLessonsByFieldRegex).slice(0,8);
-        const searchLessons = resData.data.getLessonsByFieldRegex;
-        this.setState({ searchLessons: searchLessons, userAlert: responseAlert, activityA: requestBody})
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.getLessonsByFieldRegex).slice(0,8);
+          const searchLessons = resData.data.getLessonsByFieldRegex;
+          this.setState({ searchLessons: searchLessons, userAlert: responseAlert, activityA: requestBody})
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -210,9 +215,14 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data.getLessonsByField).slice(0,8);
-        const searchLessons = resData.data.getLessonsByField;
-        this.setState({ searchLessons: searchLessons, userAlert: responseAlert, activityA: requestBody})
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.getLessonsByField).slice(0,8);
+          const searchLessons = resData.data.getLessonsByField;
+          this.setState({ searchLessons: searchLessons, userAlert: responseAlert, activityA: requestBody})
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -254,10 +264,14 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data.getLessonSession).slice(0,8);
-        const searchSession = resData.data.getLessonSession;
-        // console.log('baap',resData,searchSession);
-        this.setState({ searchSession: searchSession, userAlert: responseAlert, activityId: requestBody})
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.getLessonSession).slice(0,8);
+          const searchSession = resData.data.getLessonSession;
+          this.setState({ searchSession: searchSession, userAlert: responseAlert, activityId: requestBody})
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -320,8 +334,13 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data.createLesson).slice(0,8);
-        this.setState({ lesson: resData.data.createLesson, userAlert: responseAlert, activityA: requestBody})
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.createLesson).slice(0,8);
+          this.setState({ lesson: resData.data.createLesson, userAlert: responseAlert, activityA: requestBody})
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -395,8 +414,13 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data.updateLessonBasic).slice(0,8);
-        this.setState({ lesson: resData.data.updateLessonBasic, userAlert: responseAlert, activityA: requestBody})
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.updateLessonBasic).slice(0,8);
+          this.setState({ lesson: resData.data.updateLessonBasic, userAlert: responseAlert, activityA: requestBody})
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -439,8 +463,13 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data.updateLessonByField).slice(0,8);
-        this.setState({ lesson: resData.data.updateLessonByField, userAlert: responseAlert, activityA: requestBody})
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.updateLessonByField).slice(0,8);
+          this.setState({ lesson: resData.data.updateLessonByField, userAlert: responseAlert, activityA: requestBody})
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -476,9 +505,14 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, lessons: resData.data.getAllLessons, isLoading: false, activityId: requestBody});
-        this.context.lessons = this.state.lessons;
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, lessons: resData.data.getAllLessons, isLoading: false, activityId: requestBody});
+          this.context.lessons = this.state.lessons;
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -490,7 +524,7 @@ class LessonsPage extends Component {
   }
 
   loadSessions = (args) => {
-    console.log('retriving sessions for this lesson');
+    // console.log('retriving sessions for this lesson');
     this.setState({userAlert: 'retriving sessions for this lesson'})
     const activityId = this.context.activityId;
     const lessonId = this.state.selectedLesson._id;
@@ -519,9 +553,14 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, selectedLesson: resData.data.getLessonById, isLoading: false, sessionsLoaded: true, activityId: requestBody});
-        this.context.selectedLesson = this.state.selectedLesson;
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, selectedLesson: resData.data.getLessonById, isLoading: false, sessionsLoaded: true, activityId: requestBody});
+          this.context.selectedLesson = this.state.selectedLesson;
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -562,8 +601,6 @@ class LessonsPage extends Component {
             {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
         `};
 
-        // console.log(JSON.stringify(requestBody));
-
     fetch('http://localhost:8088/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
@@ -580,9 +617,14 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, isLoading: false, activityA: requestBody});
-        this.context.selectedUser = resData.data.addUserCartLesson;
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, isLoading: false, activityA: requestBody});
+          this.context.selectedUser = resData.data.addUserCartLesson;
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -639,19 +681,21 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        // console.log(resData);
-        let responseAlert = null;
-        if (resData.errors) {
-          responseAlert = resData.errors[0].message;
-          // console.log(responseAlert);
-          this.setState({userAlert: responseAlert})
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          let responseAlert = null;
+          if (resData.errors) {
+            responseAlert = resData.errors[0].message;
+            // console.log(responseAlert);
+            this.setState({userAlert: responseAlert})
+          }
+          if (resData.data.addLessonBooking !== null) {
+            responseAlert = JSON.stringify(resData.data).slice(0,8);
+            this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonBooking, isLoading: false, activityA: requestBody});
+            this.context.selectedLesson = this.state.selectedLesson;
+          }
         }
-        if (resData.data.addLessonBooking !== null) {
-          responseAlert = JSON.stringify(resData.data).slice(0,8);
-          this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonBooking, isLoading: false, activityA: requestBody});
-          this.context.selectedLesson = this.state.selectedLesson;
-        }
-
         // this.logUserActivity();
       })
       .catch(err => {
@@ -718,10 +762,14 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        console.log(resData);
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonSession, isLoading: false, creatingSession: false, activityA: requestBody});
-        this.context.selectedLesson = this.state.selectedLesson;
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonSession, isLoading: false, creatingSession: false, activityA: requestBody});
+          this.context.selectedLesson = this.state.selectedLesson;
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -828,10 +876,14 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.addUserActivity).slice(2,25);
+          this.setState({userAlert: responseAlert, user: resData.data.addUserActivity})
+          this.context.user = this.state.user;
+        }
 
-        const responseAlert = JSON.stringify(resData.data.addUserActivity).slice(2,25);
-        this.setState({userAlert: responseAlert, user: resData.data.addUserActivity})
-        this.context.user = this.state.user;
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -938,9 +990,14 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonMaterials, activityA: requestBody});
-        this.context.selectedLesson = this.state.selectedLesson;
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonMaterials, activityA: requestBody});
+          this.context.selectedLesson = this.state.selectedLesson;
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -986,9 +1043,14 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonTags, activityA: requestBody});
-        this.context.selectedLesson = this.state.selectedLesson;
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonTags, activityA: requestBody});
+          this.context.selectedLesson = this.state.selectedLesson;
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -1034,9 +1096,14 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonRequirements, activityA: requestBody});
-        this.context.selectedLesson = this.state.selectedLesson;
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonRequirements, activityA: requestBody});
+          this.context.selectedLesson = this.state.selectedLesson;
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -1086,9 +1153,14 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonImage, activityA: requestBody});
-        this.context.selectedLesson = this.state.selectedLesson;
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonImage, activityA: requestBody});
+          this.context.selectedLesson = this.state.selectedLesson;
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -1141,9 +1213,14 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonFile, activityA: requestBody});
-        this.context.selectedLesson = this.state.selectedLesson;
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonFile, activityA: requestBody});
+          this.context.selectedLesson = this.state.selectedLesson;
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -1187,9 +1264,14 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonInstructor, activityA: requestBody});
-        this.context.selectedLesson = this.state.selectedLesson;
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonInstructor, activityA: requestBody});
+          this.context.selectedLesson = this.state.selectedLesson;
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -1233,8 +1315,13 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        // const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.context.user = resData.data.addUserLikedLesson;
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          // const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.context.user = resData.data.addUserLikedLesson;
+        }
+
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -1278,10 +1365,14 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        console.log(resData.data.deleteLessonTag);
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, selectedLesson: resData.data.deleteLessonTag, activityA: requestBody});
-        this.context.selectedLesson = this.state.selectedLesson;
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, selectedLesson: resData.data.deleteLessonTag, activityA: requestBody});
+          this.context.selectedLesson = this.state.selectedLesson;
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -1325,9 +1416,14 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, selectedLesson: resData.data.deleteLessonRequirement, activityA: requestBody});
-        this.context.selectedLesson = this.state.selectedLesson;
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, selectedLesson: resData.data.deleteLessonRequirement, activityA: requestBody});
+          this.context.selectedLesson = this.state.selectedLesson;
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -1371,9 +1467,14 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, selectedLesson: resData.data.deleteLessonMaterial, activityA: requestBody});
-        this.context.selectedLesson = this.state.selectedLesson;
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, selectedLesson: resData.data.deleteLessonMaterial, activityA: requestBody});
+          this.context.selectedLesson = this.state.selectedLesson;
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -1421,9 +1522,14 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, selectedLesson: resData.data.deleteLessonImage, activityA: requestBody});
-        this.context.selectedLesson = this.state.selectedLesson;
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, selectedLesson: resData.data.deleteLessonImage, activityA: requestBody});
+          this.context.selectedLesson = this.state.selectedLesson;
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -1474,9 +1580,14 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, selectedLesson: resData.data.deleteLessonFile, activityA: requestBody});
-        this.context.selectedLesson = this.state.selectedLesson;
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, selectedLesson: resData.data.deleteLessonFile, activityA: requestBody});
+          this.context.selectedLesson = this.state.selectedLesson;
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -1519,9 +1630,14 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, selectedLesson: resData.data.deleteLessonInstructor, activityA: requestBody});
-        this.context.selectedLesson = this.state.selectedLesson;
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, selectedLesson: resData.data.deleteLessonInstructor, activityA: requestBody});
+          this.context.selectedLesson = this.state.selectedLesson;
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {

@@ -31,6 +31,7 @@ const userSchema = new Schema({
     name: {type:String},
     type: {type: String},
     path: {type: String},
+    public: {type: Boolean},
     _id : false
   }],
   socialMedia: [{
@@ -127,7 +128,8 @@ const userSchema = new Schema({
     sessionDate: {type: Date},
     sessionTitle: {type: String},
     lesson: {type: Schema.Types.ObjectId,ref: 'Lesson'}
-  }]
+  }],
+  notifications: [{type: Schema.Types.ObjectId,ref: 'Notification'}]
 },
   { timestamps: true }
 );

@@ -107,12 +107,17 @@ class SignupPage extends Component {
         return res.json();
       })
       .then(resData => {
-        const newUser = resData.data.createUser;
-        const errors = JSON.stringify({...resData.errors});
-        if (JSON.stringify(resData).slice(2,7) === 'error') {
-          this.setState({success: "Something went wrong!!!", userAlert: "Something went wrong!!!"+errors+""  });
+
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
         } else {
-          this.setState({success: "Signup success...Proceed to login", userAlert: "Signup success...Proceed to login... your verification code is.."+newUser.verification.code+"" });
+          const newUser = resData.data.createUser;
+          const errors = JSON.stringify({...resData.errors});
+          if (JSON.stringify(resData).slice(2,7) === 'error') {
+            this.setState({success: "Something went wrong!!!", userAlert: "Something went wrong!!!"+errors+""  });
+          } else {
+            this.setState({success: "Signup success...Proceed to login", userAlert: "Signup success...Proceed to login... your verification code is.."+newUser.verification.code+"" });
+          }
         }
 
       })

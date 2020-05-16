@@ -43,6 +43,7 @@ module.exports = buildSchema(`
     reviews: [Review]
     messages: [Message]
     cancellations: [UserCancellation]
+    notifications: [Notification]
   }
 
   type Address {
@@ -73,6 +74,7 @@ module.exports = buildSchema(`
     name: String
     type: String
     path: String
+    public: Boolean
   }
   type Attachment {
     name: String
@@ -204,6 +206,8 @@ module.exports = buildSchema(`
     title: String
     subtitle: String
     type: String
+    subType: String
+    public: Boolean
     category: String
     sku: String
     price: Float
@@ -221,6 +225,7 @@ module.exports = buildSchema(`
     reviews: [Review]
     tags: [String]
     sessions: [Session]
+    reminders: [Notification]
     promos: [Promo]
     cancellations: [LessonCancellation]
   }
@@ -234,10 +239,12 @@ module.exports = buildSchema(`
     type: String
     size: String
     path: String
+    public: Boolean
   }
   type Session {
     title: String
     date: String
+    endDate: String
     time: String
     limit: Int
     amount: Int
@@ -266,6 +273,8 @@ module.exports = buildSchema(`
     title: String
     subtitle: String
     type: String
+    subType: String
+    public: Boolean
     category: String
     sku: String
     price: Float
@@ -290,6 +299,7 @@ module.exports = buildSchema(`
     tags: String
     sessionTitle: String
     sessionDate: String
+    sessionEndDate: String
     sessionTime: String
     sessionLimit: Int
     sessionAmount: Int
@@ -301,6 +311,54 @@ module.exports = buildSchema(`
     sessionQuery: String
     sessionField: String
     cancellationReason: String
+  }
+
+  type Notification {
+    _id: ID
+    createDate: String
+    sendDate: String
+    creator: User
+    type: String
+    title: String
+    time: String
+    trigger: NotificationTrigger
+    lesson: Lesson
+    session: NotificationSession
+    recipients: [User]
+    body: String
+    delivery: NotificationDelivery
+  }
+  type NotificationTrigger {
+    unit: String
+    value: Float
+  }
+  type NotificationSession {
+    title: String
+    date: String
+    endDate: String
+    time: String
+  }
+  type NotificationDelivery {
+    type: String
+    params: String
+    sent: Boolean
+  }
+
+  input NotificationInput {
+    sendDate: String
+    type: String
+    title: String
+    time: String
+    triggerUnit: String
+    triggerValue: Float
+    sessionTitle: String
+    sessionDate: String
+    sessionEndDate: String
+    sessionTime: String
+    body: String
+    deliveryType: String
+    deliveryParams: String
+    deliverySent: Boolean
   }
 
   type Order {
@@ -528,6 +586,7 @@ module.exports = buildSchema(`
     getUsersByBookedLessons(activityId: ID!, lessonIds: [ID!]): [User]
     getUsersByAttendedLessons(activityId: ID!, lessonIds: [ID!]): [User]
     getUsersByTaughtLessons(activityId: ID!, lessonIds: [ID!]): [User]
+    getUsersByToTeachLessons(activityId: ID!, lessonIds: [ID!]): [User]
     getUsersByWishlistItems(activityId: ID!, lessonIds: [ID!]): [User]
     getUsersByCartItems(activityId: ID!, lessonIds: [ID!]): [User]
     getUserByOrders(activityId: ID!, orderIds: [ID!]): User
@@ -555,6 +614,16 @@ module.exports = buildSchema(`
     getLessonsByRequirements(activityId: ID!, lessonInput: LessonInput!): [Lesson]
     getLessonsByMaterials(activityId: ID!, lessonInput: LessonInput!): [Lesson]
     getLessonReminders(sessionDate: String!): [Lesson]
+
+    getAllNotifications(activityId: ID!): [Notification]
+    getNotificationById(activityId: ID!, notificationId: ID!): Notification
+    getNotificationsByField(activityId: ID!, field: String!, query: String!): [Notification]
+    getNotificationsToday(activityId: ID!): [Notification]
+    getNotificationsBySendDateRange(activityId: ID!, upperLimit: String!, lowerLimit: String!): [Notification]
+    getNotificationsBySendTimeRange(activityId: ID!, upperLimit: String!, lowerLimit: String!): [Notification]
+    getNotificationsByTrigger(activityId: ID!, notificationInput: NotificationInput): [Notification]
+    getNotificationsByLesson(activityId: ID!, lessonId: ID!): [Notification]
+    getNotificationsByRecipients(activityId: ID!, recipientIds: [ID!]): [Notification]
 
     getAllOrders(activityId: ID!): [Order]
     getOrderById(activityId: ID!, orderId: ID!): Order
@@ -629,12 +698,14 @@ module.exports = buildSchema(`
     addUserBookedLesson(activityId: ID!, userId: ID!, lessonId: ID!): User
     addUserAttendedLesson(activityId: ID!, userId: ID!, lessonId: ID!): User
     addUserTaughtLesson(activityId: ID!, userId: ID!, lessonId: ID!): User
+    addUserToTeachLesson(activityId: ID!, userId: ID!, lessonId: ID!): User
     addUserCartLesson(activityId: ID!, userId: ID!, lessonId: ID!, sessionDate: String!, sessionTitle: String!): User
     addUserWishlistLesson(activityId: ID!, userId: ID!, lessonId: ID!): User
 
     addUserComment(activityId: ID!, userId: ID!, commentId: ID!): User
     addUserOrder(activityId: ID!, userId: ID!, orderId: ID!): User
     addUserReview(activityId: ID!, userId: ID!, reviewId: ID!): User
+    addUserNotification(activityId: ID!, notificationId: ID!): User
 
     addUserMessage(activityId: ID!, userId: ID!, messageId: ID!): User
     addUserActivity(activityId: ID!, userId: ID!, userInput: UserInput!): User
@@ -668,6 +739,7 @@ module.exports = buildSchema(`
     deleteUserBookedLesson(activityId: ID!, userId: ID!, lessonId: ID!, date: String!): User
     deleteUserAttendedLesson(activityId: ID!, userId: ID!, lessonId: ID!, date: String!): User
     deleteUserTaughtLesson(activityId: ID!, userId: ID!, lessonId: ID!, date: String!): User
+    deleteUserToTeachLesson(activityId: ID!, userId: ID!, lessonId: ID!, date: String!): User
     deleteUserWishlistLesson(activityId: ID!, userId: ID!, lessonId: ID!): User
     deleteUserCartLesson(activityId: ID!, userId: ID!, lessonId: ID!, dateAdded: String!, sessionDate: String!, sessionTitle: String!): User
 
@@ -675,7 +747,7 @@ module.exports = buildSchema(`
     deleteUserReview(activityId: ID!, userId: ID!, reviewId: ID!): User
     deleteUserMessage(activityId: ID!, userId: ID!, messageId: ID!): User
     deleteUserOrder(activityId: ID!, userId: ID!, orderId: ID!): User
-
+    deleteUserNotification(activityId: ID!, notificationId: ID!): User
 
     createLesson(activityId: ID!, creatorId: ID!, lessonInput: LessonInput!): Lesson
     updateLessonBasic(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
@@ -695,6 +767,7 @@ module.exports = buildSchema(`
     addLessonOrder(activityId: ID!, lessonId: ID!, orderId: ID!): Lesson
     addLessonReview(activityId: ID!, lessonId: ID!, reviewId: ID!): Lesson
     addLessonPromo(activityId: ID!, lessonId: ID!, promoId: ID!): Lesson
+    addLessonReminder(activityId: ID!, lessonId: ID, reminderId: ID!): Lesson
 
     updateSessionUrl(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
     updateSessionField(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
@@ -721,6 +794,19 @@ module.exports = buildSchema(`
     deleteLessonOrder(activityId: ID!, lessonId: ID!, orderId: ID!): Lesson
     deleteLessonReview(activityId: ID!, lessonId: ID!, reviewId: ID!): Lesson
     deleteLessonPromo(activityId: ID!, lessonId: ID!, promoId: ID!): Lesson
+    deleteLessonReminder(activityId: ID!, lessonId: ID!, reminderId: ID!): Lesson
+
+    createNotification(activityId: ID!, lessonId: ID!, userIds: [ID!] ,notificationInput: NotificationInput!): Notification
+    updateNotificationBasic(activityId: ID!, notificationId: ID!, notificationInput: NotificationInput!): Notification
+    updateNotificationbyField(activityId: ID!, notificationId: ID!, field: String!, query: String!): Notification
+    updateNotificationTrigger(activityId: ID!, notificationId: ID!, notificationInput: NotificationInput!): Notification
+    updateNotificationDelivery(activityId: ID!, notificationId: ID!, notificationInput: NotificationInput!): Notification
+    updateNotificationLesson(activityId: ID!, notificationId: ID!, lessonId: ID!): Notification
+    addNotificationRecipient(activityId: ID!, notificationId: ID!, userId: ID!): Notification
+    notificationSent(activityId: ID!, notificationId: ID!, notificationInput: NotificationInput!): Notification
+
+    deleteNotification(activityId: ID!, notificationId: ID!): Notification
+    deleteNotificationRecipient(activityId: ID!, notificationId: ID!, userId: ID!): Notification
 
     createOrder(activityId: ID!, buyerId: ID!, receiverId: ID!, orderInput: OrderInput!): User
     updateOrderBasic(activityId: ID!, orderId: ID!, orderInput: OrderInput!): Order

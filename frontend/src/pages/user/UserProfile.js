@@ -150,8 +150,13 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        // console.log('beep',resData.data.getPocketVars.pocketVariables,JSON.parse(resData.data.getPocketVars.pocketVariables));
-        this.setState({userAlert: resData.data.getPocketVars.pocketVariables})
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          // console.log('beep',resData.data.getPocketVars.pocketVariables,JSON.parse(resData.data.getPocketVars.pocketVariables));
+          this.setState({userAlert: resData.data.getPocketVars.pocketVariables})
+        }
+
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -181,17 +186,10 @@ class UserProfile extends Component {
       })
       .then(resData => {
 
-        let errors = null;
-        if (
-          resData.errors ||
-          JSON.stringify(resData).slice(2,7) === 'error'
-        ) {
-          errors = JSON.stringify({...resData.errors});
-          this.setState({userAlert: "Something went wrong!!!"+errors+""})
-        }
-
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
           const thisUser = resData.data.getThisUser;
-          // console.log(thisUser);
           this.context.user = thisUser;
           this.userCopy = thisUser;
           if (this.isActive) {
@@ -203,6 +201,8 @@ class UserProfile extends Component {
           if (thisUser.name === "Lord-of-the-Manor"){
             this.setState({canDelete: true, userAlert: "Mi'Lord!!"})
           }
+        }
+
           // this.getPocketVars();
           // this.logUserActivity();
       })
@@ -247,10 +247,14 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.addUserActivity).slice(2,25);
+          this.setState({userAlert: responseAlert, user: resData.data.addUserActivity})
+          this.context.user = this.state.user;
+        }
 
-        const responseAlert = JSON.stringify(resData.data.addUserActivity).slice(2,25);
-        this.setState({userAlert: responseAlert, user: resData.data.addUserActivity})
-        this.context.user = this.state.user;
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -311,6 +315,9 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        }
         // const responseAlert = JSON.stringify(resData.data.userOnline).slice(2,25);
         // this.context.user = ;
       })
@@ -421,11 +428,15 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        const updatedUser = resData.data.updateUserBasic;
-        this.context.user = updatedUser;
-        const responseAlert = JSON.stringify(resData.data.updateUserBasic).slice(2,25);
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const updatedUser = resData.data.updateUserBasic;
+          this.context.user = updatedUser;
+          const responseAlert = JSON.stringify(resData.data.updateUserBasic).slice(2,25);
+          this.setState({ userAlert: responseAlert, user: updatedUser, activityA: JSON.stringify(requestBody)})
+        }
 
-        this.setState({ userAlert: responseAlert, user: updatedUser, activityA: JSON.stringify(requestBody)})
         // this.logUserActivity();
       })
       .catch(err => {
@@ -470,9 +481,14 @@ class UserProfile extends Component {
           return res.json();
         })
         .then(resData => {
-          const responseAlert = JSON.stringify(resData.data.updateUserByField).slice(2,25);
-          this.setState({ userAlert: responseAlert, user: resData.data.updateUserByField, activityA: JSON.stringify(requestBody)})
-          this.context.user = this.state.user;
+          if (resData.errors.length > 0) {
+            this.setState({userAlert: resData.errors[0].message})
+          } else {
+            const responseAlert = JSON.stringify(resData.data.updateUserByField).slice(2,25);
+            this.setState({ userAlert: responseAlert, user: resData.data.updateUserByField, activityA: JSON.stringify(requestBody)})
+            this.context.user = this.state.user;
+          }
+
           // this.logUserActivity();
         })
         .catch(err => {
@@ -512,10 +528,14 @@ class UserProfile extends Component {
             return res.json();
           })
           .then(resData => {
+            if (resData.errors.length > 0) {
+              this.setState({userAlert: resData.errors[0].message})
+            } else {
+              const responseAlert = JSON.stringify(resData.data.addUserPoints).slice(2,25);
+              this.setState({userAlert: responseAlert, user: resData.data.addUserPoints, activityA: JSON.stringify(requestBody)})
+              this.context.user = this.state.user;
+            }
 
-            const responseAlert = JSON.stringify(resData.data.addUserPoints).slice(2,25);
-            this.setState({userAlert: responseAlert, user: resData.data.addUserPoints, activityA: JSON.stringify(requestBody)})
-            this.context.user = this.state.user;
             // this.logUserActivity();
           })
           .catch(err => {
@@ -581,10 +601,14 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.addUserAddress).slice(2,25);
+          this.setState({userAlert: responseAlert, user: resData.data.addUserAddress, activityA: JSON.stringify(requestBody)})
+          this.context.user = this.state.user;
+        }
 
-        const responseAlert = JSON.stringify(resData.data.addUserAddress).slice(2,25);
-        this.setState({userAlert: responseAlert, user: resData.data.addUserAddress, activityA: JSON.stringify(requestBody)})
-        this.context.user = this.state.user;
         // this.logUserActivity();
       })
       .catch(err => {
@@ -639,10 +663,14 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.deleteUserAddress).slice(2,25);
+          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserAddress, activityA: JSON.stringify(requestBody)})
+          this.context.user = this.state.user;
+        }
 
-        const responseAlert = JSON.stringify(resData.data.deleteUserAddress).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserAddress, activityA: JSON.stringify(requestBody)})
-        this.context.user = this.state.user;
         // this.logUserActivity();
       })
       .catch(err => {
@@ -696,10 +724,14 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.setUserAddressPrimary).slice(2,25);
+          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.setUserAddressPrimary, activityA: JSON.stringify(requestBody)})
+          this.context.user = this.state.user;
+        }
 
-        const responseAlert = JSON.stringify(resData.data.setUserAddressPrimary).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.setUserAddressPrimary, activityA: JSON.stringify(requestBody)})
-        this.context.user = this.state.user;
         // this.logUserActivity();
       })
       .catch(err => {
@@ -742,10 +774,14 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.addUserProfileImage).slice(2,25);
+          this.setState({userAlert: responseAlert, user: resData.data.addUserProfileImage, activityA: JSON.stringify(requestBody)})
+          this.context.user = this.state.user;
+        }
 
-        const responseAlert = JSON.stringify(resData.data.addUserProfileImage).slice(2,25);
-        this.setState({userAlert: responseAlert, user: resData.data.addUserProfileImage, activityA: JSON.stringify(requestBody)})
-        this.context.user = this.state.user;
         // this.logUserActivity();
       })
       .catch(err => {
@@ -789,10 +825,14 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.deleteUserProfileImage).slice(2,25);
+          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserProfileImage, activityA: JSON.stringify(requestBody)})
+          this.context.user = this.state.user;
+        }
 
-        const responseAlert = JSON.stringify(resData.data.deleteUserProfileImage).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserProfileImage, activityA: JSON.stringify(requestBody)})
-        this.context.user = this.state.user;
         // this.logUserActivity();
       })
       .catch(err => {
@@ -836,10 +876,14 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.addUserSocialMedia).slice(2,25);
+          this.setState({userAlert: responseAlert, user: resData.data.addUserSocialMedia, activityA: JSON.stringify(requestBody)})
+          this.context.user = this.state.user;
+        }
 
-        const responseAlert = JSON.stringify(resData.data.addUserSocialMedia).slice(2,25);
-        this.setState({userAlert: responseAlert, user: resData.data.addUserSocialMedia, activityA: JSON.stringify(requestBody)})
-        this.context.user = this.state.user;
         // this.logUserActivity();
       })
       .catch(err => {
@@ -884,10 +928,14 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.deleteUserSocialMedia).slice(2,25);
+          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserSocialMedia, activityA: JSON.stringify(requestBody)})
+          this.context.user = this.state.user;
+        }
 
-        const responseAlert = JSON.stringify(resData.data.deleteUserSocialMedia).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserSocialMedia, activityA: JSON.stringify(requestBody)})
-        this.context.user = this.state.user;
         // this.logUserActivity();
       })
       .catch(err => {
@@ -939,10 +987,14 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.addUserPaymentInfo).slice(2,25);
+          this.setState({userAlert: responseAlert, user: resData.data.addUserPaymentInfo, activityA: JSON.stringify(requestBody)})
+          this.context.user = this.state.user;
+        }
 
-        const responseAlert = JSON.stringify(resData.data.addUserPaymentInfo).slice(2,25);
-        this.setState({userAlert: responseAlert, user: resData.data.addUserPaymentInfo, activityA: JSON.stringify(requestBody)})
-        this.context.user = this.state.user;
         // this.logUserActivity();
       })
       .catch(err => {
@@ -950,7 +1002,7 @@ class UserProfile extends Component {
       });
   };
   userDeletePaymentInfo = (args) => {
-    console.log('userDeletePaymentInfo',JSON.stringify(args));
+    // console.log('userDeletePaymentInfo',JSON.stringify(args));
     this.setState({ deleting: true, userAlert: "deleting paymentInfo for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
@@ -993,10 +1045,14 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.deleteUserPaymentInfo).slice(2,25);
+          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserPaymentInfo, activityA: JSON.stringify(requestBody)})
+          this.context.user = this.state.user;
+        }
 
-        const responseAlert = JSON.stringify(resData.data.deleteUserPaymentInfo).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserPaymentInfo, activityA: JSON.stringify(requestBody)})
-        this.context.user = this.state.user;
         // this.logUserActivity();
       })
       .catch(err => {
@@ -1036,10 +1092,14 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        // const activityLog = 'mutation_addUserInterests_origin_'+activityId+'_target_'+userId+'_body_'+interests+'';
-        const responseAlert = JSON.stringify(resData.data.addUserInterests).slice(2,25);
-        this.setState({userAlert: responseAlert, user: resData.data.addUserInterests, activityA: JSON.stringify(requestBody)})
-        this.context.user = this.state.user;
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.addUserInterests).slice(2,25);
+          this.setState({userAlert: responseAlert, user: resData.data.addUserInterests, activityA: JSON.stringify(requestBody)})
+          this.context.user = this.state.user;
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -1079,10 +1139,14 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.deleteUserInterest).slice(2,25);
+          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserInterest, activityA: JSON.stringify(requestBody)})
+          this.context.user = this.state.user;
+        }
 
-        const responseAlert = JSON.stringify(resData.data.deleteUserInterest).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserInterest, activityA: JSON.stringify(requestBody)})
-        this.context.user = this.state.user;
         // this.logUserActivity();
       })
       .catch(err => {
@@ -1122,10 +1186,14 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.addUserTags).slice(2,25);
+          this.setState({userAlert: responseAlert, user: resData.data.addUserTags, activityA: JSON.stringify(requestBody)})
+          this.context.user = this.state.user;
+        }
 
-        const responseAlert = JSON.stringify(resData.data.addUserTags).slice(2,25);
-        this.setState({userAlert: responseAlert, user: resData.data.addUserTags, activityA: JSON.stringify(requestBody)})
-        this.context.user = this.state.user;
         // this.logUserActivity();
       })
       .catch(err => {
@@ -1165,10 +1233,14 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.deleteUserTag).slice(2,25);
+          this.setState({userAlert: responseAlert, user: resData.data.deleteUserTag, activityA: JSON.stringify(requestBody)})
+          this.context.user = this.state.user;
+        }
 
-        const responseAlert = JSON.stringify(resData.data.deleteUserTag).slice(2,25);
-        this.setState({userAlert: responseAlert, user: resData.data.deleteUserTag, activityA: JSON.stringify(requestBody)})
-        this.context.user = this.state.user;
         // this.logUserActivity();
       })
       .catch(err => {
@@ -1202,10 +1274,14 @@ class UserProfile extends Component {
         //     return res.json();
         //   })
         //   .then(resData => {
-        //
-        //     const responseAlert = JSON.stringify(resData.data.addUserPerk).slice(2,25);
-        //     this.setState({userAlert: responseAlert, user: resData.data.addUserPerk, activityA: JSON.stringify(requestBody)})
-        //     this.context.user = this.state.user;
+        // if (resData.errors.length > 0) {
+        //   this.setState({userAlert: resData.errors[0].message})
+        // } else {
+        //       const responseAlert = JSON.stringify(resData.data.addUserPerk).slice(2,25);
+        //       this.setState({userAlert: responseAlert, user: resData.data.addUserPerk, activityA: JSON.stringify(requestBody)})
+        //       this.context.user = this.state.user;
+        // }
+
         //     // this.logUserActivity();
         //   })
         //   .catch(err => {
@@ -1240,10 +1316,14 @@ class UserProfile extends Component {
     //     return res.json();
     //   })
     //   .then(resData => {
-    //
-    //     const responseAlert = JSON.stringify(resData.data.deleteUserPerk).slice(2,25);
-    //     this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserPerk, activityA: JSON.stringify(requestBody)})
-    //     this.context.user = this.state.user;
+            // if (resData.errors.length > 0) {
+            //   this.setState({userAlert: resData.errors[0].message})
+            // } else {
+              //     const responseAlert = JSON.stringify(resData.data.deleteUserPerk).slice(2,25);
+              //     this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserPerk, activityA: JSON.stringify(requestBody)})
+              //     this.context.user = this.state.user;
+            // }
+
     //     // this.logUserActivity();
     //   })
     //   .catch(err => {
@@ -1277,10 +1357,14 @@ class UserProfile extends Component {
         //     return res.json();
         //   })
         //   .then(resData => {
-        //
-        //     const responseAlert = JSON.stringify(resData.data.addUserPromo).slice(2,25);
-        //     this.setState({userAlert: responseAlert, user: resData.data.addUserPromo, activityA: JSON.stringify(requestBody)})
-        //     this.context.user = this.state.user;
+                // if (resData.errors.length > 0) {
+                //   this.setState({userAlert: resData.errors[0].message})
+                // } else {
+                //   const responseAlert = JSON.stringify(resData.data.addUserPromo).slice(2,25);
+                //   this.setState({userAlert: responseAlert, user: resData.data.addUserPromo, activityA: JSON.stringify(requestBody)})
+                //   this.context.user = this.state.user;
+                // }
+
         //     // this.logUserActivity();
         //   })
         //   .catch(err => {
@@ -1315,10 +1399,14 @@ class UserProfile extends Component {
     //     return res.json();
     //   })
     //   .then(resData => {
-    //
-    //     const responseAlert = JSON.stringify(resData.data.userDeletePromo).slice(2,25);
-    //     this.setState({deleting: false, userAlert: responseAlert, user: resData.data.userDeletePromo, activityA: JSON.stringify(requestBody)})
-    //     this.context.user = this.state.user;
+            // if (resData.errors.length > 0) {
+            //   this.setState({userAlert: resData.errors[0].message})
+            // } else {
+            //   const responseAlert = JSON.stringify(resData.data.userDeletePromo).slice(2,25);
+            //   this.setState({deleting: false, userAlert: responseAlert, user: resData.data.userDeletePromo, activityA: JSON.stringify(requestBody)})
+            //   this.context.user = this.state.user;
+            // }
+
     //     // this.logUserActivity();
     //   })
     //   .catch(err => {
@@ -1358,9 +1446,14 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data.addUserFriend).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.addUserFriend, activityA: JSON.stringify(requestBody)})
-        this.context.user = this.state.user;
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.addUserFriend).slice(2,25);
+          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.addUserFriend, activityA: JSON.stringify(requestBody)})
+          this.context.user = this.state.user;
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -1411,10 +1504,14 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.deleteFriendRequest).slice(2,25);
+          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteFriendRequest, activityA: JSON.stringify(requestBody)})
+          this.context.user = this.state.user;
+        }
 
-        const responseAlert = JSON.stringify(resData.data.deleteFriendRequest).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteFriendRequest, activityA: JSON.stringify(requestBody)})
-        this.context.user = this.state.user;
         // this.logUserActivity();
       })
       .catch(err => {
@@ -1454,10 +1551,14 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.addUserFriend).slice(2,25);
+          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.addUserFriend, activityA: JSON.stringify(requestBody)})
+          this.context.user = this.state.user;
+        }
 
-        const responseAlert = JSON.stringify(resData.data.addUserFriend).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.addUserFriend, activityA: JSON.stringify(requestBody)})
-        this.context.user = this.state.user;
         // this.logUserActivity();
       })
       .catch(err => {
@@ -1501,10 +1602,14 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.deleteUserFriend).slice(2,25);
+          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserFriend, activityA: JSON.stringify(requestBody)})
+          this.context.user = this.state.user;
+        }
 
-        const responseAlert = JSON.stringify(resData.data.deleteUserFriend).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserFriend, activityA: JSON.stringify(requestBody)})
-        this.context.user = this.state.user;
         // this.logUserActivity();
       })
       .catch(err => {
@@ -1550,10 +1655,14 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.deleteUserCartLesson).slice(2,25);
+          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserCartLesson, activityA: JSON.stringify(requestBody)})
+          this.context.user = this.state.user;
+        }
 
-        const responseAlert = JSON.stringify(resData.data.deleteUserCartLesson).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserCartLesson, activityA: JSON.stringify(requestBody)})
-        this.context.user = this.state.user;
         // this.logUserActivity();
       })
       .catch(err => {
@@ -1593,10 +1702,14 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        console.log('resData',resData);
-        const responseAlert = JSON.stringify(resData.data.deleteUserBookedLesson).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserBookedLesson, activityA: JSON.stringify(requestBody)})
-        this.context.user = this.state.user;
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.deleteUserBookedLesson).slice(2,25);
+          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserBookedLesson, activityA: JSON.stringify(requestBody)})
+          this.context.user = this.state.user;
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -1635,10 +1748,14 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.deleteUserLikedLesson).slice(2,25);
+          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserLikedLesson, activityA: JSON.stringify(requestBody)})
+          this.context.user = this.state.user;
+        }
 
-        const responseAlert = JSON.stringify(resData.data.deleteUserLikedLesson).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserLikedLesson, activityA: JSON.stringify(requestBody)})
-        this.context.user = this.state.user;
         // this.logUserActivity();
       })
       .catch(err => {
@@ -1702,13 +1819,13 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-          // console.log(resData);
-          if (resData.errors) {
-            this.setState({userAlert: resData.errors[0].message, isLoading: false})
-          }
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
           if (resData.data.addMultipleBookings !== null) {
             this.setState({user: resData.data.addMultipleBookings, isLoading: false})
           }
+        }
 
       })
       .catch(err => {
@@ -1797,12 +1914,17 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          this.addMultipleBookings();
+        }
         // console.log(resData);
         // const responseAlert = JSON.stringify(resData.data.createOrder).slice(2,25);
         // this.setState({userAlert: responseAlert, user: resData.data.createOrder, activityA: JSON.stringify(requestBody)})
         // this.context.user = this.state.user;
         // this.logUserActivity();
-        this.addMultipleBookings();
+
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -1841,10 +1963,14 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.deleteUserOrder).slice(2,25);
+          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserOrder, activityA: JSON.stringify(requestBody)})
+          this.context.user = this.state.user;
+        }
 
-        const responseAlert = JSON.stringify(resData.data.deleteUserOrder).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserOrder, activityA: JSON.stringify(requestBody)})
-        this.context.user = this.state.user;
         // this.logUserActivity();
       })
       .catch(err => {
@@ -1884,10 +2010,14 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.deleteUserReview).slice(2,25);
+          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserReview, activityA: JSON.stringify(requestBody)})
+          this.context.user = this.state.user;
+        }
 
-        const responseAlert = JSON.stringify(resData.data.deleteUserReview).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserReview, activityA: JSON.stringify(requestBody)})
-        this.context.user = this.state.user;
         // this.logUserActivity();
       })
       .catch(err => {
@@ -1952,9 +2082,13 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        // console.log("createMessage",resData.data.createMessage);
-        const responseAlert = JSON.stringify(resData.data.createMessage).slice(2,25);;
-        this.setState({ userAlert: responseAlert, activityA: JSON.stringify(requestBody), userAddField: null});
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.createMessage).slice(2,25);;
+          this.setState({ userAlert: responseAlert, activityA: JSON.stringify(requestBody), userAddField: null});
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -1991,10 +2125,14 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.deleteMessage).slice(2,25);
+          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteMessage, activityA: JSON.stringify(requestBody)})
+          this.context.user = this.state.user;
+        }
 
-        const responseAlert = JSON.stringify(resData.data.deleteMessage).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteMessage, activityA: JSON.stringify(requestBody)})
-        this.context.user = this.state.user;
         // this.logUserActivity();
       })
       .catch(err => {
@@ -2065,9 +2203,14 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        console.log("reply Message",resData.data.createMessage);
-        const responseAlert = JSON.stringify(resData.data.createMessage).slice(2,25);;
-        this.setState({ userAlert: responseAlert, activityA: JSON.stringify(requestBody), replyTo: null});
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          // console.log("reply Message",resData.data.createMessage);
+          const responseAlert = JSON.stringify(resData.data.createMessage).slice(2,25);;
+          this.setState({ userAlert: responseAlert, activityA: JSON.stringify(requestBody), replyTo: null});
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -2111,10 +2254,14 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.deleteUserActivity).slice(2,25);
+          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserActivity})
+          this.context.user = this.state.user;
+        }
 
-        const responseAlert = JSON.stringify(resData.data.deleteUserActivity).slice(2,25);
-        this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserActivity})
-        this.context.user = this.state.user;
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -2172,8 +2319,13 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data.getLessonById).slice(2,25);
-        this.setState({userAlert: responseAlert, isLoading: false, profileLessonViewer: true, profileLessonViewerData: resData.data.getLessonById, profileLessonType: args.type})
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.getLessonById).slice(2,25);
+          this.setState({userAlert: responseAlert, isLoading: false, profileLessonViewer: true, profileLessonViewerData: resData.data.getLessonById, profileLessonType: args.type})
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -2300,8 +2452,13 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.addLessonBooking, isLoading: false});
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.addLessonBooking, isLoading: false});
+        }
+
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -2371,8 +2528,13 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data.updateLessonBasic).slice(0,8);
-        this.setState({ profileLessonViewerData: resData.data.updateLessonBasic, userAlert: responseAlert})
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.updateLessonBasic).slice(0,8);
+          this.setState({ profileLessonViewerData: resData.data.updateLessonBasic, userAlert: responseAlert})
+        }
+
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -2421,8 +2583,13 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data.updateLessonByField).slice(0,8);
-        this.setState({ profileLessonViewer: resData.data.updateLessonByField, userAlert: responseAlert})
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.updateLessonByField).slice(0,8);
+          this.setState({ profileLessonViewer: resData.data.updateLessonByField, userAlert: responseAlert})
+        }
+
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -2484,30 +2651,36 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        const lesson = resData.data.updateSessionField;
-        const sessions = resData.data.updateSessionField.sessions;
-        const session = sessions.filter(x => x.title === sessionTitle)
-        const session2 = session[0];
-        console.log(session);
-        const newSession = {
-            title: session2.title,
-            date: session2.date,
-            time: session2.time,
-            limit: session2.limit,
-            amount: session2.amount,
-            bookedAmount: session2.bookedAmount,
-            booked: session2.booked,
-            attended: session2.attended,
-            attendedAmount: session2.attendedAmount,
-            inProgress: session2.inProgress,
-            full: session2.full,
-            url: session2.url,
-            lessonId: lesson._id,
-            lessonTitle: lesson.title,
-            lessonInstructors: lesson.instructors,
-          };
-        const responseAlert = JSON.stringify(resData.data.updateSessionField).slice(0,8);
-        this.setState({ sessionDetailViewer: true, session: newSession, profileLessonViewerData: resData.data.updateSessionField, userAlert: responseAlert})
+
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const lesson = resData.data.updateSessionField;
+          const sessions = resData.data.updateSessionField.sessions;
+          const session = sessions.filter(x => x.title === sessionTitle)
+          const session2 = session[0];
+          console.log(session);
+          const newSession = {
+              title: session2.title,
+              date: session2.date,
+              time: session2.time,
+              limit: session2.limit,
+              amount: session2.amount,
+              bookedAmount: session2.bookedAmount,
+              booked: session2.booked,
+              attended: session2.attended,
+              attendedAmount: session2.attendedAmount,
+              inProgress: session2.inProgress,
+              full: session2.full,
+              url: session2.url,
+              lessonId: lesson._id,
+              lessonTitle: lesson.title,
+              lessonInstructors: lesson.instructors,
+            };
+          const responseAlert = JSON.stringify(resData.data.updateSessionField).slice(0,8);
+          this.setState({ sessionDetailViewer: true, session: newSession, profileLessonViewerData: resData.data.updateSessionField, userAlert: responseAlert})
+        }
+
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -2571,8 +2744,13 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.addLessonAttendance});
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.addLessonAttendance});
+        }
+
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -2607,9 +2785,14 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        console.log(resData.data.getUserBookedSessionsToday);
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, meetingSessions: resData.data.getUserBookedSessionsToday, meetingsLoaded: true});
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          // console.log(resData.data.getUserBookedSessionsToday);
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, meetingSessions: resData.data.getUserBookedSessionsToday, meetingsLoaded: true});
+        }
+
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -2653,27 +2836,31 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        // console.log(resData.data.getLessonSession);
-        const newSession = {
-          title: resData.data.getLessonSession.title,
-          date: resData.data.getLessonSession.date,
-          time: resData.data.getLessonSession.time,
-          limit: resData.data.getLessonSession.limit,
-          amount: resData.data.getLessonSession.amount,
-          bookedAmount: resData.data.getLessonSession.bookedAmount,
-          booked: resData.data.getLessonSession.booked,
-          attended: resData.data.getLessonSession.attended,
-          attendedAmount: resData.data.getLessonSession.attendedAmount,
-          inProgress: resData.data.getLessonSession.inProgress,
-          full: resData.data.getLessonSession.full,
-          url: resData.data.getLessonSession.url,
-          lessonId: session.lessonId,
-          lessonTitle: session.lessonTitle,
-          lessonInstructors: session.lessonInstructors,
-        };
-        // console.log('beep',newSession);
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, session: newSession, sessionDetailViewer: true});
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const newSession = {
+            title: resData.data.getLessonSession.title,
+            date: resData.data.getLessonSession.date,
+            time: resData.data.getLessonSession.time,
+            limit: resData.data.getLessonSession.limit,
+            amount: resData.data.getLessonSession.amount,
+            bookedAmount: resData.data.getLessonSession.bookedAmount,
+            booked: resData.data.getLessonSession.booked,
+            attended: resData.data.getLessonSession.attended,
+            attendedAmount: resData.data.getLessonSession.attendedAmount,
+            inProgress: resData.data.getLessonSession.inProgress,
+            full: resData.data.getLessonSession.full,
+            url: resData.data.getLessonSession.url,
+            lessonId: session.lessonId,
+            lessonTitle: session.lessonTitle,
+            lessonInstructors: session.lessonInstructors,
+          };
+          // console.log('beep',newSession);
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, session: newSession, sessionDetailViewer: true});
+        }
+
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -2732,9 +2919,14 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        // console.log(resData.data.createReview);
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, user: resData.data.createReview, reviewLesson: null});
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          // console.log(resData.data.createReview);
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, user: resData.data.createReview, reviewLesson: null});
+        }
+
       })
       .catch(err => {
         this.setState({userAlert: err});
@@ -2784,9 +2976,13 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        // console.log(resData.data);
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, activityA: requestBody, profileLessonViewerData: resData.data.addLessonMaterials});
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, activityA: requestBody, profileLessonViewerData: resData.data.addLessonMaterials});
+        }
+
         // this.context.selectedLesson = this.state.selectedLesson;
         // this.logUserActivity();
       })
@@ -2832,8 +3028,13 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, activityA: requestBody, profileLessonViewerData: resData.data.addLessonTags});
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, activityA: requestBody, profileLessonViewerData: resData.data.addLessonTags});
+        }
+
         // this.context.selectedLesson = this.state.selectedLesson;
         // this.logUserActivity();
       })
@@ -2879,8 +3080,13 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, activityA: requestBody, profileLessonViewerData: resData.data.addLessonRequirements});
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, activityA: requestBody, profileLessonViewerData: resData.data.addLessonRequirements});
+        }
+
         // this.context.selectedLesson = this.state.selectedLesson;
         // this.logUserActivity();
       })
@@ -2930,9 +3136,13 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        // console.log('resData.data.addLessonImage',resData.data.addLessonImage);
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.addLessonImage, activityA: requestBody});
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.addLessonImage, activityA: requestBody});
+        }
+
         // this.context.selectedLesson = this.state.selectedLesson;
         // this.logUserActivity();
         // this.getThisUser();
@@ -2986,8 +3196,13 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, activityA: requestBody, profileLessonViewerData: resData.data.addLessonFile});
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, activityA: requestBody, profileLessonViewerData: resData.data.addLessonFile});
+        }
+
         // this.context.selectedLesson = this.state.selectedLesson;
         // this.logUserActivity();
       })
@@ -3031,8 +3246,13 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, activityA: requestBody, profileLessonViewerData: resData.data.addLessonInstructor});
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, activityA: requestBody, profileLessonViewerData: resData.data.addLessonInstructor});
+        }
+
         // this.context.selectedLesson = this.state.selectedLesson;
         // this.logUserActivity();
       })
@@ -3078,9 +3298,13 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        // console.log(resData.data.deleteLessonTag);
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.deleteLessonTag, activityA: requestBody});
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.deleteLessonTag, activityA: requestBody});
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -3123,8 +3347,13 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.deleteLessonRequirement, activityA: requestBody});
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.deleteLessonRequirement, activityA: requestBody});
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -3167,8 +3396,13 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.deleteLessonMaterial, activityA: requestBody});
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.deleteLessonMaterial, activityA: requestBody});
+        }
+
         // this.context.selectedLesson = this.state.selectedLesson;
         // this.logUserActivity();
       })
@@ -3216,8 +3450,13 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.deleteLessonImage, activityA: requestBody});
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.deleteLessonImage, activityA: requestBody});
+        }
+
         // this.context.selectedLesson = this.state.selectedLesson;
         // this.logUserActivity();
       })
@@ -3268,8 +3507,13 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.deleteLessonFile, activityA: requestBody});
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.deleteLessonFile, activityA: requestBody});
+        }
+
         // this.context.selectedLesson = this.state.selectedLesson;
         // this.logUserActivity();
       })
@@ -3312,8 +3556,13 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.deleteLessonInstructor, activityA: requestBody});
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.deleteLessonInstructor, activityA: requestBody});
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -3364,8 +3613,13 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        const responseAlert = JSON.stringify(resData.data).slice(0,8);
-        this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.deleteLessonBooking, activityA: requestBody});
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.deleteLessonBooking, activityA: requestBody});
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {
@@ -3428,8 +3682,13 @@ class UserProfile extends Component {
       return res.json();
     })
     .then(resData => {
-      const responseAlert = JSON.stringify(resData.data.getUserById).slice(0,8);
-      this.setState({userAlert: responseAlert, profileFriendViewer: true, profileFriendViewerData: resData.data.getUserById, isLoading: false, activityA: requestBody});
+      if (resData.errors.length > 0) {
+        this.setState({userAlert: resData.errors[0].message})
+      } else {
+        const responseAlert = JSON.stringify(resData.data.getUserById).slice(0,8);
+        this.setState({userAlert: responseAlert, profileFriendViewer: true, profileFriendViewerData: resData.data.getUserById, isLoading: false, activityA: requestBody});
+      }
+
       // this.logUserActivity();
     })
     .catch(err => {
@@ -3504,9 +3763,13 @@ class UserProfile extends Component {
         return res.json();
       })
       .then(resData => {
-        // console.log("createMessage",resData.data.createMessage);
-        const responseAlert = JSON.stringify(resData.data.createMessage).slice(2,25);;
-        this.setState({ userAlert: responseAlert, activityA: JSON.stringify(requestBody), sendingProfileMessage: false});
+        if (resData.errors.length > 0) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.createMessage).slice(2,25);;
+          this.setState({ userAlert: responseAlert, activityA: JSON.stringify(requestBody), sendingProfileMessage: false});
+        }
+
         // this.logUserActivity();
       })
       .catch(err => {

@@ -10,6 +10,7 @@ const Perk = require('../../models/perk');
 const Promo = require('../../models/promo');
 const Comment = require('../../models/comment');
 const Message = require('../../models/message');
+const Notification = require('../../models/notification');
 const util = require('util');
 
 const { transformLesson } = require('./merge');
@@ -68,6 +69,27 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('cancellations.user');
 
       return lessons.map(lesson => {
@@ -90,6 +112,27 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('cancellations.user');
 
         return {
@@ -118,6 +161,27 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('cancellations.user');
 
       return lessons.map(lesson => {
@@ -146,6 +210,27 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('cancellations.user');
 
       return lessons.map(lesson => {
@@ -170,6 +255,27 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('cancellations.user');
 
       return lessons.map(lesson => {
@@ -193,6 +299,27 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('cancellations.user');
 
       return lessons.map(lesson => {
@@ -215,6 +342,27 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('cancellations.user');
 
       return lessons.map(lesson => {
@@ -237,6 +385,27 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('cancellations.user');
 
       return {
@@ -261,6 +430,27 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('cancellations.user');
 
       return lessons.map(lesson => {
@@ -284,6 +474,27 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('cancellations.user');
 
       return lessons.map(lesson => {
@@ -307,6 +518,27 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('cancellations.user');
 
       return lessons.map(lesson => {
@@ -330,6 +562,27 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('cancellations.user');
 
       return lessons.map(lesson => {
@@ -353,6 +606,27 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('cancellations.user');
 
       return lessons.map(lesson => {
@@ -375,6 +649,27 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('cancellations.user');
 
       return lessons.map(lesson => {
@@ -562,6 +857,27 @@ module.exports = {
         .populate('reviews')
         .populate('sessions.booked')
         .populate('sessions.attended')
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('cancellations.user');
 
           return {
@@ -597,6 +913,27 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('cancellations.user');
 
         return {
@@ -632,6 +969,27 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('cancellations.user');
 
       // console.log(lesson.tags);
@@ -657,6 +1015,27 @@ module.exports = {
         .populate('reviews')
         .populate('sessions.booked')
         .populate('sessions.attended')
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('cancellations.user');
 
         return {
@@ -682,6 +1061,27 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('cancellations.user');
 
         return {
@@ -706,6 +1106,27 @@ module.exports = {
         .populate('reviews')
         .populate('sessions.booked')
         .populate('sessions.attended')
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('cancellations.user');
 
         return {
@@ -731,6 +1152,27 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('cancellations.user');
 
         return {
@@ -755,6 +1197,27 @@ module.exports = {
         .populate('reviews')
         .populate('sessions.booked')
         .populate('sessions.attended')
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('cancellations.user');
 
         return {
@@ -783,6 +1246,27 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('cancellations.user');
 
         return {
@@ -817,6 +1301,27 @@ module.exports = {
         .populate('reviews')
         .populate('sessions.booked')
         .populate('sessions.attended')
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('cancellations.user');
 
           return {
@@ -846,6 +1351,27 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('cancellations.user');
 
         return {
@@ -879,6 +1405,27 @@ module.exports = {
         .populate('reviews')
         .populate('sessions.booked')
         .populate('sessions.attended')
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('cancellations.user');
 
           return {
@@ -909,6 +1456,27 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('cancellations.user');
 
         return {
@@ -943,6 +1511,27 @@ module.exports = {
         .populate('reviews')
         .populate('sessions.booked')
         .populate('sessions.attended')
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('cancellations.user');
 
           return {
@@ -991,6 +1580,27 @@ module.exports = {
         .populate('reviews')
         .populate('sessions.booked')
         .populate('sessions.attended')
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('cancellations.user');
 
         return {
@@ -1035,6 +1645,27 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('cancellations.user');
 
         return {
@@ -1066,6 +1697,27 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('cancellations.user');
 
         return {
@@ -1095,6 +1747,27 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('cancellations.user');
 
         return {
@@ -1120,6 +1793,27 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('cancellations.user');
 
         return {
@@ -1149,6 +1843,27 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('cancellations.user');
 
         return {
@@ -1174,6 +1889,27 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('cancellations.user');
 
         return {
@@ -1203,6 +1939,27 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('cancellations.user');
 
         return {
@@ -1228,6 +1985,27 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('cancellations.user');
 
         return {
@@ -1257,6 +2035,27 @@ module.exports = {
       .populate('reviews')
       .populate('sessions.booked')
       .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
       .populate('cancellations.user');
 
         return {
@@ -1335,6 +2134,27 @@ module.exports = {
         .populate('reviews')
         .populate('sessions.booked')
         .populate('sessions.attended')
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('cancellations.user');
       // console.log(lesson);
 
@@ -1497,7 +2317,29 @@ module.exports = {
               model: 'User'
             }})
           .populate('orders')
+          .populate({
+            path: 'reminders',
+            populate: {
+              path: 'creator',
+              model: 'User'
+            }
+          })
+          .populate({
+            path: 'reminders',
+            populate: {
+              path: 'recipients',
+              model: 'User'
+            }
+          })
+          .populate({
+            path: 'reminders',
+            populate: {
+              path: 'lesson',
+              model: 'Lesson'
+            }
+          })
           .populate('friendRequests.sender')
+          .populate('cancellations.lesson')
           .populate('friendRequests.receiver');
 
         const updateInstructors = await User.updateMany({_id: {$in: instructors}},{$addToSet: {bookedLessons: bookingRef}},{new: true, useFindAndModify: false})
@@ -1548,6 +2390,27 @@ module.exports = {
         .populate('reviews')
         .populate('sessions.booked')
         .populate('sessions.attended')
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('cancellations.user');
 
       const instructors = lesson.instructors.map(x => x._id);
@@ -1609,6 +2472,27 @@ module.exports = {
         .populate('reviews')
         .populate('sessions.booked')
         .populate('sessions.attended')
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('cancellations.user');
 
       const instructors = lesson.instructors.map(x => x._id);
@@ -1650,6 +2534,27 @@ module.exports = {
         .populate('reviews')
         .populate('sessions.booked')
         .populate('sessions.attended')
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('cancellations.user');
 
       const instructors = lesson.instructors.map(x => x._id);
@@ -1681,6 +2586,27 @@ module.exports = {
         .populate('reviews')
         .populate('sessions.booked')
         .populate('sessions.attended')
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('cancellations.user');
 
         return {
@@ -1706,10 +2632,33 @@ module.exports = {
         {$set: {[field]: args.lessonInput.sessionQuery}},
         // {'sessions.$.url': args.lessonInput.sessionQuery},
         {new: true, useFindAndModify: false})
-      .populate('instructors')
-      .populate('reviews')
-      .populate('sessions.booked')
-      .populate('sessions.attended');
+        .populate('instructors')
+        .populate('attendees')
+        .populate('reviews')
+        .populate('sessions.booked')
+        .populate('sessions.attended')
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
+        .populate('cancellations.user');
 
         return {
             ...lesson._doc,

@@ -31,11 +31,498 @@ module.exports = {
       const notifications = await Notification.find({})
       .populate('creator')
       .populate('lesson')
-      .populate('recipients')
+      .populate('recipients');
 
       return notifications.map(notification => {
         return transformNotification(notification,);
       });
+    } catch (err) {
+      throw err;
+    }
+  },
+  getNotificationById: async (args, req) => {
+    console.log("Resolver: getNotificationById...");
+
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+
+      const notifications = await Notification.find({})
+      .populate('creator')
+      .populate('lesson')
+      .populate('recipients');
+
+      return {
+        ...notification._doc,
+        _id: notification.id,
+        createDate: notification.createDate,
+        sendDate: notification.sendDate,
+        type: notification.type,
+        title: notification.title
+      };
+    } catch (err) {
+      throw err;
+    }
+  },
+  getNotificationsByField: async (args, req) => {
+    console.log("Resolver: getNotificationsByField...");
+
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      let resolverField = args.field;
+      let resolverQuery = args.query;
+      const query = {[resolverField]:resolverQuery};
+
+      const notifications = await Notification.find(query)
+      .populate('creator')
+      .populate('lesson')
+      .populate('recipients');
+
+      return notifications.map(notification => {
+        return transformNotification(notification,);
+      });
+    } catch (err) {
+      throw err;
+    }
+  },
+  getNotificationsByFieldRegex: async (args, req) => {
+    console.log("Resolver: getNotificationsByFieldRegex...");
+
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      let resolverField = args.field;
+      const regExpQuery = new RegExp(args.query)
+      let resolverQuery = {$regex: regExpQuery, $options: 'i'};
+      const query = {[resolverField]:resolverQuery};
+
+      const notifications = await Notification.find(query)
+      .populate('creator')
+      .populate('lesson')
+      .populate('recipients');
+
+      return notifications.map(notification => {
+        return transformNotification(notification,);
+      });
+    } catch (err) {
+      throw err;
+    }
+  },
+  getNotificationsToday: async (args, req) => {
+    console.log("Resolver: getNotificationsToday...");
+
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+
+      const today = new Date().toLocaleDateString().substr(0,10);
+      const notifications = await Notification.find({sendDate: today})
+      .populate('creator')
+      .populate('lesson')
+      .populate('recipients');
+
+      return notifications.map(notification => {
+        return transformNotification(notification,);
+      });
+    } catch (err) {
+      throw err;
+    }
+  },
+  getNotificationsBySendDateRange: async (args, req) => {
+    console.log("Resolver: getNotificationsBySendDateRange...");
+
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+
+      const lowerLimit = new Date(args.lowerLimit).toLocaleDateString().substr(0,10);
+      const upperLimit = new Date(args.upperLimit).toLocaleDateString().substr(0,10);
+      const notifications = await Notification.find({sendDate: {$gte: lowerLimit, $lte: upperLimit}})
+      .populate('creator')
+      .populate('lesson')
+      .populate('recipients');
+
+      return notifications.map(notification => {
+        return transformNotification(notification,);
+      });
+    } catch (err) {
+      throw err;
+    }
+  },
+  getNotificationsBySendTimeRange: async (args, req) => {
+    console.log("Resolver: getNotificationsBySendTimeRange...");
+
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+
+      const lowerLimit = new Date(args.lowerLimit).toLocaleDateString().substr(0,10);
+      const upperLimit = new Date(args.upperLimit).toLocaleDateString().substr(0,10);
+      const notifications = await Notification.find({time: {$gte: lowerLimit, $lte: upperLimit}})
+      .populate('creator')
+      .populate('lesson')
+      .populate('recipients');
+
+      return notifications.map(notification => {
+        return transformNotification(notification,);
+      });
+    } catch (err) {
+      throw err;
+    }
+  },
+  getNotificationsByTrigger: async (args, req) => {
+    console.log("Resolver: getNotificationsByTrigger...");
+
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      const trigger = {
+        unit: args.notificationInput.triggerUnit,
+        value: args.notificationInput.triggerValue
+      }
+
+      const notifications = await Notification.find({trigger: trigger})
+      .populate('creator')
+      .populate('lesson')
+      .populate('recipients');
+
+      return notifications.map(notification => {
+        return transformNotification(notification,);
+      });
+    } catch (err) {
+      throw err;
+    }
+  },
+  getNotificationsByLesson: async (args, req) => {
+    console.log("Resolver: getNotificationsByLesson...");
+
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      const lesson = await Lesson.findById({_id: args.lessonId});
+
+      const notifications = await Notification.find({lesson: lesson})
+      .populate('creator')
+      .populate('lesson')
+      .populate('recipients');
+
+      return notifications.map(notification => {
+        return transformNotification(notification,);
+      });
+    } catch (err) {
+      throw err;
+    }
+  },
+  getNotificationsByReciptents: async (args, req) => {
+    console.log("Resolver: getNotificationsByReciptents...");
+
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      recipients = await User.find({_id: {$in: args.recipientIds}})
+
+      const notifications = await Notification.find({recipients: recipients})
+      .populate('creator')
+      .populate('lesson')
+      .populate('recipients');
+
+      return notifications.map(notification => {
+        return transformNotification(notification,);
+      });
+    } catch (err) {
+      throw err;
+    }
+  },
+  updateNotificationBasic: async (args, req) => {
+    console.log("Resolver: updateNotificationBasic...");
+
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      // const preNotification = await Notification.findById({_id: args.notificationId});
+      let sendDate = null;
+      let start = null;
+      const triggerValue = args.notificationInput.triggerValue;
+      const triggerUnit = args.notificationInput.triggerUnit;
+      if (args.notificationInput.type === 'Reminder') {
+        start = args.notificationInput.sessionDate+" "+args.notificationInput.sessionTime;
+        sendDate = moment(start).subtract(triggerValue, triggerUnit);
+      }
+      if (args.notificationInput.type === 'FollowUp') {
+        start = args.notificationInput.sessionEndDate;
+        sendDate = moment(start).add(triggerValue, triggerUnit);
+      }
+
+      const notification = await Notification.findById({_id: args.notificationId})
+      .populate('creator')
+      .populate('lesson')
+      .populate('recipients');
+
+      return {
+        ...notification._doc,
+        _id: notification.id,
+        createDate: notification.createDate,
+        sendDate: notification.sendDate,
+        type: notification.type,
+        title: notification.title
+      };
+    } catch (err) {
+      throw err;
+    }
+  },
+  updateNotificationByField: async (args, req) => {
+    console.log("Resolver: updateNotificationByField...");
+
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      // const preNotification = await Notification.findById({_id: args.notificationId});
+      const resolverField = args.field;
+      const resolverQuery = args.query;
+      const query = {[resolverField]:resolverQuery};
+
+      const notification = await Notification.findOneAndUpdate(
+        {_id: args.notificationId},query,
+        {new: true, useFindAndModify: false}
+      )
+      .populate('creator')
+      .populate('lesson')
+      .populate('recipients');
+
+      return {
+        ...notification._doc,
+        _id: notification.id,
+        createDate: notification.createDate,
+        sendDate: notification.sendDate,
+        type: notification.type,
+        title: notification.title
+      };
+    } catch (err) {
+      throw err;
+    }
+  },
+  updateNotificationTrigger: async (args, req) => {
+    console.log("Resolver: updateNotificationTrigger...");
+
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      // const preNotification = await Notification.findById({_id: args.notificationId});
+      const trigger = {
+        unit: args.notificationInput.triggerUnit,
+        value: args.notificationInput.triggerValue,
+      }
+      const notification = await Notification.findOneAndUpdate(
+        {_id: args.notificationId},
+        {trigger: trigger},
+        {new: true, useFindAndModify: false}
+      )
+      .populate('creator')
+      .populate('lesson')
+      .populate('recipients');
+
+      return {
+        ...notification._doc,
+        _id: notification.id,
+        createDate: notification.createDate,
+        sendDate: notification.sendDate,
+        type: notification.type,
+        title: notification.title
+      };
+    } catch (err) {
+      throw err;
+    }
+  },
+  updateNotificationDelivery: async (args, req) => {
+    console.log("Resolver: updateNotificationDelivery...");
+
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      // const preNotification = await Notification.findById({_id: args.notificationId});
+      const delivery = {
+        type: args.notificationInput.deliveryType,
+        params: args.notificationInput.deliveryParams,
+        sent: args.notificationInput.deliverySent
+      }
+      const notification = await Notification.findOneAndUpdate(
+        {_id: args.notificationId},
+        {delivery: delivery},
+        {new: true, useFindAndModify: false}
+      )
+      .populate('creator')
+      .populate('lesson')
+      .populate('recipients');
+
+      return {
+        ...notification._doc,
+        _id: notification.id,
+        createDate: notification.createDate,
+        sendDate: notification.sendDate,
+        type: notification.type,
+        title: notification.title
+      };
+    } catch (err) {
+      throw err;
+    }
+  },
+  updateNotificationLesson: async (args, req) => {
+    console.log("Resolver: updateNotificationLesson...");
+
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      // const preNotification = await Notification.findById({_id: args.notificationId});
+      const lesson = await Lesson.findById({_id: args.lessonId});
+      const notification = await Notification.findOneAndUpdate(
+        {_id: args.notificationId},
+        {delivery: delivery},
+        {new: true, useFindAndModify: false}
+      )
+      .populate('creator')
+      .populate('lesson')
+      .populate('recipients');
+
+      return {
+        ...notification._doc,
+        _id: notification.id,
+        createDate: notification.createDate,
+        sendDate: notification.sendDate,
+        type: notification.type,
+        title: notification.title
+      };
+    } catch (err) {
+      throw err;
+    }
+  },
+  addNotificationRecipient: async (args, req) => {
+    console.log("Resolver: addNotificationRecipient...");
+
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      // const preNotification = await Notification.findById({_id: args.notificationId});
+      const recipient = await Lesson.findById({_id: args.userId});
+      const notification = await Notification.findOneAndUpdate(
+        {_id: args.notificationId},
+        {$addToSet: {recipients: recipient}},
+        {new: true, useFindAndModify: false}
+      )
+      .populate('creator')
+      .populate('lesson')
+      .populate('recipients');
+
+      return {
+        ...notification._doc,
+        _id: notification.id,
+        createDate: notification.createDate,
+        sendDate: notification.sendDate,
+        type: notification.type,
+        title: notification.title
+      };
+    } catch (err) {
+      throw err;
+    }
+  },
+  NotificationSent: async (args, req) => {
+    console.log("Resolver: NotificationSent...");
+
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      // const preNotification = await Notification.findById({_id: args.notificationId});
+      const sent = args.notificationInput.deliverySent;
+      const notification = await Notification.findOneAndUpdate(
+        {_id: args.notificationId},
+        {'delivery.sent': sent},
+        {new: true, useFindAndModify: false}
+      )
+      .populate('creator')
+      .populate('lesson')
+      .populate('recipients');
+
+      return {
+        ...notification._doc,
+        _id: notification.id,
+        createDate: notification.createDate,
+        sendDate: notification.sendDate,
+        type: notification.type,
+        title: notification.title
+      };
+    } catch (err) {
+      throw err;
+    }
+  },
+  sendNotifications: async (args, req) => {
+    console.log("Resolver: sendNotifications...");
+
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      const today = new Date().toLocaleDateString().substr(0,10);
+      const time = new Date().toLocaleDateString().substr(11,5);
+      const notifications = await Notification.find({sendDate: today})
+      // get notifications for today and either now or within min span
+      // send at intervals w/ chron
+
+    } catch (err) {
+      throw err;
+    }
+  },
+  deleteNotificationRecipient: async (args, req) => {
+    console.log("Resolver: deleteNotificationRecipient...");
+
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      const recipient = await User.findById({_id: args.userId})
+      const notification = await Notification.findOneAndUpdate(
+        {_id: args.notificationId},
+        {$pull: {recipients: recipient}},
+        {new: true, useFindAndModify: false}
+      );
+
+      return {
+        ...notification._doc,
+        _id: notification.id
+      };
+    } catch (err) {
+      throw err;
+    }
+  },
+  deleteNotification: async (args, req) => {
+    console.log("Resolver: deleteNotification...");
+
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+
+      const notification = await Notification.findByIdAndRemove(args.lessonId);
+
+      return {
+        ...notification._doc,
+        _id: notification.id
+      };
     } catch (err) {
       throw err;
     }
@@ -49,19 +536,46 @@ module.exports = {
       let lesson = await Lesson.findById({_id: args.lessonId});
 
       let recipients = await User.find({_id: {$in: args.userIds}});
+      let sendDate = null;
       let start = null;
-      if (args.notificationInput.type === 'Reminder') {
-        start = args.notificationInput.sessionDate+" "+args.notificationInput.sessionTime;
-      } else {
-        start = args.notificationInput.sessionEndDate;
-      }
-
       const triggerValue = args.notificationInput.triggerValue;
       const triggerUnit = args.notificationInput.triggerUnit;
+      if (args.notificationInput.type === 'Reminder') {
+        start = args.notificationInput.sessionDate+" "+args.notificationInput.sessionTime;
+        sendDate = moment(start).subtract(triggerValue, triggerUnit);
+      }
+      if (args.notificationInput.type === 'FollowUp') {
+        start = args.notificationInput.sessionEndDate;
+        sendDate = moment(start).add(triggerValue, triggerUnit);
+      }
+      console.log(triggerValue,triggerUnit,'moment start',moment(start),'sendDate',sendDate);
+      const trigger = {
+        unit: triggerUnit,
+        value: triggerValue
+      }
+      const session = {
+        title: args.notificationInput.sessionTitle,
+        date: args.notificationInput.sessionDate,
+        time: args.notificationInput.sessionTime
+      }
+      const delivery = {
+        type: args.notificationInput.deliveryType,
+        params: args.notificationInput.deliveryParams,
+        sent: false
+      }
 
-      let sendDate = null;
-      sendDate = moment(start).add(triggerValue, triggerUnit);
-      // console.log(triggerValue,triggerUnit,'moment start',moment(start),'sendDate',sendDate);
+      const notificationExists = await Notification.findOne({
+        type: args.notificationInput.type,
+        title: args.notificationInput.title,
+        'session.date': args.notificationInput.sessionDate,
+        'session.title': args.notificationInput.sessionTitle,
+        'trigger.unit': args.notificationInput.triggerUnit,
+        'trigger.value': args.notificationInput.triggerValue
+      })
+      if (notificationExists) {
+        console.log('...no duplications check your data and try again...');
+        throw new Error('...no duplications check your data and try again...')
+      }
 
       const notification = new Notification({
         createDate: date,
@@ -69,24 +583,13 @@ module.exports = {
         creator: creator,
         type: args.notificationInput.type,
         title: args.notificationInput.title,
-        time: args.notificationInput.time,
-        trigger: {
-          unit: args.notificationInput.triggerUnit,
-          value: args.notificationInput.triggerValue
-        },
+        time: time,
+        trigger: trigger,
         lesson: lesson,
-        session: {
-          title: args.notificationInput.sessionTitle,
-          date: args.notificationInput.sessionDate,
-          time: args.notificationInput.sessionTime
-        },
+        session: session,
         recipients: recipients,
         body: args.notificationInput.body,
-        delivery: {
-          type: args.notificationInput.deliveryType,
-          params: args.notificationInput.deliveryParams,
-          sent: args.notificationInput.deliverySent
-        }
+        delivery: delivery
       })
 
       const result = await notification.save();

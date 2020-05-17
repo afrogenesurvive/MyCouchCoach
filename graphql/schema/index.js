@@ -172,6 +172,7 @@ module.exports = buildSchema(`
     profileImageName: String
     profileImageType: String
     profileImagePath: String
+    profileImagePublic: String
     socialMediaPlatform: String
     socialMediaHandle: String
     socialMediaLink: String
@@ -308,6 +309,8 @@ module.exports = buildSchema(`
     sessionInProgress: Boolean
     sessionFull: Boolean
     sessionUrl: String
+    sessionReminderTriggerUnit: String
+    sessionReminderTriggerValue: Float
     sessionQuery: String
     sessionField: String
     cancellationReason: String
@@ -618,6 +621,7 @@ module.exports = buildSchema(`
     getAllNotifications(activityId: ID!): [Notification]
     getNotificationById(activityId: ID!, notificationId: ID!): Notification
     getNotificationsByField(activityId: ID!, field: String!, query: String!): [Notification]
+    getNotificationsByFieldRegex(activityId: ID!, field: String!, query: String!): [Notification]
     getNotificationsToday(activityId: ID!): [Notification]
     getNotificationsBySendDateRange(activityId: ID!, upperLimit: String!, lowerLimit: String!): [Notification]
     getNotificationsBySendTimeRange(activityId: ID!, upperLimit: String!, lowerLimit: String!): [Notification]
@@ -681,6 +685,7 @@ module.exports = buildSchema(`
     addUserAddress(activityId: ID!, userId: ID!, userInput: UserInput!): User
     setUserAddressPrimary(activityId: ID, userId: ID!, userInput: UserInput!): User
     addUserProfileImage(activityId: ID!, userId: ID!, userInput: UserInput): User
+    toggleUserProfileImagePublic(activityId: ID!, userId: ID!, userInput: UserInput): User
     addUserSocialMedia(activityId: ID!, userId: ID!, userInput: UserInput): User
     addUserPaymentInfo(activityId: ID!, userId: ID!, userInput: UserInput): User
     editUserPaymentInfo(activityId: ID!, userId: ID!, userInput: UserInput!, field: String!, query: String!): User
@@ -756,7 +761,9 @@ module.exports = buildSchema(`
 
     addLessonScheduleDate(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
     addLessonImage(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
+    toggleLessonImagePublic(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
     addLessonFile(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
+    toggleLessonFilePublic(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
     addLessonSession(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
 
     addLessonRequirements(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
@@ -798,11 +805,12 @@ module.exports = buildSchema(`
 
     createNotification(activityId: ID!, lessonId: ID!, userIds: [ID!] ,notificationInput: NotificationInput!): Notification
     updateNotificationBasic(activityId: ID!, notificationId: ID!, notificationInput: NotificationInput!): Notification
-    updateNotificationbyField(activityId: ID!, notificationId: ID!, field: String!, query: String!): Notification
+    updateNotificationByField(activityId: ID!, notificationId: ID!, field: String!, query: String!): Notification
     updateNotificationTrigger(activityId: ID!, notificationId: ID!, notificationInput: NotificationInput!): Notification
     updateNotificationDelivery(activityId: ID!, notificationId: ID!, notificationInput: NotificationInput!): Notification
     updateNotificationLesson(activityId: ID!, notificationId: ID!, lessonId: ID!): Notification
     addNotificationRecipient(activityId: ID!, notificationId: ID!, userId: ID!): Notification
+    sendNotifications(activityId: ID!): [Notification]
     notificationSent(activityId: ID!, notificationId: ID!, notificationInput: NotificationInput!): Notification
 
     deleteNotification(activityId: ID!, notificationId: ID!): Notification

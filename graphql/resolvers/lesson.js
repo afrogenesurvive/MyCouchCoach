@@ -12,6 +12,7 @@ const Comment = require('../../models/comment');
 const Message = require('../../models/message');
 const Notification = require('../../models/notification');
 const util = require('util');
+const moment = require('moment');
 
 const { transformLesson } = require('./merge');
 const { dateToString } = require('../../helpers/date');
@@ -24,7 +25,7 @@ module.exports = {
   getAllPublicLessons: async () => {
     console.log('getAllPublicLessons...');
     try {
-      const lessons = await Lesson.find({})
+      const lessons = await Lesson.find({public: true})
       .populate('instructors')
       .populate('reviews');
 
@@ -48,7 +49,8 @@ module.exports = {
       .populate('instructors')
       .populate('reviews');
 
-      return lessons.map(lesson => {
+      lessons2 = lessons.filter(x => x.public === true);
+      return lessons2.map(lesson => {
         return transformLesson(lesson,);
       });
     } catch (err) {
@@ -692,6 +694,7 @@ module.exports = {
           lessonId: '$_id',
           lessonTitle: '$title',
           date:'$sessions.date',
+          endDate:'$sessions.endDate',
           title:'$sessions.title',
           time:'$sessions.time',
           limit:'$sessions.limit',
@@ -806,6 +809,7 @@ module.exports = {
                 lessonTitle: '$title',
                 lessonInstructors: '$instructors',
                 date:'$sessions.date',
+                endDate:'$sessions.endDate',
                 title:'$sessions.title',
                 time:'$sessions.time',
                 limit:'$sessions.limit',
@@ -814,6 +818,7 @@ module.exports = {
                 attendedAmount: '$sessions.attendedAmount',
                 attended: '$sessions.attended',
                 full: '$sessions.full',
+                url: '$sessions.url',
               }}},
               // {$group: {_id:{date:'$sessions.date',title:'$sessions.title'},booked: { $addToSet: '$sessions.booked'}}},
               {$match:
@@ -844,6 +849,8 @@ module.exports = {
         title: args.lessonInput.title,
         subtitle: args.lessonInput.subtitle,
         type: args.lessonInput.type,
+        subType: args.lessonInput.subType,
+        public: args.lessonInput.public,
         category: args.lessonInput.category,
         sku: args.lessonInput.sku,
         price: args.lessonInput.price,
@@ -1344,6 +1351,7 @@ module.exports = {
         name: args.lessonInput.imageName,
         type: args.lessonInput.imageType,
         path: args.lessonInput.imagePath,
+        public: args.lessonInput.imagePublic,
       };
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: {gallery: image}},{new: true, useFindAndModify: false})
       .populate('instructors')
@@ -1398,8 +1406,75 @@ module.exports = {
         name: args.lessonInput.imageName,
         type: args.lessonInput.imageType,
         path: args.lessonInput.imagePath,
+        public: args.lessonInput.imagePublic,
       };
         const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {gallery: image}},{new: true, useFindAndModify: false})
+        .populate('instructors')
+        .populate('attendees')
+        .populate('reviews')
+        .populate('sessions.booked')
+        .populate('sessions.attended')
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
+        .populate('cancellations.user');
+
+          return {
+              ...lesson._doc,
+              _id: lesson.id,
+              title: lesson.title
+          };
+    } catch (err) {
+      throw err;
+    }
+  },
+  toggleLessonImagePublic: async (args, req) => {
+    console.log("Resolver: toggleLessonImagePublic...");
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      const activityUser = await User.findById({_id: args.activityId});
+      const preLesson = await Lesson.findById({_id: args.lessonId}).populate('instructors');
+      if (activityUser.role !== "Admin" && preLesson.instructors[0]._id !== activityUser._id) {
+        throw new Error("Yaah.. No! Only the lead Instructor of this Lesson or Admin can delete a User Address");
+      };
+
+      const image = {
+        name: args.lessonInput.imageName,
+        type: args.lessonInput.imageType,
+        path: args.lessonInput.imagePath,
+        public: args.lessonInput.imagePublic,
+      };
+      let newPublic = null;
+      if (image.public === true || image.public === null || image.public === undefined ) {
+        newPublic = false;
+      }
+      if (image.public === false) {
+        newPublic = false;
+      }
+        const lesson = await Lesson.findOneAndUpdate(
+          {_id:args.lessonId, 'gallery.name': image.name, 'gallery.path': image.path},
+          {'gallery.$.public': newPublic},
+          {new: true, useFindAndModify: false})
         .populate('instructors')
         .populate('attendees')
         .populate('reviews')
@@ -1449,6 +1524,7 @@ module.exports = {
         type: args.lessonInput.fileType,
         size: args.lessonInput.fileSize,
         path: args.lessonInput.filePath,
+        public: args.lessonInput.filePublic,
       };
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: {files: file}},{new: true, useFindAndModify: false})
       .populate('instructors')
@@ -1504,8 +1580,76 @@ module.exports = {
         type: args.lessonInput.fileType,
         size: args.lessonInput.fileSize,
         path: args.lessonInput.filePath,
+        public: args.lessonInput.filePublic,
       };
         const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {files: file}},{new: true, useFindAndModify: false})
+        .populate('instructors')
+        .populate('attendees')
+        .populate('reviews')
+        .populate('sessions.booked')
+        .populate('sessions.attended')
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'reminders',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
+        .populate('cancellations.user');
+
+          return {
+              ...lesson._doc,
+              _id: lesson.id,
+              title: lesson.title
+          };
+    } catch (err) {
+      throw err;
+    }
+  },
+  toggleLessonFilePublic: async (args, req) => {
+    console.log("Resolver: toggleLessonFilePublic...");
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      const activityUser = await User.findById({_id: args.activityId});
+      const preLesson = await Lesson.findById({_id: args.lessonId}).populate('instructors');
+      if (activityUser.role !== "Admin" && preLesson.instructors[0]._id !== activityUser._id) {
+        throw new Error("Yaah.. No! Only the lead Instructor of this Lesson or Admin can delete this");
+      };
+
+      const file = {
+        name: args.lessonInput.fileName,
+        type: args.lessonInput.fileType,
+        size: args.lessonInput.fileSize,
+        path: args.lessonInput.filePath,
+        public: args.lessonInput.filePublic,
+      };
+      let newPublic = null;
+      if (file.public === true || file.public === null || file.public === undefined ) {
+        newPublic = false;
+      }
+      if (file.public === false) {
+        newPublic = false;
+      }
+        const lesson = await Lesson.findOneAndUpdate(
+          {_id:args.lessonId, 'files.name': file.name, 'files.path': file.path},
+          {'files.$.public': newPublic},
+          {new: true, useFindAndModify: false})
         .populate('instructors')
         .populate('attendees')
         .populate('reviews')
@@ -1560,6 +1704,7 @@ module.exports = {
       const session = {
         title: args.lessonInput.sessionTitle,
         date: args.lessonInput.sessionDate,
+        endDate: args.lessonInput.sessionEndDate,
         time: args.lessonInput.sessionTime,
         limit: args.lessonInput.sessionLimit,
         amount: args.lessonInput.sessionAmount,
@@ -1569,7 +1714,7 @@ module.exports = {
         attendedAmount: 0,
         inProgress: false,
         full: false,
-        url: args.lessonInput.sessionUrl
+        url: args.lessonInput.sessionUrl,
       };
       const lesson = await Lesson.findOneAndUpdate(
         {_id:args.lessonId},
@@ -1626,6 +1771,7 @@ module.exports = {
       const session = {
         title: args.lessonInput.sessionTitle,
         date: args.lessonInput.sessionDate,
+        endDate: args.lessonInput.sessionEndDate,
         time: args.lessonInput.sessionTime,
       };
       const lesson = await Lesson.findOneAndUpdate(
@@ -2075,6 +2221,7 @@ module.exports = {
     }
     try {
       const today = new Date().toLocaleDateString().substr(0,10);
+      const time = new Date().toLocaleDateString().substr(11,5);
       const user = await User.findById({_id: args.userId});
       const preLesson = await Lesson.findById({_id: args.lessonId});
       const userBookings = user.bookedLessons.map(x => x.ref);
@@ -2087,6 +2234,7 @@ module.exports = {
           lessonId: '$_id',
           lessonTitle: '$title',
           date:'$sessions.date',
+          endDate:'$sessions.endDate',
           title:'$sessions.title',
           limit:'$sessions.limit',
           bookedAmount: '$sessions.bookedAmount',
@@ -2119,6 +2267,8 @@ module.exports = {
       }
       // console.log(session,session[0]._id.limit,session[0]._id.bookedAmount,sessionFull,session[0]._id.booked,session[0]._id.booked.toString(),session[0]._id.booked.toString().split(','),user._id,args.userId,session[0]._id.booked.includes(user._id),session[0]._id.booked.includes(args.userId),session[0]._id.booked.toString().search(args.userId),session[0]._id.booked.toString().split(',').includes(args.userId),session[0]._id.booked.filter(x => x === user._id));
       // console.log(args.lessonInput.sessionDate);
+
+
 
       const lesson = await Lesson.findOneAndUpdate(
         {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate },
@@ -2175,6 +2325,25 @@ module.exports = {
         {new: true, useFindAndModify: false})
       const updateInstructors = await User.updateMany({_id: {$in: instructors}},{$addToSet: {toTeachLessons: lesson}},{new: true, useFindAndModify: false})
 
+
+      const updateNotification = await Notification.findOneAndUpdate(
+        {
+          lesson: lesson,
+          'session.title': args.lessonInput.sessionTitle,
+          'session.date': args.lessonInput.sessionDate
+        },
+        {$addToSet: {recipients: user}},
+        {new: true, useFindAndModify: false}
+      )
+      console.log('updateNotification',updateNotification);
+
+      const updatUserNotification = await User.findOneAndUpdate(
+        {_id: user._id},
+        {$addToSet: {notifications: updateNotification}},
+        {new: true, useFindAndModify: false}
+      )
+      console.log('updatUserNotification',updatUserNotification.notifications);
+
         return {
             ...lesson._doc,
             _id: lesson.id,
@@ -2217,6 +2386,7 @@ module.exports = {
             lessonId: '$_id',
             lessonTitle: '$title',
             date:'$sessions.date',
+            endDate:'$sessions.endDate',
             time: '$sessions.time',
             title:'$sessions.title',
             limit:'$sessions.limit',
@@ -2344,6 +2514,24 @@ module.exports = {
 
         const updateInstructors = await User.updateMany({_id: {$in: instructors}},{$addToSet: {bookedLessons: bookingRef}},{new: true, useFindAndModify: false})
 
+        const updateNotification = await Notification.findOneAndUpdate(
+          {
+            lesson: lesson,
+            'session.title': args.lessonInput.sessionTitle,
+            'session.date': args.lessonInput.sessionDate
+          },
+          {$addToSet: {recipients: user}},
+          {new: true, useFindAndModify: false}
+        )
+        // console.log('updateNotification',updateNotification);
+
+        const updatUserNotification = await User.findOneAndUpdate(
+          {_id: user._id},
+          {$addToSet: {notifications: updateNotification}},
+          {new: true, useFindAndModify: false}
+        )
+        // console.log('updatUserNotification',updatUserNotification.notifications);
+
       }
       console.log('end');
 
@@ -2439,6 +2627,24 @@ module.exports = {
         {$addToSet: {cancellations: userCancellation}},
         {new: true, useFindAndModify: false}
       )
+
+      const updateNotification = await Notification.findOneAndUpdate(
+        {
+          lesson: lesson,
+          'session.title': args.lessonInput.sessionTitle,
+          'session.date': args.lessonInput.sessionDate
+        },
+        {$pull: {recipients: user}},
+        {new: true, useFindAndModify: false}
+      )
+      console.log('updateNotification',updateNotification.recipients);
+
+      const updatUserNotification = await User.findOneAndUpdate(
+        {_id: user._id},
+        {$pull: {notifications: updateNotification}},
+        {new: true, useFindAndModify: false}
+      )
+      console.log('updatUserNotification',updatUserNotification.notifications);
 
       // const updateInstructors = await User.update({_id: {$in: instructors}},{$pull: {bookedLessons: {ref: lesson}}},{new: true, useFindAndModify: false})
         return {
@@ -2703,6 +2909,8 @@ module.exports = {
         title: args.lessonInput.title,
         subtitle: args.lessonInput.subtitle,
         type: args.lessonInput.type,
+        subType: args.lessonInput.subType,
+        public: args.lessonInput.public,
         category: args.lessonInput.category,
         sku: args.lessonInput.sku,
         price: args.lessonInput.price,

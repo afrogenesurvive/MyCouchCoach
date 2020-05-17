@@ -243,7 +243,7 @@ module.exports = {
       let resolverField = args.field;
       let resolverQuery = args.query;
       const query = {[resolverField]:resolverQuery};
-      console.log(query);
+      // console.log(query);
       const users = await User.find(query)
       .populate('perks')
       .populate('promos')
@@ -325,7 +325,7 @@ module.exports = {
       const regExpQuery = new RegExp(args.query)
       let resolverQuery = {$regex: regExpQuery, $options: 'i'};
       const query = {[resolverField]:resolverQuery};
-      console.log(query);
+      // console.log(query);
       const users = await User.find(query)
       .populate('perks')
       .populate('promos')
@@ -1712,6 +1712,7 @@ module.exports = {
         name:args.userInput.profileImageName,
         type:args.userInput.profileImageType,
         path:args.userInput.profileImagePath,
+        public:args.userInput.profileImagePublic,
       };
 
       const user = await User.findOneAndUpdate({_id:args.userId},{$addToSet: {profileImages: profileImage}},{new: true, useFindAndModify: false})
@@ -1796,11 +1797,12 @@ module.exports = {
       if (activityUser.role !== "Admin" && args.activityId !== args.userId) {
         throw new Error("Yaah.. No! Only the owner or Admin can delete a User ProfileImage");
       };
-        const profileImage = {
-          name:args.userInput.profileImageName,
-          type:args.userInput.profileImageType,
-          path:args.userInput.profileImagePath,
-        };
+      const profileImage = {
+        name:args.userInput.profileImageName,
+        type:args.userInput.profileImageType,
+        path:args.userInput.profileImagePath,
+        public:args.userInput.profileImagePublic,
+      };
         const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { 'profileImages': profileImage }},{new: true, useFindAndModify: false})
         .populate('perks')
         .populate('promos')
@@ -1870,6 +1872,102 @@ module.exports = {
           email: user.contact.email ,
           name: user.name,
         };
+    } catch (err) {
+      throw err;
+    }
+  },
+  toggleUserProfileImagePublic: async (args, req) => {
+    console.log("Resolver: toggleUserProfileImagePublic...");
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+
+      const profileImage = {
+        name:args.userInput.profileImageName,
+        type:args.userInput.profileImageType,
+        path:args.userInput.profileImagePath,
+        public:args.userInput.profileImagePublic,
+      };
+      let newPublic = null;
+      if (profileImage.public === true || profileImage.public === null || profileImage.public === undefined ) {
+        newPublic = false;
+      }
+      if (profileImage.public === false) {
+        newPublic = false;
+      }
+      const user = await User.findOneAndUpdate(
+        {_id:args.lessonId, 'profileImages.name': profileImage.name, 'profileImages.path': profileImage.path},
+        {'profileImages.$.public': newPublic},
+        {new: true, useFindAndModify: false})
+      .populate('perks')
+      .populate('promos')
+      .populate('friends')
+      .populate('likedLessons')
+      .populate('bookedLessons.ref')
+      .populate('attendedLessons.ref')
+      .populate('taughtLessons.ref')
+      .populate('wishlist.ref')
+      .populate('cart.lesson')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
+      .populate('orders')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
+      .populate('friendRequests.receiver');
+
+
+      return {
+        ...user._doc,
+        _id: user.id,
+        email: user.contact.email ,
+        name: user.name,
+      };
     } catch (err) {
       throw err;
     }
@@ -4217,7 +4315,79 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
+      const lesson = await Lesson.findById({_id: args.lessonId})
+      const user = await User.findOneAndUpdate(
+        {_id: args.userId},
+        {$addToSet: {toTeachLessons: lesson}},
+        {new: true, useFindAndModify: false}
+      )
+      .populate('perks')
+      .populate('promos')
+      .populate('friends')
+      .populate('likedLessons')
+      .populate('bookedLessons.ref')
+      .populate('attendedLessons.ref')
+      .populate('taughtLessons.ref')
+      .populate('wishlist.ref')
+      .populate('cart.lesson')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
+      .populate('orders')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
+      .populate('friendRequests.receiver');
 
+        return {
+          ...user._doc,
+          _id: user.id,
+          email: user.contact.email ,
+          name: user.name,
+        };
     } catch (err) {
       throw err;
     }
@@ -4228,7 +4398,79 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
+      const lesson = await Lesson.findById({_id: args.lessonId})
+      const user = await User.findOneAndUpdate(
+        {_id: args.userId},
+        {$pull: {toTeachLessons: lesson}},
+        {new: true, useFindAndModify: false}
+      )
+      .populate('perks')
+      .populate('promos')
+      .populate('friends')
+      .populate('likedLessons')
+      .populate('bookedLessons.ref')
+      .populate('attendedLessons.ref')
+      .populate('taughtLessons.ref')
+      .populate('wishlist.ref')
+      .populate('cart.lesson')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
+      .populate('orders')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
+      .populate('friendRequests.receiver');
 
+        return {
+          ...user._doc,
+          _id: user.id,
+          email: user.contact.email ,
+          name: user.name,
+        };
     } catch (err) {
       throw err;
     }

@@ -1694,7 +1694,49 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
+
+      let endDate = null;
       const preLesson = await Lesson.findById({_id: args.lessonId});
+
+      // console.log(preLesson.type,preLesson.subType,'type lesson',preLesson.sessions.length);
+      let userIsInstructor = preLesson.instructors.includes(args.activityId);
+      if (userIsInstructor === false) {
+        console.log('...check your privilage... only instructors for this lesson can create its sessions...');
+        throw new Error('...check your privilage... only instructors for this lesson can create its sessions...')
+      }
+
+      if (preLesson.type === 'OneTime') {
+        // console.log('onetime...');
+        if(preLesson.sessions.length >= 1) {
+          // console.log('onetime,oneday cant add...');
+          console.log('...this is a one-time lesson. there already is and can only be 1 session...');
+          throw new Error('...this is a one-time lesson. there already is and can only be 1 session...');
+        }
+        if (preLesson.sessions.length === 0) {
+          // console.log('onetime,oneday can add...');
+          if (preLesson.subType === 'OneDay') {
+            endDate = args.lessonInput.sessionDate;
+            // console.log('onetime,oneday enddate...',endDate);
+          }
+          if (preLesson.subType === 'MultiDay') {
+            endDate = args.lessonInput.sessionEndDate;
+            // console.log('onetime,multiday enddate...',endDate);
+          }
+        }
+      }
+      if (preLesson.type === 'Recurring') {
+        // console.log('recurring...');
+        if (preLesson.subType === 'OneDay') {
+          endDate = args.lessonInput.sessionDate;
+          // console.log('recurring,oneday enddate...',endDate);
+        }
+        if (preLesson.subType === 'MultiDay') {
+          endDate = args.lessonInput.sessionEndDate;
+          // console.log('recurring,multiday enddate...',endDate);
+        }
+      }
+      // console.log('endDate',endDate);
+
       const preLessonSessions = preLesson.sessions;
       const existingSessionTitles = preLessonSessions.map(x => x.title);
       const sessionTitleExists = existingSessionTitles.filter(x => x === args.lessonInput.sessionTitle).length > 0;
@@ -1704,7 +1746,7 @@ module.exports = {
       const session = {
         title: args.lessonInput.sessionTitle,
         date: args.lessonInput.sessionDate,
-        endDate: args.lessonInput.sessionEndDate,
+        endDate: endDate,
         time: args.lessonInput.sessionTime,
         limit: args.lessonInput.sessionLimit,
         amount: args.lessonInput.sessionAmount,
@@ -2326,7 +2368,7 @@ module.exports = {
       const updateInstructors = await User.updateMany({_id: {$in: instructors}},{$addToSet: {toTeachLessons: lesson}},{new: true, useFindAndModify: false})
 
 
-      const updateNotification = await Notification.findOneAndUpdate(
+      const updateNotifications = await Notification.updateMany(
         {
           lesson: lesson,
           'session.title': args.lessonInput.sessionTitle,
@@ -2335,19 +2377,55 @@ module.exports = {
         {$addToSet: {recipients: user}},
         {new: true, useFindAndModify: false}
       )
-      console.log('updateNotification',updateNotification);
+      // .map(x => x._id);
+      const updateNotifications2 = await Notification.find(
+        {
+          lesson: lesson,
+          'session.title': args.lessonInput.sessionTitle,
+          'session.date': args.lessonInput.sessionDate
+        }
+      )
+      // console.log('updateNotifications',updateNotifications,test);
 
       const updatUserNotification = await User.findOneAndUpdate(
         {_id: user._id},
-        {$addToSet: {notifications: updateNotification}},
+        {$addToSet: {notifications: {$each: updateNotifications2}}},
         {new: true, useFindAndModify: false}
       )
       console.log('updatUserNotification',updatUserNotification.notifications);
+      const lesson2 = await Lesson.findById({_id: lesson._id})
+      .populate('instructors')
+      .populate('attendees')
+      .populate('reviews')
+      .populate('sessions.booked')
+      .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate('cancellations.user');
 
         return {
-            ...lesson._doc,
-            _id: lesson.id,
-            title: lesson.title
+            ...lesson2._doc,
+            _id: lesson2.id,
+            title: lesson2.title
         };
     } catch (err) {
       throw err;
@@ -2514,7 +2592,7 @@ module.exports = {
 
         const updateInstructors = await User.updateMany({_id: {$in: instructors}},{$addToSet: {bookedLessons: bookingRef}},{new: true, useFindAndModify: false})
 
-        const updateNotification = await Notification.findOneAndUpdate(
+        const updateNotifications = await Notification.updateMany(
           {
             lesson: lesson,
             'session.title': args.lessonInput.sessionTitle,
@@ -2523,11 +2601,9 @@ module.exports = {
           {$addToSet: {recipients: user}},
           {new: true, useFindAndModify: false}
         )
-        // console.log('updateNotification',updateNotification);
-
         const updatUserNotification = await User.findOneAndUpdate(
           {_id: user._id},
-          {$addToSet: {notifications: updateNotification}},
+          {$addToSet: {notifications: {$each: updateNotifications2}}},
           {new: true, useFindAndModify: false}
         )
         // console.log('updatUserNotification',updatUserNotification.notifications);
@@ -2570,7 +2646,7 @@ module.exports = {
       // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$elemMatch: user} },
       const lesson = await Lesson.findOneAndUpdate(
         {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate },
-        {$pull: {'sessions.$.booked': user._id}, $inc: {'sessions.$.bookedAmount': -1}}
+        {$pull: {'sessions.$.booked': user._id}, $inc: {'sessions.$.bookedAmount': -1,'sessions.$.amount': -1}}
         // {$pull: {'sessions': {'sessions.booked': user}}, $inc: {'sessions.$.bookedAmount': -1}}
         ,{new: true, useFindAndModify: false})
         .populate('instructors')
@@ -2628,29 +2704,74 @@ module.exports = {
         {new: true, useFindAndModify: false}
       )
 
-      const updateNotification = await Notification.findOneAndUpdate(
+      // const test = await Notification.find(
+      //   {
+      //     lesson: lesson,
+      //     'session.title': args.lessonInput.sessionTitle,
+      //     'session.date': args.lessonInput.sessionDate
+      //   }
+      // )
+      // console.log('test',test,test.reci);
+      const updateNotifications = await Notification.updateMany(
         {
           lesson: lesson,
           'session.title': args.lessonInput.sessionTitle,
           'session.date': args.lessonInput.sessionDate
         },
-        {$pull: {recipients: user}},
+        {$pull: {recipients: user._id}},
         {new: true, useFindAndModify: false}
       )
-      console.log('updateNotification',updateNotification.recipients);
-
+      // .map(x => x._id);
+      const updateNotifications2 = await Notification.find(
+        {
+          lesson: lesson,
+          'session.title': args.lessonInput.sessionTitle,
+          'session.date': args.lessonInput.sessionDate
+        }
+      )
+      .map(x => x._id);
       const updatUserNotification = await User.findOneAndUpdate(
         {_id: user._id},
-        {$pull: {notifications: updateNotification}},
+        {$pull: {notifications: updateNotifications2}},
         {new: true, useFindAndModify: false}
       )
-      console.log('updatUserNotification',updatUserNotification.notifications);
+
+      const lessonx = await Lesson.findById({_id: lesson._id})
+      .populate('instructors')
+      .populate('attendees')
+      .populate('reviews')
+      .populate('sessions.booked')
+      .populate('sessions.attended')
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'reminders',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate('cancellations.user');
+      // console.log('updatUserNotification',updatUserNotification.notifications);
+      // console.log('updateNotifications',updateNotifications,test);
 
       // const updateInstructors = await User.update({_id: {$in: instructors}},{$pull: {bookedLessons: {ref: lesson}}},{new: true, useFindAndModify: false})
         return {
-            ...lesson._doc,
-            _id: lesson.id,
-            title: lesson.title
+            ...lessonx._doc,
+            _id: lessonx.id,
+            title: lessonx.title
         };
     } catch (err) {
       throw err;
@@ -2875,8 +2996,8 @@ module.exports = {
       throw err;
     }
   },
-  deleteLesson: async (args, req) => {
-    console.log("Resolver: deleteLesson...");
+  deleteLessonById: async (args, req) => {
+    console.log("Resolver: deleteLessonById...");
     if (!req.isAuth) {
       throw new Error('Unauthenticated!');
     }
@@ -2904,6 +3025,10 @@ module.exports = {
       }
 
       const creator = await User.findById({_id: args.creatorId});
+      if (creator.role !== "Instructor" && creator.role !== "Admin") {
+        console.log('...check your privilage! creating lessons is for Instructors and Admin only...');
+        throw new Error('...check your privilage! creating lessons is for Instructors and Admin only...')
+      }
 
       const lesson = new Lesson({
         title: args.lessonInput.title,
@@ -2939,6 +3064,8 @@ module.exports = {
         title: result.title,
         subtitle: result.subtitle,
         type: result.type,
+        subType: result.subType,
+        public: result.public,
         category: result.category,
         price: result.price,
         points: result.points,

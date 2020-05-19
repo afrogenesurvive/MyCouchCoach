@@ -517,7 +517,9 @@ module.exports = {
     }
     try {
 
-      const notification = await Notification.findByIdAndRemove(args.lessonId);
+      const notification = await Notification.findByIdAndRemove(
+        {_id: args.notificationId},
+        {useFindAndModify: false});
 
       return {
         ...notification._doc,
@@ -531,24 +533,81 @@ module.exports = {
     console.log("Resolver: createNotification...");
     try {
       const date = new Date().toLocaleDateString().substr(0,10);
-      const time = new Date().toLocaleDateString().substr(11,5);
+      let time = new Date().toLocaleDateString().substr(11,5);
       const creator = await User.findById({_id: args.activityId});
       let lesson = await Lesson.findById({_id: args.lessonId});
 
       let recipients = await User.find({_id: {$in: args.userIds}});
+      recipients.push(creator);
+      const sessionBookedUsers = await Lesson.aggregate([
+              {$unwind: '$sessions'},
+              {$lookup:
+                {
+                   from: "users",
+                   localField: 'sessions.booked',
+                   foreignField: '_id',
+                   as: "sessions.booked"
+                 }
+               },
+              {$lookup:
+                {
+                   from: "users",
+                   localField: 'sessions.attended',
+                   foreignField: '_id',
+                   as: "sessions.attended"
+                 }
+               },
+              {$group: {_id:{
+                lessonId: '$_id',
+                lessonTitle: '$title',
+                lessonInstructors: '$instructors',
+                date:'$sessions.date',
+                endDate:'$sessions.endDate',
+                title:'$sessions.title',
+                time:'$sessions.time',
+                limit:'$sessions.limit',
+                bookedAmount: '$sessions.bookedAmount',
+                booked: '$sessions.booked',
+                attendedAmount: '$sessions.attendedAmount',
+                attended: '$sessions.attended',
+                full: '$sessions.full',
+                url: '$sessions.url',
+              }}},
+              // {$group: {_id:{date:'$sessions.date',title:'$sessions.title'},booked: { $addToSet: '$sessions.booked'}}},
+              {$match:
+                {
+                  // '_id.lessonId': {$ne: args.lessonId},
+                  '_id.lessonId': {$eq: lesson._id},
+                  '_id.title': {$eq: args.notificationInput.sessionTitle }
+                }},
+              // {$match: {'_id.lessonId': args.lessonId, '_id.title': {$eq: args.lessonInput.sessionTitle }}}
+            ]);
+            const sessionBookedUsers2 = sessionBookedUsers[0]._id.booked;
+            console.log('recipients',recipients,'sessionBookedUsers',sessionBookedUsers2);
+
+            if (sessionBookedUsers2 !== []) {
+             recipients2 = recipients.concat(sessionBookedUsers2);
+            }
+            console.log('sessionBookedUsers',sessionBookedUsers[0]._id.booked.map(x => x._id),'recipients',recipients2);
+            // recipients.map(x => x._id);
+
       let sendDate = null;
       let start = null;
       const triggerValue = args.notificationInput.triggerValue;
       const triggerUnit = args.notificationInput.triggerUnit;
       if (args.notificationInput.type === 'Reminder') {
-        start = args.notificationInput.sessionDate+" "+args.notificationInput.sessionTime;
+        // console.log('Reminder');
+        start = new Date(args.notificationInput.sessionDate+" "+args.notificationInput.sessionTime);
         sendDate = moment(start).subtract(triggerValue, triggerUnit);
+        // console.log('start',start,'moment(start)',moment(start));
       }
       if (args.notificationInput.type === 'FollowUp') {
         start = args.notificationInput.sessionEndDate;
         sendDate = moment(start).add(triggerValue, triggerUnit);
       }
-      console.log(triggerValue,triggerUnit,'moment start',moment(start),'sendDate',sendDate);
+      time = sendDate.time;
+      // console.log(triggerValue,triggerUnit,'moment start',moment(start),'sendDate',sendDate);
+      console.log('sendDate',sendDate,'time',time);
       const trigger = {
         unit: triggerUnit,
         value: triggerValue
@@ -556,6 +615,7 @@ module.exports = {
       const session = {
         title: args.notificationInput.sessionTitle,
         date: args.notificationInput.sessionDate,
+        endDate: args.notificationInput.sessionEndDate,
         time: args.notificationInput.sessionTime
       }
       const delivery = {
@@ -587,7 +647,7 @@ module.exports = {
         trigger: trigger,
         lesson: lesson,
         session: session,
-        recipients: recipients,
+        recipients: recipients2,
         body: args.notificationInput.body,
         delivery: delivery
       })

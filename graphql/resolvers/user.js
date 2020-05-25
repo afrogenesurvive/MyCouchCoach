@@ -1707,13 +1707,20 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
-
+      const preUser = await User.findById({_id:args.userId});
       const profileImage = {
         name:args.userInput.profileImageName,
         type:args.userInput.profileImageType,
         path:args.userInput.profileImagePath,
         public:args.userInput.profileImagePublic,
       };
+      const preUserImages = preUser.profileImages.map(x => x.name);
+      const imageExists = preUserImages.includes(profileImage.name);
+      console.log('preUserImages',preUserImages,'imageExists',imageExists);
+      if (imageExists === true ) {
+        console.log('...um no! an image with that name exists already...');
+        throw new Error('...um no! an image with that name exists already...');
+      }
 
       const user = await User.findOneAndUpdate({_id:args.userId},{$addToSet: {profileImages: profileImage}},{new: true, useFindAndModify: false})
       .populate('perks')
@@ -1894,10 +1901,10 @@ module.exports = {
         newPublic = false;
       }
       if (profileImage.public === false) {
-        newPublic = false;
+        newPublic = true;
       }
       const user = await User.findOneAndUpdate(
-        {_id:args.lessonId, 'profileImages.name': profileImage.name, 'profileImages.path': profileImage.path},
+        {_id:args.userId, 'profileImages.name': profileImage.name},
         {'profileImages.$.public': newPublic},
         {new: true, useFindAndModify: false})
       .populate('perks')

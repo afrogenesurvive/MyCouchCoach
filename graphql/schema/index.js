@@ -172,7 +172,7 @@ module.exports = buildSchema(`
     profileImageName: String
     profileImageType: String
     profileImagePath: String
-    profileImagePublic: String
+    profileImagePublic: Boolean
     socialMediaPlatform: String
     socialMediaHandle: String
     socialMediaLink: String
@@ -289,9 +289,11 @@ module.exports = buildSchema(`
     fileType: String
     fileSize: String
     filePath: String
+    filePublic: Boolean
     imageName: String
     imageType: String
     imagePath: String
+    imagePublic: Boolean
     requirement: String
     requirements: String
     material: String
@@ -627,7 +629,7 @@ module.exports = buildSchema(`
     getNotificationsBySendTimeRange(activityId: ID!, upperLimit: String!, lowerLimit: String!): [Notification]
     getNotificationsByTrigger(activityId: ID!, notificationInput: NotificationInput): [Notification]
     getNotificationsByLesson(activityId: ID!, lessonId: ID!): [Notification]
-    getNotificationsByRecipients(activityId: ID!, recipientIds: [ID!]): [Notification]
+    getNotificationsByRecipients(activityId: ID!, recipientIds: [String]): [Notification]
 
     getAllOrders(activityId: ID!): [Order]
     getOrderById(activityId: ID!, orderId: ID!): Order

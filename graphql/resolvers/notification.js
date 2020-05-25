@@ -48,7 +48,7 @@ module.exports = {
     }
     try {
 
-      const notifications = await Notification.find({})
+      const notification = await Notification.findById({_id: args.notificationId})
       .populate('creator')
       .populate('lesson')
       .populate('recipients');
@@ -121,7 +121,13 @@ module.exports = {
     try {
 
       const today = new Date().toLocaleDateString().substr(0,10);
-      const notifications = await Notification.find({sendDate: today})
+      const today2 = new Date(today);
+      // const today = moment().format('YYYY-MM-DD');
+
+      let test = await Notification.find({})
+      test.map(x => x.sendDate)
+      console.log(today2,test);
+      const notifications = await Notification.find({sendDate: today2})
       .populate('creator')
       .populate('lesson')
       .populate('recipients');
@@ -155,28 +161,28 @@ module.exports = {
       throw err;
     }
   },
-  getNotificationsBySendTimeRange: async (args, req) => {
-    console.log("Resolver: getNotificationsBySendTimeRange...");
-
-    if (!req.isAuth) {
-      throw new Error('Unauthenticated!');
-    }
-    try {
-
-      const lowerLimit = new Date(args.lowerLimit).toLocaleDateString().substr(0,10);
-      const upperLimit = new Date(args.upperLimit).toLocaleDateString().substr(0,10);
-      const notifications = await Notification.find({time: {$gte: lowerLimit, $lte: upperLimit}})
-      .populate('creator')
-      .populate('lesson')
-      .populate('recipients');
-
-      return notifications.map(notification => {
-        return transformNotification(notification,);
-      });
-    } catch (err) {
-      throw err;
-    }
-  },
+  // getNotificationsBySendTimeRange: async (args, req) => {
+  //   console.log("Resolver: getNotificationsBySendTimeRange...");
+  //
+  //   if (!req.isAuth) {
+  //     throw new Error('Unauthenticated!');
+  //   }
+  //   try {
+  //
+  //     const lowerLimit = new Date(args.lowerLimit).toLocaleDateString().substr(0,10);
+  //     const upperLimit = new Date(args.upperLimit).toLocaleDateString().substr(0,10);
+  //     const notifications = await Notification.find({time: {$gte: lowerLimit, $lte: upperLimit}})
+  //     .populate('creator')
+  //     .populate('lesson')
+  //     .populate('recipients');
+  //
+  //     return notifications.map(notification => {
+  //       return transformNotification(notification,);
+  //     });
+  //   } catch (err) {
+  //     throw err;
+  //   }
+  // },
   getNotificationsByTrigger: async (args, req) => {
     console.log("Resolver: getNotificationsByTrigger...");
 
@@ -222,16 +228,18 @@ module.exports = {
       throw err;
     }
   },
-  getNotificationsByReciptents: async (args, req) => {
-    console.log("Resolver: getNotificationsByReciptents...");
+  getNotificationsByRecipients: async (args, req) => {
+    console.log("Resolver: getNotificationsByRecipients...");
 
     if (!req.isAuth) {
       throw new Error('Unauthenticated!');
     }
     try {
       recipients = await User.find({_id: {$in: args.recipientIds}})
+      console.log('recipientIds',args.recipientIds);
+      console.log('recipients',recipients);
 
-      const notifications = await Notification.find({recipients: recipients})
+      const notifications = await Notification.find({recipients: {$all: recipients}})
       .populate('creator')
       .populate('lesson')
       .populate('recipients');
@@ -583,12 +591,12 @@ module.exports = {
               // {$match: {'_id.lessonId': args.lessonId, '_id.title': {$eq: args.lessonInput.sessionTitle }}}
             ]);
             const sessionBookedUsers2 = sessionBookedUsers[0]._id.booked;
-            console.log('recipients',recipients,'sessionBookedUsers',sessionBookedUsers2);
+            // console.log('recipients',recipients,'sessionBookedUsers',sessionBookedUsers2);
 
             if (sessionBookedUsers2 !== []) {
              recipients2 = recipients.concat(sessionBookedUsers2);
             }
-            console.log('sessionBookedUsers',sessionBookedUsers[0]._id.booked.map(x => x._id),'recipients',recipients2);
+            // console.log('sessionBookedUsers',sessionBookedUsers[0]._id.booked.map(x => x._id),'recipients',recipients2);
             // recipients.map(x => x._id);
 
       let sendDate = null;
@@ -602,12 +610,13 @@ module.exports = {
         // console.log('start',start,'moment(start)',moment(start));
       }
       if (args.notificationInput.type === 'FollowUp') {
-        start = args.notificationInput.sessionEndDate;
+        start = args.notificationInput.sessionEndDate+' 12:00';
         sendDate = moment(start).add(triggerValue, triggerUnit);
+        // console.log('start',start,'moment(start)',moment(start));
       }
-      time = sendDate.time;
+      time = sendDate.hour()+':'+sendDate.minute();
       // console.log(triggerValue,triggerUnit,'moment start',moment(start),'sendDate',sendDate);
-      console.log('sendDate',sendDate,'time',time);
+      console.log('start',start,'sendDate',sendDate,'time',time);
       const trigger = {
         unit: triggerUnit,
         value: triggerValue

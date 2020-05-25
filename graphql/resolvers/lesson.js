@@ -1347,13 +1347,22 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
+      const preLesson = await Lesson.findById({_id: args.lessonId});
       const image = {
         name: args.lessonInput.imageName,
         type: args.lessonInput.imageType,
         path: args.lessonInput.imagePath,
         public: args.lessonInput.imagePublic,
       };
-      const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: {gallery: image}},{new: true, useFindAndModify: false})
+      const preLessonGallery = preLesson.gallery.map(x => x.name);
+      const imageExists = preLessonGallery.includes(image.name);
+      // console.log('preLessonGallery',preLessonGallery,'imageExists',imageExists);
+      if (imageExists === true ) {
+        console.log('...um no! an image with that name exists already...');
+        throw new Error('...um no! an image with that name exists already...');
+      }
+
+      const lesson = await Lesson.findOneAndUpdate({_id: args.lessonId},{$addToSet: {gallery: image}},{new: true, useFindAndModify: false})
       .populate('instructors')
       .populate('attendees')
       .populate('reviews')
@@ -1464,17 +1473,25 @@ module.exports = {
         path: args.lessonInput.imagePath,
         public: args.lessonInput.imagePublic,
       };
+
       let newPublic = null;
       if (image.public === true || image.public === null || image.public === undefined ) {
         newPublic = false;
       }
       if (image.public === false) {
-        newPublic = false;
+        newPublic = true;
       }
+
+      // const x = await Lesson.findOne({_id:args.lessonId, 'gallery.path': image.path})
+      // const x = await Lesson.findOne({_id:args.lessonId, 'gallery.name': image.name, 'gallery.path': image.path})
+      // console.log('lessonId',args.lessonId,'image.name',image.name,'image.path',image.path,'x',x.gallery,'newPublic',newPublic);
+      console.log('x',newPublic);
+
         const lesson = await Lesson.findOneAndUpdate(
-          {_id:args.lessonId, 'gallery.name': image.name, 'gallery.path': image.path},
+          {_id:args.lessonId, 'gallery.name': image.name},
           {'gallery.$.public': newPublic},
-          {new: true, useFindAndModify: false})
+          {new: true, useFindAndModify: false}
+        )
         .populate('instructors')
         .populate('attendees')
         .populate('reviews')
@@ -1503,6 +1520,7 @@ module.exports = {
         })
         .populate('cancellations.user');
 
+
           return {
               ...lesson._doc,
               _id: lesson.id,
@@ -1519,6 +1537,7 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
+      const preLesson = await Lesson.findById({_id: args.lessonId});
       const file = {
         name: args.lessonInput.fileName,
         type: args.lessonInput.fileType,
@@ -1526,6 +1545,13 @@ module.exports = {
         path: args.lessonInput.filePath,
         public: args.lessonInput.filePublic,
       };
+      const preLessonFiles = preLesson.files.map(x => x.name);
+      const fileExists = preLessonFiles.includes(file.name);
+      // console.log('preLessonFiles',preLessonFiles,'fileExists',fileExists);
+      if (fileExists === true ) {
+        console.log('...um no! a file with that name exists already...');
+        throw new Error('...um no! a file with that name exists already...');
+      }
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: {files: file}},{new: true, useFindAndModify: false})
       .populate('instructors')
       .populate('attendees')
@@ -1644,10 +1670,10 @@ module.exports = {
         newPublic = false;
       }
       if (file.public === false) {
-        newPublic = false;
+        newPublic = true;
       }
         const lesson = await Lesson.findOneAndUpdate(
-          {_id:args.lessonId, 'files.name': file.name, 'files.path': file.path},
+          {_id:args.lessonId, 'files.name': file.name},
           {'files.$.public': newPublic},
           {new: true, useFindAndModify: false})
         .populate('instructors')

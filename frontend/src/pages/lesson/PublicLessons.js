@@ -84,7 +84,7 @@ class PublicLessonsPage extends Component {
           field:"${field}",
           query:"${query}"
         )
-        {_id,title,subtitle,type,category,price,points,description,duration,schedule{date,time},gallery{name,type,path},instructors{_id,username},tags}}
+        {_id,title,subtitle,public,type,subType,category,price,points,description,duration,requirements,schedule{date,time},gallery{name,type,path,public},instructors{_id,username},tags,reviews{date,type,title,author{_id,username},body,rating}}}
       `}
 
     fetch('http://localhost:8088/graphql', {
@@ -101,7 +101,7 @@ class PublicLessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        if (resData.errors.length > 0) {
+        if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.getPublicLessonsByField).slice(0,8);
@@ -124,7 +124,7 @@ class PublicLessonsPage extends Component {
     const requestBody = {
       query: `
           query {getAllPublicLessons
-            {_id,title,subtitle,type,category,price,points,description,duration,requirements,schedule{date,time},gallery{name,type,path},instructors{_id,username},tags,reviews{date,type,title,author{_id,username},body,rating}}}
+            {_id,title,subtitle,public,type,subType,category,price,points,description,duration,requirements,schedule{date,time},gallery{name,type,path,public},instructors{_id,username},tags,reviews{date,type,title,author{_id,username},body,rating}}}
         `};
 
     fetch('http://localhost:8088/graphql', {
@@ -142,7 +142,7 @@ class PublicLessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        if (resData.errors.length > 0) {
+        if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);

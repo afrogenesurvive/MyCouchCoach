@@ -22,7 +22,16 @@ const userProfileImageItem = props => (
           {props.name}
           </p>
           </li>
+          <li className="cardLi">
+          <p className="userItemText">
+          public: {props.public.toString()}
+          </p>
+          </li>
         </ul>
+
+        <Button variant="danger" onClick={props.toggleUserProfileImagePublic.bind(this, props.profileImage)}>
+          Toggle Privacy
+        </Button>
 
         { props.canDelete === true && (
           <Button variant="danger" onClick={props.onDelete.bind(this, props.profileImage)}>

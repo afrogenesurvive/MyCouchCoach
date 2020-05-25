@@ -17,6 +17,9 @@ export default function lessonSessionItem (props) {
         date: {props.date}
       </Card.Text>
       <Card.Text>
+        endDate: {props.endDate}
+      </Card.Text>
+      <Card.Text>
         time: {props.time}
       </Card.Text>
       <Card.Text>

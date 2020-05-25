@@ -108,7 +108,7 @@ class SignupPage extends Component {
       })
       .then(resData => {
 
-        if (resData.errors.length > 0) {
+        if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const newUser = resData.data.createUser;

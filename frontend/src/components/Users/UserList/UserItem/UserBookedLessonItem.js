@@ -22,6 +22,13 @@ const userBookedLessonItem = props => (
         Title: {props.lesson.title}
       </Card.Text>
       <Card.Text>
+        Type: {props.lesson.type}
+      </Card.Text>
+      <Card.Text>
+        SubType: {props.lesson.subType}
+      </Card.Text>
+
+      <Card.Text>
         Session:
       </Card.Text>
       <Card.Text>

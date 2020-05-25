@@ -4,7 +4,7 @@ import UserToTeachLessonItem from './UserItem/UserToTeachLessonItem';
 import './UserList.css';
 
 const userToTeachLessonList = props => {
-  // console.log(props.userToTeachLessons)
+  console.log('props.userToTeachLessons',props.userToTeachLessons)
   const toTeachLessons = props.userToTeachLessons.map(toTeachLesson => {
     return (
       <UserToTeachLessonItem
@@ -12,6 +12,8 @@ const userToTeachLessonList = props => {
         toTeachLesson={toTeachLesson}
         _id={toTeachLesson._id}
         title={toTeachLesson.title}
+        type={toTeachLesson.type}
+        subType={toTeachLesson.subType}
         authId={props.authId}
         viewLessonDetails={props.viewLessonDetails}
       />

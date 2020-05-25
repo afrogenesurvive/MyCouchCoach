@@ -14,9 +14,11 @@ const lessonFileList = props => {
         type={file.type}
         size={file.size}
         path={file.path}
+        public={file.public}
         authId={props.authId}
         canDelete={props.canDelete}
         onDelete={props.onDelete}
+        toggleLessonFilePublic={props.toggleLessonFilePublic}
       />
     );
   });

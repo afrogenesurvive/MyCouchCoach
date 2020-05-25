@@ -17,6 +17,7 @@ import LessonImageList from './Lessons/LessonList/LessonImageList';
 import LessonFileList from './Lessons/LessonList/LessonFileList';
 import LessonReviewList from './Lessons/LessonList/LessonReviewList';
 import LessonCancellationList from './Lessons/LessonList/LessonCancellationList';
+import LessonReminderList from './Lessons/LessonList/LessonReminderList';
 
 
 import CreateLessonSessionForm from './Forms/lesson/CreateLessonSessionForm';
@@ -416,6 +417,7 @@ const ProfileLessonViewer = (props) => {
                   lessonImages={lesson.gallery}
                   canDelete
                   onDelete={props.deleteLessonImage}
+                  toggleLessonImagePublic={props.toggleLessonImagePublic}
                 />
               )}
             </Col>
@@ -454,6 +456,7 @@ const ProfileLessonViewer = (props) => {
                   lessonFiles={lesson.files}
                   canDelete
                   onDelete={props.deleteLessonFile}
+                  toggleLessonFilePublic={props.toggleLessonFilePublic}
                 />
               )}
             </Col>
@@ -596,6 +599,20 @@ const ProfileLessonViewer = (props) => {
           {isInstructor === true && (
             <LessonCancellationList
               lessonCancellations={lesson.cancellations}
+              authId={props.authId}
+            />
+          )}
+
+        </Card.Body>
+        </Card>
+        </Tab>
+
+        <Tab eventKey="reminders" title="reminders">
+        <Card className="UserDetailCard">
+        <Card.Body>
+          {isInstructor === true && (
+            <LessonReminderList
+              lessonReminders={lesson.reminders}
               authId={props.authId}
             />
           )}

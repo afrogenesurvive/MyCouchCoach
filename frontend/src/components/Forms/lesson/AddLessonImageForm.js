@@ -12,24 +12,34 @@ return (
 <Form onSubmit={props.onConfirm}>
 
 <Form.Row>
-  <Form.Group as={Col} controlId="formGridImagename">
+  <Form.Group as={Col} controlId="formGridName">
   <Form.Label>Filename</Form.Label>
-  <Form.Control type="text" placeholder="Filename"/>
+  <Form.Control type="text" placeholder="Name"/>
 </Form.Group>
 </Form.Row>
 
 <Form.Row>
-  <Form.Group as={Col} controlId="formGridImagetype">
+  <Form.Group as={Col} controlId="formGridType">
   <Form.Label>Filetype</Form.Label>
-  <Form.Control type="text" placeholder="Filetype"/>
+  <Form.Control type="text" placeholder="Type"/>
 </Form.Group>
 </Form.Row>
 
 <Form.Row>
-  <Form.Group as={Col} controlId="formGridImagepath">
+  <Form.Group as={Col} controlId="formGridPath">
   <Form.Label>Link Address</Form.Label>
   <Form.Control type="text" placeholder="link address"/>
 </Form.Group>
+</Form.Row>
+
+<Form.Row>
+  <Form.Group as={Col} controlId="formGridPublic">
+    <Form.Label>Public</Form.Label>
+    <Form.Control as="select">
+    <option>true</option>
+    <option>false</option>
+    </Form.Control>
+  </Form.Group>
 </Form.Row>
 
 <Form.Row>

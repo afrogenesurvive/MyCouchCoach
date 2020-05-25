@@ -19,6 +19,13 @@ const lessonImageItem = props => (
       <Card.Text>
         Path: {props.path}
       </Card.Text>
+      <Card.Text>
+        Public: {props.public.toString()}
+      </Card.Text>
+
+      <Button variant="secondary" onClick={props.toggleLessonImagePublic.bind(this, props.image)}>
+        Toggle Privacy
+      </Button>
 
       { props.canDelete === true && (
         <Button variant="danger" onClick={props.onDelete.bind(this, props.image)}>

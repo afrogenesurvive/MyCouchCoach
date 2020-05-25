@@ -18,6 +18,12 @@ const userToTeachLessonItem = props => (
       <Card.Text>
         Title: {props.title}
       </Card.Text>
+      <Card.Text>
+        Type: {props.type}
+      </Card.Text>
+      <Card.Text>
+        SubType: {props.subType}
+      </Card.Text>
 
       <Button variant="primary" onClick={props.viewLessonDetails.bind(this, {type: 'toTeach', lesson: props.toTeachLesson})}>
         View Details

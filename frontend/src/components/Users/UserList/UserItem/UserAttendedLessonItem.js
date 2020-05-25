@@ -22,6 +22,12 @@ export default function userAttendedLessonItem (props) {
       <Card.Text>
         Title: {props.lesson.title}
       </Card.Text>
+      <Card.Text>
+        Type: {props.lesson.type}
+      </Card.Text>
+      <Card.Text>
+        SubType: {props.lesson.subType}
+      </Card.Text>
 
       <Button variant="primary" onClick={props.viewLessonDetails.bind(this, {type: 'attended', lesson: props.attendedLesson})}>
         View Details

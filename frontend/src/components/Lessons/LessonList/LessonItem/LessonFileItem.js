@@ -21,6 +21,13 @@ const lessonFileItem = props => (
       <Card.Text>
         Path: {props.path}
       </Card.Text>
+      <Card.Text>
+        Public: {props.public.toString()}
+      </Card.Text>
+
+      <Button variant="secondary" onClick={props.toggleLessonFilePublic.bind(this, props.file)}>
+        Toggle Privacy
+      </Button>
 
       { props.canDelete === true && (
         <Button variant="danger" onClick={props.onDelete.bind(this, props.file)}>

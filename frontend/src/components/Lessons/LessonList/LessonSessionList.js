@@ -7,6 +7,7 @@ const lessonSessionList = props => {
 
   const sessions = props.lessonSessions.map(session => {
     const sessionDate = new Date (session.date.substr(0,10)*1000).toISOString().slice(0,10);;
+    const sessionEndDate = new Date (session.endDate.substr(0,10)*1000).toISOString().slice(0,10);;
     return (
       <LessonSessionItem
         profile={props.profile}
@@ -16,6 +17,7 @@ const lessonSessionList = props => {
         isInstructor={props.isInstructor}
         title={session.title}
         date={sessionDate}
+        endDate={sessionEndDate}
         time={session.time}
         full={session.full}
         limit={session.limit}

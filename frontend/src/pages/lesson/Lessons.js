@@ -150,7 +150,7 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        if (resData.errors.length > 0) {
+        if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.getLessonsByFieldRegex).slice(0,8);
@@ -215,7 +215,7 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        if (resData.errors.length > 0) {
+        if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.getLessonsByField).slice(0,8);
@@ -264,7 +264,7 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        if (resData.errors.length > 0) {
+        if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.getLessonSession).slice(0,8);
@@ -334,7 +334,7 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        if (resData.errors.length > 0) {
+        if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.createLesson).slice(0,8);
@@ -414,7 +414,7 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        if (resData.errors.length > 0) {
+        if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.updateLessonBasic).slice(0,8);
@@ -463,7 +463,7 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        if (resData.errors.length > 0) {
+        if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.updateLessonByField).slice(0,8);
@@ -486,7 +486,7 @@ class LessonsPage extends Component {
     const requestBody = {
       query: `
         query {getAllLessons(activityId:"${activityId}")
-        {_id,title,subtitle,type,category,price,sku,points,description,notes,requirements,materials,duration,files{name,type,size,path},gallery{name,type,path},schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email},socialMedia{platform,handle,link},profileImages{name,type,path}},tags,reviews{_id,title,type,author{_id,username},lesson{_id,title},body,rating}}}
+        {_id,title,subtitle,public,type,category,price,sku,points,description,notes,requirements,materials,duration,files{name,type,size,path,public},gallery{name,type,path,public},schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email},socialMedia{platform,handle,link},profileImages{name,type,path}},tags,reviews{_id,title,type,author{_id,username},lesson{_id,title},body,rating}}}
         `};
 
     fetch('http://localhost:8088/graphql', {
@@ -505,7 +505,7 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        if (resData.errors.length > 0) {
+        if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
@@ -534,7 +534,7 @@ class LessonsPage extends Component {
           activityId:"${activityId}",
           lessonId:"${lessonId}"
         )
-        {_id,title,subtitle,type,category,price,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{email,phone,phone2}},gallery{name,type,path},requirements,materials,files{name,type,size,path},reviews{_id},tags,sessions{title,date,time,limit,amount,booked{_id,username},bookedAmount,attended{_id,username},attendedAmount,inProgress,full,url},promos{_id}}}
+        {_id,title,subtitle,type,subType,public,category,price,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{email,phone,phone2}},gallery{name,type,path,public},requirements,materials,files{name,type,size,path,public},reviews{_id},tags,sessions{title,date,endDate,time,limit,amount,booked{_id,username},bookedAmount,attended{_id,username},attendedAmount,inProgress,full,url},promos{_id},reviews{date,type,title,body,author{_id,username},body,rating},cancellations{date,reason,sessionDate,sessionTitle,user{_id,username}},reminders{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
         `};
 
     fetch('http://localhost:8088/graphql', {
@@ -553,7 +553,7 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        if (resData.errors.length > 0) {
+        if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
@@ -598,7 +598,7 @@ class LessonsPage extends Component {
               sessionDate:"${sessionDate}",
               sessionTitle:"${sessionTitle}"
             )
-            {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+            {_id,title,subtitle,type,subType,public,category,price,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{email,phone,phone2}},gallery{name,type,path,public},requirements,materials,files{name,type,size,path,public},reviews{_id},tags,sessions{title,date,endDate,time,limit,amount,booked{_id,username},bookedAmount,attended{_id,username},attendedAmount,inProgress,full,url},promos{_id},reviews{date,type,title,body,author{_id,username},body,rating},cancellations{date,reason,sessionDate,sessionTitle,user{_id,username}},reminders{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
         `};
 
     fetch('http://localhost:8088/graphql', {
@@ -617,7 +617,7 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        if (resData.errors.length > 0) {
+        if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
@@ -662,7 +662,7 @@ class LessonsPage extends Component {
                 sessionDate:"${sessionDate}",
                 sessionTime:"${sessionTime}"
               })
-            {_id,title,subtitle,type,category,price,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{phone,phone2,email}},gallery{name,type,path},requirements,materials,files{name,type,size,path},reviews{_id},tags,sessions{title,date,time,limit,amount,booked{_id},bookedAmount,attended{_id},attendedAmount,inProgress,full},promos{_id}}}
+            {_id,title,subtitle,public,type,category,price,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{phone,phone2,email}},gallery{name,type,path,public},requirements,materials,files{name,type,size,path,public},reviews{_id},tags,sessions{title,date,time,limit,amount,booked{_id},bookedAmount,attended{_id},attendedAmount,inProgress,full},promos{_id}}}
         `};
 
     fetch('http://localhost:8088/graphql', {
@@ -681,7 +681,7 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        if (resData.errors.length > 0) {
+        if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           let responseAlert = null;
@@ -743,7 +743,7 @@ class LessonsPage extends Component {
               sessionLimit:${sessionLimit},
               sessionAmount:${sessionAmount}
             })
-            {_id,title,subtitle,type,category,price,sku,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{phone,phone2,email}},tags,sessions{title,date,time,limit,inProgress,full}}}
+            {_id,title,subtitle,public,type,subType,category,price,sku,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{phone,phone2,email}},tags,sessions{title,date,time,limit,inProgress,full}}}
         `};
 
     fetch('http://localhost:8088/graphql', {
@@ -762,7 +762,7 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        if (resData.errors.length > 0) {
+        if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
@@ -876,7 +876,7 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        if (resData.errors.length > 0) {
+        if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.addUserActivity).slice(2,25);
@@ -990,7 +990,7 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        if (resData.errors.length > 0) {
+        if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
@@ -1043,7 +1043,7 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        if (resData.errors.length > 0) {
+        if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
@@ -1096,7 +1096,7 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        if (resData.errors.length > 0) {
+        if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
@@ -1153,7 +1153,7 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        if (resData.errors.length > 0) {
+        if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
@@ -1213,7 +1213,7 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        if (resData.errors.length > 0) {
+        if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
@@ -1264,7 +1264,7 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        if (resData.errors.length > 0) {
+        if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
@@ -1315,7 +1315,7 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        if (resData.errors.length > 0) {
+        if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           // const responseAlert = JSON.stringify(resData.data).slice(0,8);
@@ -1365,7 +1365,7 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        if (resData.errors.length > 0) {
+        if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
@@ -1416,7 +1416,7 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        if (resData.errors.length > 0) {
+        if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
@@ -1467,7 +1467,7 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        if (resData.errors.length > 0) {
+        if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
@@ -1522,7 +1522,7 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        if (resData.errors.length > 0) {
+        if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
@@ -1580,7 +1580,7 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        if (resData.errors.length > 0) {
+        if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
@@ -1630,7 +1630,7 @@ class LessonsPage extends Component {
         return res.json();
       })
       .then(resData => {
-        if (resData.errors.length > 0) {
+        if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);

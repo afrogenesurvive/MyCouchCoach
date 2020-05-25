@@ -13,9 +13,11 @@ const userProfileImageList = props => {
         name={profileImage.name}
         type={profileImage.type}
         path={profileImage.path}
+        public={profileImage.public}
         profileImage={profileImage}
         onDelete={props.onDelete}
         canDelete={props.canDelete}
+        toggleUserProfileImagePublic={props.toggleUserProfileImagePublic}
       />
     );
   });

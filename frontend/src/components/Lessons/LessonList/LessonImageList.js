@@ -14,9 +14,11 @@ const lessonImageList = props => {
         name={image.name}
         type={image.type}
         path={image.path}
+        public={image.public}
         authId={props.authId}
         canDelete={props.canDelete}
         onDelete={props.onDelete}
+        toggleLessonImagePublic={props.toggleLessonImagePublic}
       />
     );
   });

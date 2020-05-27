@@ -1846,7 +1846,8 @@ module.exports = {
         {_id: args.lessonId},
         {
           $pull: {
-            sessions: {title: session.title, date: session.date },
+            sessions: {title: session.title },
+            // sessions: {title: session.title, date: session.date },
             schedule: {date: session.date}
           }},{new: true, useFindAndModify: false})
       // const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {
@@ -2309,14 +2310,13 @@ module.exports = {
           booked: '$sessions.booked',
           full: '$sessions.full'
         }}},
-        // {$group: {_id:{date:'$sessions.date',title:'$sessions.title'},booked: { $addToSet: '$sessions.booked'}}},
         {$match:
           {
             // '_id.lessonId': {$ne: args.lessonId},
             '_id.lessonId': {$eq: preLesson._id},
             '_id.title': {$eq: args.lessonInput.sessionTitle }
-          }}
-        // {$match: {'_id.lessonId': args.lessonId, '_id.title': {$eq: args.lessonInput.sessionTitle }}}
+          }
+        }
       ]);
 
       // console.log(session);
@@ -2339,8 +2339,8 @@ module.exports = {
 
 
       const lesson = await Lesson.findOneAndUpdate(
-        {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate },
-        // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle },
+        // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate },
+        {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle },
         {
           $addToSet: {'sessions.$.booked': user},
           $inc: {'sessions.$.bookedAmount': 1,'sessions.$.amount': 1},
@@ -2374,7 +2374,14 @@ module.exports = {
           }
         })
         .populate('cancellations.user');
-      // console.log(lesson);
+
+      //   const seshDate = new Date(args.lessonInput.sessionDate).toISOString();
+      // const lessonx = await Lesson.find(
+      //   {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle}
+      // )
+      // console.log('args.lessonInput.sessionTitle',args.lessonInput.sessionTitle,'args.lessonInput.sessionDate',args.lessonInput.sessionDate, 'seshDate', seshDate);
+      // console.log('lessonx',lessonx.sessions);
+      // console.log('lesson',lesson);
 
       const instructors = lesson.instructors.map(x => x._id);
       const bookingRef = {
@@ -2479,7 +2486,7 @@ module.exports = {
 
       console.log('start');
       for (let index = 0; index < bookingArray.length; index++) {
-        const booking = bookingArray[index];
+        let booking = bookingArray[index];
 
         const user = await User.findById({_id: booking.userId});
         const preLesson = await Lesson.findById({_id: booking.lessonId});
@@ -2618,26 +2625,39 @@ module.exports = {
 
         const updateInstructors = await User.updateMany({_id: {$in: instructors}},{$addToSet: {bookedLessons: bookingRef}},{new: true, useFindAndModify: false})
 
+        const hasNotifican = await Notification.find(
+            {
+              lesson: lesson,
+              'session.title': session[0]._id.title
+            }
+        )
+        // console.log('hasNotifican',hasNotifican);
+        if (hasNotifican.length === 0) {
+          console.log('...there are no notifications for this session...');
+          continue
+        }
+
         const updateNotifications = await Notification.updateMany(
           {
             lesson: lesson,
-            'session.title': args.lessonInput.sessionTitle,
-            'session.date': args.lessonInput.sessionDate
+            'session.title': session[0]._id.title
           },
           {$addToSet: {recipients: user}},
           {new: true, useFindAndModify: false}
         )
+
         const updatUserNotification = await User.findOneAndUpdate(
           {_id: user._id},
-          {$addToSet: {notifications: {$each: updateNotifications2}}},
+          {$addToSet: {notifications: {$each: updateNotifications}}},
           {new: true, useFindAndModify: false}
         )
-        // console.log('updatUserNotification',updatUserNotification.notifications);
+        console.log('updatUserNotification',updatUserNotification.notifications);
 
       }
       console.log('end');
 
-      const user2 = await User.findOneAndUpdate({_id: user._id},
+      const user2 = await User.findOneAndUpdate(
+        {_id: user._id},
         {cart: []},
         {new: true, useFindAndModify: false}
       )
@@ -2646,7 +2666,7 @@ module.exports = {
         console.log('...all of your requested sessions are either full or youve already booked them...');
         throw new Error('...all of your requested sessions are either full or youve already booked them...')
       }
-      console.log('bookedLessons',bookedLessons);
+      // console.log('bookedLessons',bookedLessons);
 
       return {
           ...user2._doc,
@@ -2671,7 +2691,8 @@ module.exports = {
       // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$elemMatch: {$ne: user}} },
       // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$elemMatch: user} },
       const lesson = await Lesson.findOneAndUpdate(
-        {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate },
+        {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle },
+        // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate },
         {$pull: {'sessions.$.booked': user._id}, $inc: {'sessions.$.bookedAmount': -1,'sessions.$.amount': -1}}
         // {$pull: {'sessions': {'sessions.booked': user}}, $inc: {'sessions.$.bookedAmount': -1}}
         ,{new: true, useFindAndModify: false})

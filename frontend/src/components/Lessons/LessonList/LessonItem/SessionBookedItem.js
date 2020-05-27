@@ -22,8 +22,7 @@ const sessionBookedItem = props => (
           Add Attendance
         </Button>
       )}
-      {props.isInstructor === true &&
-        props.addSessionAttendance && (
+      {props.isInstructor === true && (
         <Button variant="danger" onClick={props.cancelSessionBooking.bind(this, {session: props.session, user: props.user})}>
           Cancel Booking
         </Button>

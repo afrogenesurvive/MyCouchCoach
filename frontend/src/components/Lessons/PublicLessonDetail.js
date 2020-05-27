@@ -22,7 +22,13 @@ const PublicLessonDetail = (props) => {
   const {...lesson} = props.lesson;
   return (
     <div className={"UserDetailBox1"}>
-
+    <Row className="detailCardRow">
+      <Col className="detailCardCol">
+        <Button variant="danger" onClick={props.onHideLessonDetail}>
+          x
+        </Button>
+      </Col>
+      </Row>
     <Tabs defaultActiveKey="Basic" id="uncontrolled-tab-example" className="tab">
 
       <Tab eventKey="Basic" title="Basic">
@@ -78,13 +84,7 @@ const PublicLessonDetail = (props) => {
 
         </Row>
 
-        <Row className="detailCardRow">
-          <Col className="detailCardCol">
-            <Button variant="danger" onClick={props.onHideLessonDetail}>
-              x
-            </Button>
-          </Col>
-          </Row>
+
 
 
       </Card.Body>

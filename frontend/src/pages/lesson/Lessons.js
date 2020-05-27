@@ -290,7 +290,9 @@ class LessonsPage extends Component {
 
     const title = event.target.formGridTitle.value;
     const subtitle = event.target.formGridSubtitle.value;
+    const lessonPublic = event.target.formGridPublic.value;
     const type = event.target.formGridType.value;
+    const subType = event.target.formGridSubType.value;
     const category = event.target.formGridCategory.value;
     const sku = event.target.formGridSku.value;
     const price = event.target.formGridPrice.value;
@@ -308,6 +310,8 @@ class LessonsPage extends Component {
             title:"${title}",
             subtitle:"${subtitle}",
             type:"${type}",
+            subType:"${subType}",
+            public:${lessonPublic},
             category:"${category}",
             price:${price},
             points:${points},
@@ -316,7 +320,7 @@ class LessonsPage extends Component {
             duration:"${duration}",
             sku:"${sku}"
           })
-        {_id,title,subtitle,type,category,price,points,description,notes,duration,schedule{date,time},instructors{_id,username},gallery{name,type,path},requirements,materials,files{name,type,size,path},reviews{_id,title,author{_id}},tags,sessions{title,date,time,limit,amount,booked{_id,username},bookedAmount,attended{_id,username},attendedAmount,inProgress,full},promos{_id}}}
+        {_id,title,subtitle,type,subType,public,category,price,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{email,phone,phone2}},gallery{name,type,path,public},requirements,materials,files{name,type,size,path,public},reviews{_id},tags,sessions{title,date,endDate,time,limit,amount,booked{_id,username},bookedAmount,attended{_id,username},attendedAmount,inProgress,full,url},promos{_id},reviews{date,type,title,body,author{_id,username},body,rating},cancellations{date,reason,sessionDate,sessionTitle,user{_id,username}},reminders{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `}
 
     fetch('http://localhost:8088/graphql', {
@@ -486,7 +490,7 @@ class LessonsPage extends Component {
     const requestBody = {
       query: `
         query {getAllLessons(activityId:"${activityId}")
-        {_id,title,subtitle,public,type,category,price,sku,points,description,notes,requirements,materials,duration,files{name,type,size,path,public},gallery{name,type,path,public},schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email},socialMedia{platform,handle,link},profileImages{name,type,path}},tags,reviews{_id,title,type,author{_id,username},lesson{_id,title},body,rating}}}
+        {_id,title,subtitle,public,subType,type,category,price,sku,points,description,notes,requirements,materials,duration,files{name,type,size,path,public},gallery{name,type,path,public},schedule{date,time},gallery{name,type,path},instructors{_id,username,contact{phone,phone2,email},socialMedia{platform,handle,link},profileImages{name,type,path}},tags,reviews{_id,title,type,author{_id,username},lesson{_id,title},body,rating}}}
         `};
 
     fetch('http://localhost:8088/graphql', {
@@ -598,7 +602,7 @@ class LessonsPage extends Component {
               sessionDate:"${sessionDate}",
               sessionTitle:"${sessionTitle}"
             )
-            {_id,title,subtitle,type,subType,public,category,price,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{email,phone,phone2}},gallery{name,type,path,public},requirements,materials,files{name,type,size,path,public},reviews{_id},tags,sessions{title,date,endDate,time,limit,amount,booked{_id,username},bookedAmount,attended{_id,username},attendedAmount,inProgress,full,url},promos{_id},reviews{date,type,title,body,author{_id,username},body,rating},cancellations{date,reason,sessionDate,sessionTitle,user{_id,username}},reminders{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+            {_id,password,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
         `};
 
     fetch('http://localhost:8088/graphql', {
@@ -662,8 +666,10 @@ class LessonsPage extends Component {
                 sessionDate:"${sessionDate}",
                 sessionTime:"${sessionTime}"
               })
-            {_id,title,subtitle,public,type,category,price,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{phone,phone2,email}},gallery{name,type,path,public},requirements,materials,files{name,type,size,path,public},reviews{_id},tags,sessions{title,date,time,limit,amount,booked{_id},bookedAmount,attended{_id},attendedAmount,inProgress,full},promos{_id}}}
+            {_id,title,subtitle,public,type,category,price,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{phone,phone2,email}},gallery{name,type,path,public},requirements,materials,files{name,type,size,path,public},reviews{_id},tags,sessions{title,date,endDate,time,limit,amount,booked{_id},bookedAmount,attended{_id},attendedAmount,inProgress,full},promos{_id}}}
         `};
+
+
 
     fetch('http://localhost:8088/graphql', {
       method: 'POST',
@@ -724,26 +730,38 @@ class LessonsPage extends Component {
     const sessionTitle = event.target.formGridTitle.value;
     // const sessionDate = new Date (event.target.patientReferralCalendarVisitDate.value.substr(0,10)*1000).toLocaleDateString().slice(0,10);
     let sessionDate = event.target.CalendarDate.value;
-    sessionDate = new Date(sessionDate).toISOString().slice(0,10);
-    // sessionDate = new Date(sessionDate).toLocaleDateString().slice(0,10);
+    sessionDate = new Date(sessionDate).toLocaleDateString().slice(0,10);
+    let sessionEndDate = sessionDate;
+    if (event.target.CalendarEndDate) {
+      sessionEndDate = event.target.CalendarEndDate.value;
+    }
     const sessionTime = event.target.formGridTime.value;
     const sessionLimit = event.target.formGridLimit.value;
     const sessionAmount = 0;
-    // console.log(sessionDate);
+    const sessionUrl = "";
+
+    // console.log('sessionEndDate > sessionDate',new Date(sessionEndDate) > new Date(sessionDate));
+    if (new Date(sessionEndDate) < new Date(sessionDate)) {
+      console.log('...start and end date incompatible!! check your dates and try again..');
+      this.setState({userAlert: '...start and end date incompatible!! check your dates and try again..'});
+      return
+    }
 
     const requestBody = {
       query: `
-          mutation {addLessonSession(
-            activityId:"${activityId}",
-            lessonId:"${lessonId}",
-            lessonInput:{
-              sessionTitle:"${sessionTitle}",
-              sessionDate:"${sessionDate}",
-              sessionTime:"${sessionTime}",
-              sessionLimit:${sessionLimit},
-              sessionAmount:${sessionAmount}
-            })
-            {_id,title,subtitle,public,type,subType,category,price,sku,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{phone,phone2,email}},tags,sessions{title,date,time,limit,inProgress,full}}}
+      mutation {addLessonSession(
+        activityId:"${activityId}",
+        lessonId:"${lessonId}",
+        lessonInput:{
+          sessionTitle:"${sessionTitle}",
+          sessionDate:"${sessionDate}",
+          sessionEndDate:"${sessionEndDate}",
+          sessionTime:"${sessionTime}",
+          sessionLimit:${sessionLimit},
+          sessionAmount:${sessionAmount},
+          sessionUrl:"${sessionUrl}"
+        })
+            {_id,title,subtitle,public,type,subType,category,price,sku,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{phone,phone2,email}},tags,sessions{title,date,endDate,time,limit,inProgress,full}}}
         `};
 
     fetch('http://localhost:8088/graphql', {
@@ -811,7 +829,7 @@ class LessonsPage extends Component {
   };
 
   hideDetailHandler = () => {
-  this.setState({showDetail: false, overlay: false})
+  this.setState({showDetail: false, overlay: false, sessionsLoaded: false})
 };
   onViewAttachment = (attachment) => {
       this.setState({showAttachment: true})
@@ -1654,6 +1672,7 @@ class LessonsPage extends Component {
     const calendarSession = {
       title: preSession.title,
       date: preSession.date,
+      endDate: preSession.endDate,
       lessonId: preSession.lessonId,
       lessonTitle: preSession.lessonTitle,
       lessonInstructors: preSession.lessonInstructors,

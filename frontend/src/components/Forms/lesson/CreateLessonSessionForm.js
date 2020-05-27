@@ -10,10 +10,15 @@ import './CreateUserForm.css';
 const CreateLessonSessionForm = (props) => {
 
   const [date, setDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
 
     const handleChangeDate = date => {
       setDate(date);
-      console.log(`date ${date}`);
+      // console.log(`date ${date}`);
+     }
+    const handleChangeEndDate = endDate => {
+      setEndDate(endDate);
+      // console.log(`endDate ${endDate}`);
      }
 
 return (
@@ -36,6 +41,18 @@ return (
   />
 </Form.Group>
 </Form.Row>
+{props.lessonSubType &&
+  props.lessonSubType === 'MultiDay' && (
+<Form.Row>
+<Form.Group as={Col} controlId="">
+  <Form.Label>Session EndDate</Form.Label>
+  <DatePicker className="" id="CalendarEndDate"
+    selected={endDate}
+    onChange={handleChangeEndDate}
+  />
+</Form.Group>
+</Form.Row>
+)}
 
 <Form.Row>
 <Form.Group as={Col} controlId="formGridTime">

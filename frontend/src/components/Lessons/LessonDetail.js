@@ -63,9 +63,11 @@ const LessonDetail = (props) => {
     lessonCalendarSessions = lesson.sessions.map(x => ({
       title: x.title,
       date: new Date (x.date.substr(0,10)*1000).toISOString().slice(0,10),
+      end: new Date (x.endDate.substr(0,10)*1000).toISOString().slice(0,10),
       props: {
         title: x.title,
         date: new Date (x.date.substr(0,10)*1000).toISOString().slice(0,10),
+        endDate: new Date (x.endDate.substr(0,10)*1000).toISOString().slice(0,10),
         lessonId: lesson._id,
         lessonTitle: lesson.title,
         lessonInstructors: lesson.instructors,
@@ -89,10 +91,15 @@ const LessonDetail = (props) => {
     // calEvent.preventDefault();
     // console.log(calEvent.event);
   }
-  console.log(props.sessionDetailViewer);
+  // console.log(props.sessionDetailViewer);
 
   return (
     <div className={"UserDetailBox1"}>
+    <Row>
+    <Button variant="danger" onClick={props.onHideLessonDetail}>
+      x
+    </Button>
+    </Row>
 
     <Tabs defaultActiveKey="Basic" id="uncontrolled-tab-example" className="tab">
 
@@ -117,7 +124,13 @@ const LessonDetail = (props) => {
             <span className="bold">Subtitle:</span> {lesson.subtitle}
           </Card.Text>
           <Card.Text>
+            <span className="bold">Public:</span> {lesson.public.toString()}
+          </Card.Text>
+          <Card.Text>
             <span className="bold">Type:</span> {lesson.type}
+          </Card.Text>
+          <Card.Text>
+            <span className="bold">SubType:</span> {lesson.subType}
           </Card.Text>
           <Card.Text>
             <span className="bold">Category:</span> {lesson.category}
@@ -175,9 +188,7 @@ const LessonDetail = (props) => {
         <Row className="detailCardRow">
           <Col className="detailCardCol">
 
-            <Button variant="danger" onClick={props.onHideLessonDetail}>
-              x
-            </Button>
+
 
             {hasLiked !== true && (
             <Button variant="danger" onClick={props.onLikeLesson.bind(this, lesson._id)}>
@@ -246,6 +257,7 @@ const LessonDetail = (props) => {
       {props.sessionDetailViewer === true && (
         <SessionDetailViewer
         calendar
+        lesson={lesson}
         authId={props.authId}
         session={props.calendarSession}
         hideCalendarSessionDetail={props.hideCalendarSessionDetail}
@@ -292,6 +304,7 @@ const LessonDetail = (props) => {
               authId={props.authId}
               onCancel={props.cancelCreateSession}
               onConfirm={props.createLessonSession}
+              lessonSubType={lesson.subType}
             />
           )}
           </Col>

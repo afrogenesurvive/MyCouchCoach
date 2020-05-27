@@ -91,6 +91,7 @@ class UserProfile extends Component {
     sendingProfileMessage: false,
     calendarSessionDetailViewer: false,
     calendarSession: null,
+    addingReminder: false,
   };
 
   isActive = true;
@@ -1900,9 +1901,11 @@ class UserProfile extends Component {
       })
       .then(resData => {
         if (resData.errors) {
-          this.setState({userAlert: resData.errors[0].message})
+          console.log('1');
+          this.setState({userAlert: resData.errors[0].message, isLoading: false})
         } else {
           if (resData.data.addMultipleBookings !== null) {
+            console.log('2');
             this.setState({user: resData.data.addMultipleBookings, isLoading: false})
           }
         }
@@ -2481,12 +2484,14 @@ class UserProfile extends Component {
   }
 
   startCreateSession = (args) => {
+    console.log('startCreateSession',args);
     this.setState({creatingSession: true})
   };
   cancelCreateSession = () => {
     this.setState({creatingSession: false})
   };
   createLessonSession = (event) => {
+    event.preventDefault();
     console.log('creating new lesson session');
     this.setState({userAlert: 'creating new lesson session'});
 
@@ -2498,9 +2503,21 @@ class UserProfile extends Component {
     // const sessionDate = new Date (event.target.patientReferralCalendarVisitDate.value.substr(0,10)*1000).toLocaleDateString().slice(0,10);
     let sessionDate = event.target.CalendarDate.value;
     sessionDate = new Date(sessionDate).toLocaleDateString().slice(0,10);
+    let sessionEndDate = sessionDate;
+    if (event.target.CalendarEndDate) {
+      sessionEndDate = event.target.CalendarEndDate.value;
+    }
     const sessionTime = event.target.formGridTime.value;
     const sessionLimit = event.target.formGridLimit.value;
     const sessionAmount = 0;
+    const sessionUrl = "";
+
+    // console.log('sessionEndDate > sessionDate',new Date(sessionEndDate) > new Date(sessionDate));
+    if (new Date(sessionEndDate) < new Date(sessionDate)) {
+      console.log('...start and end date incompatible!! check your dates and try again..');
+      this.setState({userAlert: '...start and end date incompatible!! check your dates and try again..'});
+      return
+    }
 
     const requestBody = {
       query: `
@@ -2510,11 +2527,13 @@ class UserProfile extends Component {
             lessonInput:{
               sessionTitle:"${sessionTitle}",
               sessionDate:"${sessionDate}",
+              sessionEndDate:"${sessionEndDate}",
               sessionTime:"${sessionTime}",
               sessionLimit:${sessionLimit},
-              sessionAmount:${sessionAmount}
+              sessionAmount:${sessionAmount},
+              sessionUrl:"${sessionUrl}"
             })
-            {_id,title,subtitle,type,subType,public,category,price,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{email,phone,phone2}},gallery{name,type,path,public},requirements,materials,files{name,type,size,path,public},reviews{_id},tags,sessions{title,date,endDate,time,limit,amount,booked{_id,username},bookedAmount,attended{_id,username},attendedAmount,inProgress,full,url},promos{_id},reviews{date,type,title,body,author{_id,username},body,rating},cancellations{date,reason,sessionDate,sessionTitle,user{_id,username}},reminders{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+          {_id,title,subtitle,type,subType,public,category,price,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{email,phone,phone2}},gallery{name,type,path,public},requirements,materials,files{name,type,size,path,public},reviews{_id},tags,sessions{title,date,endDate,time,limit,amount,booked{_id,username},bookedAmount,attended{_id,username},attendedAmount,inProgress,full,url},promos{_id},reviews{date,type,title,body,author{_id,username},body,rating},cancellations{date,reason,sessionDate,sessionTitle,user{_id,username}},reminders{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
         `};
 
     fetch('http://localhost:8088/graphql', {
@@ -2536,7 +2555,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
-          this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.addLessonBooking, isLoading: false});
+          this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.addLessonSession, isLoading: false});
         }
 
       })
@@ -2922,6 +2941,7 @@ class UserProfile extends Component {
           const newSession = {
             title: resData.data.getLessonSession.title,
             date: resData.data.getLessonSession.date,
+            endDate: resData.data.getLessonSession.endDate,
             time: resData.data.getLessonSession.time,
             limit: resData.data.getLessonSession.limit,
             amount: resData.data.getLessonSession.amount,
@@ -3779,7 +3799,7 @@ class UserProfile extends Component {
   }
 
   cancelSessionBooking = (args) => {
-    console.log('...cancelling session...',args);
+    console.log('...cancelling session booking...',args);
 
     this.setState({userAlert: '...cancelling lesson booking ...' });
     const activityId = this.context.activityId;
@@ -3989,6 +4009,7 @@ class UserProfile extends Component {
     const calendarSession = {
       title: preSession.title,
       date: preSession.date,
+      endDate: preSession.endDate,
       lessonId: preSession.lessonId,
       lessonTitle: preSession.lessonTitle,
       lessonInstructors: preSession.lessonInstructors,
@@ -4020,10 +4041,14 @@ class UserProfile extends Component {
     if (this.state.overlay === true ) {
       this.setState({overlay: false})
     } else {
-      this.setState({overlay: true})
+      this.setState({overlay: true, overlayStatus: 'toggle test'})
     }
   }
 
+  startAddSessionReminder = () => {
+    console.log('...startAddSessionReminder...');
+    this.setState({addingReminder: true})
+  }
 
   componentWillUnmount() {
     this.isActive = false;
@@ -4146,6 +4171,9 @@ class UserProfile extends Component {
             calendarSessionDetailViewer={this.state.calendarSessionDetailViewer}
             calendarSession={this.state.calendarSession}
             hideCalendarSessionDetail={this.hideCalendarSessionDetail}
+
+            startAddSessionReminder={this.startAddSessionReminder}
+            addingReminder={this.state.addingReminder}
           />
         )}
 

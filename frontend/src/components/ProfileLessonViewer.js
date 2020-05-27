@@ -54,6 +54,7 @@ const ProfileLessonViewer = (props) => {
   //   canDelete = true
   // }
   // console.log(lesson.sessions);
+  console.log('props.creatingSession',props.creatingSession);
 
   let lessonCalendarSessions = [];
   if (lesson.sessions) {
@@ -61,9 +62,11 @@ const ProfileLessonViewer = (props) => {
     lessonCalendarSessions = lesson.sessions.map(x => ({
       title: x.title,
       date: new Date (x.date.substr(0,10)*1000).toISOString().slice(0,10),
+      end: new Date (x.endDate.substr(0,10)*1000).toISOString().slice(0,10),
       props: {
         title: x.title,
         date: new Date (x.date.substr(0,10)*1000).toISOString().slice(0,10),
+        endDate: new Date (x.endDate.substr(0,10)*1000).toISOString().slice(0,10),
         lessonId: lesson._id,
         lessonTitle: lesson.title,
         lessonInstructors: lesson.instructors,
@@ -86,6 +89,13 @@ const ProfileLessonViewer = (props) => {
 
       <div className="attachmentViewerBg">
       <div className="attachmentViewer">
+      <Row className="detailCardRow">
+        <Col className="detailCardCol">
+          <Button variant="danger" onClick={props.closeProfileLessonView}>
+            x
+          </Button>
+        </Col>
+      </Row>
     <Tabs defaultActiveKey="Basic" id="uncontrolled-tab-example" className="tab">
 
         <Tab eventKey="Basic" title="Basic">
@@ -93,13 +103,7 @@ const ProfileLessonViewer = (props) => {
         <Card.Body>
           <Card.Title><span className="ul">Lesson Details</span></Card.Title>
 
-          <Row className="detailCardRow">
-            <Col className="detailCardCol">
-              <Button variant="danger" onClick={props.closeProfileLessonView}>
-                x
-              </Button>
-            </Col>
-          </Row>
+
 
           <Row className="detailCardRow">
             <Col className="detailCardCol">
@@ -119,6 +123,12 @@ const ProfileLessonViewer = (props) => {
             </Card.Text>
             <Card.Text>
               <span className="bold">Type:</span> {lesson.type}
+            </Card.Text>
+            <Card.Text>
+              <span className="bold">SubType:</span> {lesson.subType}
+            </Card.Text>
+            <Card.Text>
+              <span className="bold">Public:</span> {lesson.public}
             </Card.Text>
             <Card.Text>
               <span className="bold">Category:</span> {lesson.category}
@@ -213,6 +223,7 @@ const ProfileLessonViewer = (props) => {
           props.calendarSessionDetailViewer === true && (
           <SessionDetailViewer
           calendar
+          lesson={lesson}
           lessonType={props.lessonType}
           authId={props.authId}
           session={props.calendarSession}
@@ -229,6 +240,9 @@ const ProfileLessonViewer = (props) => {
           cancelEditSessionField={props.cancelEditSessionField}
           editingSessionField={props.editingSessionField}
           editSessionField={props.editSessionField}
+          cancelSessionBooking={props.cancelSessionBooking}
+          startAddSessionReminder={props.startAddSessionReminder}
+          addingReminder={props.addingReminder}
           />
         )
       }
@@ -241,6 +255,11 @@ const ProfileLessonViewer = (props) => {
           {lesson.sessions !== [] && (
           <Button variant="primary" onClick={props.toggleSessions}>
             Show/Hide
+          </Button>
+          )}
+          {isInstructor === true && (
+          <Button variant="primary" onClick={props.startCreateSession.bind(this, lesson._id)}>
+            New Session
           </Button>
           )}
           {lesson.sessions !== [] &&
@@ -262,9 +281,9 @@ const ProfileLessonViewer = (props) => {
           )}
           </Col>
 
-
           {isInstructor === true &&
-            lessonType === 'booked' && (
+            lessonType === 'booked' ||
+            lessonType === 'toTeach' && (
 
           <Col className="detailCardCol">
           {props.editingSessionField === true && (
@@ -276,14 +295,12 @@ const ProfileLessonViewer = (props) => {
             />
           )}
 
-          <Button variant="primary" onClick={props.startCreateSession.bind(this, lesson._id)}>
-            New Session
-          </Button>
           {props.creatingSession === true && (
             <CreateLessonSessionForm
               authId={props.authId}
               onCancel={props.cancelCreateSession}
               onConfirm={props.createLessonSession}
+              lessonSubType={lesson.subType}
             />
           )}
           </Col>

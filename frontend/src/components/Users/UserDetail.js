@@ -30,7 +30,9 @@ const UserDetail = (props) => {
 
   return (
     <div className={"UserDetailBox1"}>
-
+    <Button variant="danger" onClick={props.onHideUserDetail}>
+      x
+    </Button>
     <Tabs defaultActiveKey="Demographics" id="uncontrolled-tab-example" className="tab">
 
       <Tab eventKey="Demographics" title="Demographics">
@@ -98,9 +100,7 @@ const UserDetail = (props) => {
             />
         )}
 
-        <Button variant="danger" onClick={props.onHideUserDetail}>
-          x
-        </Button>
+
           <Col className="detailCardCol">
             { props.canDelete === true && (
               <Button variant="danger" onClick={props.onDelete.bind(this, user._id)}>

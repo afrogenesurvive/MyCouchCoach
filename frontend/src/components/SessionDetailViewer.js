@@ -9,16 +9,27 @@ import "./AttachmentViewer.css"
 
 const SessionDetailViewer = (props) =>{
   const {...session} = props.session
+  // console.log('session.endDate',session);
   // console.log("beep",session, session.booked,props.sessionBookedState,session.attended);
-  let sessionDate = new Date (session.date.substr(0,10)*1000).toLocaleDateString().slice(0,10);;
+  let sessionDate = new Date (session.date.substr(0,10)*1000).toLocaleDateString().slice(0,10);
+  let sessionEndDate = 0;
+  if (session.endDate) {
+    sessionEndDate = new Date (session.endDate.substr(0,10)*1000).toLocaleDateString().slice(0,10);
+  }
+
   if (props.calendar) {
     sessionDate = props.session.date;
+    sessionEndDate = props.session.endDate;
   }
   let isInstructor = false;
   if ( session.lessonInstructors.map(x => x._id).includes(props.authId) === true) {
     isInstructor = true
   }
-  console.log('boop',session.lessonInstructors);
+  // console.log('boop',session.lessonInstructors);
+  let hasBooked = false;
+  hasBooked = session.booked.map(x => x._id).includes(props.authId);
+  console.log('props.authId',props.authId,'hasBooked',session.booked.map(x => x._id).includes(props.authId));
+
 return (
   <div className="attachmentViewerBg">
     <div className="attachmentViewer">
@@ -37,12 +48,14 @@ return (
       </Button>
     )}
     {props.calendar &&
-        props.onBookSession && (
+        props.onBookSession &&
+        hasBooked === false && (
         <Button variant="primary" onClick={props.onBookSession.bind(this, props.session)}>
           Book
         </Button>
     )}
-    {props.onAddCartLesson && (
+    {props.onAddCartLesson &&
+      hasBooked === false && (
       <Button variant="secondary" onClick={props.onAddCartLesson.bind(this, props.session)}>
           Cart
       </Button>
@@ -56,10 +69,16 @@ return (
         isInstructor: {isInstructor.toString()}
       </Card.Text>
       <Card.Text>
+        hasBooked: {hasBooked.toString()}
+      </Card.Text>
+      <Card.Text>
         lesson: {session.lessonTitle}
       </Card.Text>
       <Card.Text>
         date: {sessionDate}
+      </Card.Text>
+      <Card.Text>
+        endDate: {sessionEndDate}
       </Card.Text>
       <Card.Text>
         time: {session.time}
@@ -89,6 +108,9 @@ return (
 
     </Card>
 
+    <Button variant="secondary" onClick={props.startAddSessionReminder}>
+      Add Reminder
+    </Button>
 
     {props.calendar &&
       props.lessonType === 'booked' && (
@@ -189,12 +211,13 @@ return (
 
     {props.sessionBookedState === true && (
       <SessionBookedList
-      session={props.session}
-      isInstructor={isInstructor}
-      booked={session.booked}
-      attended={session.attended}
-      addSessionAttendance={props.addSessionAttendance}
-    />)}
+        session={props.session}
+        isInstructor={isInstructor}
+        booked={session.booked}
+        attended={session.attended}
+        addSessionAttendance={props.addSessionAttendance}
+        cancelSessionBooking={props.cancelSessionBooking}
+      />)}
     {props.sessionAttendedState === true && (
       <SessionAttendedList
       attended={session.attended}
@@ -236,6 +259,14 @@ return (
         onConfirm={props.editSessionField}
         onCancel={props.cancelEditSessionField}
       />
+    )}
+
+    {props.addingReminder === true && (
+      <p>add reminder form</p>
+    )}
+    {isInstructor == true &&
+      props.lesson.type === 'Recurring' && (
+      <p>repeat session?</p>
     )}
 
     {

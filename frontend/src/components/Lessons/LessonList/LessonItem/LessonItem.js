@@ -12,6 +12,7 @@ import Card from 'react-bootstrap/Card';
 import './UserItem.css';
 
 export default function lesssonItem (props) {
+  
   return (
   <li key={props.authId} className="users__list-item_detail users__list-item_detail4">
 
@@ -24,6 +25,15 @@ export default function lesssonItem (props) {
       </Card.Text>
       <Card.Text>
         subtitle: {props.subtitle}
+      </Card.Text>
+      <Card.Text>
+        public: {props.public.toString()}
+      </Card.Text>
+      <Card.Text>
+        type: {props.type}
+      </Card.Text>
+      <Card.Text>
+        subType: {props.subType}
       </Card.Text>
       <Card.Text>
         category: {props.category}

@@ -34,11 +34,28 @@ return (
   <Form.Label>Duration</Form.Label>
   <Form.Control type="text" placeholder="Enter Duration"/>
 </Form.Group>
+
+<Form.Group as={Col} controlId="formGridPublic">
+  <Form.Label>Public</Form.Label>
+  <Form.Control as="select">
+  <option>true</option>
+  <option>false</option>
+  </Form.Control>
+</Form.Group>
+
 <Form.Group as={Col} controlId="formGridType">
   <Form.Label>Type</Form.Label>
   <Form.Control as="select">
-  <option>type a</option>
-  <option>type b</option>
+  <option>OneTime</option>
+  <option>Recurring</option>
+  </Form.Control>
+</Form.Group>
+
+<Form.Group as={Col} controlId="formGridSubType">
+  <Form.Label>SubType</Form.Label>
+  <Form.Control as="select">
+  <option>OneDay</option>
+  <option>MultiDay</option>
   </Form.Control>
 </Form.Group>
 

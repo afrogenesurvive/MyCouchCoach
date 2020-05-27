@@ -13,6 +13,7 @@ const lessonList = props => {
         authId={props.authId}
         _id={lesson._id}
         title={lesson.title}
+        public={lesson.public}
         type={lesson.type}
         subType={lesson.subType}
         subtitle={lesson.subtitle}

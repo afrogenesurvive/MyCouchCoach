@@ -1612,7 +1612,7 @@ module.exports = {
         })
         // {new: true, useFindAndModify: false})
         // const preUser = await User.findById({_id: args.userId})
-        console.log("beep",nerfLikeAddresses.addresses);
+        // console.log("beep",nerfLikeAddresses.addresses);
 
       const address = {
         type: args.userInput.addressType,

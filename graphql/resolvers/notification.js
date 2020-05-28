@@ -544,9 +544,12 @@ module.exports = {
       let time = new Date().toLocaleDateString().substr(11,5);
       const creator = await User.findById({_id: args.activityId});
       let lesson = await Lesson.findById({_id: args.lessonId});
-
-      let recipients = await User.find({_id: {$in: args.userIds}});
-      recipients.push(creator);
+      const preRecipents = args.userIds.split(',');
+      // console.log(args.userIds,preRecipents);
+      let recipients = await User.find({_id: {$in: preRecipents}});
+      // recipients.push(creator);
+      // console.log('lessonId',lesson._id);
+      // console.log('foo');
       const sessionBookedUsers = await Lesson.aggregate([
               {$unwind: '$sessions'},
               {$lookup:
@@ -585,15 +588,19 @@ module.exports = {
               {$match:
                 {
                   // '_id.lessonId': {$ne: args.lessonId},
-                  '_id.lessonId': {$eq: lesson._id},
+                  '_id.lessonId': {$eq: args.lessonId},
                   '_id.title': {$eq: args.notificationInput.sessionTitle }
                 }},
               // {$match: {'_id.lessonId': args.lessonId, '_id.title': {$eq: args.lessonInput.sessionTitle }}}
             ]);
-            const sessionBookedUsers2 = sessionBookedUsers[0]._id.booked;
+            // console.log('sessionBookedUsers',sessionBookedUsers);
+            let sessionBookedUsers2 = [];
+            let recipients2 = [];
             // console.log('recipients',recipients,'sessionBookedUsers',sessionBookedUsers2);
 
-            if (sessionBookedUsers2 !== []) {
+            if (sessionBookedUsers.length !== 0 &&
+            sessionBookedUsers2.length !== 0 ) {
+              sessionBookedUsers2 = sessionBookedUsers[0]._id.booked;
              recipients2 = recipients.concat(sessionBookedUsers2);
             }
             // console.log('sessionBookedUsers',sessionBookedUsers[0]._id.booked.map(x => x._id),'recipients',recipients2);
@@ -610,6 +617,7 @@ module.exports = {
         // console.log('start',start,'moment(start)',moment(start));
       }
       if (args.notificationInput.type === 'FollowUp') {
+        // console.log('FollowUp');
         start = args.notificationInput.sessionEndDate+' 12:00';
         sendDate = moment(start).add(triggerValue, triggerUnit);
         // console.log('start',start,'moment(start)',moment(start));
@@ -645,7 +653,7 @@ module.exports = {
         console.log('...no duplications check your data and try again...');
         throw new Error('...no duplications check your data and try again...')
       }
-
+      // console.log('beep');
       const notification = new Notification({
         createDate: date,
         sendDate: sendDate,
@@ -662,8 +670,9 @@ module.exports = {
       })
 
       const result = await notification.save();
+      // console.log('boop');
       const updateLesson = await Lesson.findOneAndUpdate(
-        {_id: lesson._id},
+        {_id: args.lessonId},
         {$addToSet: {reminders: result}},
         {new: true, useFindAndModify: false}
       )
@@ -684,5 +693,7 @@ module.exports = {
     } catch (err) {
       throw err;
     }
-  }
+  },
+
+
 };

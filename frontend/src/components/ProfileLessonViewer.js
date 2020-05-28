@@ -21,6 +21,7 @@ import LessonReminderList from './Lessons/LessonList/LessonReminderList';
 
 
 import CreateLessonSessionForm from './Forms/lesson/CreateLessonSessionForm';
+import RepeatLessonSessionForm from './Forms/lesson/RepeatLessonSessionForm';
 import UpdateLessonBasicForm from './Forms/lesson/UpdateLessonBasicForm';
 import UpdateLessonFieldForm from './Forms/lesson/UpdateLessonFieldForm';
 import UpdateSessionFieldForm from './Forms/lesson/UpdateSessionFieldForm';
@@ -54,7 +55,7 @@ const ProfileLessonViewer = (props) => {
   //   canDelete = true
   // }
   // console.log(lesson.sessions);
-  console.log('props.creatingSession',props.creatingSession);
+  // console.log('props.creatingSession',props.creatingSession);
 
   let lessonCalendarSessions = [];
   if (lesson.sessions) {
@@ -243,6 +244,9 @@ const ProfileLessonViewer = (props) => {
           cancelSessionBooking={props.cancelSessionBooking}
           startAddSessionReminder={props.startAddSessionReminder}
           addingReminder={props.addingReminder}
+          addReminder={props.addReminder}
+          cancelAddReminder={props.cancelAddReminder}
+          startRepeatSession={props.startRepeatSession}
           />
         )
       }
@@ -299,6 +303,17 @@ const ProfileLessonViewer = (props) => {
             <CreateLessonSessionForm
               authId={props.authId}
               onCancel={props.cancelCreateSession}
+              onConfirm={props.createLessonSession}
+              lessonSubType={lesson.subType}
+            />
+          )}
+
+          {props.repeatingSession === true && (
+            <RepeatLessonSessionForm
+            repeat
+            session={props.repeatSession}
+              authId={props.authId}
+              onCancel={props.cancelRepeatSession}
               onConfirm={props.createLessonSession}
               lessonSubType={lesson.subType}
             />

@@ -805,7 +805,7 @@ module.exports = buildSchema(`
     deleteLessonPromo(activityId: ID!, lessonId: ID!, promoId: ID!): Lesson
     deleteLessonReminder(activityId: ID!, lessonId: ID!, reminderId: ID!): Lesson
 
-    createNotification(activityId: ID!, lessonId: ID!, userIds: [ID!] ,notificationInput: NotificationInput!): Notification
+    createNotification(activityId: ID!, lessonId: ID!, userIds: String! ,notificationInput: NotificationInput!): Notification
     updateNotificationBasic(activityId: ID!, notificationId: ID!, notificationInput: NotificationInput!): Notification
     updateNotificationByField(activityId: ID!, notificationId: ID!, field: String!, query: String!): Notification
     updateNotificationTrigger(activityId: ID!, notificationId: ID!, notificationInput: NotificationInput!): Notification

@@ -148,7 +148,7 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
 
   return (
 
-  <Tabs defaultActiveKey="Basic" id="uncontrolled-tab-example">
+  <Tabs defaultActiveKey={props.profileTabSelected} id="uncontrolled-tab-example" onSelect={props.tabSelectProfile}>
     <Tab eventKey="" title="Details:" disabled>
     </Tab>
     <Tab eventKey="Basic" title="Basic">

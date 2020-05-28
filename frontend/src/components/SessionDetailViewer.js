@@ -4,6 +4,7 @@ import Card from 'react-bootstrap/Card';
 import SessionBookedList from './Lessons/LessonList/SessionBookedList';
 import SessionAttendedList from './Lessons/LessonList/SessionAttendedList';
 import UpdateSessionFieldForm from './Forms/lesson/UpdateSessionFieldForm';
+import AddReminderForm from './Forms/notification/AddReminderForm';
 
 import "./AttachmentViewer.css"
 
@@ -28,7 +29,7 @@ const SessionDetailViewer = (props) =>{
   // console.log('boop',session.lessonInstructors);
   let hasBooked = false;
   hasBooked = session.booked.map(x => x._id).includes(props.authId);
-  console.log('props.authId',props.authId,'hasBooked',session.booked.map(x => x._id).includes(props.authId));
+  // console.log('props.authId',props.authId,'hasBooked',session.booked.map(x => x._id).includes(props.authId));
 
 return (
   <div className="attachmentViewerBg">
@@ -262,14 +263,24 @@ return (
     )}
 
     {props.addingReminder === true && (
-      <p>add reminder form</p>
-    )}
-    {isInstructor == true &&
-      props.lesson.type === 'Recurring' && (
-      <p>repeat session?</p>
+      <AddReminderForm
+        authId={props.authId}
+        session={props.session}
+        lesson={props.lesson}
+        onConfirm={props.addReminder}
+        onCancel={props.cancelAddReminder}
+      />
     )}
 
+
     {
+      // {isInstructor == true &&
+      //   props.lesson.type === 'Recurring' && (
+      //     <Button variant="link" onClick={props.startRepeatSession.bind(this, props.session)}>
+      //       Repeat
+      //     </Button>
+      // )}
+
       // <p>{props.authId}</p>
 
     // {props.editSessionField && (

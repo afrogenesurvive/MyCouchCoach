@@ -607,6 +607,7 @@ module.exports = {
       });
 
       const result = await order.save();
+      console.log('result',result);
       user = await User.findOneAndUpdate(
         {_id: buyer._id},
         {$addToSet: {orders: order}},
@@ -615,15 +616,62 @@ module.exports = {
         .populate('promos')
         .populate('friends')
         .populate('likedLessons')
+        .populate('toTeachLessons')
         .populate('bookedLessons.ref')
         .populate('attendedLessons.ref')
         .populate('taughtLessons.ref')
         .populate('wishlist.ref')
         .populate('cart.lesson')
-        .populate('comments.')
-        .populate('messages')
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'author',
+            model: 'User'
+          }
+        })
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'sender',
+            model: 'User'
+          }})
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'receiver',
+            model: 'User'
+          }})
         .populate('orders')
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
         .populate('friendRequests.sender')
+        .populate('cancellations.lesson')
         .populate('friendRequests.receiver');
 
       return {

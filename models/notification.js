@@ -23,7 +23,7 @@ const notificationSchema = new Schema({
     recipients: [{type: Schema.Types.ObjectId,ref: 'User'}],
     body: {type: String},
     delivery: {
-      type: {type:String, enum: ['Email', 'SMS', 'CouchCoachMSG']},
+      type: {type:String, enum: ['Email', 'SMS', 'CouchCoachMSG', 'All']},
       params: {type:String},
       sent: {type: Boolean}
     }

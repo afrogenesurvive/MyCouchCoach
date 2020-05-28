@@ -2640,7 +2640,7 @@ module.exports = {
         const updateNotifications = await Notification.updateMany(
           {
             lesson: lesson,
-            'session.title': session[0]._id.title
+            'session.2title': session[0]._id.title
           },
           {$addToSet: {recipients: user}},
           {new: true, useFindAndModify: false}
@@ -2661,6 +2661,67 @@ module.exports = {
         {cart: []},
         {new: true, useFindAndModify: false}
       )
+      .populate('perks')
+      .populate('promos')
+      .populate('friends')
+      .populate('likedLessons')
+      .populate('toTeachLessons')
+      .populate('bookedLessons.ref')
+      .populate('attendedLessons.ref')
+      .populate('taughtLessons.ref')
+      .populate('wishlist.ref')
+      .populate('cart.lesson')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
+      .populate('orders')
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
+      .populate('friendRequests.receiver');
 
       if (bookedLessons.length === 0) {
         console.log('...all of your requested sessions are either full or youve already booked them...');

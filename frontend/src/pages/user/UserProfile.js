@@ -92,6 +92,8 @@ class UserProfile extends Component {
     calendarSessionDetailViewer: false,
     calendarSession: null,
     addingReminder: false,
+    repeatingSession: false,
+    profileTabSelected: 'Basic',
   };
 
   isActive = true;
@@ -4049,6 +4051,113 @@ class UserProfile extends Component {
     console.log('...startAddSessionReminder...');
     this.setState({addingReminder: true})
   }
+  cancelAddReminder = () => {
+    this.setState({addingReminder: false})
+  }
+  addReminder = (event) => {
+    event.preventDefault();
+    console.log('...adding lesson session ...');
+    this.setState({userAlert: '...adding lesson session ...', lessonAddField: null });
+    const activityId = this.context.activityId;
+    const lessonId = this.state.profileLessonViewerData._id;
+
+    const session = this.state.calendarSession;
+    let userIds = session.booked;
+    const instructorIds = this.state.profileLessonViewerData.instructors.map(x => x._id);
+    let userIds2 = userIds.concat(instructorIds);
+    let userIds3 = userIds2.toString();
+    let userIds4 = JSON.stringify(userIds2);
+    // console.log('instructorIds',instructorIds,'userIds: 1 ',userIds,'2',userIds2,'3',userIds3,'4',userIds4);
+    // console.log('profileLessonViewerData.instructors[0]',lesson.instructors[0]);
+    const type = event.target.formGridTypeSelect.value;
+    const title = event.target.formGridTitle.value;
+    const triggerUnit = event.target.formGridTriggerUnitSelect.value;
+    const triggerValue = event.target.formGridTriggerValue.value;
+    const sessionTitle = session.title;
+    const sessionDate = session.date;
+    const sessionEndDate = session.endDate;
+    const sessionTime = session.time;
+    const body = event.target.formGridBody.value;
+    const deliveryType = event.target.formGridDeliveryTypeSelect.value;
+    const deliveryParams = event.target.formGridDeliveryParams.value;
+    const deliverySent = false;
+
+    const requestBody = {
+      query: `
+          mutation {createNotification(
+            activityId:"${activityId}",
+            lessonId:"${lessonId}",
+            userIds:"${userIds3}",
+            notificationInput:{
+              type:"${type}",
+              title:"${title}",
+              triggerUnit:"${triggerUnit}",
+              triggerValue:${triggerValue},
+              sessionTitle:"${sessionTitle}",
+              sessionDate:"${sessionDate}",
+              sessionEndDate:"${sessionEndDate}",
+              sessionTime:"${sessionTime}",
+              body:"${body}",
+              deliveryType:"${deliveryType}",
+              deliveryParams:"${deliveryParams}",
+              deliverySent:${deliverySent}
+            })
+            {_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}
+        `};
+        // console.log('JSON.stringify(requestBody)',JSON.stringify(requestBody));
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        if (resData.errors) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({
+            userAlert: responseAlert,
+            activityA: requestBody,
+            addingReminder: false
+            // profileLessonViewerData: resData.data.createNotification
+          });
+        }
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+        if (this.isActive) {
+          this.setState({ isLoading: false });
+        }
+      });
+  }
+
+  startRepeatSession = () => {
+    this.setState({
+      repeatingSession: true,
+      calendarSessionDetailViewer: false
+    })
+  }
+  cancelRepeatSession = () => {
+    this.setState({
+      repeatingSession: false
+    })
+  }
+
+  tabSelectProfile = (key) => {
+    console.log('event',key);
+    this.setState({profileTabSelected: key})
+  }
+
 
   componentWillUnmount() {
     this.isActive = false;
@@ -4174,6 +4283,12 @@ class UserProfile extends Component {
 
             startAddSessionReminder={this.startAddSessionReminder}
             addingReminder={this.state.addingReminder}
+            addReminder={this.addReminder}
+            cancelAddReminder={this.cancelAddReminder}
+
+            startRepeatSession={this.startRepeatSession}
+            repeatingSession={this.state.repeatingSession}
+            cancelRepeatSession={this.cancelRepeatSession}
           />
         )}
 
@@ -4313,6 +4428,9 @@ class UserProfile extends Component {
                     setFilter={this.setFilter}
 
                     viewFriendDetails={this.viewFriendDetails}
+
+                    tabSelectProfile={this.tabSelectProfile}
+                    profileTabSelected={this.state.profileTabSelected}
                   />
                 )}
 

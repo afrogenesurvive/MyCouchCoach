@@ -19,9 +19,11 @@ const lessonInstructorItem = props => (
       <Card.Text>
       socialMedia
       </Card.Text>
-      <Card.Text>
-      {props.socialMedia[0].platform} @ {props.socialMedia[0].handle}
-      </Card.Text>
+      {props.socialMedia.length > 0 && (
+        <Card.Text>
+          {props.socialMedia[0].platform} @ {props.socialMedia[0].handle}
+        </Card.Text>
+      )}
       <Card.Text>
       Email: {props.contact.email}
       </Card.Text>

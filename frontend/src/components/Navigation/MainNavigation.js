@@ -12,7 +12,7 @@ const mainNavigation = props => (
       return (
         <header className="main-navigation">
           <div className="main-navigation__logo">
-            <h1>My Couch Coach 0.0.1</h1>
+            <h1>My Couch Coach 0.1.3</h1>
 
           </div>
           <nav className="main-navigation__items">

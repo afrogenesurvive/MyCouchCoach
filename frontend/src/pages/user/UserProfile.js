@@ -18,6 +18,7 @@ import ThisUserProfile from '../../components/Users/thisUserProfile';
 import ProfileLessonViewer from '../../components/ProfileLessonViewer';
 import UserDetailViewer from '../../components/UserDetailViewer';
 
+
 import './Users.css';
 import io from 'socket.io-client';
 
@@ -42,7 +43,7 @@ class UserProfile extends Component {
     showThisAttachmentType: null,
     sidebarShow: true,
     mCol1Size: 3,
-    mCol2Size: 9,
+    mCol2Size: 12,
     messagesLoaded: false,
     userMessages: null,
     finalConfirmation: false,
@@ -94,6 +95,7 @@ class UserProfile extends Component {
     addingReminder: false,
     repeatingSession: false,
     profileTabSelected: 'Basic',
+    pocketVars: null,
   };
 
   isActive = true;
@@ -157,7 +159,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           // console.log('beep',resData.data.getPocketVars.pocketVariables,JSON.parse(resData.data.getPocketVars.pocketVariables));
-          this.setState({userAlert: resData.data.getPocketVars.pocketVariables})
+          this.setState({userAlert: '...success! retrieved pocketVars...', pocketVars: resData.data.getPocketVars.pocketVariables})
         }
 
       })
@@ -742,6 +744,7 @@ class UserProfile extends Component {
       });
   };
   userAddProfileImage = (event) => {
+    event.preventDefault();
     this.setState({ adding: false, userAddField: null, userAlert: "adding profileImage for user..." });
     const token = this.context.token;
     const activityId = this.context.activityId;
@@ -750,6 +753,9 @@ class UserProfile extends Component {
     const profileImageType = event.target.formGridType.value;
     const profileImagePath = event.target.formGridPath.value;
     const profileImagePublic = event.target.formGridPublic.value;
+
+    this.getPocketVars();
+    console.log('this.state.pocketVars',this.state.pocketVars);
 
     // if (
     //     event.target.fileInput.value !== ""
@@ -788,34 +794,34 @@ class UserProfile extends Component {
         {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
-    fetch('http://localhost:8088/graphql', {
-      method: 'POST',
-      body: JSON.stringify(requestBody),
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token
-      }
-    })
-      .then(res => {
-        if (res.status !== 200 && res.status !== 201) {
-          throw new Error('Failed!');
-        }
-        return res.json();
-      })
-      .then(resData => {
-        if (resData.errors) {
-          this.setState({userAlert: resData.errors[0].message})
-        } else {
-          const responseAlert = JSON.stringify(resData.data.addUserProfileImage).slice(2,25);
-          this.setState({userAlert: responseAlert, user: resData.data.addUserProfileImage, activityA: JSON.stringify(requestBody)})
-          this.context.user = this.state.user;
-        }
-
-        // this.logUserActivity();
-      })
-      .catch(err => {
-        this.setState({userAlert: err});
-      });
+    // fetch('http://localhost:8088/graphql', {
+    //   method: 'POST',
+    //   body: JSON.stringify(requestBody),
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     Authorization: 'Bearer ' + token
+    //   }
+    // })
+    //   .then(res => {
+    //     if (res.status !== 200 && res.status !== 201) {
+    //       throw new Error('Failed!');
+    //     }
+    //     return res.json();
+    //   })
+    //   .then(resData => {
+    //     if (resData.errors) {
+    //       this.setState({userAlert: resData.errors[0].message})
+    //     } else {
+    //       const responseAlert = JSON.stringify(resData.data.addUserProfileImage).slice(2,25);
+    //       this.setState({userAlert: responseAlert, user: resData.data.addUserProfileImage, activityA: JSON.stringify(requestBody)})
+    //       this.context.user = this.state.user;
+    //     }
+    //
+    //     // this.logUserActivity();
+    //   })
+    //   .catch(err => {
+    //     this.setState({userAlert: err});
+    //   });
   };
   userToggleProfileImagePublic = (args) => {
     this.setState({ adding: false, userAddField: null, userAlert: "toggling profileImage privacy for user..." });
@@ -2557,7 +2563,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
-          this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.addLessonSession, isLoading: false});
+          this.setState({userAlert: '...success! show the sessions for this lesson to see...', profileLessonViewerData: resData.data.addLessonSession, isLoading: false, creatingSession: false});
         }
 
       })
@@ -4154,10 +4160,101 @@ class UserProfile extends Component {
   }
 
   tabSelectProfile = (key) => {
-    console.log('event',key);
+    // console.log('event',key);
     this.setState({profileTabSelected: key})
   }
 
+  // shareCalendarEvent = (args) => {
+  //   console.log('...sharing calendar event...',args);
+  //   this.setState({userAlert: '...sharing calendar event...'})
+  //
+  //   const fileName = args.lessonTitle+': '+args.title;
+  //   const description = this.state.profileLessonViewerData.description;
+  //   const duration = this.state.profileLessonViewerData.duration.split(" ");
+  //   console.log('description',description,'duration',duration);
+  //     // <a href='/somefile.txt' download>Click to download</a>
+  //     // <Link to="/files/myfile.pdf" target="_blank" download>Download</Link> ** in 'public dir**'
+  // }
+
+  startProfileCreateLesson = () => {
+    this.setState({creatingLesson: true})
+  }
+  cancelProfileCreateLesson = () => {
+    this.setState({creatingLesson: false})
+  }
+
+  profileCreateLesson = (event) => {
+  event.preventDefault();
+    this.setState({creatingLesson: false})
+    let activityId = this.state.user._id;
+    const creatorId = activityId;
+    const token = this.context.token;
+
+    const title = event.target.formGridTitle.value;
+    const subtitle = event.target.formGridSubtitle.value;
+    const lessonPublic = event.target.formGridPublic.value;
+    const type = event.target.formGridType.value;
+    const subType = event.target.formGridSubType.value;
+    const category = event.target.formGridCategory.value;
+    const sku = event.target.formGridSku.value;
+    const price = event.target.formGridPrice.value;
+    const points = event.target.formGridPoints.value;
+    const description = event.target.formGridDescription.value;
+    const notes = event.target.formGridNotes.value;
+    const duration = event.target.formGridDuration.value;
+
+    const requestBody = {
+      query: `
+        mutation {createLesson(
+          activityId:"${activityId}",
+          creatorId:"${creatorId}",
+          lessonInput:{
+            title:"${title}",
+            subtitle:"${subtitle}",
+            type:"${type}",
+            subType:"${subType}",
+            public:${lessonPublic},
+            category:"${category}",
+            price:${price},
+            points:${points},
+            description:"${description}",
+            notes:"${notes}",
+            duration:"${duration}",
+            sku:"${sku}"
+          })
+        {_id,title,subtitle,type,subType,public,category,price,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{email,phone,phone2}},gallery{name,type,path,public},requirements,materials,files{name,type,size,path,public},reviews{_id},tags,sessions{title,date,endDate,time,limit,amount,booked{_id,username},bookedAmount,attended{_id,username},attendedAmount,inProgress,full,url},promos{_id},reviews{date,type,title,body,author{_id,username},body,rating},cancellations{date,reason,sessionDate,sessionTitle,user{_id,username}},reminders{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+      `}
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        if (resData.errors) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.createLesson).slice(0,8);
+          this.setState({ userAlert: '...success! Lesson created... To View, go to MyProfile > Lessons: Teaching...', activityA: requestBody})
+          this.getThisUser();
+          this.tabSelectProfile('toTeachLessons')
+        }
+
+        // this.logUserActivity();
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
+  }
 
   componentWillUnmount() {
     this.isActive = false;
@@ -4178,22 +4275,26 @@ class UserProfile extends Component {
           />
         )}
 
-        <SidebarControl
-          onShowSidebar={this.showSidebar}
-          onHideSidebar={this.hideSidebar}
-          toggleOverlay={this.toggleOverlay}
-        />
+
 
         <Row>
-        {this.state.sidebarShow === true &&
-          this.state.user !== null && (
-          <Col md={2} className="MasterCol1">
-            <SidebarPage
-              you={this.state.user}
-              authId={this.context.activityId}
-            />
-          </Col>
-        )}
+        {
+          // <SidebarControl
+          //   onShowSidebar={this.showSidebar}
+          //   onHideSidebar={this.hideSidebar}
+          //   toggleOverlay={this.toggleOverlay}
+          // />
+          // {this.state.sidebarShow === true &&
+          //   this.state.user !== null && (
+          //   <Col md={2} className="MasterCol1">
+          //     <SidebarPage
+          //       you={this.state.user}
+          //       authId={this.context.activityId}
+          //     />
+          //   </Col>
+          // )}
+        }
+
 
         {this.state.profileLessonViewer === true &&
           this.state.profileLessonViewerData !== null && (
@@ -4289,6 +4390,8 @@ class UserProfile extends Component {
             startRepeatSession={this.startRepeatSession}
             repeatingSession={this.state.repeatingSession}
             cancelRepeatSession={this.cancelRepeatSession}
+
+            shareCalendarEvent={this.shareCalendarEvent}
           />
         )}
 
@@ -4305,7 +4408,7 @@ class UserProfile extends Component {
             />
         )}
 
-        <Col md={this.state.mCol2Size} className="MasterCol2">
+        <Col className="MasterCol2">
           <div className="containerProfile">
           {this.state.isLoading ? (
             <Spinner />
@@ -4431,6 +4534,11 @@ class UserProfile extends Component {
 
                     tabSelectProfile={this.tabSelectProfile}
                     profileTabSelected={this.state.profileTabSelected}
+
+                    startProfileCreateLesson={this.startProfileCreateLesson}
+                    cancelProfileCreateLesson={this.cancelProfileCreateLesson}
+                    creatingLesson={this.state.creatingLesson}
+                    profileCreateLesson={this.profileCreateLesson}
                   />
                 )}
 

@@ -68,7 +68,7 @@ class LessonsPage extends Component {
     showThisAttachmentType: null,
     sidebarShow: true,
     mCol1Size: 3,
-    mCol2Size: 9,
+    mCol2Size: 10,
     sessionBookedState: false,
     sessionAttendedState: false,
     activityA: null,
@@ -342,7 +342,7 @@ class LessonsPage extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.createLesson).slice(0,8);
-          this.setState({ lesson: resData.data.createLesson, userAlert: responseAlert, activityA: requestBody})
+          this.setState({ lesson: resData.data.createLesson, userAlert: '...success! Lesson created... To Edit, go to MyProfile > Lessons: Teaching...', activityA: requestBody})
         }
 
         // this.logUserActivity();
@@ -625,7 +625,7 @@ class LessonsPage extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
-          this.setState({userAlert: responseAlert, isLoading: false, activityA: requestBody});
+          this.setState({userAlert: '...success! Lesson added to cart...', isLoading: false, activityA: requestBody});
           this.context.selectedUser = resData.data.addUserCartLesson;
         }
 
@@ -1698,6 +1698,13 @@ class LessonsPage extends Component {
 
     })
   }
+  toggleSessions = (args) => {
+    if (this.state.sessionsLoaded === true ) {
+      this.setState({sessionsLoaded: false})
+    } else {
+      this.loadSessions(args);
+    }
+  }
 
   toggleOverlay = () => {
     if (this.state.overlay === true ) {
@@ -1803,6 +1810,8 @@ class LessonsPage extends Component {
           sessionDetailViewer={this.state.sessionDetailViewer}
           calendarSession={this.state.calendarSession}
           hideCalendarSessionDetail={this.hideCalendarSessionDetail}
+
+          toggleSessions={this.toggleSessions}
         />
       )}
 
@@ -1813,23 +1822,26 @@ class LessonsPage extends Component {
         />
       )}
 
-      <SidebarControl
-        onShowSidebar={this.showSidebar}
-        onHideSidebar={this.hideSidebar}
-        toggleOverlay={this.toggleOverlay}
-      />
+
 
       <Accordion>
 
         <Row>
-        <Col md={2} className="MasterCol1">
-        <SidebarPage
-          you={this.context.user}
-          authId={this.context.activityId}
-        />
-        </Col>
+        {
+          // <SidebarControl
+          //   onShowSidebar={this.showSidebar}
+          //   onHideSidebar={this.hideSidebar}
+          //   toggleOverlay={this.toggleOverlay}
+          // />
+        // <Col md={2} className="MasterCol1">
+        // <SidebarPage
+        //   you={this.context.user}
+        //   authId={this.context.activityId}
+        // />
+        // </Col>
+        }
 
-        <Col md={this.state.mCol2Size} className="MasterCol2">
+        <Col className="MasterCol2">
             <Container className="containerCombinedDetail1">
               <Tab.Container id="left-tabs-example" defaultActiveKey="MasterList">
                 <Row>
@@ -1841,9 +1853,11 @@ class LessonsPage extends Component {
                       <Nav.Item>
                         <Nav.Link eventKey="SearchInput">Search</Nav.Link>
                       </Nav.Item>
-                      <Nav.Item>
-                        <Nav.Link eventKey="Create">+ Lesson</Nav.Link>
-                      </Nav.Item>
+                      {
+                      //   <Nav.Item>
+                      //   <Nav.Link eventKey="Create">+ Lesson</Nav.Link>
+                      // </Nav.Item>
+                    }
                     </Nav>
                   </Col>
 
@@ -1954,22 +1968,24 @@ class LessonsPage extends Component {
                         </Container>
                       </Tab.Pane>
 
-                      <Tab.Pane eventKey="Create">
-                        <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={this.startCreateLesson}>+ Lesson</Button>
-
-                        <Row className="userListRow">
-                          {this.state.creating === true && (
-                            <CreateLessonForm
-                              authId={this.context.activityId}
-                              creator={this.context.user}
-                              canCancel
-                                canConfirm
-                                onCancel={this.modalCancelHandler}
-                                onConfirm={this.createLessonHandler}
-                            />
-                          )}
-                        </Row>
-                      </Tab.Pane>
+                      {
+                      //   <Tab.Pane eventKey="Create">
+                      //   <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={this.startCreateLesson}>+ Lesson</Button>
+                      //
+                      //   <Row className="userListRow">
+                      //     {this.state.creating === true && (
+                      //       <CreateLessonForm
+                      //         authId={this.context.activityId}
+                      //         creator={this.context.user}
+                      //         canCancel
+                      //           canConfirm
+                      //           onCancel={this.modalCancelHandler}
+                      //           onConfirm={this.createLessonHandler}
+                      //       />
+                      //     )}
+                      //   </Row>
+                      // </Tab.Pane>
+                    }
                     </Tab.Content>
                   </Col>
                 </Row>

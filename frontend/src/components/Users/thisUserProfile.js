@@ -54,6 +54,7 @@ import AddUserFriendForm from '../Forms/user/AddUserFriendForm';
 import CreateMessageForm from '../Forms/message/CreateMessageForm';
 import CreateOrderForm from '../Forms/order/CreateOrderForm';
 import CreateReviewForm from '../Forms/review/CreateReviewForm';
+import CreateLessonForm from '../Forms/lesson/CreateLessonForm';
 
 import MeetingSessionList from '../Lessons/LessonList/MeetingSessionList';
 import SessionDetailViewer from '../SessionDetailViewer';
@@ -631,7 +632,7 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
 
     {user.role === "Instructor" ||
       user.role === 'Admin' && (
-      <Tab eventKey="toTeachLessons" title="toTeachLessons">
+      <Tab eventKey="toTeachLessons" title="Lessons: Teaching">
 
       {user.toTeachLessons !== null &&
         user.toTeachLessons!== [] && (
@@ -647,7 +648,7 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
 
     {user.role === "Instructor" ||
       user.role === 'Admin' && (
-      <Tab eventKey="taughtLessons" title="taughtLessons">
+      <Tab eventKey="taughtLessons" title="Lessons: Taught">
       {
         user.taughtLessons !== null &&
         user.taughtLessons!== [] && (
@@ -660,6 +661,44 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
           />
         )}
 
+      </Tab>
+    )}
+
+    {user.role === 'Instructor' && (
+      <Tab eventKey="newLesson" title="newLesson">
+      <Button variant="primary" onClick={props.startProfileCreateLesson}>
+        Create New Lesson
+      </Button>
+
+      {props.creatingLesson === true && (
+        <CreateLessonForm
+          authId={props.authId}
+          creator={user}
+          canCancel
+            canConfirm
+            onCancel={this.cancelProfileCreateLesson}
+            onConfirm={props.profileCreateLesson}
+        />
+      )}
+      </Tab>
+    )}
+
+    {user.role === 'Admin' && (
+      <Tab eventKey="newLesson" title="newLesson">
+      <Button variant="primary" onClick={props.startProfileCreateLesson}>
+        Create New Lesson
+      </Button>
+
+      {props.creatingLesson === true && (
+        <CreateLessonForm
+          authId={props.authId}
+          creator={user}
+          canCancel
+            canConfirm
+            onCancel={props.cancelProfileCreateLesson}
+            onConfirm={props.profileCreateLesson}
+        />
+      )}
       </Tab>
     )}
 
@@ -786,7 +825,7 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
 
     </Tab>
 
-    <Tab eventKey="meeting" title="meeting">
+    <Tab eventKey="meeting" title="Today's Sessions">
       <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.loadMeetings}>Load Today's</Button>
       <Button variant="outline-danger" size="lg" className="confirmEditButton" onClick={props.hideMeetings}>Hide</Button>
 

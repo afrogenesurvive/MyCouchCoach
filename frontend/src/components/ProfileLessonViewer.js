@@ -247,6 +247,7 @@ const ProfileLessonViewer = (props) => {
           addReminder={props.addReminder}
           cancelAddReminder={props.cancelAddReminder}
           startRepeatSession={props.startRepeatSession}
+          shareCalendarEvent={props.shareCalendarEvent}
           />
         )
       }

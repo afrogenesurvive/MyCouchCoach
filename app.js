@@ -132,6 +132,7 @@ app.get('/*', function(req, res) {
 });
 
 const url = 'https://mycouchcoachstorage.s3.amazonaws.com/assets/creds/sendgrid/sendGridApi.txt';
+const url2 = 'https://mycouchcoachstorage.s3.amazonaws.com/assets/creds/s3/s3.txt';
 
 request.get(url, ( error, response, body) => {
   // body = xmlParser.xml2json(body, {compact: true, spaces: 4})
@@ -141,6 +142,14 @@ request.get(url, ( error, response, body) => {
   if (body) {
     if (body.slice(0,3) === '{"a') {
       pocketVariables.sendGrid = JSON.parse(body);
+    }
+  }
+
+});
+request.get(url, ( error, response, body) => {
+  if (body) {
+    if (body.slice(0,3) === '{"a') {
+      pocketVariables.s3 = JSON.parse(body);
     }
   }
 

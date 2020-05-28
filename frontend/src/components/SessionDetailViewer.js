@@ -5,11 +5,13 @@ import SessionBookedList from './Lessons/LessonList/SessionBookedList';
 import SessionAttendedList from './Lessons/LessonList/SessionAttendedList';
 import UpdateSessionFieldForm from './Forms/lesson/UpdateSessionFieldForm';
 import AddReminderForm from './Forms/notification/AddReminderForm';
+import AddToCalendar from 'react-add-to-calendar';
 
 import "./AttachmentViewer.css"
 
 const SessionDetailViewer = (props) =>{
-  const {...session} = props.session
+  const {...session} = props.session;
+  const {...lesson} = props.lesson;
   // console.log('session.endDate',session);
   // console.log("beep",session, session.booked,props.sessionBookedState,session.attended);
   let sessionDate = new Date (session.date.substr(0,10)*1000).toLocaleDateString().slice(0,10);
@@ -30,6 +32,18 @@ const SessionDetailViewer = (props) =>{
   let hasBooked = false;
   hasBooked = session.booked.map(x => x._id).includes(props.authId);
   // console.log('props.authId',props.authId,'hasBooked',session.booked.map(x => x._id).includes(props.authId));
+
+
+  // let startTime = session date + session timeout
+  // let endTime = session endDate + (session time + lesson duration)
+
+  let calEvent = {
+    title: lesson.title+': '+session.title,
+    description: lesson.description,
+    location: 'Earth',
+    startTime: session.date,
+    endTime: session.endDate
+}
 
 return (
   <div className="attachmentViewerBg">
@@ -272,8 +286,21 @@ return (
       />
     )}
 
+    {isInstructor === true && (
+      <AddToCalendar event={calEvent} />
+    )}
+    {isInstructor !== true &&
+      hasBooked === true && (
+      <AddToCalendar event={calEvent} />
+    )}
+
 
     {
+
+      // <Button variant="info" onClick={props.shareCalendarEvent.bind(this, session)}>
+      //   Share Event
+      // </Button>
+
       // {isInstructor == true &&
       //   props.lesson.type === 'Recurring' && (
       //     <Button variant="link" onClick={props.startRepeatSession.bind(this, props.session)}>

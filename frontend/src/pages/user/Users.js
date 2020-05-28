@@ -59,7 +59,7 @@ class UsersPage extends Component {
     showThisAttachmentType: null,
     sidebarShow: true,
     mCol1Size: 3,
-    mCol2Size: 9,
+    mCol2Size: 11,
     activityA: null,
   };
   isActive = true;
@@ -580,23 +580,26 @@ closeAttachmentView = () => {
           />
         )}
 
-            <SidebarControl
-              onShowSidebar={this.showSidebar}
-              onHideSidebar={this.hideSidebar}
-              toggleOverlay={this.toggleOverlay}
-            />
+
 
       <Accordion>
 
         <Row>
-        <Col md={2} className="MasterCol1">
-        <SidebarPage
-          you={this.context.user}
-          authId={this.context.activityId}
-        />
-        </Col>
+        {
+          // <SidebarControl
+          //   onShowSidebar={this.showSidebar}
+          //   onHideSidebar={this.hideSidebar}
+          //   toggleOverlay={this.toggleOverlay}
+          // />
+        //   <Col md={2} className="MasterCol1">
+        // <SidebarPage
+        //   you={this.context.user}
+        //   authId={this.context.activityId}
+        // />
+        // </Col>
+      }
 
-        <Col md={this.state.mCol2Size} className="MasterCol2">
+        <Col className="MasterCol2">
             <Container className="containerCombinedDetail1">
               <Tab.Container id="left-tabs-example" defaultActiveKey="MasterList">
                 <Row>

@@ -218,15 +218,6 @@ const LessonDetail = (props) => {
       <Card className="UserDetailCard">
       <Card.Body>
 
-      {props.sessionsLoaded === true && (
-        <FullCalendar
-        defaultView="dayGridMonth"
-        plugins={[dayGridPlugin]}
-        events={lessonCalendarSessions}
-        eventClick={props.viewCalendarSessionDetail}
-        />
-      )}
-
       {
         // events={lessonCalendarSessions}
         // events={[
@@ -272,41 +263,56 @@ const LessonDetail = (props) => {
         <Card.Text>
         Sessions:
         </Card.Text>
-        <Button variant="primary" onClick={props.onSessionLoad.bind(this, lesson._id)}>
-          See Sessions
+        {lesson.sessions !== [] && (
+        <Button variant="primary" onClick={props.toggleSessions.bind(this, lesson._id)}>
+          Show/Hide
         </Button>
-        <Button variant="danger" onClick={props.onHideSessions}>
-          x
-        </Button>
-        {props.sessionsLoaded === true && (
-          <LessonSessionList
-            isInstructor={isInstructor}
-            lessonSessions={lesson.sessions}
-            onBookSession={props.onBookSession}
-            onAddCartLesson={props.onAddCartLesson}
-            showSessionBooked={props.showSessionBooked}
-            showSessionAttended={props.showSessionAttended}
-            hideSessionBooked={props.hideSessionBooked}
-            hideSessionAttended={props.hideSessionAttended}
-            sessionBookedState={props.sessionBookedState}
-            sessionAttendedState={props.sessionAttendedState}
+        )}
+
+        {
+        //   isInstructor === true && (
+        // <Button variant="primary" onClick={props.startCreateSession.bind(this, lesson._id)}>
+        //   New Session
+        // </Button>
+        // )
+      }
+
+        {props.creatingSession === true &&
+          isInstructor === true && (
+          <CreateLessonSessionForm
+            authId={props.authId}
+            onCancel={props.cancelCreateSession}
+            onConfirm={props.createLessonSession}
+            lessonSubType={lesson.subType}
           />
         )}
 
-          {isInstructor === true && (
-          <Button variant="primary" onClick={props.startCreateSession.bind(this, lesson._id)}>
-            New Session
-          </Button>
-          )}
-          {props.creatingSession === true &&
-            isInstructor === true && (
-            <CreateLessonSessionForm
-              authId={props.authId}
-              onCancel={props.cancelCreateSession}
-              onConfirm={props.createLessonSession}
-              lessonSubType={lesson.subType}
-            />
-          )}
+        {props.sessionsLoaded === true && (
+          <FullCalendar
+          defaultView="dayGridMonth"
+          plugins={[dayGridPlugin]}
+          events={lessonCalendarSessions}
+          eventClick={props.viewCalendarSessionDetail}
+          />
+        )}
+
+
+        {
+        //   props.sessionsLoaded === true && (
+        //   <LessonSessionList
+        //     isInstructor={isInstructor}
+        //     lessonSessions={lesson.sessions}
+        //     onBookSession={props.onBookSession}
+        //     onAddCartLesson={props.onAddCartLesson}
+        //     showSessionBooked={props.showSessionBooked}
+        //     showSessionAttended={props.showSessionAttended}
+        //     hideSessionBooked={props.hideSessionBooked}
+        //     hideSessionAttended={props.hideSessionAttended}
+        //     sessionBookedState={props.sessionBookedState}
+        //     sessionAttendedState={props.sessionAttendedState}
+        //   />
+        // )
+      }
           </Col>
 
         </Row>
@@ -422,45 +428,6 @@ const LessonDetail = (props) => {
       </Card>
       </Tab>
 
-      <Tab eventKey="files" title="files">
-      <Card className="UserDetailCard">
-      <Card.Body>
-
-        <Row>
-          <Col>
-          <Card.Text>
-          Files
-          </Card.Text>
-            <Button variant="danger" onClick={props.toggleFiles}>
-              Show/Hide
-            </Button>
-            {isInstructor === true && (
-            <Button variant="danger" onClick={props.startLessonAdd.bind(this, 'files')}>
-              Add
-            </Button>
-            )}
-            {props.lessonAddField === 'files' && (
-              <AddLessonFileForm
-              authId={props.authId}
-              onCancel={props.cancelLessonAdd}
-              onConfirm={props.addLessonFile}
-              />
-            )}
-            {props.showFilesState === true && (
-              <LessonFileList
-                lessonFiles={lesson.files}
-                canDelete
-                onDelete={props.deleteLessonFile}
-              />
-            )}
-          </Col>
-        </Row>
-
-      </Card.Body>
-      </Card>
-      </Tab>
-
-
       <Tab eventKey="instructors" title="instructors">
       <Card className="UserDetailCard">
       <Card.Body>
@@ -568,49 +535,90 @@ const LessonDetail = (props) => {
       </Card>
       </Tab>
 
-      <Tab eventKey="edit" title="edit">
-      <Card className="UserDetailCard">
-      <Card.Body>
+      {
+        // <Tab eventKey="files" title="files">
+        // <Card className="UserDetailCard">
+        // <Card.Body>
+        //
+        //   <Row>
+        //     <Col>
+        //     <Card.Text>
+        //     Files
+        //     </Card.Text>
+        //       <Button variant="danger" onClick={props.toggleFiles}>
+        //         Show/Hide
+        //       </Button>
+        //       {isInstructor === true && (
+        //       <Button variant="danger" onClick={props.startLessonAdd.bind(this, 'files')}>
+        //         Add
+        //       </Button>
+        //       )}
+        //       {props.lessonAddField === 'files' && (
+        //         <AddLessonFileForm
+        //         authId={props.authId}
+        //         onCancel={props.cancelLessonAdd}
+        //         onConfirm={props.addLessonFile}
+        //         />
+        //       )}
+        //       {props.showFilesState === true && (
+        //         <LessonFileList
+        //           lessonFiles={lesson.files}
+        //           canDelete
+        //           onDelete={props.deleteLessonFile}
+        //         />
+        //       )}
+        //     </Col>
+        //   </Row>
+        //
+        // </Card.Body>
+        // </Card>
+        // </Tab>
 
-          {isInstructor === true && (
-              <Row className="detailCardRow">
-              <Col className="detailCardCol">
-              <Button variant="danger" onClick={props.onStartEditLessonBasic}>
-                Edit Basic
-              </Button>
-                {props.editingLesson === true && (
-                  <UpdateLessonBasicForm
-                  lesson={lesson}
-                  onCancel={props.cancelEditBasic}
-                  onConfirm={props.editLessonBasic}
-                  />
-                )}
-              </Col>
+        // <Tab eventKey="edit" title="edit">
+        // <Card className="UserDetailCard">
+        // <Card.Body>
+        //
+        //     {isInstructor === true && (
+        //         <Row className="detailCardRow">
+        //         <Col className="detailCardCol">
+        //         <Button variant="danger" onClick={props.onStartEditLessonBasic}>
+        //           Edit Basic
+        //         </Button>
+        //           {props.editingLesson === true && (
+        //             <UpdateLessonBasicForm
+        //             lesson={lesson}
+        //             onCancel={props.cancelEditBasic}
+        //             onConfirm={props.editLessonBasic}
+        //             />
+        //           )}
+        //         </Col>
+        //
+        //       </Row>
+        //     )}
+        //
+        //       {isInstructor === true && (
+        //         <Row className="detailCardRow">
+        //         <Col className="detailCardCol">
+        //         <Button variant="danger" onClick={props.onStartEditLessonField}>
+        //           Edit Field
+        //         </Button>
+        //           {props.editingLessonField === true && (
+        //             <UpdateLessonFieldForm
+        //             lesson={lesson}
+        //             onCancel={props.cancelEditField}
+        //             onConfirm={props.editLessonField}
+        //             />
+        //           )}
+        //         </Col>
+        //
+        //       </Row>
+        //     )}
+        //
+        // </Card.Body>
+        // </Card>
+        // </Tab>
+      }
 
-            </Row>
-          )}
-
-            {isInstructor === true && (
-              <Row className="detailCardRow">
-              <Col className="detailCardCol">
-              <Button variant="danger" onClick={props.onStartEditLessonField}>
-                Edit Field
-              </Button>
-                {props.editingLessonField === true && (
-                  <UpdateLessonFieldForm
-                  lesson={lesson}
-                  onCancel={props.cancelEditField}
-                  onConfirm={props.editLessonField}
-                  />
-                )}
-              </Col>
-
-            </Row>
-          )}
-
-      </Card.Body>
-      </Card>
-      </Tab>
 
     </Tabs>
 

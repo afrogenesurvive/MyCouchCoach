@@ -85,6 +85,8 @@ return (
       sessionDetailViewer={props.sessionDetailViewer}
       calendarSession={props.calendarSession}
       hideCalendarSessionDetail={props.hideCalendarSessionDetail}
+
+      toggleSessions={props.toggleSessions}
     />
 
     </div>

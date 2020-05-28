@@ -4,8 +4,8 @@
     max-height: 5rem;
     position: fixed;
     z-index: 10000;
-    top: -.7rem;
-    left: 1.5rem;
+    bottom: 0rem;
+    right: 1.5rem;
     overflow-x: scroll;
 }
 

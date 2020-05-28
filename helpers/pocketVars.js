@@ -9,6 +9,10 @@ const pocketVariables = {
     },
     sendGrid: {
       a: null
+    },
+    s3: {
+      a: null,
+      b: null
     }
 }
 exports.pocketVariables = pocketVariables;

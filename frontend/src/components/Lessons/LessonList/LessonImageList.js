@@ -5,7 +5,15 @@ import './UserList.css';
 
 const lessonImageList = props => {
 
-  const images = props.lessonImages.map(image => {
+  let lessonImages2 = props.lessonImages;
+  let propsLessonImages = [];
+  if (props.public) {
+    propsLessonImages = lessonImages2.filter(x => x.public === true);
+  } else {
+    propsLessonImages = lessonImages2;
+  }
+
+  const images = propsLessonImages.map(image => {
     return (
       <LessonImageItem
         public={props.public}

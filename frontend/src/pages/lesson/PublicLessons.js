@@ -146,7 +146,7 @@ class PublicLessonsPage extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
-          this.setState({userAlert: responseAlert, lessons: resData.data.getAllPublicLessons, isLoading: false});
+          this.setState({userAlert: '...success! Public lesson list retrieved...', lessons: resData.data.getAllPublicLessons, isLoading: false});
         }
 
       })
@@ -164,6 +164,13 @@ class PublicLessonsPage extends Component {
   hideSchedule = () => {
     this.setState({showSchedule: false})
   };
+  toggleSchedule = () => {
+    if (this.state.showSchedule === false) {
+      this.setState({showSchedule: true})
+    } else {
+      this.setState({showSchedule: false})
+    }
+  }
 
   showDetailHandler = lessonId => {
   this.setState(prevState => {
@@ -199,6 +206,7 @@ class PublicLessonsPage extends Component {
           showScheduleState={this.state.showSchedule}
           showSchedule={this.showSchedule}
           hideSchedule={this.hideSchedule}
+          toggleSchedule={this.toggleSchedule}
         />
       )}
 

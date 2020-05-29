@@ -1,4 +1,4 @@
-// import S3 from 'react-aws-s3';
+import S3 from 'react-aws-s3';
 import React, { Component } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -158,8 +158,9 @@ class UserProfile extends Component {
         if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
+          // console.log('pocketVars', JSON.parse(resData.data.getPocketVars.pocketVariables));
           // console.log('beep',resData.data.getPocketVars.pocketVariables,JSON.parse(resData.data.getPocketVars.pocketVariables));
-          this.setState({userAlert: '...success! retrieved pocketVars...', pocketVars: resData.data.getPocketVars.pocketVariables})
+          this.setState({userAlert: '...success! retrieved pocketVars...', pocketVars: JSON.parse(resData.data.getPocketVars.pocketVariables)})
         }
 
       })
@@ -173,7 +174,7 @@ class UserProfile extends Component {
     const requestBody = {
       query: `
         query {getThisUser(activityId:"${activityId}")
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -235,7 +236,7 @@ class UserProfile extends Component {
             userInput:{
               activityRequest:"${request}"
             })
-          {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+          {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
     fetch('http://localhost:8088/graphql', {
         method: 'POST',
@@ -302,7 +303,7 @@ class UserProfile extends Component {
         mutation{userOnline(
           activityId:"${activityId}",
           userId:"${activityId}")
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -416,7 +417,7 @@ class UserProfile extends Component {
               contactPhone2:"${contactPhone2}",
               bio:"${bio}"
             })
-            {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+            {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
         `};
 
     fetch('http://localhost:8088/graphql', {
@@ -439,7 +440,7 @@ class UserProfile extends Component {
           const updatedUser = resData.data.updateUserBasic;
           this.context.user = updatedUser;
           const responseAlert = JSON.stringify(resData.data.updateUserBasic).slice(2,25);
-          this.setState({ userAlert: responseAlert, user: updatedUser, activityA: JSON.stringify(requestBody)})
+          this.setState({ userAlert: '...success! updated your basic info...', user: updatedUser, activityA: JSON.stringify(requestBody)})
         }
 
         // this.logUserActivity();
@@ -449,7 +450,7 @@ class UserProfile extends Component {
       });
     };
   userEditField = (event) => {
-      this.setState({ updatingField: false, userAlert: "Updating selected Staff by Field..." });
+      this.setState({ updatingField: false, userAlert: "Updating selected user by Field..." });
       const token = this.context.token;
       const activityId = this.context.activityId;
       let userId = activityId;
@@ -461,6 +462,15 @@ class UserProfile extends Component {
         field = event.target.formGridFieldSelect.value;
       }
 
+      if (
+        query.trim().length === 0 ||
+        field.trim().length === 0
+      ) {
+        console.log('blank fields detected.. please check your info and try again..');
+        this.setState({userAlert: 'blank fields detected.. please check your info and try again..'})
+        return
+      }
+
       const requestBody = {
         query:`
           mutation {updateUserByField(
@@ -468,7 +478,7 @@ class UserProfile extends Component {
             userId:"${userId}",
             field:"${field}",
             query:"${query}")
-            {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+            {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
         `};
 
       fetch('http://localhost:8088/graphql', {
@@ -490,7 +500,7 @@ class UserProfile extends Component {
             this.setState({userAlert: resData.errors[0].message})
           } else {
             const responseAlert = JSON.stringify(resData.data.updateUserByField).slice(2,25);
-            this.setState({ userAlert: responseAlert, user: resData.data.updateUserByField, activityA: JSON.stringify(requestBody)})
+            this.setState({ userAlert: '...success! Updated your info: '+field+'...', user: resData.data.updateUserByField, activityA: JSON.stringify(requestBody)})
             this.context.user = this.state.user;
           }
 
@@ -507,6 +517,14 @@ class UserProfile extends Component {
         let userId = activityId;
         const points = event.target.formGridPoints.value;
 
+        if (
+          points.trim().length === 0
+        ) {
+          console.log('blank fields detected.. please check your info and try again..');
+          this.setState({userAlert: 'blank fields detected.. please check your info and try again..'})
+          return
+        }
+
         const requestBody = {
           query:`
             mutation {addUserPoints(
@@ -515,8 +533,9 @@ class UserProfile extends Component {
               userInput:{
                 points:${points}
               })
-              {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+              {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
           `};
+
 
         fetch('http://localhost:8088/graphql', {
           method: 'POST',
@@ -537,7 +556,7 @@ class UserProfile extends Component {
               this.setState({userAlert: resData.errors[0].message})
             } else {
               const responseAlert = JSON.stringify(resData.data.addUserPoints).slice(2,25);
-              this.setState({userAlert: responseAlert, user: resData.data.addUserPoints, activityA: JSON.stringify(requestBody)})
+              this.setState({userAlert: '...success! Addded '+points+' points...', user: resData.data.addUserPoints, activityA: JSON.stringify(requestBody)})
               this.context.user = this.state.user;
             }
 
@@ -588,7 +607,7 @@ class UserProfile extends Component {
             addressCountry:"${addressCountry}",
             addressPostalCode:"${addressPostalCode}"
           })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -610,7 +629,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.addUserAddress).slice(2,25);
-          this.setState({userAlert: responseAlert, user: resData.data.addUserAddress, activityA: JSON.stringify(requestBody)})
+          this.setState({userAlert: '...success! Added a new '+addressType+'address...', user: resData.data.addUserAddress, activityA: JSON.stringify(requestBody)})
           this.context.user = this.state.user;
         }
 
@@ -650,7 +669,7 @@ class UserProfile extends Component {
             addressPostalCode:"${addressPostalCode}",
             addressPrimary:${addressPrimary}
           })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -672,7 +691,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.deleteUserAddress).slice(2,25);
-          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserAddress, activityA: JSON.stringify(requestBody)})
+          this.setState({deleting: false, userAlert: '...success! Address deleted...', user: resData.data.deleteUserAddress, activityA: JSON.stringify(requestBody)})
           this.context.user = this.state.user;
         }
 
@@ -711,7 +730,7 @@ class UserProfile extends Component {
             addressCountry:"${addressCountry}",
             addressPostalCode:"${addressPostalCode}",
           })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -733,7 +752,10 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.setUserAddressPrimary).slice(2,25);
-          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.setUserAddressPrimary, activityA: JSON.stringify(requestBody)})
+          this.setState({
+            deleting: false,
+            userAlert: `...success! Changed address to primary...`,
+            user: resData.data.setUserAddressPrimary, activityA: JSON.stringify(requestBody)})
           this.context.user = this.state.user;
         }
 
@@ -754,31 +776,43 @@ class UserProfile extends Component {
     const profileImagePath = event.target.formGridPath.value;
     const profileImagePublic = event.target.formGridPublic.value;
 
-    this.getPocketVars();
-    console.log('this.state.pocketVars',this.state.pocketVars);
+    if (
+      profileImageName.trim().length === 0 ||
+      profileImageType.trim().length === 0 ||
+      profileImagePath.trim().length === 0
+    ) {
+      console.log('blank fields detected.. please check your info and try again..');
+      this.setState({userAlert: 'blank fields detected.. please check your info and try again..'})
+      return
+    }
 
-    // if (
-    //     event.target.fileInput.value !== ""
-    // ) {
-    //   let file = AuthContext._currentValue.file;
-    //
-    //   const config = {
-    //     bucketName: this.state.creds.s3.bucketName,
-    //     dirName: attachmentPath,
-    //     region: this.state.creds.s3.region,
-    //     accessKeyId: this.state.creds.s3.accessKeyId,
-    //     secretAccessKey: this.state.creds.s3.secretAccessKey,
-    //   }
-    //   const ReactS3Client = new S3(config);
-    //   const newFileName = file.name;
-    //   attachmentName = newFileName;
-    //   this.setState({userAlert: "uploading attachment ..."});
-    //
-    //   ReactS3Client
-    //       .uploadFile(file, newFileName)
-    //       .then(data => {console.log(data);this.setState({userAlert: "attachment upload success!" });})
-    //       .catch(err => {console.error(err);this.setState({userAlert: "upload error:  "+err });})
-    // }
+    this.getPocketVars();
+    // console.log('this.state.pocketVars',this.state.pocketVars);
+
+    if (
+        event.target.fileInput.value !== ""
+    ) {
+      let file = AuthContext._currentValue.file;
+      console.log('...file present...');
+      const fileName = file.name;
+      const filePath = 'users/'+userId+'/profileImages/';
+
+      const config = {
+        bucketName: 'mycouchcoachstorage',
+        dirName: 'users',
+        region: 'us-east-1',
+        accessKeyId: 'AKIATRFHYKEQBA5KVVZM',
+        secretAccessKey: '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',
+        // s3Url: 'https://mycouchcoachstorage.s3.amazonaws.com'
+      }
+      const ReactS3Client = new S3(config);
+      this.setState({userAlert: "uploading image ..."});
+
+      ReactS3Client
+          .uploadFile(file, fileName)
+          .then(data => {console.log(data);this.setState({userAlert: "attachment upload success!" });})
+          .catch(err => {console.error(err);this.setState({userAlert: "upload error:  "+err });})
+    }
 
     const requestBody = {
       query:`
@@ -791,37 +825,37 @@ class UserProfile extends Component {
             profileImagePath:"${profileImagePath}",
             profileImagePublic:${profileImagePublic}
           })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
-    // fetch('http://localhost:8088/graphql', {
-    //   method: 'POST',
-    //   body: JSON.stringify(requestBody),
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     Authorization: 'Bearer ' + token
-    //   }
-    // })
-    //   .then(res => {
-    //     if (res.status !== 200 && res.status !== 201) {
-    //       throw new Error('Failed!');
-    //     }
-    //     return res.json();
-    //   })
-    //   .then(resData => {
-    //     if (resData.errors) {
-    //       this.setState({userAlert: resData.errors[0].message})
-    //     } else {
-    //       const responseAlert = JSON.stringify(resData.data.addUserProfileImage).slice(2,25);
-    //       this.setState({userAlert: responseAlert, user: resData.data.addUserProfileImage, activityA: JSON.stringify(requestBody)})
-    //       this.context.user = this.state.user;
-    //     }
-    //
-    //     // this.logUserActivity();
-    //   })
-    //   .catch(err => {
-    //     this.setState({userAlert: err});
-    //   });
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        if (resData.errors) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.addUserProfileImage).slice(2,25);
+          this.setState({userAlert: '...success! Profile image added...', user: resData.data.addUserProfileImage, activityA: JSON.stringify(requestBody)})
+          this.context.user = this.state.user;
+        }
+
+        // this.logUserActivity();
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
   };
   userToggleProfileImagePublic = (args) => {
     this.setState({ adding: false, userAddField: null, userAlert: "toggling profileImage privacy for user..." });
@@ -844,7 +878,7 @@ class UserProfile extends Component {
             profileImagePath:"${profileImagePath}",
             profileImagePublic: ${profileImagePublic}
           })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -866,9 +900,9 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.toggleUserProfileImagePublic).slice(2,25);
-          this.setState({userAlert: responseAlert, user: resData.data.toggleUserProfileImagePublic, activityA: JSON.stringify(requestBody)})
+          this.setState({userAlert: '...success! Image privacy toggled...', user: resData.data.toggleUserProfileImagePublic, activityA: JSON.stringify(requestBody)})
           this.context.user = this.state.user;
-          console.log('this.state.user.profileImages',this.state.user.profileImages);
+          // console.log('this.state.user.profileImages',this.state.user.profileImages);
         }
 
         // this.logUserActivity();
@@ -896,7 +930,7 @@ class UserProfile extends Component {
             profileImageType:"${profileImageType}",
             profileImagePath:"${profileImagePath}"
           })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -918,7 +952,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.deleteUserProfileImage).slice(2,25);
-          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserProfileImage, activityA: JSON.stringify(requestBody)})
+          this.setState({deleting: false, userAlert: '...success! Profile image deleted...', user: resData.data.deleteUserProfileImage, activityA: JSON.stringify(requestBody)})
           this.context.user = this.state.user;
         }
 
@@ -937,6 +971,15 @@ class UserProfile extends Component {
     const socialMediaHandle = event.target.formGridHandle.value;
     const socialMediaLink = event.target.formGridLink.value;
 
+    if (
+      socialMediaPlatform.trim().length === 0 ||
+      socialMediaHandle.trim().length === 0
+    ) {
+      console.log('blank fields detected.. please check your info and try again..');
+      this.setState({userAlert: 'blank fields detected.. please check your info and try again..'})
+      return
+    }
+
     const requestBody = {
       query:`
         mutation {addUserSocialMedia(
@@ -947,7 +990,7 @@ class UserProfile extends Component {
             socialMediaHandle:"${socialMediaHandle}",
             socialMediaLink:"${socialMediaLink}"
           })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -969,7 +1012,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.addUserSocialMedia).slice(2,25);
-          this.setState({userAlert: responseAlert, user: resData.data.addUserSocialMedia, activityA: JSON.stringify(requestBody)})
+          this.setState({userAlert: '...success! Social media info added...', user: resData.data.addUserSocialMedia, activityA: JSON.stringify(requestBody)})
           this.context.user = this.state.user;
         }
 
@@ -999,7 +1042,7 @@ class UserProfile extends Component {
             socialMediaHandle:"${socialMediaHandle}",
             socialMediaLink:"${socialMediaLink}"
           })
-          {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+          {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -1021,7 +1064,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.deleteUserSocialMedia).slice(2,25);
-          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserSocialMedia, activityA: JSON.stringify(requestBody)})
+          this.setState({deleting: false, userAlert: '...success! Social Media deleted...', user: resData.data.deleteUserSocialMedia, activityA: JSON.stringify(requestBody)})
           this.context.user = this.state.user;
         }
 
@@ -1045,6 +1088,17 @@ class UserProfile extends Component {
     let paymentInfoPrimary = event.target.formGridPaymentInfoPrimaryCheckbox.checked;
     const paymentInfoValid = true;
 
+    if (
+      paymentInfoDate.trim().length === 0 ||
+      paymentInfoType.trim().length === 0 ||
+      paymentInfoDescription.trim().length === 0 ||
+      paymentInfoBody.trim().length === 0
+    ) {
+      console.log('blank fields detected.. please check your info and try again..');
+      this.setState({userAlert: 'blank fields detected.. please check your info and try again..'})
+      return
+    }
+
     const requestBody = {
       query:`
         mutation {addUserPaymentInfo(
@@ -1058,7 +1112,7 @@ class UserProfile extends Component {
             paymentInfoValid:${paymentInfoValid},
             paymentInfoPrimary:${paymentInfoPrimary},
           })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -1080,7 +1134,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.addUserPaymentInfo).slice(2,25);
-          this.setState({userAlert: responseAlert, user: resData.data.addUserPaymentInfo, activityA: JSON.stringify(requestBody)})
+          this.setState({userAlert: '...success! Payment info added...', user: resData.data.addUserPaymentInfo, activityA: JSON.stringify(requestBody)})
           this.context.user = this.state.user;
         }
 
@@ -1116,7 +1170,7 @@ class UserProfile extends Component {
             paymentInfoValid:${paymentInfoValid},
             paymentInfoPrimary:${paymentInfoPrimary}
           })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -1138,7 +1192,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.deleteUserPaymentInfo).slice(2,25);
-          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserPaymentInfo, activityA: JSON.stringify(requestBody)})
+          this.setState({deleting: false, userAlert: '...success! Payment info deleted...', user: resData.data.deleteUserPaymentInfo, activityA: JSON.stringify(requestBody)})
           this.context.user = this.state.user;
         }
 
@@ -1155,6 +1209,14 @@ class UserProfile extends Component {
     let userId = activityId;
     const interests = event.target.formGridInterests.value;
 
+    if (
+      interests.trim().length === 0
+    ) {
+      console.log('blank fields detected.. please check your info and try again..');
+      this.setState({userAlert: 'blank fields detected.. please check your info and try again..'})
+      return
+    }
+
     const requestBody = {
       query:`
         mutation {addUserInterests(
@@ -1163,7 +1225,7 @@ class UserProfile extends Component {
           userInput:{
             interests:"${interests}"
           })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -1185,7 +1247,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.addUserInterests).slice(2,25);
-          this.setState({userAlert: responseAlert, user: resData.data.addUserInterests, activityA: JSON.stringify(requestBody)})
+          this.setState({userAlert: '...success! Interests added...', user: resData.data.addUserInterests, activityA: JSON.stringify(requestBody)})
           this.context.user = this.state.user;
         }
 
@@ -1210,7 +1272,7 @@ class UserProfile extends Component {
           userInput:{
             interest:"${interest}"
           })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -1232,7 +1294,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.deleteUserInterest).slice(2,25);
-          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserInterest, activityA: JSON.stringify(requestBody)})
+          this.setState({deleting: false, userAlert: '...success! Interest deleted...', user: resData.data.deleteUserInterest, activityA: JSON.stringify(requestBody)})
           this.context.user = this.state.user;
         }
 
@@ -1249,6 +1311,14 @@ class UserProfile extends Component {
     let userId = activityId;
     const tags = event.target.formGridTags.value;
 
+    if (
+      tags.trim().length === 0
+    ) {
+      console.log('blank fields detected.. please check your info and try again..');
+      this.setState({userAlert: 'blank fields detected.. please check your info and try again..'})
+      return
+    }
+
     const requestBody = {
       query:`
       mutation {addUserTags(
@@ -1257,7 +1327,7 @@ class UserProfile extends Component {
         userInput:{
           tags:"${tags}"
         })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -1279,7 +1349,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.addUserTags).slice(2,25);
-          this.setState({userAlert: responseAlert, user: resData.data.addUserTags, activityA: JSON.stringify(requestBody)})
+          this.setState({userAlert: '...success! Tags added...', user: resData.data.addUserTags, activityA: JSON.stringify(requestBody)})
           this.context.user = this.state.user;
         }
 
@@ -1304,7 +1374,7 @@ class UserProfile extends Component {
         userInput:{
           tag:"${tag}"
         })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -1326,7 +1396,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.deleteUserTag).slice(2,25);
-          this.setState({userAlert: responseAlert, user: resData.data.deleteUserTag, activityA: JSON.stringify(requestBody)})
+          this.setState({userAlert: '...success! Tag deleted...', user: resData.data.deleteUserTag, activityA: JSON.stringify(requestBody)})
           this.context.user = this.state.user;
         }
 
@@ -1517,7 +1587,7 @@ class UserProfile extends Component {
         userId:"${userId}",
         friendId:"${friendId}"
       )
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -1539,7 +1609,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.addUserFriend).slice(2,25);
-          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.addUserFriend, activityA: JSON.stringify(requestBody)})
+          this.setState({deleting: false, userAlert: '...success! Friend request accepted...', user: resData.data.addUserFriend, activityA: JSON.stringify(requestBody)})
           this.context.user = this.state.user;
         }
 
@@ -1575,7 +1645,7 @@ class UserProfile extends Component {
         senderId:"${senderId}",
         receiverId:"${receiverId}"
       )
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -1597,7 +1667,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.deleteFriendRequest).slice(2,25);
-          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteFriendRequest, activityA: JSON.stringify(requestBody)})
+          this.setState({deleting: false, userAlert: '...success! Friend request rejected...', user: resData.data.deleteFriendRequest, activityA: JSON.stringify(requestBody)})
           this.context.user = this.state.user;
         }
 
@@ -1622,7 +1692,7 @@ class UserProfile extends Component {
         userId:"${userId}",
         friendId:"${friendId}"
       )
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -1644,7 +1714,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.addUserFriend).slice(2,25);
-          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.addUserFriend, activityA: JSON.stringify(requestBody)})
+          this.setState({deleting: false, userAlert: '...success! Friend added...', user: resData.data.addUserFriend, activityA: JSON.stringify(requestBody)})
           this.context.user = this.state.user;
         }
 
@@ -1673,7 +1743,7 @@ class UserProfile extends Component {
           userId:"${userId}",
           friendId:"${friendId}"
         )
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -1695,7 +1765,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.deleteUserFriend).slice(2,25);
-          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserFriend, activityA: JSON.stringify(requestBody)})
+          this.setState({deleting: false, userAlert: '...success! Friend deleted...', user: resData.data.deleteUserFriend, activityA: JSON.stringify(requestBody)})
           this.context.user = this.state.user;
         }
 
@@ -1726,7 +1796,7 @@ class UserProfile extends Component {
           sessionDate:"${sessionDate}",
           sessionTitle:"${sessionTitle}"
         )
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -1748,7 +1818,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.deleteUserCartLesson).slice(2,25);
-          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserCartLesson, activityA: JSON.stringify(requestBody)})
+          this.setState({deleting: false, userAlert: '...success! Cart item deleted...', user: resData.data.deleteUserCartLesson, activityA: JSON.stringify(requestBody)})
           this.context.user = this.state.user;
         }
 
@@ -1773,7 +1843,7 @@ class UserProfile extends Component {
           lessonId:"${lessonId}",
           date:"${date}"
         )
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -1795,7 +1865,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.deleteUserBookedLesson).slice(2,25);
-          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserBookedLesson, activityA: JSON.stringify(requestBody)})
+          this.setState({deleting: false, userAlert: '...success! Booked lesson deleted...', user: resData.data.deleteUserBookedLesson, activityA: JSON.stringify(requestBody)})
           this.context.user = this.state.user;
         }
 
@@ -1819,7 +1889,7 @@ class UserProfile extends Component {
           userId:"${userId}",
           lessonId:"${lessonId}"
         )
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -1841,7 +1911,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.deleteUserLikedLesson).slice(2,25);
-          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserLikedLesson, activityA: JSON.stringify(requestBody)})
+          this.setState({deleting: false, userAlert: '...success! Liked lesson deleted...', user: resData.data.deleteUserLikedLesson, activityA: JSON.stringify(requestBody)})
           this.context.user = this.state.user;
         }
 
@@ -1864,8 +1934,10 @@ class UserProfile extends Component {
     // const activityId = this.context.activityId;
   };
   addAddressToOrder = (event) => {
-    console.log('...add address to order...');
+
     event.preventDefault();
+    console.log('...add address to order...');
+    this.setState({userAlert: '...adding address to order...'})
     // const address = JSON.stringify(event);
     console.log(event.target.value.slice(9,16));
     let type = event.target.value.slice(9,16);
@@ -1890,7 +1962,7 @@ class UserProfile extends Component {
     const requestBody = {
       query:`
         mutation {addMultipleBookings(activityId:"${activityId}")
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -1914,7 +1986,7 @@ class UserProfile extends Component {
         } else {
           if (resData.data.addMultipleBookings !== null) {
             console.log('2');
-            this.setState({user: resData.data.addMultipleBookings, isLoading: false})
+            this.setState({user: resData.data.addMultipleBookings, userAlert: '...success! Ordered lesson booked...',isLoading: false})
           }
         }
 
@@ -1958,6 +2030,14 @@ class UserProfile extends Component {
     const shippingAddressCountry = event.target.formGridShippingAddressCountry.value;
     const shippingAddressPostalCode = event.target.formGridShippingAddressPostalCode.value;
 
+    // if (
+    //   payment.trim().length === 0
+    // ) {
+    //   console.log('blank fields detected.. please check your info and try again..');
+    //   this.setState({userAlert: 'blank fields detected.. please check your info and try again..'})
+    //   return
+    // }
+
     const requestBody = {
       query:`
         mutation {createOrder(
@@ -1987,7 +2067,7 @@ class UserProfile extends Component {
             shippingAddressCountry:"${shippingAddressCountry}",
             shippingAddressPostalCode:"${shippingAddressPostalCode}"
           })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -2008,6 +2088,7 @@ class UserProfile extends Component {
         if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
+          this.setState({userAlert: '...success! Order created...'})
           this.addMultipleBookings();
         }
         // console.log(resData);
@@ -2036,7 +2117,7 @@ class UserProfile extends Component {
           userId:"${userId}",
           orderId:"${orderId}"
         )
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -2058,7 +2139,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.deleteUserOrder).slice(2,25);
-          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteUserOrder, activityA: JSON.stringify(requestBody)})
+          this.setState({deleting: false, userAlert: '...success! Order deleted...', user: resData.data.deleteUserOrder, activityA: JSON.stringify(requestBody)})
           this.context.user = this.state.user;
         }
 
@@ -2083,7 +2164,7 @@ class UserProfile extends Component {
           userId:"${userId}",
           reviewId:"${reviewId}"
         )
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -2142,6 +2223,15 @@ class UserProfile extends Component {
       message: message,
     };
 
+    if (
+      subject.trim().length === 0 ||
+      message.trim().length === 0
+    ) {
+      console.log('blank fields detected.. please check your info and try again..');
+      this.setState({userAlert: 'blank fields detected.. please check your info and try again..'})
+      return
+    }
+
     const requestBody = {
       query:`
         mutation {createMessage(
@@ -2177,7 +2267,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.createMessage).slice(2,25);;
-          this.setState({ userAlert: responseAlert, activityA: JSON.stringify(requestBody), userAddField: null});
+          this.setState({ userAlert: '...success! Message sent...', activityA: JSON.stringify(requestBody), userAddField: null});
         }
 
         // this.logUserActivity();
@@ -2220,7 +2310,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.deleteMessage).slice(2,25);
-          this.setState({deleting: false, userAlert: responseAlert, user: resData.data.deleteMessage, activityA: JSON.stringify(requestBody)})
+          this.setState({deleting: false, userAlert: '...success! Message deleted...', user: resData.data.deleteMessage, activityA: JSON.stringify(requestBody)})
           this.context.user = this.state.user;
         }
 
@@ -2263,6 +2353,15 @@ class UserProfile extends Component {
       message: message,
     };
 
+    if (
+      subject.trim().length === 0 ||
+      message.trim().length === 0
+    ) {
+      console.log('blank fields detected.. please check your info and try again..');
+      this.setState({userAlert: 'blank fields detected.. please check your info and try again..'})
+      return
+    }
+
     const requestBody = {
       query:`
         mutation {createMessage(
@@ -2299,7 +2398,7 @@ class UserProfile extends Component {
         } else {
           // console.log("reply Message",resData.data.createMessage);
           const responseAlert = JSON.stringify(resData.data.createMessage).slice(2,25);;
-          this.setState({ userAlert: responseAlert, activityA: JSON.stringify(requestBody), replyTo: null});
+          this.setState({ userAlert: '...success! Reply sent...', activityA: JSON.stringify(requestBody), replyTo: null});
         }
 
         // this.logUserActivity();
@@ -2327,7 +2426,7 @@ class UserProfile extends Component {
             activityDate:"${activityDate}",
             activityRequest:"${activityRequest}"
           })
-        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price}},attendedLessons{date,ref{_id,title,public,type,subType,category,price}},toTeachLessons{_id,title,public,type,subType,category,price},taughtLessons{date,ref{_id,title,public,type,subType,category,price}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+        {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -2392,7 +2491,7 @@ class UserProfile extends Component {
           activityId:"${activityId}",
           lessonId:"${lessonId}"
         )
-        {_id,title,subtitle,type,subType,public,category,price,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{email,phone,phone2}},gallery{name,type,path,public},requirements,materials,files{name,type,size,path,public},reviews{_id},tags,sessions{title,date,endDate,time,limit,amount,booked{_id,username},bookedAmount,attended{_id,username},attendedAmount,inProgress,full,url},promos{_id},reviews{date,type,title,body,author{_id,username},body,rating},cancellations{date,reason,sessionDate,sessionTitle,user{_id,username}},reminders{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+        {_id,title,subtitle,type,subType,public,category,price,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{email,phone,phone2},profileImages{name,type,path,public},socialMedia{handle,platform,link}},gallery{name,type,path,public},requirements,materials,files{name,type,size,path,public},reviews{_id},tags,sessions{title,date,endDate,time,limit,amount,booked{_id,username},bookedAmount,attended{_id,username},attendedAmount,inProgress,full,url},promos{_id},reviews{date,type,title,body,author{_id,username},body,rating},cancellations{date,reason,sessionDate,sessionTitle,user{_id,username}},reminders{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -2414,7 +2513,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.getLessonById).slice(2,25);
-          this.setState({userAlert: responseAlert, isLoading: false, profileLessonViewer: true, profileLessonViewerData: resData.data.getLessonById, profileLessonType: args.type})
+          this.setState({userAlert: '...success! Retrieved lesson details...', responseAlert, isLoading: false, profileLessonViewer: true, profileLessonViewerData: resData.data.getLessonById, profileLessonType: args.type})
         }
 
         // this.logUserActivity();
@@ -2477,6 +2576,7 @@ class UserProfile extends Component {
     }
   }
   toggleImages = () => {
+    console.log('toggleImages');
     if (this.state.showImagesState === false) {
       this.setState({showImagesState: true})
     } else {
@@ -2527,6 +2627,7 @@ class UserProfile extends Component {
       return
     }
 
+
     const requestBody = {
       query: `
           mutation {addLessonSession(
@@ -2563,7 +2664,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
-          this.setState({userAlert: '...success! show the sessions for this lesson to see...', profileLessonViewerData: resData.data.addLessonSession, isLoading: false, creatingSession: false});
+          this.setState({userAlert: '...success! show the sessions for this lesson for details...', profileLessonViewerData: resData.data.addLessonSession, isLoading: false, creatingSession: false});
         }
 
       })
@@ -2599,6 +2700,16 @@ class UserProfile extends Component {
     const points = event.target.formGridPoints.value;
     const description = event.target.formGridDescription.value;
     const notes = event.target.formGridNotes.value;
+
+    if (
+      title.trim().length === 0 ||
+      sku.trim().length === 0 ||
+      description.trim().length === 0
+    ) {
+      console.log('blank fields detected.. please check your info and try again..');
+      this.setState({userAlert: 'blank fields detected.. please check your info and try again..'})
+      return
+    }
 
     const requestBody = {
       query: `
@@ -2639,7 +2750,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.updateLessonBasic).slice(0,8);
-          this.setState({ profileLessonViewerData: resData.data.updateLessonBasic, userAlert: responseAlert})
+          this.setState({ profileLessonViewerData: resData.data.updateLessonBasic, userAlert: '...success! Lesson updated...'})
         }
 
       })
@@ -2664,6 +2775,15 @@ class UserProfile extends Component {
 
     const field = event.target.formGridFieldSelect.value;
     const query = event.target.formGridQuery.value;
+
+    if (
+      query.trim().length === 0
+    ) {
+      console.log('blank fields detected.. please check your info and try again..');
+      this.setState({userAlert: 'blank fields detected.. please check your info and try again..'})
+      return
+    }
+
     const requestBody = {
       query: `
          mutation {updateLessonByField(
@@ -2694,7 +2814,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.updateLessonByField).slice(0,8);
-          this.setState({ profileLessonViewer: resData.data.updateLessonByField, userAlert: responseAlert})
+          this.setState({ profileLessonViewer: resData.data.updateLessonByField, userAlert: '...success! Lesson '+field+' updated...'})
         }
 
       })
@@ -2729,6 +2849,16 @@ class UserProfile extends Component {
 
     const sessionField = event.target.formGridFieldSelect.value;
     const sessionQuery = event.target.formGridQuery.value;
+
+    if (
+      sessionField.trim().length === 0 ||
+      sessionQuery.trim().length === 0
+    ) {
+      console.log('blank fields detected.. please check your info and try again..');
+      this.setState({userAlert: 'blank fields detected.. please check your info and try again..'})
+      return
+    }
+
     const requestBody = {
       query: `
         mutation {updateSessionField(
@@ -2766,7 +2896,7 @@ class UserProfile extends Component {
           const sessions = resData.data.updateSessionField.sessions;
           const session = sessions.filter(x => x.title === sessionTitle)
           const session2 = session[0];
-          console.log(session);
+          // console.log(session);
           const newSession = {
               title: session2.title,
               date: session2.date,
@@ -2785,7 +2915,7 @@ class UserProfile extends Component {
               lessonInstructors: lesson.instructors,
             };
           const responseAlert = JSON.stringify(resData.data.updateSessionField).slice(0,8);
-          this.setState({ sessionDetailViewer: true, session: newSession, profileLessonViewerData: resData.data.updateSessionField, userAlert: responseAlert})
+          this.setState({ sessionDetailViewer: true, session: newSession, profileLessonViewerData: resData.data.updateSessionField, userAlert: '...success! Session '+sessionField+' updated...'})
         }
 
       })
@@ -2897,7 +3027,7 @@ class UserProfile extends Component {
         } else {
           // console.log(resData.data.getUserBookedSessionsToday);
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
-          this.setState({userAlert: responseAlert, meetingSessions: resData.data.getUserBookedSessionsToday, meetingsLoaded: true});
+          this.setState({userAlert: '...success! Todays sessions retrieved...', meetingSessions: resData.data.getUserBookedSessionsToday, meetingsLoaded: true});
         }
 
       })
@@ -2966,7 +3096,7 @@ class UserProfile extends Component {
           };
           // console.log('beep',newSession);
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
-          this.setState({userAlert: responseAlert, session: newSession, sessionDetailViewer: true});
+          this.setState({userAlert: '...success! Session details retrieved...', session: newSession, sessionDetailViewer: true});
         }
 
       })
@@ -3058,6 +3188,14 @@ class UserProfile extends Component {
 
     const materials = event.target.formGridMaterials.value;
 
+    if (
+      materials.trim().length === 0
+    ) {
+      console.log('blank fields detected.. please check your info and try again..');
+      this.setState({userAlert: 'blank fields detected.. please check your info and try again..'})
+      return
+    }
+
     const requestBody = {
       query: `
           mutation {addLessonMaterials(
@@ -3088,7 +3226,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
-          this.setState({userAlert: responseAlert, activityA: requestBody, profileLessonViewerData: resData.data.addLessonMaterials});
+          this.setState({userAlert: '...success! Lesson materials added...', activityA: requestBody, profileLessonViewerData: resData.data.addLessonMaterials});
         }
 
         // this.context.selectedLesson = this.state.selectedLesson;
@@ -3109,6 +3247,14 @@ class UserProfile extends Component {
     const lessonId = this.state.profileLessonViewerData._id;
 
     const tags = event.target.formGridTags.value;
+
+    if (
+      tags.trim().length === 0
+    ) {
+      console.log('blank fields detected.. please check your info and try again..');
+      this.setState({userAlert: 'blank fields detected.. please check your info and try again..'})
+      return
+    }
 
     const requestBody = {
       query: `
@@ -3140,7 +3286,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
-          this.setState({userAlert: responseAlert, activityA: requestBody, profileLessonViewerData: resData.data.addLessonTags});
+          this.setState({userAlert: '...success! Lesson Tags added...', activityA: requestBody, profileLessonViewerData: resData.data.addLessonTags});
         }
 
         // this.context.selectedLesson = this.state.selectedLesson;
@@ -3161,6 +3307,14 @@ class UserProfile extends Component {
     const lessonId = this.state.profileLessonViewerData._id;
 
     const requirements = event.target.formGridRequirements.value;
+
+    if (
+      requirements.trim().length === 0
+    ) {
+      console.log('blank fields detected.. please check your info and try again..');
+      this.setState({userAlert: 'blank fields detected.. please check your info and try again..'})
+      return
+    }
 
     const requestBody = {
       query: `
@@ -3192,7 +3346,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
-          this.setState({userAlert: responseAlert, activityA: requestBody, profileLessonViewerData: resData.data.addLessonRequirements});
+          this.setState({userAlert: '...success! Lesson requirments added...', activityA: requestBody, profileLessonViewerData: resData.data.addLessonRequirements});
         }
 
         // this.context.selectedLesson = this.state.selectedLesson;
@@ -3216,6 +3370,16 @@ class UserProfile extends Component {
     const imageType = event.target.formGridType.value;
     const imagePath = event.target.formGridPath.value;
     const imagePublic = event.target.formGridPublic.value;
+
+    if (
+      imageName.trim().length === 0 ||
+      imageType.trim().length === 0 ||
+      imagePath.trim().length === 0
+    ) {
+      console.log('blank fields detected.. please check your info and try again..');
+      this.setState({userAlert: 'blank fields detected.. please check your info and try again..'})
+      return
+    }
 
     const requestBody = {
       query: `
@@ -3250,7 +3414,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
-          this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.addLessonImage, activityA: requestBody});
+          this.setState({userAlert: '...succcess! Lesson image added...', profileLessonViewerData: resData.data.addLessonImage, activityA: requestBody});
         }
 
         // this.context.selectedLesson = this.state.selectedLesson;
@@ -3277,6 +3441,16 @@ class UserProfile extends Component {
     const fileSize = event.target.formGridType.value;
     const filePath = event.target.formGridPath.value;
     const filePublic = event.target.formGridPublic.value;
+
+    if (
+      fileName.trim().length === 0 ||
+      fileType.trim().length === 0 ||
+      filePath.trim().length === 0
+    ) {
+      console.log('blank fields detected.. please check your info and try again..');
+      this.setState({userAlert: 'blank fields detected.. please check your info and try again..'})
+      return
+    }
 
     const requestBody = {
       query: `
@@ -3312,7 +3486,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
-          this.setState({userAlert: responseAlert, activityA: requestBody, profileLessonViewerData: resData.data.addLessonFile});
+          this.setState({userAlert: '...success! Lesson file added...', activityA: requestBody, profileLessonViewerData: resData.data.addLessonFile});
         }
 
         // this.context.selectedLesson = this.state.selectedLesson;
@@ -3362,7 +3536,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
-          this.setState({userAlert: responseAlert, activityA: requestBody, profileLessonViewerData: resData.data.addLessonInstructor});
+          this.setState({userAlert: '...success! Lesson instructor added...', activityA: requestBody, profileLessonViewerData: resData.data.addLessonInstructor});
         }
 
         // this.context.selectedLesson = this.state.selectedLesson;

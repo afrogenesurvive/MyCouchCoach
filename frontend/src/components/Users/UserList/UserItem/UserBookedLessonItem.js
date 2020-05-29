@@ -27,6 +27,9 @@ const userBookedLessonItem = props => (
       <Card.Text>
         SubType: {props.lesson.subType}
       </Card.Text>
+      <Card.Text>
+        Public: {props.lesson.public.toString()}
+      </Card.Text>
 
       <Card.Text>
         Session:

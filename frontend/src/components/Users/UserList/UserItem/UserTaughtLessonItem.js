@@ -27,6 +27,9 @@ const userTaughtLessonItem = props => (
       <Card.Text>
         SubType: {props.lesson.subType}
       </Card.Text>
+      <Card.Text>
+        Public: {props.lesson.public.toString()}
+      </Card.Text>
 
       <Button variant="primary" onClick={props.viewLessonDetails.bind(this, {type: 'taught', lesson: props.taughtLesson})}>
         View Details

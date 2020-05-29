@@ -39,7 +39,7 @@ import SessionDetailViewer from './SessionDetailViewer';
 
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import bootstrapPlugin from '@fullcalendar/bootstrap';
+// import bootstrapPlugin from '@fullcalendar/bootstrap';
 import '../calendar.scss'
 
 import './AttachmentViewer.css';
@@ -85,6 +85,7 @@ const ProfileLessonViewer = (props) => {
     }))
   }
   // console.log('beep',props.calendarSession);
+  // console.log('lesson.gallery',lesson.gallery);
 
   return (
 
@@ -129,7 +130,7 @@ const ProfileLessonViewer = (props) => {
               <span className="bold">SubType:</span> {lesson.subType}
             </Card.Text>
             <Card.Text>
-              <span className="bold">Public:</span> {lesson.public}
+              <span className="bold">Public:</span> {lesson.public.toString()}
             </Card.Text>
             <Card.Text>
               <span className="bold">Category:</span> {lesson.category}
@@ -193,14 +194,7 @@ const ProfileLessonViewer = (props) => {
         <Card className="UserDetailCard">
         <Card.Body>
 
-        {props.showSessionState === true && (
-          <FullCalendar
-          defaultView="dayGridMonth"
-          plugins={[dayGridPlugin]}
-          events={lessonCalendarSessions}
-          eventClick={props.viewCalendarSessionDetail}
-          />
-        )}
+
 
         {
           // <SessionDetailViewer
@@ -267,23 +261,35 @@ const ProfileLessonViewer = (props) => {
             New Session
           </Button>
           )}
-          {lesson.sessions !== [] &&
-            props.showSessionState === true && (
-            <LessonSessionList
-            profile
-            isInstructor={isInstructor}
-            lessonSessions={lesson.sessions}
-            editSessionField={props.startEditSessionField}
-            showSessionBooked={props.showSessionBooked}
-            showSessionAttended={props.showSessionAttended}
-            hideSessionBooked={props.hideSessionBooked}
-            hideSessionAttended={props.hideSessionAttended}
-            sessionBookedState={props.sessionBookedState}
-            sessionAttendedState={props.sessionAttendedState}
-            addSessionAttendance={props.addSessionAttendance}
-            cancelSessionBooking={props.cancelSessionBooking}
+
+          {props.showSessionState === true && (
+            <FullCalendar
+            defaultView="dayGridMonth"
+            plugins={[dayGridPlugin]}
+            events={lessonCalendarSessions}
+            eventClick={props.viewCalendarSessionDetail}
             />
           )}
+
+          {
+          //   lesson.sessions !== [] &&
+          //   props.showSessionState === true && (
+          //   <LessonSessionList
+          //   profile
+          //   isInstructor={isInstructor}
+          //   lessonSessions={lesson.sessions}
+          //   editSessionField={props.startEditSessionField}
+          //   showSessionBooked={props.showSessionBooked}
+          //   showSessionAttended={props.showSessionAttended}
+          //   hideSessionBooked={props.hideSessionBooked}
+          //   hideSessionAttended={props.hideSessionAttended}
+          //   sessionBookedState={props.sessionBookedState}
+          //   sessionAttendedState={props.sessionAttendedState}
+          //   addSessionAttendance={props.addSessionAttendance}
+          //   cancelSessionBooking={props.cancelSessionBooking}
+          //   />
+          // )
+          }
           </Col>
 
           {isInstructor === true &&

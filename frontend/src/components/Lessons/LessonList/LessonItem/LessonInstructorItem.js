@@ -9,7 +9,10 @@ const lessonInstructorItem = props => (
     <Card style={{ width: '18rem' }}>
 
     <Card.Body>
-      <Card.Img variant="top" src={props.profileImages[0].path} />
+      {props.profileImages &&
+        props.profileImages.length > 0 && (
+        <Card.Img variant="top" src={props.profileImages[0].path} />
+      )}
       <Card.Text>
       ID: {props._id}
       </Card.Text>
@@ -19,7 +22,8 @@ const lessonInstructorItem = props => (
       <Card.Text>
       socialMedia
       </Card.Text>
-      {props.socialMedia.length > 0 && (
+      {props.socialMedia &&
+        props.socialMedia.length > 0 && (
         <Card.Text>
           {props.socialMedia[0].platform} @ {props.socialMedia[0].handle}
         </Card.Text>

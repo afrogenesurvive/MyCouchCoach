@@ -14,6 +14,7 @@ const userLikedLessonList = props => {
         title={likedLesson.title}
         type={likedLesson.type}
         subType={likedLesson.subType}
+        public={likedLesson.public}
         authId={props.authId}
         onDelete={props.onDelete}
         canDelete={props.canDelete}

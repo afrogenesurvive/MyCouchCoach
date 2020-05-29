@@ -15,6 +15,7 @@ return (
       showSchedule={props.showSchedule}
       showScheduleState={props.showScheduleState}
       hideSchedule={props.hideSchedule}
+      toggleSchedule={props.toggleSchedule}
     />
 
     </div>

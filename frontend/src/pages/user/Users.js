@@ -254,7 +254,7 @@ class UsersPage extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.getAllUsers).slice(0,8);
-          this.setState({userAlert: responseAlert, users: resData.data.getAllUsers, isLoading: false, activityA: requestBody});
+          this.setState({userAlert: '...lesson masterlist retrieved...', users: resData.data.getAllUsers, isLoading: false, activityA: requestBody});
           this.context.users = this.state.users;
         }
 
@@ -294,6 +294,15 @@ class UsersPage extends Component {
     const subject = event.target.formGridSubject.value;
     const message = event.target.formGridMessage.value;
 
+    if (
+      subject.trim().length === 0 ||
+      message.trim().length === 0
+    ) {
+      console.log('blank fields detected.. please check your info and try again..');
+      this.setState({userAlert: 'blank fields detected.. please check your info and try again..'})
+      return
+    }
+
     const requestBody = {
       query: `
         mutation {createMessage(
@@ -330,7 +339,7 @@ class UsersPage extends Component {
         } else {
           // console.log(JSON.stringify(resData.data.createMessage));
           const responseAlert = JSON.stringify(resData.data.createMessage).slice(0,8);
-          this.setState({userAlert: responseAlert, activityA: requestBody});
+          this.setState({userAlert: '...success! Message sent...', activityA: requestBody});
         }
         // this.logUserActivity();
       })
@@ -375,7 +384,7 @@ class UsersPage extends Component {
         this.setState({userAlert: resData.errors[0].message})
       } else {
         const responseAlert = JSON.stringify(resData.data.getUserById).slice(0,8);
-        this.setState({userAlert: responseAlert, selectedUser: resData.data.getUserById, detailsLoaded:true, isLoading: false, activityA: requestBody});
+        this.setState({userAlert: '...success! Lesson details retrieved...', selectedUser: resData.data.getUserById, detailsLoaded:true, isLoading: false, activityA: requestBody});
         this.context.selectedUser = this.state.selectedUser;
       }
 
@@ -437,7 +446,7 @@ onFriendRequest = (args) => {
         } else {
           // console.log(JSON.stringify(resData.data.sendFriendRequest.friendRequests));
           const responseAlert = JSON.stringify(resData.data.sendFriendRequest).slice(0,8);
-          this.setState({userAlert: responseAlert, activityA: requestBody});
+          this.setState({userAlert: '...success! Friend request sent...', activityA: requestBody});
         }
 
       })

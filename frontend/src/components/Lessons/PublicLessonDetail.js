@@ -68,12 +68,17 @@ const PublicLessonDetail = (props) => {
             {lesson.instructors[0].username}
           </Card.Text>
 
-          <Button variant="danger" onClick={props.showSchedule}>
-            See dates
+          <Button variant="danger" onClick={props.toggleSchedule}>
+            Show/Hide Dates
           </Button>
-          <Button variant="danger" onClick={props.hideSchedule}>
-            Hide dates
-          </Button>
+          {
+          //   <Button variant="danger" onClick={props.showSchedule}>
+          //   See dates
+          // </Button>
+          // <Button variant="danger" onClick={props.hideSchedule}>
+          //   Hide dates
+          // </Button>
+          }
           {props.showScheduleState === true && (
             <LessonScheduleList
               lessonSchedule={lesson.schedule}

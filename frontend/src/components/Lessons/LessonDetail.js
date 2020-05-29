@@ -92,6 +92,7 @@ const LessonDetail = (props) => {
     // console.log(calEvent.event);
   }
   // console.log(props.sessionDetailViewer);
+  // console.log('lesson.gallery',lesson.gallery);
 
   return (
     <div className={"UserDetailBox1"}>
@@ -295,7 +296,6 @@ const LessonDetail = (props) => {
           eventClick={props.viewCalendarSessionDetail}
           />
         )}
-
 
         {
         //   props.sessionsLoaded === true && (

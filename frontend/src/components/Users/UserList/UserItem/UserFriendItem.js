@@ -23,6 +23,12 @@ const userFriendItem = props => (
         username: {props.username}
       </Card.Text>
       <Card.Text>
+        role: {props.role}
+      </Card.Text>
+      <Card.Text>
+        DOB: {props.dob}
+      </Card.Text>
+      <Card.Text>
         phone: {props.phone}
       </Card.Text>
       <Card.Text>
@@ -33,6 +39,12 @@ const userFriendItem = props => (
       </Card.Text>
       <Card.Text>
         online: {props.online.toString()}
+      </Card.Text>
+      <Card.Text>
+        public: {props.public.toString()}
+      </Card.Text>
+      <Card.Text>
+        bio: {props.bio}
       </Card.Text>
       {props.socialMedia.length !== 0 && (
       <Card.Text>

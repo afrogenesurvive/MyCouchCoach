@@ -155,7 +155,7 @@ class LessonsPage extends Component {
         } else {
           const responseAlert = JSON.stringify(resData.data.getLessonsByFieldRegex).slice(0,8);
           const searchLessons = resData.data.getLessonsByFieldRegex;
-          this.setState({ searchLessons: searchLessons, userAlert: responseAlert, activityA: requestBody})
+          this.setState({ searchLessons: searchLessons, userAlert: '...success!...', activityA: requestBody})
         }
 
         // this.logUserActivity();
@@ -698,7 +698,7 @@ class LessonsPage extends Component {
           }
           if (resData.data.addLessonBooking !== null) {
             responseAlert = JSON.stringify(resData.data).slice(0,8);
-            this.setState({userAlert: responseAlert, selectedLesson: resData.data.addLessonBooking, isLoading: false, activityA: requestBody});
+            this.setState({userAlert: '...success! Session booked...', selectedLesson: resData.data.addLessonBooking, isLoading: false, activityA: requestBody});
             this.context.selectedLesson = this.state.selectedLesson;
           }
         }

@@ -59,6 +59,8 @@ import CreateLessonForm from '../Forms/lesson/CreateLessonForm';
 import MeetingSessionList from '../Lessons/LessonList/MeetingSessionList';
 import SessionDetailViewer from '../SessionDetailViewer';
 
+import Spinner from '../Spinner/Spinner';
+
 
 
 import './thisUserProfile.css';
@@ -325,6 +327,16 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
       clearFilter
     </Button>
 
+    {props.s3State.target === 'profileImage' &&
+      props.s3State.action === 'upload' &&
+      props.s3State.status === 'inProgress' && (
+        <Spinner />
+    )}
+    {props.s3State.target === 'profileImage' &&
+      props.s3State.action === 'upload' &&
+      props.s3State.status === 'inProgress' && (
+        <p>{props.s3State.target} , {props.s3State.action}  {props.s3State.status}</p>
+    )}
     <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.onStartAdd.bind(this, "profileImage")}>+ Image</Button>
     {props.userAddField === "profileImage" && (
         <AddUserProfileImageForm
@@ -542,10 +554,10 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
     <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'friends', key: 'name', value: 'Descending'})}>
       Filter name: Descending
     </Button>
-    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'friends', key: 'name', value: true})}>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'friends', key: 'public', value: true})}>
       Filter public: true
     </Button>
-    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'friends', key: 'name', value: false})}>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'friends', key: 'public', value: false})}>
       Filter public: false
     </Button>
     <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'friends', key: 'role', value: 'User'})}>
@@ -556,6 +568,12 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
     </Button>
     <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'friends', key: 'role', value: 'Admin'})}>
       Filter role: Admin
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'friends', key: 'online', value: true})}>
+      Filter online: true
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'friends', key: 'loggedIn', value: true})}>
+      Filter logged in: true
     </Button>
     <Button variant="danger" onClick={props.setFilter.bind(this, {field: null, key: null, value: null })}>
       clearFilter
@@ -590,7 +608,28 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
 
     </Tab>
 
-    <Tab eventKey="friendRequests" title="friendRequests">
+    <Tab eventKey="friendRequests" title="Friend Requests">
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'friendRequests', key: 'date', value: 'Ascending'})}>
+      Filter date: Ascending
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'friendRequests', key: 'date', value: 'Descending'})}>
+      Filter date: Descending
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'friendRequests', key: 'sender', value: 'Ascending'})}>
+      Filter sender username: Ascending
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'friendRequests', key: 'sender', value: 'Descending'})}>
+      Filter sender username: Descending
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'friendRequests', key: 'receiver', value: 'Ascending'})}>
+      Filter receiver username: Ascending
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'friendRequests', key: 'receiver', value: 'Descending'})}>
+      Filter receiver username: Descending
+    </Button>
+    <Button variant="danger" onClick={props.setFilter.bind(this, {field: null, key: null, value: null })}>
+      clearFilter
+    </Button>
 
       <Tabs defaultActiveKey="received" id="uncontrolled-tab-example">
         <Tab eventKey="received" title="received">
@@ -666,6 +705,33 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
     </Tab>
 
     <Tab eventKey="likedLessons" title="Lessons: Liked">
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'likedLessons', key: 'title', value: 'Ascending'})}>
+      Filter title: Ascending
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'likedLessons', key: 'title', value: 'Descending'})}>
+      Filter title: Descending
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'likedLessons', key: 'type', value: 'OneTime'})}>
+      Filter type: One Time
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'likedLessons', key: 'type', value: 'Recurring'})}>
+      Filter type: Recurring
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'likedLessons', key: 'subType', value: 'OneDay'})}>
+      Filter Sub-type: One Day
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'likedLessons', key: 'subType', value: 'MultiDay'})}>
+      Filter Sub-type: Multi-day
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'likedLessons', key: 'public', value: true})}>
+      Filter Public: True
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'likedLessons', key: 'public', value: false})}>
+      Filter Public: False
+    </Button>
+    <Button variant="danger" onClick={props.setFilter.bind(this, {field: null, key: null, value: null })}>
+      clearFilter
+    </Button>
 
     {user.likedLessons !== null &&
       user.likedLessons!== [] && (
@@ -682,6 +748,22 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
     </Tab>
 
     <Tab eventKey="bookedLessons" title="Lessons: Booked">
+
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'bookedLessons', key: 'date', value: 'Ascending'})}>
+      Filter Date: Ascending
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'bookedLessons', key: 'date', value: 'Descending'})}>
+      Filter Date: Descending
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'bookedLessons', key: 'title', value: 'Ascending'})}>
+      Filter Title: Ascending
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'bookedLessons', key: 'title', value: 'Descending'})}>
+      Filter Title: Descending
+    </Button>
+    <Button variant="danger" onClick={props.setFilter.bind(this, {field: null, key: null, value: null })}>
+      clearFilter
+    </Button>
 
     {user.bookedLessons !== null &&
       user.bookedLessons!== [] && (
@@ -784,7 +866,7 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
     )}
 
     {user.role === 'Admin' && (
-      <Tab eventKey="newLesson" title="newLesson">
+      <Tab eventKey="newLesson" title="Lessons: New">
       <Button variant="primary" onClick={props.startProfileCreateLesson}>
         Create New Lesson
       </Button>
@@ -831,7 +913,7 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
 
     </Tab>
 
-    <Tab eventKey="messages" title="messages">
+    <Tab eventKey="messages" title="Messages">
 
     <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.onStartCreateMessage}>+ Message</Button>
 
@@ -966,7 +1048,7 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
       <p>zoom mtg create button, dom element etc </p>
     </Tab>
 
-    <Tab eventKey="cancellations" title="cancellations">
+    <Tab eventKey="cancellations" title="Cancellations">
 
     {user.cancellations !== null &&
       user.cancellations !== [] && (
@@ -979,7 +1061,7 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
 
     </Tab>
 
-    <Tab eventKey="activity" title="activity">
+    <Tab eventKey="activity" title="Activity">
 
     {user.activity !== null &&
       user.activity !== [] && (

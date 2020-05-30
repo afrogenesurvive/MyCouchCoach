@@ -217,6 +217,7 @@ const ProfileLessonViewer = (props) => {
         {
           props.calendarSessionDetailViewer === true && (
           <SessionDetailViewer
+          profile
           calendar
           lesson={lesson}
           lessonType={props.lessonType}

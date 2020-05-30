@@ -407,9 +407,11 @@ module.exports = {
     }
     try {
 
-      const pocketVars = JSON.stringify(pocketVariables)
+      // const pocketVars = pocketVariables;
+      const pocketVars = JSON.stringify(pocketVariables);
       // console.log(pocketVariables,pocketVars);
-      return {pocketVariables: pocketVars};
+      // return {pocketVariables: pocketVars};
+      return pocketVars;
     } catch (err) {
       throw err;
     }

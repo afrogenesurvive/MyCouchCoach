@@ -571,7 +571,7 @@ module.exports = buildSchema(`
     login(email: String!, password: String!): AuthData!
     logout( activityId: ID!): User!
 
-    getPocketVars(activityId: ID!): PocketVariables
+    getPocketVars(activityId: ID!): String
 
     getPublicUserById(userId: ID!): User
 

@@ -52,6 +52,20 @@ const userFriendList = props => {
     console.log('propsUserFriends',propsUserFriends);
     console.log('propsUserFriends',props.userFriends);
   }
+  if (filter.field === 'friends' && filter.key === 'online' ) {
+    propsUserFriends = userFriends2.filter(x => x.clientConnected === filter.value)
+    console.log('...filter friend by...'+filter.key+'...'+filter.value);
+    console.log('userFriends2',userFriends2);
+    console.log('propsUserFriends',propsUserFriends);
+    console.log('propsUserFriends',props.userFriends);
+  }
+  if (filter.field === 'friends' && filter.key === 'loggedIn' ) {
+    propsUserFriends = userFriends2.filter(x => x.loggedIn === filter.value)
+    console.log('...filter friend by...'+filter.key+'...'+filter.value);
+    console.log('userFriends2',userFriends2);
+    console.log('propsUserFriends',propsUserFriends);
+    console.log('propsUserFriends',props.userFriends);
+  }
 
   if (filter.field !== 'friends') {
     propsUserFriends = userFriends2;

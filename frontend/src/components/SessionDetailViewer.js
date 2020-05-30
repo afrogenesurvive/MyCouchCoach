@@ -123,9 +123,11 @@ return (
 
     </Card>
 
-    <Button variant="secondary" onClick={props.startAddSessionReminder}>
-      Add Reminder
-    </Button>
+    {props.profile &&(
+      <Button variant="secondary" onClick={props.startAddSessionReminder}>
+        Add Reminder
+      </Button>
+    )}
 
     {props.calendar &&
       props.lessonType === 'booked' && (

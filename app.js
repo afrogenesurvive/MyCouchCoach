@@ -143,7 +143,7 @@ request.get(url, ( error, response, body) => {
   if (body) {
     if (body.slice(0,3) === '{"a') {
       pocketVariables.sendGrid = JSON.parse(body);
-      // console.log('pocketVars',pocketVariables);
+      console.log('pocketVars',pocketVariables);
     }
   }
 
@@ -152,7 +152,7 @@ request.get(url2, ( error, response, body) => {
   if (body) {
     if (body.slice(0,3) === '{"a') {
       pocketVariables.s3 = JSON.parse(body);
-      // console.log('pocketVars',pocketVariables);
+      console.log('pocketVars',pocketVariables);
     }
   }
 

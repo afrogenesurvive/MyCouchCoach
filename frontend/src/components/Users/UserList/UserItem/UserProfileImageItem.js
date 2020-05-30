@@ -19,7 +19,17 @@ const userProfileImageItem = props => (
           </li>
           <li className="cardLi">
           <p className="userItemText">
-          {props.name}
+          Name: {props.name}
+          </p>
+          </li>
+          <li className="cardLi">
+          <p className="userItemText">
+          Type: {props.type}
+          </p>
+          </li>
+          <li className="cardLi">
+          <p className="userItemText">
+          Link: {props.path}
           </p>
           </li>
           <li className="cardLi">

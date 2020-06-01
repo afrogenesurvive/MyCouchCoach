@@ -10,32 +10,32 @@ const userProfileImageList = props => {
 
   if (filter.field === 'profileImages' && filter.key === 'public') {
     propsUserProfileImages = userProfileImages2.filter(x => x.public === filter.value);
-    console.log('...filter profile images by...'+filter.key+'...'+filter.value);
-    console.log('let userProfileImages2',userProfileImages2);
-    console.log('propsUserProfileImages',propsUserProfileImages);
-    console.log('props.userProfileImages',props.userProfileImages);
+    // console.log('...filter profile images by...'+filter.key+'...'+filter.value);
+    // console.log('let userProfileImages2',userProfileImages2);
+    // console.log('propsUserProfileImages',propsUserProfileImages);
+    // console.log('props.userProfileImages',props.userProfileImages);
   }
   if (filter.field === 'profileImages' && filter.key === 'type' && filter.value === 'Ascending') {
     propsUserProfileImages = userProfileImages2.sort((a, b) => (a.type > b.type) ? 1 : -1);
-    console.log('...filter profile images by...'+filter.key+'...'+filter.value);
-    console.log('let userProfileImages2',userProfileImages2);
-    console.log('propsUserProfileImages',propsUserProfileImages);
-    console.log('props.userProfileImages',props.userProfileImages);
+    // console.log('...filter profile images by...'+filter.key+'...'+filter.value);
+    // console.log('let userProfileImages2',userProfileImages2);
+    // console.log('propsUserProfileImages',propsUserProfileImages);
+    // console.log('props.userProfileImages',props.userProfileImages);
   }
   if (filter.field === 'profileImages' && filter.key === 'type' && filter.value === 'Descending') {
     propsUserProfileImages = userProfileImages2.sort((a, b) => (a.type < b.type) ? 1 : -1);
-    console.log('...filter profile images by...'+filter.key+'...'+filter.value);
-    console.log('let userProfileImages2',userProfileImages2);
-    console.log('propsUserProfileImages',propsUserProfileImages);
-    console.log('props.userProfileImages',props.userProfileImages);
+    // console.log('...filter profile images by...'+filter.key+'...'+filter.value);
+    // console.log('let userProfileImages2',userProfileImages2);
+    // console.log('propsUserProfileImages',propsUserProfileImages);
+    // console.log('props.userProfileImages',props.userProfileImages);
   }
 
   if (filter.field !== 'profileImages') {
     propsUserProfileImages = userProfileImages2;
-    console.log('...no profile image filter...'+filter.key+'...'+filter.value);
-    console.log('let userProfileImages2',userProfileImages2);
-    console.log('propsUserProfileImages',propsUserProfileImages);
-    console.log('props.userProfileImages',props.userProfileImages);
+    // console.log('...no profile image filter...'+filter.key+'...'+filter.value);
+    // console.log('let userProfileImages2',userProfileImages2);
+    // console.log('propsUserProfileImages',propsUserProfileImages);
+    // console.log('props.userProfileImages',props.userProfileImages);
   }
 
   const userProfileImages = propsUserProfileImages.map(profileImage => {

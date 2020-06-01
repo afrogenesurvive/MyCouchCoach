@@ -14,10 +14,10 @@ const userAddressList = props => {
     propsUserAddresses = userAddresses.filter(x => x.primary === filter.value);
     // userAddresses = propsUserAddresses;
 
-    console.log('...filter addresses...by...'+filter.key+'...'+filter.value);
-    console.log('let userAddresses',userAddresses);
-    console.log('propsUserAddresses',propsUserAddresses);
-    console.log('props.userAddresses',props.userAddresses);
+    // console.log('...filter addresses...by...'+filter.key+'...'+filter.value);
+    // console.log('let userAddresses',userAddresses);
+    // console.log('propsUserAddresses',propsUserAddresses);
+    // console.log('props.userAddresses',props.userAddresses);
 
     // console.log('...propsUserAddresses...'+propsUserAddresses.length,JSON.stringify(propsUserAddresses));
 
@@ -33,36 +33,36 @@ const userAddressList = props => {
   if (filter.field === 'addresses' && filter.key === 'type') {
     propsUserAddresses = props.userAddresses.filter(x => x.type === filter.value);
 
-    console.log('...filter addresses...by...'+filter.key+'...'+filter.value);
-    console.log('let userAddresses',userAddresses);
-    console.log('propsUserAddresses',propsUserAddresses);
-    console.log('props.userAddresses',props.userAddresses);
+    // console.log('...filter addresses...by...'+filter.key+'...'+filter.value);
+    // console.log('let userAddresses',userAddresses);
+    // console.log('propsUserAddresses',propsUserAddresses);
+    // console.log('props.userAddresses',props.userAddresses);
 
   }
   if (filter.field === 'addresses' && filter.key === 'number' && filter.value === 'Ascending') {
 
     propsUserAddresses = props.userAddresses.sort((a, b) => (a.number > b.number) ? 1 : -1)
 
-    console.log('...filter addresses...by...'+filter.key+'...'+filter.value);
-    console.log('let userAddresses',userAddresses);
-    console.log('propsUserAddresses',propsUserAddresses);
-    console.log('props.userAddresses',props.userAddresses);
+    // console.log('...filter addresses...by...'+filter.key+'...'+filter.value);
+    // console.log('let userAddresses',userAddresses);
+    // console.log('propsUserAddresses',propsUserAddresses);
+    // console.log('props.userAddresses',props.userAddresses);
   }
   if (filter.field === 'addresses' && filter.key === 'number' && filter.value === 'Descending') {
 
     propsUserAddresses = props.userAddresses.sort((a, b) => (a.number < b.number) ? 1 : -1)
 
-    console.log('...filter addresses...by...'+filter.key+'...'+filter.value);
-    console.log('let userAddresses',userAddresses);
-    console.log('propsUserAddresses',propsUserAddresses);
-    console.log('props.userAddresses',props.userAddresses);
+    // console.log('...filter addresses...by...'+filter.key+'...'+filter.value);
+    // console.log('let userAddresses',userAddresses);
+    // console.log('propsUserAddresses',propsUserAddresses);
+    // console.log('props.userAddresses',props.userAddresses);
   }
   if (filter.field !== 'addresses') {
 
-    console.log('...no address filter...'+filter.key+'...'+filter.value);
-    console.log('let userAddresses',userAddresses);
-    console.log('propsUserAddresses',propsUserAddresses);
-    console.log('props.userAddresses',props.userAddresses);
+    // console.log('...no address filter...'+filter.key+'...'+filter.value);
+    // console.log('let userAddresses',userAddresses);
+    // console.log('propsUserAddresses',propsUserAddresses);
+    // console.log('props.userAddresses',props.userAddresses);
 
     // userAddresses = props.userAddresses;
     propsUserAddresses = userAddresses;

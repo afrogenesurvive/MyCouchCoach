@@ -11,25 +11,25 @@ const userSocialMediaList = props => {
 
   if (filter.field === 'socialMedia' && filter.key === 'platform' && filter.value === 'Ascending') {
     propsUserSocialMedia = userSocialMedia2.sort((a, b) => (a.platform > b.platform) ? 1 : -1);
-    console.log('...filter social media...by...'+filter.key+'...'+filter.value);
-    console.log('userSocialMedia2',userSocialMedia2);
-    console.log('propsUserSocialMedia',propsUserSocialMedia);
-    console.log('props.userSocialMedia',props.userSocialMedia);
+    // console.log('...filter social media...by...'+filter.key+'...'+filter.value);
+    // console.log('userSocialMedia2',userSocialMedia2);
+    // console.log('propsUserSocialMedia',propsUserSocialMedia);
+    // console.log('props.userSocialMedia',props.userSocialMedia);
   }
   if (filter.field === 'socialMedia' && filter.key === 'platform' && filter.value === 'Descending') {
     propsUserSocialMedia = userSocialMedia2.sort((a, b) => (a.platform < b.platform) ? 1 : -1);
-    console.log('...filter social media...by...'+filter.key+'...'+filter.value);
-    console.log('userSocialMedia2',userSocialMedia2);
-    console.log('propsUserSocialMedia',propsUserSocialMedia);
-    console.log('props.userSocialMedia',props.userSocialMedia);
+    // console.log('...filter social media...by...'+filter.key+'...'+filter.value);
+    // console.log('userSocialMedia2',userSocialMedia2);
+    // console.log('propsUserSocialMedia',propsUserSocialMedia);
+    // console.log('props.userSocialMedia',props.userSocialMedia);
   }
 
   if (filter.field !== 'socialMedia') {
     propsUserSocialMedia = userSocialMedia2;
-    console.log('...no profile Image filter...'+filter.key+'...'+filter.value);
-    console.log('userSocialMedia2',userSocialMedia2);
-    console.log('propsUserSocialMedia',propsUserSocialMedia);
-    console.log('props.userSocialMedia',props.userSocialMedia);
+    // console.log('...no profile Image filter...'+filter.key+'...'+filter.value);
+    // console.log('userSocialMedia2',userSocialMedia2);
+    // console.log('propsUserSocialMedia',propsUserSocialMedia);
+    // console.log('props.userSocialMedia',props.userSocialMedia);
   }
 
   const userSocialMedia = propsUserSocialMedia.map(socialMediaAccount => {

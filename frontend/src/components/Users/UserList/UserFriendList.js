@@ -12,67 +12,67 @@ const userFriendList = props => {
 
   if (filter.field === 'friends' && filter.key === 'username' && filter.value === 'Ascending') {
     propsUserFriends = userFriends2.sort((a, b) => (a.username < b.username) ? 1 : -1);
-    console.log('...filter friend by...'+filter.key+'...'+filter.value);
-    console.log('userFriends2',userFriends2);
-    console.log('propsUserFriends',propsUserFriends);
-    console.log('propsUserFriends',props.userFriends);
+    // console.log('...filter friend by...'+filter.key+'...'+filter.value);
+    // console.log('userFriends2',userFriends2);
+    // console.log('propsUserFriends',propsUserFriends);
+    // console.log('propsUserFriends',props.userFriends);
   }
   if (filter.field === 'friends' && filter.key === 'username' && filter.value === 'Descending') {
     propsUserFriends = userFriends2.sort((a, b) => (a.username > b.username) ? 1 : -1);
-    console.log('...filter friend by...'+filter.key+'...'+filter.value);
-    console.log('userFriends2',userFriends2);
-    console.log('propsUserFriends',propsUserFriends);
-    console.log('propsUserFriends',props.userFriends);
+    // console.log('...filter friend by...'+filter.key+'...'+filter.value);
+    // console.log('userFriends2',userFriends2);
+    // console.log('propsUserFriends',propsUserFriends);
+    // console.log('propsUserFriends',props.userFriends);
   }
   if (filter.field === 'friends' && filter.key === 'name' && filter.value === 'Ascending') {
     propsUserFriends = userFriends2.sort((a, b) => (a.name < b.name) ? 1 : -1);
-    console.log('...filter friend by...'+filter.key+'...'+filter.value);
-    console.log('userFriends2',userFriends2);
-    console.log('propsUserFriends',propsUserFriends);
-    console.log('propsUserFriends',props.userFriends);
+    // console.log('...filter friend by...'+filter.key+'...'+filter.value);
+    // console.log('userFriends2',userFriends2);
+    // console.log('propsUserFriends',propsUserFriends);
+    // console.log('propsUserFriends',props.userFriends);
   }
   if (filter.field === 'friends' && filter.key === 'name' && filter.value === 'Descending') {
     propsUserFriends = userFriends2.sort((a, b) => (a.name > b.name) ? 1 : -1);
-    console.log('...filter friend by...'+filter.key+'...'+filter.value);
-    console.log('userFriends2',userFriends2);
-    console.log('propsUserFriends',propsUserFriends);
-    console.log('propsUserFriends',props.userFriends);
+    // console.log('...filter friend by...'+filter.key+'...'+filter.value);
+    // console.log('userFriends2',userFriends2);
+    // console.log('propsUserFriends',propsUserFriends);
+    // console.log('propsUserFriends',props.userFriends);
   }
   if (filter.field === 'friends' && filter.key === 'public' ) {
     propsUserFriends = userFriends2.filter(x => x.public === filter.value)
-    console.log('...filter friend by...'+filter.key+'...'+filter.value);
-    console.log('userFriends2',userFriends2);
-    console.log('propsUserFriends',propsUserFriends);
-    console.log('propsUserFriends',props.userFriends);
+    // console.log('...filter friend by...'+filter.key+'...'+filter.value);
+    // console.log('userFriends2',userFriends2);
+    // console.log('propsUserFriends',propsUserFriends);
+    // console.log('propsUserFriends',props.userFriends);
   }
   if (filter.field === 'friends' && filter.key === 'role' ) {
     propsUserFriends = userFriends2.filter(x => x.role === filter.value)
-    console.log('...filter friend by...'+filter.key+'...'+filter.value);
-    console.log('userFriends2',userFriends2);
-    console.log('propsUserFriends',propsUserFriends);
-    console.log('propsUserFriends',props.userFriends);
+    // console.log('...filter friend by...'+filter.key+'...'+filter.value);
+    // console.log('userFriends2',userFriends2);
+    // console.log('propsUserFriends',propsUserFriends);
+    // console.log('propsUserFriends',props.userFriends);
   }
   if (filter.field === 'friends' && filter.key === 'online' ) {
     propsUserFriends = userFriends2.filter(x => x.clientConnected === filter.value)
-    console.log('...filter friend by...'+filter.key+'...'+filter.value);
-    console.log('userFriends2',userFriends2);
-    console.log('propsUserFriends',propsUserFriends);
-    console.log('propsUserFriends',props.userFriends);
+    // console.log('...filter friend by...'+filter.key+'...'+filter.value);
+    // console.log('userFriends2',userFriends2);
+    // console.log('propsUserFriends',propsUserFriends);
+    // console.log('propsUserFriends',props.userFriends);
   }
   if (filter.field === 'friends' && filter.key === 'loggedIn' ) {
     propsUserFriends = userFriends2.filter(x => x.loggedIn === filter.value)
-    console.log('...filter friend by...'+filter.key+'...'+filter.value);
-    console.log('userFriends2',userFriends2);
-    console.log('propsUserFriends',propsUserFriends);
-    console.log('propsUserFriends',props.userFriends);
+    // console.log('...filter friend by...'+filter.key+'...'+filter.value);
+    // console.log('userFriends2',userFriends2);
+    // console.log('propsUserFriends',propsUserFriends);
+    // console.log('propsUserFriends',props.userFriends);
   }
 
   if (filter.field !== 'friends') {
     propsUserFriends = userFriends2;
-    console.log('...no friend filter...'+filter.key+'...'+filter.value);
-    console.log('userFriends2',userFriends2);
-    console.log('propsUserFriends',propsUserFriends);
-    console.log('propsUserFriends',props.userFriends);
+    // console.log('...no friend filter...'+filter.key+'...'+filter.value);
+    // console.log('userFriends2',userFriends2);
+    // console.log('propsUserFriends',propsUserFriends);
+    // console.log('propsUserFriends',props.userFriends);
   }
 
   const userFriends = propsUserFriends.map(friend => {

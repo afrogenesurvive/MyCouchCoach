@@ -10,7 +10,7 @@ const userBookedLessonList = props => {
   let propsUserBookedLessons = [];
 
   if (filter.field === 'bookedLessons' && filter.key === 'date' && filter.value === 'Ascending') {
-    propsUserBookedLessons = userBookedLessons2.sort((a, b) => (new Date(a.date.substr(0,10)*1000).toISOString().slice(0,10) < new Date(b.date.substr(0,10)*1000).toISOString().slice(0,10)) ? 1 : -1);
+    propsUserBookedLessons = userBookedLessons2.sort((a, b) => (a.date < b.date) ? 1 : -1);
     console.log('...filter bookedLesson by...'+filter.key+'...'+filter.value);
     console.log('userBookedLessons2',userBookedLessons2);
     console.log('propsUserBookedLessons',propsUserBookedLessons);

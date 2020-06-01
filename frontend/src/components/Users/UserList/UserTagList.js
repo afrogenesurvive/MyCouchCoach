@@ -11,24 +11,24 @@ const userTagList = props => {
 
   if (filter.field === 'tags' && filter.key === 'tag' && filter.value === 'Ascending') {
     propsUserTags = userTags2.sort((a, b) => (a < b) ? 1 : -1);
-    console.log('...no tag filter...'+filter.key+'...'+filter.value);
-    console.log('userTags2',userTags2);
-    console.log('propsUserTags',propsUserTags);
-    console.log('propsUserTags',propsUserTags);
+    // console.log('...no tag filter...'+filter.key+'...'+filter.value);
+    // console.log('userTags2',userTags2);
+    // console.log('propsUserTags',propsUserTags);
+    // console.log('propsUserTags',propsUserTags);
   }
   if (filter.field === 'tags' && filter.key === 'tag' && filter.value === 'Descending') {
     propsUserTags = userTags2.sort((a, b) => (a > b) ? 1 : -1);
-    console.log('...no tag filter...'+filter.key+'...'+filter.value);
-    console.log('userTags2',userTags2);
-    console.log('propsUserTags',propsUserTags);
-    console.log('propsUserTags',propsUserTags);
+    // console.log('...no tag filter...'+filter.key+'...'+filter.value);
+    // console.log('userTags2',userTags2);
+    // console.log('propsUserTags',propsUserTags);
+    // console.log('propsUserTags',propsUserTags);
   }
   if (filter.field !== 'tags') {
     propsUserTags = userTags2;
-    console.log('...no tag filter...'+filter.key+'...'+filter.value);
-    console.log('userTags2',userTags2);
-    console.log('propsUserTags',propsUserTags);
-    console.log('propsUserTags',propsUserTags);
+    // console.log('...no tag filter...'+filter.key+'...'+filter.value);
+    // console.log('userTags2',userTags2);
+    // console.log('propsUserTags',propsUserTags);
+    // console.log('propsUserTags',propsUserTags);
   }
 
   const userTags = propsUserTags.map(tag => {

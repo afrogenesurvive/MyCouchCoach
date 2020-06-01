@@ -11,53 +11,53 @@ const userFriendRequestList = props => {
 
   if (filter.field === 'friendRequests' && filter.key === 'date' && filter.value === 'Ascending') {
     propsUserFriendRequests = userFriendRequests2.sort((a, b) => (a.date > b.date) ? 1 : -1);
-    console.log('...filter friendRequests...by...'+filter.key+'...'+filter.value);
-    console.log('userFriendRequests2',userFriendRequests2);
-    console.log('propsUserFriendRequests',propsUserFriendRequests);
-    console.log('props.userFriendRequests',props.userFriendRequests);
+    // console.log('...filter friendRequests...by...'+filter.key+'...'+filter.value);
+    // console.log('userFriendRequests2',userFriendRequests2);
+    // console.log('propsUserFriendRequests',propsUserFriendRequests);
+    // console.log('props.userFriendRequests',props.userFriendRequests);
   }
   if (filter.field === 'friendRequests' && filter.key === 'date' && filter.value === 'Descending') {
     propsUserFriendRequests = userFriendRequests2.sort((a, b) => (a.date < b.date) ? 1 : -1);
-    console.log('...filter friendRequests...by...'+filter.key+'...'+filter.value);
-    console.log('userFriendRequests2',userFriendRequests2);
-    console.log('propsUserFriendRequests',propsUserFriendRequests);
-    console.log('props.userFriendRequests',props.userFriendRequests);
+    // console.log('...filter friendRequests...by...'+filter.key+'...'+filter.value);
+    // console.log('userFriendRequests2',userFriendRequests2);
+    // console.log('propsUserFriendRequests',propsUserFriendRequests);
+    // console.log('props.userFriendRequests',props.userFriendRequests);
   }
   if (filter.field === 'friendRequests' && filter.key === 'sender' && filter.value === 'Ascending') {
     propsUserFriendRequests = userFriendRequests2.sort((a, b) => (a.sender.username > b.sender.username) ? 1 : -1);
-    console.log('...filter friendRequests...by...'+filter.key+'...'+filter.value);
-    console.log('userFriendRequests2',userFriendRequests2);
-    console.log('propsUserFriendRequests',propsUserFriendRequests);
-    console.log('props.userFriendRequests',props.userFriendRequests);
+    // console.log('...filter friendRequests...by...'+filter.key+'...'+filter.value);
+    // console.log('userFriendRequests2',userFriendRequests2);
+    // console.log('propsUserFriendRequests',propsUserFriendRequests);
+    // console.log('props.userFriendRequests',props.userFriendRequests);
   }
   if (filter.field === 'friendRequests' && filter.key === 'sender' && filter.value === 'Descending') {
     propsUserFriendRequests = userFriendRequests2.sort((a, b) => (a.sender.username < b.sender.username) ? 1 : -1);
-    console.log('...filter friendRequests...by...'+filter.key+'...'+filter.value);
-    console.log('userFriendRequests2',userFriendRequests2);
-    console.log('propsUserFriendRequests',propsUserFriendRequests);
-    console.log('props.userFriendRequests',props.userFriendRequests);
+    // console.log('...filter friendRequests...by...'+filter.key+'...'+filter.value);
+    // console.log('userFriendRequests2',userFriendRequests2);
+    // console.log('propsUserFriendRequests',propsUserFriendRequests);
+    // console.log('props.userFriendRequests',props.userFriendRequests);
   }
   if (filter.field === 'friendRequests' && filter.key === 'receiver' && filter.value === 'Ascending') {
     propsUserFriendRequests = userFriendRequests2.sort((a, b) => (a.receiver.username > b.receiver.username) ? 1 : -1);
-    console.log('...filter friendRequests...by...'+filter.key+'...'+filter.value);
-    console.log('userFriendRequests2',userFriendRequests2);
-    console.log('propsUserFriendRequests',propsUserFriendRequests);
-    console.log('props.userFriendRequests',props.userFriendRequests);
+    // console.log('...filter friendRequests...by...'+filter.key+'...'+filter.value);
+    // console.log('userFriendRequests2',userFriendRequests2);
+    // console.log('propsUserFriendRequests',propsUserFriendRequests);
+    // console.log('props.userFriendRequests',props.userFriendRequests);
   }
   if (filter.field === 'friendRequests' && filter.key === 'receiver' && filter.value === 'Descending') {
     propsUserFriendRequests = userFriendRequests2.sort((a, b) => (a.receiver.username < b.receiver.username) ? 1 : -1);
-    console.log('...filter friendRequests...by...'+filter.key+'...'+filter.value);
-    console.log('userFriendRequests2',userFriendRequests2);
-    console.log('propsUserFriendRequests',propsUserFriendRequests);
-    console.log('props.userFriendRequests',props.userFriendRequests);
+    // console.log('...filter friendRequests...by...'+filter.key+'...'+filter.value);
+    // console.log('userFriendRequests2',userFriendRequests2);
+    // console.log('propsUserFriendRequests',propsUserFriendRequests);
+    // console.log('props.userFriendRequests',props.userFriendRequests);
   }
 
   if (filter.field !== 'friendRequests') {
     propsUserFriendRequests = userFriendRequests2;
-    console.log('...no friendRequest filter...'+filter.key+'...'+filter.value);
-    console.log('userFriendRequests2',userFriendRequests2);
-    console.log('propsUserFriendRequests',propsUserFriendRequests);
-    console.log('props.userFriendRequests',props.userFriendRequests);
+    // console.log('...no friendRequest filter...'+filter.key+'...'+filter.value);
+    // console.log('userFriendRequests2',userFriendRequests2);
+    // console.log('propsUserFriendRequests',propsUserFriendRequests);
+    // console.log('props.userFriendRequests',props.userFriendRequests);
   }
 
   const userFriendRequests = propsUserFriendRequests.map(friendRequest=> {

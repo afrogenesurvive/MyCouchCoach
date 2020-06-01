@@ -78,16 +78,7 @@ if (user.friendRequests !== []) {
   sentRequests = user.friendRequests.filter(request => request.sender._id === user._id);
   receivedRequests = user.friendRequests.filter(request => request.receiver._id === user._id);
 }
-// console.log('sentRequests',sentRequests,'receivedRequests',receivedRequests);
-// const publicUser = user.public.toString();
-// const today = new Date().toLocaleDateString().slice(0,10);
-// const today2 = new Date(today);
 
-// console.log('today',today2,user.bookedLessons.map(x=> console.log(x.date)));
-// console.log('today',today,user.bookedLessons.filter(x=> x.date === today ));
-// get todays booked lessons, filter for sessions today, result = meeting list, to each, add get session and if isInstructor, update session componts & reqs
-
-// const bookedLessonSessions = user.bookedLessons
 let messagesSent = [];
 let messagesReceived = [];
 messagesSent = user.messages.filter(x => x.sender._id === props.authId);
@@ -98,50 +89,6 @@ let hasShippingAddress = user.addresses.filter(x => x.type === 'Shipping' && x.p
 // console.log(user.addresses,user.addresses.filter(x => x.type === 'Shipping'),hasShippingAddress);
 
 let userAddresses = user.addresses;
-
-// const setFilter2 = (args) => {
-//   console.log('...setFilter2...',args);
-//   if (args.key === 'primary') {
-//     let test2 = userAddresses.filter(x => x.primary === true)
-//     userAddresses = test2;
-//     console.log(user.addresses,userAddresses,test2,args.value);
-//   }
-//   if (args.key === 'type') {
-//     let test2 = userAddresses.filter(x => x.type === args.value)
-//     userAddresses = test2;
-//     console.log(user.addresses,userAddresses,test2,args.value);
-//   }
-// }
-
-
-// - filters
-//   - address
-//     - type
-//     - primary
-//   - friend
-//     -
-//   - message
-//     - asc/desc by date
-//     - by sender/receiver name
-//   - likedlesson
-//     - title
-//   - bookedLesson/attendedLesson/taughtLesson/wishlist
-//     - date
-//     - lesson title
-//   - order
-//     - date
-//   - paymentinfo
-//     - date
-//     - Type
-//     - valid
-//     - primary
-//   - friendRequests
-//     - date
-//     - sender/receiver name
-//   - review
-//     - date
-//     - lesson title
-
 
 const orderSubtotal = user.cart.map(x => x.lesson);
 const orderSubtotal2 = orderSubtotal.map(x => x.price )

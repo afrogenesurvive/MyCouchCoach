@@ -20,6 +20,7 @@ const { pocketVariables } = require('../../helpers/pocketVars');
 
 const mailjet = require ('node-mailjet')
 .connect(pocketVariables.mailjet.a, pocketVariables.mailjet.b)
+const AWS = require('aws-sdk');
 
 module.exports = {
   getAllPublicLessons: async () => {
@@ -1417,6 +1418,26 @@ module.exports = {
         path: args.lessonInput.imagePath,
         public: args.lessonInput.imagePublic,
       };
+
+      const filePath = 'lessons/'+preLesson._id+'/gallery/';
+      // console.log('delete key',filePath+args.userInput.profileImageName);
+      const s3 = new AWS.S3({
+        accessKeyId: pocketVariables.s3.a,
+        secretAccessKey: pocketVariables.s3.b,
+      });
+
+      const params = {
+          Bucket: 'mycouchcoachstorage',
+          Key: filePath+image.name
+      };
+
+      s3.deleteObject(params, (error, data) => {
+        if (error) {
+          console.log('error:',error);
+        }
+        console.log("File has been deleted successfully...data",data);
+      });
+
         const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {gallery: image}},{new: true, useFindAndModify: false})
         .populate('instructors')
         .populate('attendees')
@@ -1608,6 +1629,26 @@ module.exports = {
         path: args.lessonInput.filePath,
         public: args.lessonInput.filePublic,
       };
+
+      const filePath = 'lessons/'+preLesson._id+'/files/';
+      // console.log('delete key',filePath+args.userInput.profileImageName);
+      const s3 = new AWS.S3({
+        accessKeyId: pocketVariables.s3.a,
+        secretAccessKey: pocketVariables.s3.b,
+      });
+
+      const params = {
+          Bucket: 'mycouchcoachstorage',
+          Key: filePath+file.name
+      };
+
+      s3.deleteObject(params, (error, data) => {
+        if (error) {
+          console.log('error:',error);
+        }
+        console.log("File has been deleted successfully...data",data);
+      });
+
         const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {files: file}},{new: true, useFindAndModify: false})
         .populate('instructors')
         .populate('attendees')

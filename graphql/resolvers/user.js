@@ -21,6 +21,8 @@ const mailjet = require ('node-mailjet')
 .connect(pocketVariables.mailjet.a, pocketVariables.mailjet.b)
 
 const sgMail = require('@sendgrid/mail');
+// const S3 = require('aws-sdk/clients/s3');
+const AWS = require('aws-sdk');
 
 module.exports = {
   testEmail: async () => {
@@ -1735,7 +1737,7 @@ module.exports = {
       };
       const preUserImages = preUser.profileImages.map(x => x.name);
       const imageExists = preUserImages.includes(profileImage.name);
-      console.log('preUserImages',preUserImages,'imageExists',imageExists);
+      // console.log('preUserImages',preUserImages,'imageExists',imageExists);
       if (imageExists === true ) {
         console.log('...um no! an image with that name exists already...');
         throw new Error('...um no! an image with that name exists already...');
@@ -1820,6 +1822,7 @@ module.exports = {
       throw new Error('Unauthenticated!');
     }
     try {
+
       const activityUser = await User.findById({_id: args.activityId});
       if (activityUser.role !== "Admin" && args.activityId !== args.userId) {
         throw new Error("Yaah.. No! Only the owner or Admin can delete a User ProfileImage");
@@ -1830,6 +1833,27 @@ module.exports = {
         path:args.userInput.profileImagePath,
         public:args.userInput.profileImagePublic,
       };
+
+      const filePath = 'users/'+args.activityId+'/profileImages/';
+      // console.log('delete key',filePath+args.userInput.profileImageName);
+      const s3 = new AWS.S3({
+        accessKeyId: pocketVariables.s3.a,
+        secretAccessKey: pocketVariables.s3.b,
+      });
+
+      const params = {
+          Bucket: 'mycouchcoachstorage',
+          Key: filePath+args.userInput.profileImageName
+      };
+
+      s3.deleteObject(params, (error, data) => {
+        if (error) {
+          // console.log('error:',error);
+        }
+        // console.log("File has been deleted successfully...data",data);
+      });
+
+
         const user = await User.findOneAndUpdate({_id:args.userId},{$pull: { 'profileImages': profileImage }},{new: true, useFindAndModify: false})
         .populate('perks')
         .populate('promos')

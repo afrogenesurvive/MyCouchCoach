@@ -333,11 +333,13 @@ const LessonDetail = (props) => {
             <Button variant="danger" onClick={props.toggleRequirements}>
               Show/Hide
             </Button>
-            {isInstructor === true && (
-            <Button variant="danger" onClick={props.startLessonAdd.bind(this, 'requirements')}>
-              Add
-            </Button>
-            )}
+            {
+            //   isInstructor === true && (
+            // <Button variant="danger" onClick={props.startLessonAdd.bind(this, 'requirements')}>
+            //   Add
+            // </Button>
+            // )
+          }
             {props.lessonAddField === 'requirements' && (
               <AddLessonRequirementsForm
               authId={props.authId}
@@ -363,11 +365,13 @@ const LessonDetail = (props) => {
             <Button variant="danger" onClick={props.toggleMaterials}>
               Show/Hide
             </Button>
-            {isInstructor === true && (
-            <Button variant="danger" onClick={props.startLessonAdd.bind(this, 'materials')}>
-              Add
-            </Button>
-            )}
+            {
+            //   isInstructor === true && (
+            // <Button variant="danger" onClick={props.startLessonAdd.bind(this, 'materials')}>
+            //   Add
+            // </Button>
+            // )
+          }
             {props.lessonAddField === 'materials' && (
               <AddLessonMaterialsForm
               authId={props.authId}
@@ -402,11 +406,13 @@ const LessonDetail = (props) => {
             <Button variant="danger" onClick={props.toggleImages}>
               Show/Hide
             </Button>
-            {isInstructor === true && (
-            <Button variant="danger" onClick={props.startLessonAdd.bind(this, 'images')}>
-              Add
-            </Button>
-            )}
+            {
+            //   isInstructor === true && (
+            // <Button variant="danger" onClick={props.startLessonAdd.bind(this, 'images')}>
+            //   Add
+            // </Button>
+            // )
+          }
             {props.lessonAddField === 'images' && (
               <AddLessonImageForm
               authId={props.authId}
@@ -446,12 +452,14 @@ const LessonDetail = (props) => {
               Select an Instructor to Add
             </Button>
             )}
-            {isInstructor === true &&
-              JSON.stringify(props.selectedInstructor) !== "{}" && (
-            <Button variant="danger" onClick={props.startLessonAdd.bind(this, 'instructors')}>
-              Add
-            </Button>
-            )}
+            {
+            //   isInstructor === true &&
+            //   JSON.stringify(props.selectedInstructor) !== "{}" && (
+            // <Button variant="danger" onClick={props.startLessonAdd.bind(this, 'instructors')}>
+            //   Add
+            // </Button>
+            // )
+          }
             {props.lessonAddField === 'instructors' &&  (
               <AddLessonInstructorForm
               selectedInstructor={props.selectedInstructor}
@@ -485,11 +493,13 @@ const LessonDetail = (props) => {
           <Button variant="danger" onClick={props.toggleTags}>
             Show/Hide
           </Button>
-          {isInstructor === true && (
-          <Button variant="danger" onClick={props.startLessonAdd.bind(this, 'tags')}>
-            Add
-          </Button>
-          )}
+          {
+          //   isInstructor === true && (
+          // <Button variant="danger" onClick={props.startLessonAdd.bind(this, 'tags')}>
+          //   Add
+          // </Button>
+          // )
+        }
           {props.lessonAddField === 'tags' && (
             <AddLessonTagsForm
             authId={props.authId}

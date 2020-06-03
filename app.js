@@ -4,6 +4,9 @@ const graphqlHttp = require('express-graphql');
 const graphQlSchema = require('./graphql/schema/index');
 const graphQlResolvers = require('./graphql/resolvers/index');
 
+const dotenv = require("dotenv");
+dotenv.config();
+
 const { pocketVariables } = require('./helpers/pocketVars');
 
 let xmlParser = require('xml-js');
@@ -18,6 +21,8 @@ const https = require("https");
 const io = require('socket.io')(server);
 const User = require('./models/user');
 
+const MY_APP_SECRET = process.env.APP_SECRET;
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -30,6 +35,30 @@ app.use((req, res, next) => {
   }
   next();
 });
+
+const url = 'https://mycouchcoachstorage.s3.amazonaws.com/assets/creds/sendgrid/sendGridApi.txt';
+const url2 = 'https://mycouchcoachstorage.s3.amazonaws.com/assets/creds/s3/s3.txt';
+const url3 = 'https://mycouchcoachstorage.s3.amazonaws.com/assets/creds/atlas/atlas.txt';
+
+request.get(url, ( error, response, body) => {
+  if (body) {
+    if (body.slice(0,3) === '{"a') {
+      pocketVariables.sendGrid = JSON.parse(body);
+      // console.log('pocketVars',pocketVariables);
+    }}});
+request.get(url2, ( error, response, body) => {
+  if (body) {
+    if (body.slice(0,3) === '{"a') {
+      pocketVariables.s3 = JSON.parse(body);
+      // console.log('pocketVars',pocketVariables);
+    }}});
+request.get(url3, ( error, response, body) => {
+  if (body) {
+    if (body.slice(0,3) === '{"a') {
+      pocketVariables.atlas = JSON.parse(body);
+      // console.log('pocketVars',pocketVariables);
+    }}});
+
 app.use(isAuth);
 
 app.use(
@@ -40,7 +69,7 @@ app.use(
     graphiql: true
   })
 );
-// mongoose.connect("mongodb+srv://profBlack:FoiH8muN5lZAWdNT@cluster0-knrho.mongodb.net/test?retryWrites=true&w=majority",
+// mongoose.connect(`mongodb+srv://${pocketVariables.atlas.a}:${pocketVariables.atlas.b}@{pocketVariables.atlas.c}/test?retryWrites=true&w=majority`,
 mongoose.connect('mongodb://localhost:27017/my_couch_coach',
 {useNewUrlParser: true, useUnifiedTopology: true})
   .then(() => {
@@ -129,31 +158,4 @@ app.use(
 app.get('/*', function(req, res) {
   // res.send("Hello World!");
   res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
-});
-
-const url = 'https://mycouchcoachstorage.s3.amazonaws.com/assets/creds/sendgrid/sendGridApi.txt';
-const url2 = 'https://mycouchcoachstorage.s3.amazonaws.com/assets/creds/s3/s3.txt';
-
-request.get(url, ( error, response, body) => {
-  // body = xmlParser.xml2json(body, {compact: true, spaces: 4})
-  // console.log('beep',body.slice(0,3));
-  // console.log('beep',body.slice(0,3) === '<?x');
-  // console.log('boop',body.slice(0,3) === '{"a');
-  // console.log(error,response);
-  if (body) {
-    if (body.slice(0,3) === '{"a') {
-      pocketVariables.sendGrid = JSON.parse(body);
-      console.log('pocketVars',pocketVariables);
-    }
-  }
-
-});
-request.get(url2, ( error, response, body) => {
-  if (body) {
-    if (body.slice(0,3) === '{"a') {
-      pocketVariables.s3 = JSON.parse(body);
-      console.log('pocketVars',pocketVariables);
-    }
-  }
-
 });

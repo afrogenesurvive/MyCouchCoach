@@ -791,7 +791,7 @@ class UserProfile extends Component {
     }
 
     this.getPocketVars();
-    console.log('this.state.pocketVars',this.state.pocketVars);
+    // console.log('this.state.pocketVars',this.state.pocketVars);
 
     if (
         event.target.fileInput.value !== ""
@@ -815,6 +815,8 @@ class UserProfile extends Component {
         bucketName: 'mycouchcoachstorage',
         dirName: filePath,
         region: 'us-east-1',
+        // accessKeyId: this.state.pocketVars.s3.a,
+        // secretAccessKey: this.state.pocketVars.s3.b,
         accessKeyId: 'AKIATRFHYKEQBA5KVVZM',
         secretAccessKey: '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',
         s3Url: 'https://mycouchcoachstorage.s3.amazonaws.com',
@@ -887,7 +889,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.addUserProfileImage).slice(2,25);
-          this.setState({userAlert: '...success! Profile image added...', user: resData.data.addUserProfileImage, activityA: JSON.stringify(requestBody)})
+          this.setState({userAlert: '...success! Profile image added...', user: resData.data.addUserProfileImage, activityA: JSON.stringify(requestBody), pocketVars: null})
           this.context.user = this.state.user;
         }
 
@@ -962,51 +964,51 @@ class UserProfile extends Component {
     const profileImagePublic = args.public;
 
     const fileName = profileImageName;
-    const filePath = 'users/'+userId+'/profileImages/';
-    console.log('fileName',fileName,'filePath',filePath);
+    // const filePath = 'users/'+userId+'/profileImages/';
+    // console.log('fileName',fileName,'filePath',filePath);
+    //
+    // const config = {
+    //   bucketName: 'mycouchcoachstorage',
+    //   dirName: filePath,
+    //   // region: 'us-east-1',
+    //   accessKeyId: 'AKIATRFHYKEQBA5KVVZM',
+    //   secretAccessKey: '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',
+    //   s3Url: 'https://mycouchcoachstorage.s3.amazonaws.com/',
+    // }
+    // const ReactS3Client = new S3(config);
+    // this.setState({
+    //   userAlert: "deleting image ...",
+    //   s3State:  {
+    //     action: 'delete',
+    //     target: 'profileImage',
+    //     status: 'inProgress'
+    //   }
+    // });
 
-    const config = {
-      bucketName: 'mycouchcoachstorage',
-      dirName: filePath,
-      // region: 'us-east-1',
-      accessKeyId: 'AKIATRFHYKEQBA5KVVZM',
-      secretAccessKey: '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',
-      s3Url: 'https://mycouchcoachstorage.s3.amazonaws.com/',
-    }
-    const ReactS3Client = new S3(config);
-    this.setState({
-      userAlert: "deleting image ...",
-      s3State:  {
-        action: 'delete',
-        target: 'profileImage',
-        status: 'inProgress'
-      }
-    });
-
-    ReactS3Client
-        .deleteFile(fileName)
-        .then(data => {
-          console.log("... delete success!",data);
-          this.setState({
-            userAlert: "...delete success!",
-            s3State:  {
-              action: 'delete',
-              target: 'profileImage',
-              status: 'complete'
-            }
-          });
-        })
-        .catch(err => {
-          console.error("delete error:",err);
-          this.setState({
-            userAlert: "...delete error:  "+err,
-            s3State:  {
-              action: 'delete',
-              target: 'profileImage',
-              status: 'failed'
-            }
-          });
-        })
+    // ReactS3Client
+    //     .deleteFile(fileName)
+    //     .then(data => {
+    //       console.log("... delete success!",data);
+    //       this.setState({
+    //         userAlert: "...delete success!",
+    //         s3State:  {
+    //           action: 'delete',
+    //           target: 'profileImage',
+    //           status: 'complete'
+    //         }
+    //       });
+    //     })
+    //     .catch(err => {
+    //       console.error("delete error:",err);
+    //       this.setState({
+    //         userAlert: "...delete error:  "+err,
+    //         s3State:  {
+    //           action: 'delete',
+    //           target: 'profileImage',
+    //           status: 'failed'
+    //         }
+    //       });
+    //     })
 
     const requestBody = {
       query:`
@@ -3455,9 +3457,9 @@ class UserProfile extends Component {
     const activityId = this.context.activityId;
     const lessonId = this.state.profileLessonViewerData._id;
 
-    const imageName = event.target.formGridName.value;
-    const imageType = event.target.formGridType.value;
-    const imagePath = event.target.formGridPath.value;
+    let imageName = event.target.formGridName.value;
+    let imageType = event.target.formGridType.value;
+    let imagePath = event.target.formGridPath.value;
     const imagePublic = event.target.formGridPublic.value;
 
     if (
@@ -3468,6 +3470,72 @@ class UserProfile extends Component {
       console.log('blank fields detected.. please check your info and try again..');
       this.setState({userAlert: 'blank fields detected.. please check your info and try again..'})
       return
+    }
+
+    this.getPocketVars();
+    // console.log('this.state.pocketVars',this.state.pocketVars);
+
+    if (
+        event.target.fileInput.value !== ""
+    ) {
+      let file = AuthContext._currentValue.file;
+
+      const fileName = file.name;
+      // const fileName = file.name.substr(0, file.name.length - 4);
+      const filePath = 'lessons/'+lessonId+'/gallery';
+      console.log('...file present...');
+      let fileType = file.type.split('/')[1];
+      let filePath2 = 'https://mycouchcoachstorage.s3.amazonaws.com/'+filePath+'/'+fileName+'.'+fileType;
+      let fileName2 = fileName+'.'+fileType;
+
+      console.log('fileName',file.name,fileName,'fileName2',fileName2,'filePath2',filePath2,'fileType',fileType);
+      imagePath = filePath2;
+      imageName = fileName2;
+      imageType = fileType;
+
+      const config = {
+        bucketName: 'mycouchcoachstorage',
+        dirName: filePath,
+        region: 'us-east-1',
+        // accessKeyId: this.state.pocketVars.s3.a,
+        // secretAccessKey: this.state.pocketVars.s3.b,
+        accessKeyId: 'AKIATRFHYKEQBA5KVVZM',
+        secretAccessKey: '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',
+        s3Url: 'https://mycouchcoachstorage.s3.amazonaws.com',
+      }
+      const ReactS3Client = new S3(config);
+      this.setState({userAlert: "uploading image ...",
+      s3State:  {
+        action: 'upload',
+        target: 'profileImage',
+        status: 'inProgress'
+      }
+    });
+
+      ReactS3Client
+          .uploadFile(file, fileName)
+          .then(data => {
+            console.log("attachment upload success!",data);
+            this.setState({
+              userAlert: "...upload success!",
+              s3State:  {
+                action: 'upload',
+                target: 'profileImage',
+                status: 'complete'
+              }
+            });
+          })
+          .catch(err => {
+            console.error("upload error:",err);
+            this.setState({
+              userAlert: "...upload error:  "+err,
+              s3State:  {
+                action: 'upload',
+                target: 'profileImage',
+                status: 'failed'
+              }
+            });
+          })
     }
 
     const requestBody = {
@@ -3525,10 +3593,10 @@ class UserProfile extends Component {
     const activityId = this.context.activityId;
     const lessonId = this.state.profileLessonViewerData._id;
 
-    const fileName = event.target.formGridName.value;
-    const fileType = event.target.formGridSize.value;
-    const fileSize = event.target.formGridType.value;
-    const filePath = event.target.formGridPath.value;
+    let fileName = event.target.formGridName.value;
+    let fileType = event.target.formGridSize.value;
+    let fileSize = event.target.formGridType.value;
+    let filePath = event.target.formGridPath.value;
     const filePublic = event.target.formGridPublic.value;
 
     if (
@@ -3539,6 +3607,73 @@ class UserProfile extends Component {
       console.log('blank fields detected.. please check your info and try again..');
       this.setState({userAlert: 'blank fields detected.. please check your info and try again..'})
       return
+    }
+
+    this.getPocketVars();
+    // console.log('this.state.pocketVars',this.state.pocketVars);
+
+    if (
+        event.target.fileInput.value !== ""
+    ) {
+      let file = AuthContext._currentValue.file;
+
+      let fileName2 = file.name;
+      // const fileName = file.name.substr(0, file.name.length - 4);
+      let filePath2 = 'lessons/'+lessonId+'/files';
+      console.log('...file present...');
+      let fileType2 = file.type.split('/')[1];
+      let filePath3 = 'https://mycouchcoachstorage.s3.amazonaws.com/'+filePath2+'/'+fileName2+'.'+fileType2;
+      let fileName3 = fileName2+'.'+fileType2;
+
+      console.log('fileName',file.name,fileName2,'fileName3',fileName3,'filePath3',filePath3,'fileType2',fileType2);
+      filePath = filePath3;
+      fileName = fileName3;
+      fileType = fileType2;
+      fileSize = file.size;
+
+      const config = {
+        bucketName: 'mycouchcoachstorage',
+        dirName: filePath2,
+        region: 'us-east-1',
+        // accessKeyId: this.state.pocketVars.s3.a,
+        // secretAccessKey: this.state.pocketVars.s3.b,
+        accessKeyId: 'AKIATRFHYKEQBA5KVVZM',
+        secretAccessKey: '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',
+        s3Url: 'https://mycouchcoachstorage.s3.amazonaws.com',
+      }
+      const ReactS3Client = new S3(config);
+      this.setState({userAlert: "uploading image ...",
+      s3State:  {
+        action: 'upload',
+        target: 'profileImage',
+        status: 'inProgress'
+      }
+    });
+
+      ReactS3Client
+          .uploadFile(file, fileName)
+          .then(data => {
+            console.log("attachment upload success!",data);
+            this.setState({
+              userAlert: "...upload success!",
+              s3State:  {
+                action: 'upload',
+                target: 'profileImage',
+                status: 'complete'
+              }
+            });
+          })
+          .catch(err => {
+            console.error("upload error:",err);
+            this.setState({
+              userAlert: "...upload error:  "+err,
+              s3State:  {
+                action: 'upload',
+                target: 'profileImage',
+                status: 'failed'
+              }
+            });
+          })
     }
 
     const requestBody = {
@@ -3796,6 +3931,7 @@ class UserProfile extends Component {
     const imageName = args.name;
     const imageType = args.type;
     const imagePath = args.path;
+    const imagePublic = args.public;
 
     const requestBody = {
       query: `
@@ -3805,7 +3941,8 @@ class UserProfile extends Component {
             lessonInput:{
               imageName: "${imageName}",
               imageType: "${imageType}",
-              imagePath: "${imagePath}"
+              imagePath: "${imagePath}",
+              imagePublic: ${imagePublic}
             })
             {_id,title,subtitle,type,subType,public,category,price,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{email,phone,phone2}},gallery{name,type,path,public},requirements,materials,files{name,type,size,path,public},reviews{_id},tags,sessions{title,date,endDate,time,limit,amount,booked{_id,username},bookedAmount,attended{_id,username},attendedAmount,inProgress,full,url},promos{_id},reviews{date,type,title,body,author{_id,username},body,rating},cancellations{date,reason,sessionDate,sessionTitle,user{_id,username}},reminders{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
         `};
@@ -3829,7 +3966,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
-          this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.deleteLessonImage, activityA: requestBody});
+          this.setState({userAlert: '...success! Lesson image deleted...', profileLessonViewerData: resData.data.deleteLessonImage, activityA: requestBody});
         }
 
         // this.context.selectedLesson = this.state.selectedLesson;
@@ -3843,8 +3980,8 @@ class UserProfile extends Component {
       });
   }
   deleteLessonFile = (args) => {
-    console.log('...deleting lesson file...',args);
-    this.setState({userAlert: '...adding lesson instructor ...', lessonAddField: null });
+    console.log('...deleting lesson file...');
+    this.setState({userAlert: '...deleting lesson file...', lessonAddField: null });
     const activityId = this.context.activityId;
     const lessonId = this.state.profileLessonViewerData._id;
 
@@ -3852,6 +3989,7 @@ class UserProfile extends Component {
     const fileType = args.type;
     const fileSize = args.size;
     const filePath = args.path;
+    const filePublic = args.public;
 
     const requestBody = {
       query: `
@@ -3862,7 +4000,8 @@ class UserProfile extends Component {
               fileName: "${fileName}",
               fileType: "${fileType}",
               fileSize: "${fileSize}",
-              filePath: "${filePath}"
+              filePath: "${filePath}",
+              filePublic: ${filePublic}
             })
             {_id,title,subtitle,type,subType,public,category,price,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{email,phone,phone2}},gallery{name,type,path,public},requirements,materials,files{name,type,size,path,public},reviews{_id},tags,sessions{title,date,endDate,time,limit,amount,booked{_id,username},bookedAmount,attended{_id,username},attendedAmount,inProgress,full,url},promos{_id},reviews{date,type,title,body,author{_id,username},body,rating},cancellations{date,reason,sessionDate,sessionTitle,user{_id,username}},reminders{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
         `};
@@ -3886,7 +4025,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
-          this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.deleteLessonFile, activityA: requestBody});
+          this.setState({userAlert: '...success! Lesson file deleted...', profileLessonViewerData: resData.data.deleteLessonFile, activityA: requestBody});
         }
 
         // this.context.selectedLesson = this.state.selectedLesson;

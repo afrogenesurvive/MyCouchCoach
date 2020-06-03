@@ -13,6 +13,11 @@ const pocketVariables = {
     s3: {
       a: null,
       b: null
+    },
+    atlas: {
+      a: null,
+      b: null,
+      c: null
     }
 }
 exports.pocketVariables = pocketVariables;

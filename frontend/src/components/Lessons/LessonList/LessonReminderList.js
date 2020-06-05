@@ -6,7 +6,7 @@ import './UserList.css';
 const lessonReminderList = props => {
 
   const reminders = props.lessonReminders.map(reminder => {
-    console.log('reminder',reminder);
+    // console.log('reminder',reminder);
     const reminderCreateDate = new Date (reminder.createDate.substr(0,10)*1000).toLocaleDateString().slice(0,10);
     const reminderSendDate = new Date (reminder.sendDate.substr(0,10)*1000).toLocaleDateString().slice(0,10);
     const reminderSessionDate = new Date (reminder.session.date.substr(0,10)*1000).toLocaleDateString().slice(0,10);

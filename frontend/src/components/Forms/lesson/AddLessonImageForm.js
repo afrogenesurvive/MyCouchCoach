@@ -49,7 +49,7 @@ return (
 <Form.Row>
   <Form.Group as={Col}>
     <Form.Label>File</Form.Label>
-    <Form.Control type="file" id="fileInput" placeholder="File" onChange={(e) => {console.log(e.target.files[0]);AuthContext._currentValue.file = e.target.files[0];console.log(AuthContext._currentValue.file);}}/>
+    <Form.Control type="file" id="fileInput" placeholder="File" onChange={(e) => {AuthContext._currentValue.file = e.target.files[0]}}/>
   </Form.Group>
 </Form.Row>
 

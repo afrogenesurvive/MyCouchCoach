@@ -3450,17 +3450,19 @@ class UserProfile extends Component {
       imageName = fileName2;
       imageType = fileType;
 
-      console.log(`
-          fileName: ${fileName},
-          fileName2: ${fileName2},
-          filePath: ${filePath},
-          filePath2: ${filePath2},
-          fileType: ${fileType},
-
-          imagePath: ${imagePath},
-          imageName: ${imageName},
-          imageType: ${imageType}
-        `);
+      // console.log(file);
+      // console.log(`
+      //     file.name: ${file.name},
+      //     fileName: ${fileName},
+      //     fileName2: ${fileName2},
+      //     filePath: ${filePath},
+      //     filePath2: ${filePath2},
+      //     fileType: ${fileType},
+      //
+      //     imagePath: ${imagePath},
+      //     imageName: ${imageName},
+      //     imageType: ${imageType}
+      //   `);
 
       const config = {
         bucketName: 'mycouchcoachstorage',
@@ -3581,26 +3583,29 @@ class UserProfile extends Component {
     ) {
       let file = AuthContext._currentValue.file;
 
-      fileName = file.name;
+      // fileName = file.name;
       // const fileName = file.name.substr(0, file.name.length - 4);
       filePath = 'lessons/'+lessonTitle+'/files';
       console.log('...file present...');
       fileType = file.type.split('/')[1];
-      let filePath2 = 'https://mycouchcoachstorage.s3.amazonaws.com/'+filePath+'/'+fileName+'.'+fileType;
-      let fileName2 = fileName+'.'+fileType;
+      let filePath2 = 'https://mycouchcoachstorage.s3.amazonaws.com/'+filePath+'/'+file.name+'.'+fileType;
+      let fileName2 = file.name+'.'+fileType;
 
       filePath = filePath2;
       fileName = fileName2;
       fileSize = file.size;
-
-      console.log(`
-        fileName: ${fileName},
-        fileName2: ${fileName2},
-        fileType: ${fileType},
-        fileSize: ${fileSize},
-        filePath: ${filePath},
-        filePath2: ${filePath2},
-        `);
+      let pureFileName = file.name;
+      // console.log(file);
+      // console.log(`
+      //   file.name: ${file.name},
+      //   fileName: ${fileName},
+      //   fileName2: ${fileName2},
+      //   fileType: ${fileType},
+      //   fileSize: ${fileSize},
+      //   filePath: ${filePath},
+      //   filePath2: ${filePath2},
+      //   pureFileName: ${pureFileName}
+      //   `);
 
       const config = {
         bucketName: 'mycouchcoachstorage',
@@ -3620,7 +3625,7 @@ class UserProfile extends Component {
     });
 
       ReactS3Client
-          .uploadFile(file, fileName)
+          .uploadFile(file, pureFileName)
           .then(data => {
             console.log("attachment upload success!",data);
             this.setState({
@@ -4518,6 +4523,7 @@ class UserProfile extends Component {
       });
   }
   deleteLessonReminder = (args) => {
+
     console.log('...deleting lesson reminder ...');
     this.setState({userAlert: '...deleting lesson reminder ...', lessonAddField: null });
     const activityId = this.context.activityId;

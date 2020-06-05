@@ -1,5 +1,5 @@
 import React from 'react';
-// import Button from 'react-bootstrap/Button';
+import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
 import './UserItem.css';
@@ -19,6 +19,9 @@ const lessonReminderItem = props => (
         sendDate: {props.sendDate}
       </Card.Text>
       <Card.Text>
+        Time: {props.time}
+      </Card.Text>
+      <Card.Text>
         Creator:
       </Card.Text>
       <Card.Text>
@@ -33,9 +36,7 @@ const lessonReminderItem = props => (
       <Card.Text>
         Type: {props.type}
       </Card.Text>
-      <Card.Text>
-        Time: {props.time}
-      </Card.Text>
+
       <Card.Text>
         Trigger:
       </Card.Text>
@@ -72,8 +73,17 @@ const lessonReminderItem = props => (
       <Card.Text>
         Sent: {props.delivery.sent.toString()}
       </Card.Text>
+
+
+      { props.isInstructor === true && (
+        <Button variant="danger" onClick={props.deleteLessonReminder.bind(this, props._id)}>
+          Delete
+        </Button>
+      )}
     </Card.Body>
     </Card>
+
+
 
   </li>
 );

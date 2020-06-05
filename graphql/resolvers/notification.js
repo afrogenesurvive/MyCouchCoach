@@ -541,7 +541,9 @@ module.exports = {
     console.log("Resolver: createNotification...");
     try {
       const date = new Date().toLocaleDateString().substr(0,10);
-      let time = new Date().toLocaleDateString().substr(11,5);
+      let time = new Date().toLocaleDateString().substr(13,5);
+
+      // console.log('time',time);
       const creator = await User.findById({_id: args.activityId});
       let lesson = await Lesson.findById({_id: args.lessonId});
       const preRecipents = args.userIds.split(',');
@@ -622,9 +624,10 @@ module.exports = {
         sendDate = moment(start).add(triggerValue, triggerUnit);
         // console.log('start',start,'moment(start)',moment(start));
       }
-      time = sendDate.hour()+':'+sendDate.minute();
+      time = sendDate.toString().split(" ")[4].substr(0,5);
       // console.log(triggerValue,triggerUnit,'moment start',moment(start),'sendDate',sendDate);
-      console.log('start',start,'sendDate',sendDate,'time',time);
+      // console.log('start',start,'sendDate',sendDate,'time',time);
+      // console.log("time",sendDate.toString().split(" ")[4].substr(0,5));
       const trigger = {
         unit: triggerUnit,
         value: triggerValue

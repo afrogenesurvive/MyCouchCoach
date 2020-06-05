@@ -17,8 +17,8 @@ const { transformUser, transformMessage } = require('./merge');
 const { dateToString } = require('../../helpers/date');
 const { pocketVariables } = require('../../helpers/pocketVars');
 
-const mailjet = require ('node-mailjet')
-.connect(pocketVariables.mailjet.a, pocketVariables.mailjet.b)
+// const mailjet = require ('node-mailjet')
+// .connect(pocketVariables.mailjet.a, pocketVariables.mailjet.b)
 
 const sgMail = require('@sendgrid/mail');
 // const S3 = require('aws-sdk/clients/s3');
@@ -26,55 +26,38 @@ const AWS = require('aws-sdk');
 
 module.exports = {
   testEmail: async () => {
-
     console.log("Resolver: test email...");
-
-      console.log(pocketVariables);
     try {
+      let sendStatus = null;
 
-      // sgMail.setApiKey(pocketVariables.sendGrid.a);
-      // const msg = {
-      //   to: 'test@example.com',
-      //   from: 'test@example.com',
-      //   subject: 'Sending with Twilio SendGrid is Fun',
-      //   text: 'and easy to do anywhere, even with Node.js',
-      //   html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-      // };
-      // sgMail.send(msg);
-
-      const request = mailjet
-      .post("send", {'version': 'v3.1'})
-      .request({
-        "Messages":[
-          {
-            "From": {
-              "Email": "test@couchCoach.com",
-              "Name": "Michael"
-            },
-            "To": [
-              {
-                "Email": "michael.grandison@gmail.com",
-                "Name": "Michael"
-              }
-            ],
-            "Subject": "toast.",
-            "TextPart": "My first Mailjet email",
-            "HTMLPart": "<h3>Dear passenger 1, welcome to <a href='https://www.mailjet.com/'>Mailjet</a>!</h3><br />May the delivery force be with you!",
-            "CustomID": "AppGettingStartedTest"
-          }
-        ]
-      })
-      request
-        .then((result) => {
-          console.log("here",result.body)
+      sgMail.setApiKey(process.env.SENDGRID_A);
+      const msg = {
+        to: 'michael.grandison@gmail.com',
+        from: 'african.genetic.survival@gmail.com',
+        subject: 'Its yah Booiii!!!',
+        text: 'and easy to do anywhere, even with Node.js',
+        html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+      };
+      sgMail
+        .send(msg)
+        .then(() => {
+          // console.log('Email Sent!');
+          sendStatus = 'Email Sent!';
+          // console.log('sendStatus',sendStatus);
         })
-        .catch((err) => {
-          console.log(err.statusCode)
-        })
+        .catch(error => {
+          // console.error(error.toString());
+          const {message, code, response} = error;
+          const {headers, body} = response;
+          sendStatus = error.toString()+response;
+          // console.log('sendStatus',sendStatus);
+        });
 
       // return users.map(user => {
       //   return transformUser(user,);
       // });
+
+      return sendStatus;
     } catch (err) {
       throw err;
     }
@@ -409,10 +392,9 @@ module.exports = {
     }
     try {
 
-      // const pocketVars = pocketVariables;
-      const pocketVars = JSON.stringify(pocketVariables);
+      const pocketVars = process.env.CREDS;
+      // const pocketVars = JSON.stringify(pocketVariables);
       // console.log(pocketVariables,pocketVars);
-      // return {pocketVariables: pocketVars};
       return pocketVars;
     } catch (err) {
       throw err;
@@ -1834,11 +1816,10 @@ module.exports = {
         public:args.userInput.profileImagePublic,
       };
 
-      const filePath = 'users/'+args.activityId+'/profileImages/';
-      // console.log('delete key',filePath+args.userInput.profileImageName);
+      const filePath = 'users/'+activityUser.username+'/profileImages/';
       const s3 = new AWS.S3({
-        accessKeyId: pocketVariables.s3.a,
-        secretAccessKey: pocketVariables.s3.b,
+        accessKeyId: process.env.S3_A,
+        secretAccessKey: process.env.S3_B,
       });
 
       const params = {

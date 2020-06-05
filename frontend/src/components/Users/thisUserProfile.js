@@ -307,7 +307,7 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
           onDelete={props.userDeleteProfileImage}
           toggleUserProfileImagePublic={props.toggleUserProfileImagePublic}
         />
-      ) }
+      )}
 
     </Tab>
 

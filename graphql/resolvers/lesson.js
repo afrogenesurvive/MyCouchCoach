@@ -18,8 +18,8 @@ const { transformLesson } = require('./merge');
 const { dateToString } = require('../../helpers/date');
 const { pocketVariables } = require('../../helpers/pocketVars');
 
-const mailjet = require ('node-mailjet')
-.connect(pocketVariables.mailjet.a, pocketVariables.mailjet.b)
+// const mailjet = require ('node-mailjet')
+// .connect(pocketVariables.mailjet.a, pocketVariables.mailjet.b)
 const AWS = require('aws-sdk');
 
 module.exports = {
@@ -1419,11 +1419,11 @@ module.exports = {
         public: args.lessonInput.imagePublic,
       };
 
-      const filePath = 'lessons/'+preLesson._id+'/gallery/';
+      const filePath = 'lessons/'+preLesson.title+'/gallery/';
       // console.log('delete key',filePath+args.userInput.profileImageName);
       const s3 = new AWS.S3({
-        accessKeyId: pocketVariables.s3.a,
-        secretAccessKey: pocketVariables.s3.b,
+        accessKeyId: process.env.S3_A,
+        secretAccessKey: process.env.S3_B,
       });
 
       const params = {
@@ -1630,11 +1630,11 @@ module.exports = {
         public: args.lessonInput.filePublic,
       };
 
-      const filePath = 'lessons/'+preLesson._id+'/files/';
+      const filePath = 'lessons/'+preLesson.title+'/files/';
       // console.log('delete key',filePath+args.userInput.profileImageName);
       const s3 = new AWS.S3({
-        accessKeyId: pocketVariables.s3.a,
-        secretAccessKey: pocketVariables.s3.b,
+        accessKeyId: process.env.S3_A,
+        secretAccessKey: process.env.S3_B,
       });
 
       const params = {

@@ -6,39 +6,41 @@ import AuthContext from '../../../context/auth-context';
 
 import './CreateUserForm.css';
 
-const AddLessonRequirementsForm = (props) => {
+const AddLessonFileForm = (props) => {
 // const {...user} = props.user;
 
 return (
 <div className="UpdateFormContainer">
 <Form onSubmit={props.onConfirm}>
 
-<Form.Row>
-  <Form.Group as={Col} controlId="formGridName">
-  <Form.Label>Filename</Form.Label>
-  <Form.Control type="text" placeholder="Filename"/>
-</Form.Group>
-</Form.Row>
-
-<Form.Row>
-  <Form.Group as={Col} controlId="formGridSize">
-  <Form.Label>Filesize</Form.Label>
-  <Form.Control type="text" placeholder="Filesize"/>
-</Form.Group>
-</Form.Row>
-<Form.Row>
-  <Form.Group as={Col} controlId="formGridType">
-  <Form.Label>Filetype</Form.Label>
-  <Form.Control type="text" placeholder="Filetype"/>
-</Form.Group>
-</Form.Row>
-
-<Form.Row>
-  <Form.Group as={Col} controlId="formGridPath">
-  <Form.Label>Link Address</Form.Label>
-  <Form.Control type="text" placeholder="link address"/>
-</Form.Group>
-</Form.Row>
+{
+// <Form.Row>
+//   <Form.Group as={Col} controlId="formGridName">
+//   <Form.Label>Filename</Form.Label>
+//   <Form.Control type="text" placeholder="Filename"/>
+// </Form.Group>
+// </Form.Row>
+//
+// <Form.Row>
+//   <Form.Group as={Col} controlId="formGridSize">
+//   <Form.Label>Filesize</Form.Label>
+//   <Form.Control type="text" placeholder="Filesize"/>
+// </Form.Group>
+// </Form.Row>
+// <Form.Row>
+//   <Form.Group as={Col} controlId="formGridType">
+//   <Form.Label>Filetype</Form.Label>
+//   <Form.Control type="text" placeholder="Filetype"/>
+// </Form.Group>
+// </Form.Row>
+//
+// <Form.Row>
+//   <Form.Group as={Col} controlId="formGridPath">
+//   <Form.Label>Link Address</Form.Label>
+//   <Form.Control type="text" placeholder="link address"/>
+// </Form.Group>
+// </Form.Row>
+}
 
 <Form.Row>
   <Form.Group as={Col} controlId="formGridPublic">
@@ -72,4 +74,4 @@ return (
 
 )};
 
-export default AddLessonRequirementsForm;
+export default AddLessonFileForm;

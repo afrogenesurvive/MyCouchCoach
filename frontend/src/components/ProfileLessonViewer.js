@@ -654,6 +654,8 @@ const ProfileLessonViewer = (props) => {
             <LessonReminderList
               lessonReminders={lesson.reminders}
               authId={props.authId}
+              isInstructor={isInstructor}
+              deleteLessonReminder={props.deleteLessonReminder}
             />
           )}
 

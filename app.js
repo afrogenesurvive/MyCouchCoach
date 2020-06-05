@@ -21,7 +21,7 @@ const https = require("https");
 const io = require('socket.io')(server);
 const User = require('./models/user');
 
-const MY_APP_SECRET = process.env.APP_SECRET;
+// const MY_APP_SECRET = process.env.APP_SECRET;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -36,28 +36,28 @@ app.use((req, res, next) => {
   next();
 });
 
-const url = 'https://mycouchcoachstorage.s3.amazonaws.com/assets/creds/sendgrid/sendGridApi.txt';
-const url2 = 'https://mycouchcoachstorage.s3.amazonaws.com/assets/creds/s3/s3.txt';
-const url3 = 'https://mycouchcoachstorage.s3.amazonaws.com/assets/creds/atlas/atlas.txt';
+// const url = 'https://mycouchcoachstorage.s3.amazonaws.com/assets/creds/sendgrid/sendGridApi.txt';
+// const url2 = 'https://mycouchcoachstorage.s3.amazonaws.com/assets/creds/s3/s3.txt';
+// const url3 = 'https://mycouchcoachstorage.s3.amazonaws.com/assets/creds/atlas/atlas.txt';
 
-request.get(url, ( error, response, body) => {
-  if (body) {
-    if (body.slice(0,3) === '{"a') {
-      pocketVariables.sendGrid = JSON.parse(body);
-      // console.log('pocketVars',pocketVariables);
-    }}});
-request.get(url2, ( error, response, body) => {
-  if (body) {
-    if (body.slice(0,3) === '{"a') {
-      pocketVariables.s3 = JSON.parse(body);
-      // console.log('pocketVars',pocketVariables);
-    }}});
-request.get(url3, ( error, response, body) => {
-  if (body) {
-    if (body.slice(0,3) === '{"a') {
-      pocketVariables.atlas = JSON.parse(body);
-      // console.log('pocketVars',pocketVariables);
-    }}});
+// request.get(url, ( error, response, body) => {
+//   if (body) {
+//     if (body.slice(0,3) === '{"a') {
+//       pocketVariables.sendGrid = JSON.parse(body);
+//       // console.log('pocketVars',pocketVariables);
+//     }}});
+// request.get(url2, ( error, response, body) => {
+//   if (body) {
+//     if (body.slice(0,3) === '{"a') {
+//       pocketVariables.s3 = JSON.parse(body);
+//       // console.log('pocketVars',pocketVariables);
+//     }}});
+// request.get(url3, ( error, response, body) => {
+//   if (body) {
+//     if (body.slice(0,3) === '{"a') {
+//       pocketVariables.atlas = JSON.parse(body);
+//       // console.log('pocketVars',pocketVariables);
+//     }}});
 
 app.use(isAuth);
 
@@ -69,14 +69,14 @@ app.use(
     graphiql: true
   })
 );
-// mongoose.connect(`mongodb+srv://${pocketVariables.atlas.a}:${pocketVariables.atlas.b}@{pocketVariables.atlas.c}/test?retryWrites=true&w=majority`,
+// mongoose.connect(`mongodb+srv://${process.env.ATLAS_A}:${process.env.ATLAS_B}@{process.env.ATLAS_C}/test?retryWrites=true&w=majority`,
 mongoose.connect('mongodb://localhost:27017/my_couch_coach',
 {useNewUrlParser: true, useUnifiedTopology: true})
   .then(() => {
     console.log(`
-      DB connected... Now Serving Port: 8088
+      DB connected... Now Serving Port: ${process.env.PORT}
       `);
-    app.listen(8088);
+    app.listen(process.env.PORT);
   })
   .catch(err => {
     console.log(err);
@@ -144,10 +144,10 @@ io.on('connection', (socket) => {
 io.on('disconnect', (socket) => {
   console.log("a wild client disappeared..");
 });
-server.listen(9099, function (err) {
+server.listen(process.env.SOCKET_PORT, function (err) {
   if (err) throw err
   console.log(`
-    socket.io listening on port 9099
+    socket.io listening on port ${process.env.SOCKET_PORT}
     `)
 })
 

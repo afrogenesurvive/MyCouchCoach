@@ -163,9 +163,11 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           // console.log('pocketVars', resData.data.getPocketVars);
+          // console.log('pocketVarsParsed', JSON.parse(resData.data.getPocketVars));
+          let pocketVarsParsed = JSON.parse(resData.data.getPocketVars)
           // console.log('pocketVars', JSON.parse(resData.data.getPocketVars.pocketVariables));
           // console.log('beep',resData.data.getPocketVars.pocketVariables,JSON.parse(resData.data.getPocketVars.pocketVariables));
-          this.setState({userAlert: '...success! retrieved pocketVars...', pocketVars: JSON.parse(resData.data.getPocketVars)})
+          this.setState({userAlert: '...success! retrieved pocketVars...', pocketVars: pocketVarsParsed})
         }
 
       })
@@ -214,7 +216,7 @@ class UserProfile extends Component {
           }
         }
 
-          // this.getPocketVars();
+          this.getPocketVars();
           // this.logUserActivity();
       })
       .catch(err => {
@@ -776,22 +778,20 @@ class UserProfile extends Component {
     const token = this.context.token;
     const activityId = this.context.activityId;
     let userId = activityId;
-    let profileImageName = event.target.formGridName.value;
-    let profileImageType = event.target.formGridType.value;
-    let profileImagePath = event.target.formGridPath.value;
+    let username = this.state.user.username;
+
+    let profileImageName = null;
+    let profileImageType = null;
+    let profileImagePath = null;
     const profileImagePublic = event.target.formGridPublic.value;
 
     if (
-      profileImageName.trim().length === 0 ||
-      profileImageType.trim().length === 0
+      event.target.fileInput.value.trim().length === 0
     ) {
-      console.log('blank fields detected.. please check your info and try again..');
-      this.setState({userAlert: 'blank fields detected.. please check your info and try again..'})
+      console.log('...umm no! please select a file 1st...');
+      this.setState({userAlert: '...umm no! please select a file 1st...'})
       return
     }
-
-    this.getPocketVars();
-    // console.log('this.state.pocketVars',this.state.pocketVars);
 
     if (
         event.target.fileInput.value !== ""
@@ -800,25 +800,33 @@ class UserProfile extends Component {
 
       const fileName = file.name;
       // const fileName = file.name.substr(0, file.name.length - 4);
-      const filePath = 'users/'+userId+'/profileImages';
+      const filePath = 'users/'+username+'/profileImages';
       console.log('...file present...');
       let fileType = file.type.split('/')[1];
       let filePath2 = 'https://mycouchcoachstorage.s3.amazonaws.com/'+filePath+'/'+fileName+'.'+fileType;
       let fileName2 = fileName+'.'+fileType;
 
-      console.log('fileName',file.name,fileName,'fileName2',fileName2,'filePath2',filePath2,'fileType',fileType);
       profileImagePath = filePath2;
       profileImageName = fileName2;
       profileImageType = fileType;
+
+      console.log(`
+        fileName: ${fileName},
+        filePath: ${filePath},
+        fileType: ${fileType},
+        filePath2: ${filePath2},
+        fileName2: ${fileName2},
+        profileImagePath: ${profileImagePath},
+        profileImageName: ${profileImageName},
+        profileImageType: ${profileImageType},
+        `);
 
       const config = {
         bucketName: 'mycouchcoachstorage',
         dirName: filePath,
         region: 'us-east-1',
-        // accessKeyId: this.state.pocketVars.s3.a,
-        // secretAccessKey: this.state.pocketVars.s3.b,
-        accessKeyId: 'AKIATRFHYKEQBA5KVVZM',
-        secretAccessKey: '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',
+        accessKeyId: this.state.pocketVars.s3.a,
+        secretAccessKey: this.state.pocketVars.s3.b,
         s3Url: 'https://mycouchcoachstorage.s3.amazonaws.com',
       }
       const ReactS3Client = new S3(config);
@@ -889,7 +897,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.addUserProfileImage).slice(2,25);
-          this.setState({userAlert: '...success! Profile image added...', user: resData.data.addUserProfileImage, activityA: JSON.stringify(requestBody), pocketVars: null})
+          this.setState({userAlert: '...success! Profile image added...', user: resData.data.addUserProfileImage, activityA: JSON.stringify(requestBody)})
           this.context.user = this.state.user;
         }
 
@@ -962,53 +970,6 @@ class UserProfile extends Component {
     const profileImageType = args.type;
     const profileImagePath = args.path;
     const profileImagePublic = args.public;
-
-    const fileName = profileImageName;
-    // const filePath = 'users/'+userId+'/profileImages/';
-    // console.log('fileName',fileName,'filePath',filePath);
-    //
-    // const config = {
-    //   bucketName: 'mycouchcoachstorage',
-    //   dirName: filePath,
-    //   // region: 'us-east-1',
-    //   accessKeyId: 'AKIATRFHYKEQBA5KVVZM',
-    //   secretAccessKey: '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',
-    //   s3Url: 'https://mycouchcoachstorage.s3.amazonaws.com/',
-    // }
-    // const ReactS3Client = new S3(config);
-    // this.setState({
-    //   userAlert: "deleting image ...",
-    //   s3State:  {
-    //     action: 'delete',
-    //     target: 'profileImage',
-    //     status: 'inProgress'
-    //   }
-    // });
-
-    // ReactS3Client
-    //     .deleteFile(fileName)
-    //     .then(data => {
-    //       console.log("... delete success!",data);
-    //       this.setState({
-    //         userAlert: "...delete success!",
-    //         s3State:  {
-    //           action: 'delete',
-    //           target: 'profileImage',
-    //           status: 'complete'
-    //         }
-    //       });
-    //     })
-    //     .catch(err => {
-    //       console.error("delete error:",err);
-    //       this.setState({
-    //         userAlert: "...delete error:  "+err,
-    //         s3State:  {
-    //           action: 'delete',
-    //           target: 'profileImage',
-    //           status: 'failed'
-    //         }
-    //       });
-    //     })
 
     const requestBody = {
       query:`
@@ -3456,23 +3417,20 @@ class UserProfile extends Component {
     this.setState({userAlert: '...adding lesson Images ...', lessonAddField: null });
     const activityId = this.context.activityId;
     const lessonId = this.state.profileLessonViewerData._id;
+    const lessonTitle = this.state.profileLessonViewerData.title;
 
-    let imageName = event.target.formGridName.value;
-    let imageType = event.target.formGridType.value;
-    let imagePath = event.target.formGridPath.value;
+    let imageName = null;
+    let imageType = null;
+    let imagePath = null;
     const imagePublic = event.target.formGridPublic.value;
 
     if (
-      imageName.trim().length === 0 ||
-      imageType.trim().length === 0 ||
-      imagePath.trim().length === 0
+      event.target.fileInput.value.trim().length === 0
     ) {
-      console.log('blank fields detected.. please check your info and try again..');
-      this.setState({userAlert: 'blank fields detected.. please check your info and try again..'})
+      console.log('...umm no! please select a file 1st...');
+      this.setState({userAlert: '...umm no! please select a file 1st...'});
       return
     }
-
-    this.getPocketVars();
     // console.log('this.state.pocketVars',this.state.pocketVars);
 
     if (
@@ -3482,25 +3440,34 @@ class UserProfile extends Component {
 
       const fileName = file.name;
       // const fileName = file.name.substr(0, file.name.length - 4);
-      const filePath = 'lessons/'+lessonId+'/gallery';
+      const filePath = 'lessons/'+lessonTitle+'/gallery';
       console.log('...file present...');
       let fileType = file.type.split('/')[1];
       let filePath2 = 'https://mycouchcoachstorage.s3.amazonaws.com/'+filePath+'/'+fileName+'.'+fileType;
       let fileName2 = fileName+'.'+fileType;
 
-      console.log('fileName',file.name,fileName,'fileName2',fileName2,'filePath2',filePath2,'fileType',fileType);
       imagePath = filePath2;
       imageName = fileName2;
       imageType = fileType;
 
+      console.log(`
+          fileName: ${fileName},
+          fileName2: ${fileName2},
+          filePath: ${filePath},
+          filePath2: ${filePath2},
+          fileType: ${fileType},
+
+          imagePath: ${imagePath},
+          imageName: ${imageName},
+          imageType: ${imageType}
+        `);
+
       const config = {
         bucketName: 'mycouchcoachstorage',
-        dirName: filePath,
+        dirName: 'lessons/'+lessonTitle+'/gallery',
         region: 'us-east-1',
-        // accessKeyId: this.state.pocketVars.s3.a,
-        // secretAccessKey: this.state.pocketVars.s3.b,
-        accessKeyId: 'AKIATRFHYKEQBA5KVVZM',
-        secretAccessKey: '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',
+        accessKeyId: this.state.pocketVars.s3.a,
+        secretAccessKey: this.state.pocketVars.s3.b,
         s3Url: 'https://mycouchcoachstorage.s3.amazonaws.com',
       }
       const ReactS3Client = new S3(config);
@@ -3592,24 +3559,21 @@ class UserProfile extends Component {
     this.setState({userAlert: '...adding lesson Files ...', lessonAddField: null });
     const activityId = this.context.activityId;
     const lessonId = this.state.profileLessonViewerData._id;
+    const lessonTitle = this.state.profileLessonViewerData.title;
 
-    let fileName = event.target.formGridName.value;
-    let fileType = event.target.formGridSize.value;
-    let fileSize = event.target.formGridType.value;
-    let filePath = event.target.formGridPath.value;
+    let fileName = null;
+    let fileType = null;
+    let fileSize = null;
+    let filePath = null;
     const filePublic = event.target.formGridPublic.value;
 
     if (
-      fileName.trim().length === 0 ||
-      fileType.trim().length === 0 ||
-      filePath.trim().length === 0
+      event.target.fileInput.value.trim().length === 0
     ) {
-      console.log('blank fields detected.. please check your info and try again..');
-      this.setState({userAlert: 'blank fields detected.. please check your info and try again..'})
+      console.log('...umm no! please select a file 1st...');
+      this.setState({userAlert: '...umm no! please select a file 1st...'});
       return
     }
-
-    this.getPocketVars();
     // console.log('this.state.pocketVars',this.state.pocketVars);
 
     if (
@@ -3617,28 +3581,33 @@ class UserProfile extends Component {
     ) {
       let file = AuthContext._currentValue.file;
 
-      let fileName2 = file.name;
+      fileName = file.name;
       // const fileName = file.name.substr(0, file.name.length - 4);
-      let filePath2 = 'lessons/'+lessonId+'/files';
+      filePath = 'lessons/'+lessonTitle+'/files';
       console.log('...file present...');
-      let fileType2 = file.type.split('/')[1];
-      let filePath3 = 'https://mycouchcoachstorage.s3.amazonaws.com/'+filePath2+'/'+fileName2+'.'+fileType2;
-      let fileName3 = fileName2+'.'+fileType2;
+      fileType = file.type.split('/')[1];
+      let filePath2 = 'https://mycouchcoachstorage.s3.amazonaws.com/'+filePath+'/'+fileName+'.'+fileType;
+      let fileName2 = fileName+'.'+fileType;
 
-      console.log('fileName',file.name,fileName2,'fileName3',fileName3,'filePath3',filePath3,'fileType2',fileType2);
-      filePath = filePath3;
-      fileName = fileName3;
-      fileType = fileType2;
+      filePath = filePath2;
+      fileName = fileName2;
       fileSize = file.size;
+
+      console.log(`
+        fileName: ${fileName},
+        fileName2: ${fileName2},
+        fileType: ${fileType},
+        fileSize: ${fileSize},
+        filePath: ${filePath},
+        filePath2: ${filePath2},
+        `);
 
       const config = {
         bucketName: 'mycouchcoachstorage',
-        dirName: filePath2,
+        dirName: 'lessons/'+lessonTitle+'/files',
         region: 'us-east-1',
-        // accessKeyId: this.state.pocketVars.s3.a,
-        // secretAccessKey: this.state.pocketVars.s3.b,
-        accessKeyId: 'AKIATRFHYKEQBA5KVVZM',
-        secretAccessKey: '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',
+        accessKeyId: this.state.pocketVars.s3.a,
+        secretAccessKey: this.state.pocketVars.s3.b,
         s3Url: 'https://mycouchcoachstorage.s3.amazonaws.com',
       }
       const ReactS3Client = new S3(config);
@@ -4464,8 +4433,8 @@ class UserProfile extends Component {
   }
   addReminder = (event) => {
     event.preventDefault();
-    console.log('...adding lesson session ...');
-    this.setState({userAlert: '...adding lesson session ...', lessonAddField: null });
+    console.log('...adding lesson reminder ...');
+    this.setState({userAlert: '...adding lesson reminder ...', lessonAddField: null });
     const activityId = this.context.activityId;
     const lessonId = this.state.profileLessonViewerData._id;
 
@@ -4534,10 +4503,59 @@ class UserProfile extends Component {
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
           this.setState({
-            userAlert: responseAlert,
+            userAlert: "...success! Lesson Reminder added... updates will show when lesson is re-opened...",
             activityA: requestBody,
             addingReminder: false
             // profileLessonViewerData: resData.data.createNotification
+          });
+        }
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+        if (this.isActive) {
+          this.setState({ isLoading: false });
+        }
+      });
+  }
+  deleteLessonReminder = (args) => {
+    console.log('...deleting lesson reminder ...');
+    this.setState({userAlert: '...deleting lesson reminder ...', lessonAddField: null });
+    const activityId = this.context.activityId;
+    const notificationId = args;
+
+    const requestBody = {
+      query: `
+          mutation {deleteNotification(
+            activityId:"${activityId}",
+            notificationId:"${notificationId}"
+          )
+            {_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}
+        `};
+        // console.log('JSON.stringify(requestBody)',JSON.stringify(requestBody));
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.context.token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        if (resData.errors) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data).slice(0,8);
+          this.setState({
+            userAlert: "...success! Lesson reminder deleted... updates will show when lesson is re-opened...",
+            activityA: requestBody,
+            // profileLessonViewerData: resData.data.deleteNotification
           });
         }
       })
@@ -4788,6 +4806,7 @@ class UserProfile extends Component {
             addingReminder={this.state.addingReminder}
             addReminder={this.addReminder}
             cancelAddReminder={this.cancelAddReminder}
+            deleteLessonReminder={this.deleteLessonReminder}
 
             startRepeatSession={this.startRepeatSession}
             repeatingSession={this.state.repeatingSession}

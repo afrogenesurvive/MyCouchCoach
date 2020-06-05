@@ -566,7 +566,7 @@ module.exports = buildSchema(`
   }
 
   type RootQuery {
-    testEmail: TestMail
+    testEmail: String
 
     login(email: String!, password: String!): AuthData!
     logout( activityId: ID!): User!

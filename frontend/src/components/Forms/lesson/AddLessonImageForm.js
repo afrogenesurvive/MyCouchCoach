@@ -13,26 +13,28 @@ return (
 <div className="UpdateFormContainer">
 <Form onSubmit={props.onConfirm}>
 
-<Form.Row>
-  <Form.Group as={Col} controlId="formGridName">
-  <Form.Label>Filename</Form.Label>
-  <Form.Control type="text" placeholder="Name"/>
-</Form.Group>
-</Form.Row>
-
-<Form.Row>
-  <Form.Group as={Col} controlId="formGridType">
-  <Form.Label>Filetype</Form.Label>
-  <Form.Control type="text" placeholder="Type"/>
-</Form.Group>
-</Form.Row>
-
-<Form.Row>
-  <Form.Group as={Col} controlId="formGridPath">
-  <Form.Label>Link Address</Form.Label>
-  <Form.Control type="text" placeholder="link address"/>
-</Form.Group>
-</Form.Row>
+{
+// <Form.Row>
+//   <Form.Group as={Col} controlId="formGridName">
+//   <Form.Label>Filename</Form.Label>
+//   <Form.Control type="text" placeholder="Name"/>
+// </Form.Group>
+// </Form.Row>
+//
+// <Form.Row>
+//   <Form.Group as={Col} controlId="formGridType">
+//   <Form.Label>Filetype</Form.Label>
+//   <Form.Control type="text" placeholder="Type"/>
+// </Form.Group>
+// </Form.Row>
+//
+// <Form.Row>
+//   <Form.Group as={Col} controlId="formGridPath">
+//   <Form.Label>Link Address</Form.Label>
+//   <Form.Control type="text" placeholder="link address"/>
+// </Form.Group>
+// </Form.Row>
+}
 
 <Form.Row>
   <Form.Group as={Col} controlId="formGridPublic">

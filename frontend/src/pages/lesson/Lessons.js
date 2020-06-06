@@ -351,7 +351,6 @@ class LessonsPage extends Component {
         this.setState({userAlert: err});
       });
   }
-
   onStartEditLessonBasic = () => {
     this.setState({editingLesson: true})
   }
@@ -1336,6 +1335,7 @@ class LessonsPage extends Component {
         if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
+          this.setState({userAlert: '...success! Lesson liked...'})
           // const responseAlert = JSON.stringify(resData.data).slice(0,8);
           this.context.user = resData.data.addUserLikedLesson;
         }

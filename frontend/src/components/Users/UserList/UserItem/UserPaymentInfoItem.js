@@ -31,6 +31,9 @@ const userPaymentInfoItem = props => (
         valid: {props.valid.toString()}
       </Card.Text>
 
+      <Button variant="danger" onClick={props.makeUserPaymentInfoPrimary.bind(this, props.paymentInfoItem)}>
+        Make Primary
+      </Button>
 
       { props.canDelete === true && (
         <Button variant="danger" onClick={props.onDelete.bind(this, props.paymentInfoItem)}>

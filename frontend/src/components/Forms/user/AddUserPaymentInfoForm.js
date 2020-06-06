@@ -33,6 +33,7 @@ return (
     <Form.Control as="select">
     <option>type a</option>
     <option>type 2</option>
+    <option>type 42</option>
     </Form.Control>
   </Form.Group>
   </Form.Row>
@@ -51,12 +52,14 @@ return (
   </Form.Group>
   </Form.Row>
 
-  <Form.Row>
-  <Form.Group as={Col} controlId="formGridPaymentInfoPrimaryCheckbox">
-    <Form.Label>Primary</Form.Label>
-    <Form.Control type="checkbox" onChange={(e) => {console.log(e.target.checked)}}/>
-  </Form.Group>
-  </Form.Row>
+  {
+  // <Form.Row>
+  // <Form.Group as={Col} controlId="formGridPaymentInfoPrimaryCheckbox">
+  //   <Form.Label>Primary</Form.Label>
+  //   <Form.Control type="checkbox" onChange={(e) => {console.log(e.target.checked)}}/>
+  // </Form.Group>
+  // </Form.Row>
+}
 
 <Form.Row>
 {props.canCancel && (

@@ -1,6 +1,3 @@
 .env
-debugnotes.txt
-mailjet.text
-sendGridApi.txt
 /node_modules
 package-lock.json

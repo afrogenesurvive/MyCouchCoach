@@ -761,6 +761,34 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
       user.role === 'Admin' && (
       <Tab eventKey="toTeachLessons" title="Lessons: Teaching">
 
+      <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'toTeachLessons', key: 'title', value: 'Ascending'})}>
+        Filter Title: Ascending
+      </Button>
+      <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'toTeachLessons', key: 'title', value: 'Descending'})}>
+        Filter Title: Descending
+      </Button>
+      <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'toTeachLessons', key: 'type', value: 'OneTime'})}>
+        Filter Type: OneTime
+      </Button>
+      <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'toTeachLessons', key: 'type', value: 'Recurring'})}>
+        Filter Type: Recurring
+      </Button>
+      <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'toTeachLessons', key: 'subType', value: 'OneDay'})}>
+        Filter SubType: OneDay
+      </Button>
+      <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'toTeachLessons', key: 'subType', value: 'MultiDay'})}>
+        Filter SubType: MultiDay
+      </Button>
+      <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'toTeachLessons', key: 'public', value: true})}>
+        Filter Public: True
+      </Button>
+      <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'toTeachLessons', key: 'public', value: false})}>
+        Filter Public: False
+      </Button>
+      <Button variant="danger" onClick={props.setFilter.bind(this, {field: null, key: null, value: null })}>
+        clearFilter
+      </Button>
+
       {user.toTeachLessons !== null &&
         user.toTeachLessons!== [] && (
           <UserToTeachLessonList
@@ -831,7 +859,34 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
       </Tab>
     )}
 
-    <Tab eventKey="paymentInfo" title="Payment">
+    <Tab eventKey="paymentInfo" title="Payment Info">
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'paymentInfo', key: 'date', value: 'Ascending'})}>
+      Filter Date: Ascending
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'paymentInfo', key: 'date', value: 'Descending'})}>
+      Filter Date: Descending
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'paymentInfo', key: 'type', value: 'Ascending'})}>
+      Filter Type: Ascending
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'paymentInfo', key: 'type', value: 'Descending'})}>
+      Filter Type: Descending
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'paymentInfo', key: 'valid', value: true})}>
+      Filter Valid: True
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'paymentInfo', key: 'valid', value: false})}>
+      Filter Valid: False
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'paymentInfo', key: 'primary', value: true})}>
+      Filter Primary: True
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'paymentInfo', key: 'primary', value: false})}>
+      Filter Primary: False
+    </Button>
+    <Button variant="danger" onClick={props.setFilter.bind(this, {field: null, key: null, value: null })}>
+      clearFilter
+    </Button>
 
     <Button variant="outline-primary" size="lg" className="confirmEditButton" onClick={props.onStartAdd.bind(this, "paymentInfo")}>+ PaymentInfo</Button>
 
@@ -855,6 +910,7 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
           canDelete={props.canDelete}
           onDelete={props.userDeletePaymentInfo}
           filter={props.filter}
+          makeUserPaymentInfoPrimary={props.makeUserPaymentInfoPrimary}
         />
       ) }
 
@@ -886,6 +942,7 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
         <Tab eventKey="received" title="received">
           <p>Received</p>
 
+
           {props.messageReplying === true && (
             <CreateMessageForm
               canCancel
@@ -914,6 +971,8 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
         </Tab>
         <Tab eventKey="sent" title="sent">
           <p>Sent</p>
+
+
           {messagesSent !== null &&
             messagesSent !== [] && (
               <UserMessageList

@@ -16,7 +16,7 @@ return (
 
 
   <Form.Row>
-  <Form.Group className="searchInput" controlId="formBasicTypeSelect">
+  <Form.Group className="searchInput" controlId="formGridTypeSelect">
   <Form.Label>Type</Form.Label>
   <Form.Control as="select">
   <option>type a</option>

@@ -691,6 +691,7 @@ module.exports = buildSchema(`
     addUserSocialMedia(activityId: ID!, userId: ID!, userInput: UserInput): User
     addUserPaymentInfo(activityId: ID!, userId: ID!, userInput: UserInput): User
     editUserPaymentInfo(activityId: ID!, userId: ID!, userInput: UserInput!, field: String!, query: String!): User
+    setUserPaymentInfoPrimary(activityId: ID!, userId: ID!, userInput: UserInput!): User
 
     addUserInterests(activityId: ID!, userId: ID!, userInput: UserInput!): User
     addUserTags(activityId: ID!, userId: ID!, userInput: UserInput!): User

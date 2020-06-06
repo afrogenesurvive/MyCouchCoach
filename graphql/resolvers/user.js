@@ -1617,7 +1617,7 @@ module.exports = {
         town: args.userInput.addressTown,
         city: args.userInput.addressCity,
         country: args.userInput.addressCountry,
-        postalCode: 'x',
+        postalCode: args.userInput.addressPostalCode,
         primary: true,
       };
       const user = await User.findOneAndUpdate(
@@ -1629,7 +1629,8 @@ module.exports = {
           'addresses.country': address.country,
           'addresses.postalCode': address.postalCode,
         },
-        {$set:{'addresses.$': address2}},
+        {'addresses.$.primary': true},
+        // {$set:{'addresses.$': address2}},
         {new: true, useFindAndModify: false})
         .populate('perks')
         .populate('promos')
@@ -2443,6 +2444,133 @@ module.exports = {
           ...user._doc,
           _id: user.id,
           email: user.contact.email ,
+          name: user.name,
+        };
+    } catch (err) {
+      throw err;
+    }
+  },
+  setUserPaymentInfoPrimary: async (args, req) => {
+    console.log("Resolver: setUserPaymentInfoPrimary...");
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      // const activityUser = await User.findById({_id: args.activityId});
+      // if (activityUser.role !== "Admin" && args.activityId !== args.userId) {
+      //   throw new Error("Yaah.. No! Only the owner or Admin can delete a User Address");
+      // };
+      const nerfAllPaymentInfo = await User.findOneAndUpdate(
+        {_id: args.userId},
+        {'paymentInfo.$[].primary': false},
+        {new: true, useFindAndModify: false})
+      // console.log('nerfAllPaymentInfo.paymentInfo',nerfAllPaymentInfo.paymentInfo);
+
+      const paymentInfo = {
+        date: new Date().toLocaleDateString().substr(0,10),
+        type: args.userInput.paymentInfoType,
+        description: args.userInput.paymentInfoDescription,
+        body: args.userInput.paymentInfoBody,
+        valid: args.userInput.paymentInfoValid,
+        primary: true
+      };
+      // console.log('paymentInfo',paymentInfo);
+
+      // const x = await User.find(
+      //   {_id:args.userId,
+      //     'paymentInfo.type': paymentInfo.type,
+      //     'paymentInfo.description': paymentInfo.description,
+      //     'paymentInfo.body': paymentInfo.body,
+      //     'paymentInfo.valid': paymentInfo.valid,
+      //   }
+      // );
+      // console.log('x.paymentInfo',x[0].paymentInfo);
+      const y = await User.findOneAndUpdate(
+        {_id:args.userId,
+          'paymentInfo.type': paymentInfo.type,
+          'paymentInfo.description': paymentInfo.description,
+          'paymentInfo.body': paymentInfo.body,
+        },
+        {'paymentInfo.$.primary': true},
+        // {$set:{'paymentInfo.$.primary': true}},
+        // {$set:{'paymentInfo.$.type': 'faust'}},
+        {new: true, useFindAndModify: false})
+        // console.log('y.paymentInfo',y.paymentInfo);
+
+      const user = await User.findOneAndUpdate(
+        {_id:args.userId,
+        'paymentInfo.type': paymentInfo.type,
+        'paymentInfo.description': paymentInfo.description,
+        'paymentInfo.body': paymentInfo.body,
+      },
+      {'paymentInfo.$.primary': true},
+        {new: true, useFindAndModify: false})
+        .populate('perks')
+        .populate('promos')
+        .populate('friends')
+        .populate('likedLessons')
+        .populate('toTeachLessons')
+        .populate('bookedLessons.ref')
+        .populate('attendedLessons.ref')
+        .populate('taughtLessons.ref')
+        .populate('wishlist.ref')
+        .populate('cart.lesson')
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'author',
+            model: 'User'
+          }
+        })
+        .populate({
+          path:'reviews',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'sender',
+            model: 'User'
+          }})
+        .populate({
+          path: 'messages',
+          populate: {
+            path: 'receiver',
+            model: 'User'
+          }})
+        .populate('orders')
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'creator',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'recipients',
+            model: 'User'
+          }
+        })
+        .populate({
+          path: 'notifications',
+          populate: {
+            path: 'lesson',
+            model: 'Lesson'
+          }
+        })
+        .populate('friendRequests.sender')
+        .populate('cancellations.lesson')
+        .populate('friendRequests.receiver');
+
+        return {
+          ...user._doc,
+          _id: user.id,
+          email: user.contact.email,
           name: user.name,
         };
     } catch (err) {

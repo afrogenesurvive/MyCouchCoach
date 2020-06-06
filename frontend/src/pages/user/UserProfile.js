@@ -1137,7 +1137,8 @@ class UserProfile extends Component {
     const paymentInfoType = event.target.formGridPaymentInfoType.value;
     const paymentInfoDescription = event.target.formGridDescription.value;
     const paymentInfoBody = event.target.formGridBody.value;
-    let paymentInfoPrimary = event.target.formGridPaymentInfoPrimaryCheckbox.checked;
+    let paymentInfoPrimary = false;
+    // let paymentInfoPrimary = event.target.formGridPaymentInfoPrimaryCheckbox.checked;
     const paymentInfoValid = true;
 
     if (
@@ -1254,6 +1255,62 @@ class UserProfile extends Component {
         this.setState({userAlert: err});
       });
   };
+  makeUserPaymentInfoPrimary = (args) => {
+    this.setState({userAlert: '...makeUserPaymentInfoPrimary...'})
+    const token = this.context.token;
+    const activityId = this.context.activityId;
+    let userId = activityId;
+
+    const paymentInfoDate = args.date;
+    const paymentInfoType = args.type;
+    const paymentInfoDescription = args.description;
+    const paymentInfoBody = args.body;
+    const paymentInfoValid = args.valid;
+    const paymentInfoPrimary = args.primary;
+
+    const requestBody = {
+      query:`
+        mutation {setUserPaymentInfoPrimary(
+          activityId:"${activityId}",
+          userId:"${userId}",
+          userInput:{
+            paymentInfoType:"${paymentInfoType}",
+            paymentInfoDescription:"${paymentInfoDescription}",
+            paymentInfoBody:"${paymentInfoBody}",
+            paymentInfoValid:${paymentInfoValid}
+          })
+          {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,role,public,bio,dob,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,description,notes,payment,shipping,totals{a,b,c},buyer{_id,username},receiver{_id,username},lessons{price,ref{_id,title}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+      `};
+
+    fetch('http://localhost:8088/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      }
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Failed!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        if (resData.errors) {
+          this.setState({userAlert: resData.errors[0].message})
+        } else {
+          const responseAlert = JSON.stringify(resData.data.setUserPaymentInfoPrimary).slice(2,25);
+          this.setState({deleting: false, userAlert: '...success! Payment info set to primary...', user: resData.data.setUserPaymentInfoPrimary, activityA: JSON.stringify(requestBody)})
+          this.context.user = this.state.user;
+        }
+
+      })
+      .catch(err => {
+        this.setState({userAlert: err});
+      });
+
+  }
   userAddInterests = (event) => {
     this.setState({ adding: false, userAddField: null, userAlert: "adding interest for user..." });
     const token = this.context.token;
@@ -4376,7 +4433,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data.createMessage).slice(2,25);;
-          this.setState({ userAlert: responseAlert, activityA: JSON.stringify(requestBody), sendingProfileMessage: false});
+          this.setState({ userAlert: '...success! Message sent...', activityA: JSON.stringify(requestBody), sendingProfileMessage: false});
         }
 
         // this.logUserActivity();
@@ -4868,6 +4925,7 @@ class UserProfile extends Component {
 
                     userAddPaymentInfo={this.userAddPaymentInfo}
                     userDeletePaymentInfo={this.userDeletePaymentInfo}
+                    makeUserPaymentInfoPrimary={this.makeUserPaymentInfoPrimary}
 
                     selectedPerk={this.context.selectedPerk}
                     userAddPerk={this.userAddPerk}

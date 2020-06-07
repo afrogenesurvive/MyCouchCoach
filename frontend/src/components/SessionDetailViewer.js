@@ -228,6 +228,8 @@ return (
 
     {props.sessionBookedState === true && (
       <SessionBookedList
+        meeting={props.meeting}
+        lessonType={props.lessonType}
         session={props.session}
         isInstructor={isInstructor}
         booked={session.booked}

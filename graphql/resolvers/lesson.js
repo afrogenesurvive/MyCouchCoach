@@ -2940,7 +2940,8 @@ module.exports = {
       // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$elemMatch: {$ne: user}} },
       // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate, 'sessions.booked': {$elemMatch: user} },
       const lesson = await Lesson.findOneAndUpdate(
-        {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate },
+        {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle},
+        // {_id:args.lessonId, 'sessions.title': args.lessonInput.sessionTitle, 'sessions.date': args.lessonInput.sessionDate },
         {$addToSet: {'sessions.$.attended': user, attendees: user}, $inc: {'sessions.$.attendedAmount': 1}}
         ,{new: true, useFindAndModify: false})
         .populate('instructors')

@@ -47,6 +47,7 @@ import './AttachmentViewer.css';
 const ProfileLessonViewer = (props) => {
 
   const lessonType = props.lessonType;
+  // console.log('beep', lessonType);
   const {...lesson} = props.profileLesson;
   const instructorIds = lesson.instructors.map(x => x._id)
   const isInstructor = instructorIds.includes(props.authId);
@@ -243,6 +244,7 @@ const ProfileLessonViewer = (props) => {
           cancelAddReminder={props.cancelAddReminder}
           startRepeatSession={props.startRepeatSession}
           shareCalendarEvent={props.shareCalendarEvent}
+          addSessionAttendance={props.addSessionAttendance}
           />
         )
       }

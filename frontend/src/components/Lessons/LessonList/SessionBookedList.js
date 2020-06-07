@@ -23,6 +23,8 @@ const sessionBookedList = props => {
     };
     return (
       <SessionBookedItem
+        meeting={props.meeting}
+        lessonType={props.lessonType}
         session={props.session}
         key={user._id}
         attendance={attendance}

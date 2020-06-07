@@ -3094,7 +3094,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
-          this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.addLessonAttendance});
+          this.setState({userAlert: '...success! Session attendance added...updates will show when lesson is re-opened...', profileLessonViewerData: resData.data.addLessonAttendance});
         }
 
       })

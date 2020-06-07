@@ -10,53 +10,53 @@ const paymentInfoList = props => {
 
   if (filter.field === 'paymentInfo' && filter.key === 'date' && filter.value === 'Ascending') {
     propsUserPaymentInfo = userPaymentInfo2.sort((a, b) => (a.date > b.date) ? 1 : -1);
-    console.log('...no paymentInfo filter...'+filter.key+'...'+filter.value);
-    console.log('userPaymentInfo2',userPaymentInfo2);
-    console.log('propsUserPaymentInfo',propsUserPaymentInfo);
-    console.log('props.userPaymentInfo',props.userPaymentInfo);
+    // console.log('...no paymentInfo filter...'+filter.key+'...'+filter.value);
+    // console.log('userPaymentInfo2',userPaymentInfo2);
+    // console.log('propsUserPaymentInfo',propsUserPaymentInfo);
+    // console.log('props.userPaymentInfo',props.userPaymentInfo);
   }
   if (filter.field === 'paymentInfo' && filter.key === 'date' && filter.value === 'Descending') {
     propsUserPaymentInfo = userPaymentInfo2.sort((a, b) => (a.date < b.date) ? 1 : -1);
-    console.log('...no paymentInfo filter...'+filter.key+'...'+filter.value);
-    console.log('userPaymentInfo2',userPaymentInfo2);
-    console.log('propsUserPaymentInfo',propsUserPaymentInfo);
-    console.log('props.userPaymentInfo',props.userPaymentInfo);
+    // console.log('...no paymentInfo filter...'+filter.key+'...'+filter.value);
+    // console.log('userPaymentInfo2',userPaymentInfo2);
+    // console.log('propsUserPaymentInfo',propsUserPaymentInfo);
+    // console.log('props.userPaymentInfo',props.userPaymentInfo);
   }
   if (filter.field === 'paymentInfo' && filter.key === 'valid') {
     propsUserPaymentInfo = userPaymentInfo2.filter(x => x.valid === filter.value)
-    console.log('...no paymentInfo filter...'+filter.key+'...'+filter.value);
-    console.log('userPaymentInfo2',userPaymentInfo2);
-    console.log('propsUserPaymentInfo',propsUserPaymentInfo);
-    console.log('props.userPaymentInfo',props.userPaymentInfo);
+    // console.log('...no paymentInfo filter...'+filter.key+'...'+filter.value);
+    // console.log('userPaymentInfo2',userPaymentInfo2);
+    // console.log('propsUserPaymentInfo',propsUserPaymentInfo);
+    // console.log('props.userPaymentInfo',props.userPaymentInfo);
   }
   if (filter.field === 'paymentInfo' && filter.key === 'primary') {
     propsUserPaymentInfo = userPaymentInfo2.filter(x => x.primary === filter.value)
-    console.log('...no paymentInfo filter...'+filter.key+'...'+filter.value);
-    console.log('userPaymentInfo2',userPaymentInfo2);
-    console.log('propsUserPaymentInfo',propsUserPaymentInfo);
-    console.log('props.userPaymentInfo',props.userPaymentInfo);
+    // console.log('...no paymentInfo filter...'+filter.key+'...'+filter.value);
+    // console.log('userPaymentInfo2',userPaymentInfo2);
+    // console.log('propsUserPaymentInfo',propsUserPaymentInfo);
+    // console.log('props.userPaymentInfo',props.userPaymentInfo);
   }
   if (filter.field === 'paymentInfo' && filter.key === 'type' && filter.value === 'Ascending') {
     propsUserPaymentInfo = userPaymentInfo2.sort((a, b) => (a.type > b.type) ? 1 : -1);
-    console.log('...no paymentInfo filter...'+filter.key+'...'+filter.value);
-    console.log('userPaymentInfo2',userPaymentInfo2);
-    console.log('propsUserPaymentInfo',propsUserPaymentInfo);
-    console.log('props.userPaymentInfo',props.userPaymentInfo);
+    // console.log('...no paymentInfo filter...'+filter.key+'...'+filter.value);
+    // console.log('userPaymentInfo2',userPaymentInfo2);
+    // console.log('propsUserPaymentInfo',propsUserPaymentInfo);
+    // console.log('props.userPaymentInfo',props.userPaymentInfo);
   }
   if (filter.field === 'paymentInfo' && filter.key === 'type' && filter.value === 'Descending') {
     propsUserPaymentInfo = userPaymentInfo2.sort((a, b) => (a.type < b.type) ? 1 : -1);
-    console.log('...no paymentInfo filter...'+filter.key+'...'+filter.value);
-    console.log('userPaymentInfo2',userPaymentInfo2);
-    console.log('propsUserPaymentInfo',propsUserPaymentInfo);
-    console.log('props.userPaymentInfo',props.userPaymentInfo);
+    // console.log('...no paymentInfo filter...'+filter.key+'...'+filter.value);
+    // console.log('userPaymentInfo2',userPaymentInfo2);
+    // console.log('propsUserPaymentInfo',propsUserPaymentInfo);
+    // console.log('props.userPaymentInfo',props.userPaymentInfo);
   }
 
   if (filter.field !== 'paymentInfo') {
     propsUserPaymentInfo = userPaymentInfo2;
-    console.log('...no paymentInfo filter...'+filter.key+'...'+filter.value);
-    console.log('userPaymentInfo2',userPaymentInfo2);
-    console.log('propsUserPaymentInfo',propsUserPaymentInfo);
-    console.log('props.userPaymentInfo',props.userPaymentInfo);
+    // console.log('...no paymentInfo filter...'+filter.key+'...'+filter.value);
+    // console.log('userPaymentInfo2',userPaymentInfo2);
+    // console.log('propsUserPaymentInfo',propsUserPaymentInfo);
+    // console.log('props.userPaymentInfo',props.userPaymentInfo);
   }
 
   const paymentInfo = propsUserPaymentInfo.map(paymentInfoItem => {

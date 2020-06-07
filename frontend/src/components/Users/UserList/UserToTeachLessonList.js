@@ -11,66 +11,66 @@ const userToTeachLessonList = props => {
 
   if (filter.field === 'toTeachLessons' && filter.key === 'title' && filter.value === 'Ascending') {
     propsUserToTeachLessons = userToTeachLessons2.sort((a, b) => (a.title > b.title) ? 1 : -1);
-    console.log('...filter toTeachLesson  by...'+filter.key+'...'+filter.value);
-    console.log('userToTeachLessons2',userToTeachLessons2);
-    console.log('propsUserToTeachLessons',propsUserToTeachLessons);
-    console.log('props.userToTeachLessons',props.userToTeachLessons);
+    // console.log('...filter toTeachLesson  by...'+filter.key+'...'+filter.value);
+    // console.log('userToTeachLessons2',userToTeachLessons2);
+    // console.log('propsUserToTeachLessons',propsUserToTeachLessons);
+    // console.log('props.userToTeachLessons',props.userToTeachLessons);
   }
   if (filter.field === 'toTeachLessons' && filter.key === 'title' && filter.value === 'Descending') {
     propsUserToTeachLessons = userToTeachLessons2.sort((a, b) => (a.title < b.title) ? 1 : -1);
-    console.log('...filter toTeachLesson  by...'+filter.key+'...'+filter.value);
-    console.log('userToTeachLessons2',userToTeachLessons2);
-    console.log('propsUserToTeachLessons',propsUserToTeachLessons);
-    console.log('props.userToTeachLessons',props.userToTeachLessons);
+    // console.log('...filter toTeachLesson  by...'+filter.key+'...'+filter.value);
+    // console.log('userToTeachLessons2',userToTeachLessons2);
+    // console.log('propsUserToTeachLessons',propsUserToTeachLessons);
+    // console.log('props.userToTeachLessons',props.userToTeachLessons);
   }
   if (filter.field === 'toTeachLessons' && filter.key === 'type' && filter.value === 'OneTime') {
     propsUserToTeachLessons = userToTeachLessons2.filter(x => x.type === filter.value);
-    console.log('...filter toTeachLesson  by...'+filter.key+'...'+filter.value);
-    console.log('userToTeachLessons2',userToTeachLessons2);
-    console.log('propsUserToTeachLessons',propsUserToTeachLessons);
-    console.log('props.userToTeachLessons',props.userToTeachLessons);
+    // console.log('...filter toTeachLesson  by...'+filter.key+'...'+filter.value);
+    // console.log('userToTeachLessons2',userToTeachLessons2);
+    // console.log('propsUserToTeachLessons',propsUserToTeachLessons);
+    // console.log('props.userToTeachLessons',props.userToTeachLessons);
   }
   if (filter.field === 'toTeachLessons' && filter.key === 'type' && filter.value === 'Recurring') {
     propsUserToTeachLessons = userToTeachLessons2.filter(x => x.type === filter.value);
-    console.log('...filter toTeachLesson  by...'+filter.key+'...'+filter.value);
-    console.log('userToTeachLessons2',userToTeachLessons2);
-    console.log('propsUserToTeachLessons',propsUserToTeachLessons);
-    console.log('props.userToTeachLessons',props.userToTeachLessons);
+    // console.log('...filter toTeachLesson  by...'+filter.key+'...'+filter.value);
+    // console.log('userToTeachLessons2',userToTeachLessons2);
+    // console.log('propsUserToTeachLessons',propsUserToTeachLessons);
+    // console.log('props.userToTeachLessons',props.userToTeachLessons);
   }
   if (filter.field === 'toTeachLessons' && filter.key === 'subType' && filter.value === 'OneDay') {
     propsUserToTeachLessons = userToTeachLessons2.filter(x => x.subType === filter.value);
-    console.log('...filter toTeachLesson  by...'+filter.key+'...'+filter.value);
-    console.log('userToTeachLessons2',userToTeachLessons2);
-    console.log('propsUserToTeachLessons',propsUserToTeachLessons);
-    console.log('props.userToTeachLessons',props.userToTeachLessons);
+    // console.log('...filter toTeachLesson  by...'+filter.key+'...'+filter.value);
+    // console.log('userToTeachLessons2',userToTeachLessons2);
+    // console.log('propsUserToTeachLessons',propsUserToTeachLessons);
+    // console.log('props.userToTeachLessons',props.userToTeachLessons);
   }
   if (filter.field === 'toTeachLessons' && filter.key === 'subType' && filter.value === 'MultiDay') {
     propsUserToTeachLessons = userToTeachLessons2.filter(x => x.subType === filter.value);
-    console.log('...filter toTeachLesson  by...'+filter.key+'...'+filter.value);
-    console.log('userToTeachLessons2',userToTeachLessons2);
-    console.log('propsUserToTeachLessons',propsUserToTeachLessons);
-    console.log('props.userToTeachLessons',props.userToTeachLessons);
+    // console.log('...filter toTeachLesson  by...'+filter.key+'...'+filter.value);
+    // console.log('userToTeachLessons2',userToTeachLessons2);
+    // console.log('propsUserToTeachLessons',propsUserToTeachLessons);
+    // console.log('props.userToTeachLessons',props.userToTeachLessons);
   }
   if (filter.field === 'toTeachLessons' && filter.key === 'public' && filter.value === true) {
     propsUserToTeachLessons = userToTeachLessons2.filter(x => x.public === filter.value);
-    console.log('...filter toTeachLesson  by...'+filter.key+'...'+filter.value);
-    console.log('userToTeachLessons2',userToTeachLessons2);
-    console.log('propsUserToTeachLessons',propsUserToTeachLessons);
-    console.log('props.userToTeachLessons',props.userToTeachLessons);
+    // console.log('...filter toTeachLesson  by...'+filter.key+'...'+filter.value);
+    // console.log('userToTeachLessons2',userToTeachLessons2);
+    // console.log('propsUserToTeachLessons',propsUserToTeachLessons);
+    // console.log('props.userToTeachLessons',props.userToTeachLessons);
   }
   if (filter.field === 'toTeachLessons' && filter.key === 'public' && filter.value === false) {
     propsUserToTeachLessons = userToTeachLessons2.filter(x => x.public === filter.value);
-    console.log('...filter toTeachLesson  by...'+filter.key+'...'+filter.value);
-    console.log('userToTeachLessons2',userToTeachLessons2);
-    console.log('propsUserToTeachLessons',propsUserToTeachLessons);
-    console.log('props.userToTeachLessons',props.userToTeachLessons);
+    // console.log('...filter toTeachLesson  by...'+filter.key+'...'+filter.value);
+    // console.log('userToTeachLessons2',userToTeachLessons2);
+    // console.log('propsUserToTeachLessons',propsUserToTeachLessons);
+    // console.log('props.userToTeachLessons',props.userToTeachLessons);
   }
   if (filter.field !== 'toTeachLessons') {
     propsUserToTeachLessons = userToTeachLessons2;
-    console.log('...no toTeachLesson filter...'+filter.key+'...'+filter.value);
-    console.log('userToTeachLessons2',userToTeachLessons2);
-    console.log('propsUserToTeachLessons',propsUserToTeachLessons);
-    console.log('props.userToTeachLessons',props.userToTeachLessons);
+    // console.log('...no toTeachLesson filter...'+filter.key+'...'+filter.value);
+    // console.log('userToTeachLessons2',userToTeachLessons2);
+    // console.log('propsUserToTeachLessons',propsUserToTeachLessons);
+    // console.log('props.userToTeachLessons',props.userToTeachLessons);
   }
 
   const toTeachLessons = propsUserToTeachLessons.map(toTeachLesson => {

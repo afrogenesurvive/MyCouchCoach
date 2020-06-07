@@ -9,6 +9,14 @@ const userBookedLessonList = props => {
   let userBookedLessons2 = props.userBookedLessons;
   let x = [];
 
+  if (filter.field === 'bookedLessons' && filter.key === 'public' ) {
+    x = userBookedLessons2.filter(x => x.ref.public === filter.value);
+    console.log('...filter bookedLesson by...'+filter.key+'...'+filter.value);
+    console.log("x", x);
+    // console.log('userBookedLessons2',userBookedLessons2);
+    // console.log('propsUserBookedLessons',propsUserBookedLessons);
+    // console.log('props.userBookedLessons',props.userBookedLessons);
+  }
   if (filter.field === 'bookedLessons' && filter.key === 'date' && filter.value === 'Ascending') {
     x = userBookedLessons2.sort((a, b) => (a.date < b.date) ? 1 : -1);
     console.log('...filter bookedLesson by...'+filter.key+'...'+filter.value);

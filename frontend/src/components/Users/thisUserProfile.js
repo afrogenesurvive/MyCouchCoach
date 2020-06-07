@@ -708,6 +708,12 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
     <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'bookedLessons', key: 'title', value: 'Descending'})}>
       Filter Title: Descending
     </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'bookedLessons', key: 'public', value: true})}>
+      Filter Public: True
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'bookedLessons', key: 'public', value: false})}>
+      Filter Public: False
+    </Button>
     <Button variant="danger" onClick={props.setFilter.bind(this, {field: null, key: null, value: null })}>
       clearFilter
     </Button>
@@ -727,6 +733,40 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
     </Tab>
 
     <Tab eventKey="attendedLessons" title="Lessons: Attended">
+
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'attendedLessons', key: 'title', value: 'Ascending'})}>
+      Filter Title: Ascending
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'attendedLessons', key: 'title', value: 'Descending'})}>
+      Filter Title: Descending
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'attendedLessons', key: 'date', value: 'Ascending'})}>
+      Filter Date: Ascending
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'attendedLessons', key: 'date', value: 'Descending'})}>
+      Filter Date: Descending
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'attendedLessons', key: 'public', value: true})}>
+      Filter Public: True
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'attendedLessons', key: 'public', value: false})}>
+      Filter Public: False
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'attendedLessons', key: 'type', value: 'OneTime'})}>
+      Filter Type: OneTime
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'attendedLessons', key: 'type', value: 'Recurring'})}>
+      Filter Type: Recurring
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'attendedLessons', key: 'subType', value: 'OneDay'})}>
+      Filter subType: OneDay
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'attendedLessons', key: 'subType', value: 'MultiDay'})}>
+      Filter subType: MultiDay
+    </Button>
+    <Button variant="danger" onClick={props.setFilter.bind(this, {field: null, key: null, value: null })}>
+      clearFilter
+    </Button>
 
     {props.creatingReview === true &&
       props.reviewLesson !== null && (
@@ -942,6 +982,33 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
         <Tab eventKey="received" title="received">
           <p>Received</p>
 
+          <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'messages', key: 'date', value: 'Ascending'})}>
+            Filter Date: Ascending
+          </Button>
+          <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'messages', key: 'date', value: 'Descending'})}>
+            Filter Date: Descending
+          </Button>
+          <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'messages', key: 'sender', value: 'Ascending'})}>
+            Filter Sender: Ascending
+          </Button>
+          <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'messages', key: 'sender', value: 'Descending'})}>
+            Filter Sender: Descending
+          </Button>
+          <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'messages', key: 'receiver', value: 'Ascending'})}>
+            Filter Receiver: Ascending
+          </Button>
+          <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'messages', key: 'receiver', value: 'Descending'})}>
+            Filter Receiver: Descending
+          </Button>
+          <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'messages', key: 'subject', value: 'Ascending'})}>
+            Filter Subject: Ascending
+          </Button>
+          <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'messages', key: 'subject', value: 'Descending'})}>
+            Filter Subject: Descending
+          </Button>
+          <Button variant="danger" onClick={props.setFilter.bind(this, {field: null, key: null, value: null })}>
+            clearFilter
+          </Button>
 
           {props.messageReplying === true && (
             <CreateMessageForm
@@ -971,7 +1038,33 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
         </Tab>
         <Tab eventKey="sent" title="sent">
           <p>Sent</p>
-
+          <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'messages', key: 'date', value: 'Ascending'})}>
+            Filter Date: Ascending
+          </Button>
+          <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'messages', key: 'date', value: 'Descending'})}>
+            Filter Date: Descending
+          </Button>
+          <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'messages', key: 'sender', value: 'Ascending'})}>
+            Filter Sender: Ascending
+          </Button>
+          <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'messages', key: 'sender', value: 'Descending'})}>
+            Filter Sender: Descending
+          </Button>
+          <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'messages', key: 'receiver', value: 'Ascending'})}>
+            Filter Receiver: Ascending
+          </Button>
+          <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'messages', key: 'receiver', value: 'Descending'})}>
+            Filter Receiver: Descending
+          </Button>
+          <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'messages', key: 'subject', value: 'Ascending'})}>
+            Filter Subject: Ascending
+          </Button>
+          <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'messages', key: 'subject', value: 'Descending'})}>
+            Filter Subject: Descending
+          </Button>
+          <Button variant="danger" onClick={props.setFilter.bind(this, {field: null, key: null, value: null })}>
+            clearFilter
+          </Button>
 
           {messagesSent !== null &&
             messagesSent !== [] && (

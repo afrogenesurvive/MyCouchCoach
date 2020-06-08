@@ -203,7 +203,83 @@ module.exports = {
 
       const result = await review.save();
       const updateLesson = await Lesson.findOneAndUpdate({_id: args.lessonId},{$addToSet: {reviews: review} },{new: true, useFindAndModify: false})
-      const updateAuthor = await User.findOneAndUpdate({_id: args.userId},{$addToSet: {reviews: review} },{new: true, useFindAndModify: false})
+      const updateAuthor = await User.findOneAndUpdate(
+        {_id: args.userId},
+        {$addToSet: {reviews: review} },
+        {new: true, useFindAndModify: false}
+      )
+      .populate('perks')
+      .populate('promos')
+      .populate('friends')
+      .populate('likedLessons')
+      .populate('toTeachLessons')
+      .populate('bookedLessons.ref')
+      .populate('attendedLessons.ref')
+      .populate('taughtLessons.ref')
+      .populate('wishlist.ref')
+      .populate('cart.lesson')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
+      .populate({
+        path: 'orders',
+        populate: {
+          path: 'buyer',
+          model: 'User'
+        }})
+      .populate({
+        path: 'orders',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
+      .populate('friendRequests.receiver');
 
       return {
         ...updateAuthor._doc,

@@ -6,6 +6,8 @@ import './UserList.css';
 const lessonReviewList = props => {
 
   const reviews = props.lessonReviews.map(review => {
+
+    console.log('review',review);
     return (
       <LessonReviewItem
         key={review}

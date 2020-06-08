@@ -27,7 +27,7 @@ return (
         isAuthor?: {isAuthor.toString()}
         </Card.Text>
         <Card.Text>
-        Author: {props.type}
+        Author: {props.author.username}
         </Card.Text>
         <Card.Text>
         ID: {props.author._id}

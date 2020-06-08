@@ -28,7 +28,13 @@ module.exports = {
     try {
       const lessons = await Lesson.find({public: true})
       .populate('instructors')
-      .populate('reviews');
+      .populate({
+        path: 'reviews',
+        populate: {
+          path: 'reviews',
+          model: 'User'
+        }
+      });
 
       return lessons.map(lesson => {
         return transformLesson(lesson,);
@@ -48,7 +54,12 @@ module.exports = {
       const query = {[resolverField]:resolverQuery};
       const lessons = await Lesson.find(query)
       .populate('instructors')
-      .populate('reviews');
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }});
 
       lessons2 = lessons.filter(x => x.public === true);
       return lessons2.map(lesson => {
@@ -69,7 +80,12 @@ module.exports = {
       const lessons = await Lesson.find({})
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -112,7 +128,18 @@ module.exports = {
       const lesson = await Lesson.findById(args.lessonId)
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
+      .populate({
+        path: 'reviews',
+        populate: {
+            path: 'author',
+            model: 'User'
+        }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -161,7 +188,12 @@ module.exports = {
       const lessons = await Lesson.find(query)
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -210,7 +242,12 @@ module.exports = {
       const lessons = await Lesson.find(query)
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -255,7 +292,12 @@ module.exports = {
       const lessons = await Lesson.find({'title': {$regex: regex, $options: 'i'}})
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -299,7 +341,12 @@ module.exports = {
       const lessons = await Lesson.find({'schedule': {$gte: startDate, $lte: endDate}})
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -342,7 +389,12 @@ module.exports = {
       const lessons = await Lesson.find({'instructors._id': {$all: instructors}})
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -385,7 +437,12 @@ module.exports = {
       const lessons = await Lesson.find({reviews: review})
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -430,7 +487,12 @@ module.exports = {
       const lessons = await Lesson.find({promos: promo})
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -474,7 +536,12 @@ module.exports = {
       const lessons = await Lesson.find({category: {$regex: regex, $options: 'i'}})
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -518,7 +585,12 @@ module.exports = {
       const lessons = await Lesson.find({'tags': {$all: tags}})
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -562,7 +634,12 @@ module.exports = {
       const lessons = await Lesson.find({'requirements': {$all: requirements}})
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -606,7 +683,12 @@ module.exports = {
       const lessons = await Lesson.find({'materials': {$all: materials}})
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -649,7 +731,12 @@ module.exports = {
       const lessons = await Lesson.find({[field]: args.query})
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -831,7 +918,7 @@ module.exports = {
               // {$match: {'_id.lessonId': args.lessonId, '_id.title': {$eq: args.lessonInput.sessionTitle }}}
             ]);
             const session2 = session[0]._id;
-            console.log(session2);
+            // console.log(session2);
 
             return {
               ...session2
@@ -862,7 +949,12 @@ module.exports = {
         },{new: true, useFindAndModify: false})
         .populate('instructors')
         .populate('attendees')
-        .populate('reviews')
+        .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
         .populate('sessions.booked')
         .populate('sessions.attended')
         .populate({
@@ -918,7 +1010,12 @@ module.exports = {
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},query,{new: true, useFindAndModify: false})
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -974,7 +1071,12 @@ module.exports = {
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: { tags: {$each: splitTags} }},{new: true, useFindAndModify: false})
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -1020,7 +1122,12 @@ module.exports = {
         const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: { tags: tag }},{new: true, useFindAndModify: false})
         .populate('instructors')
         .populate('attendees')
-        .populate('reviews')
+        .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
         .populate('sessions.booked')
         .populate('sessions.attended')
         .populate({
@@ -1066,7 +1173,12 @@ module.exports = {
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: { requirements: {$each: splitRequirements} }},{new: true, useFindAndModify: false})
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -1111,7 +1223,12 @@ module.exports = {
         const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: { requirements: requirement }},{new: true, useFindAndModify: false})
         .populate('instructors')
         .populate('attendees')
-        .populate('reviews')
+        .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
         .populate('sessions.booked')
         .populate('sessions.attended')
         .populate({
@@ -1157,7 +1274,12 @@ module.exports = {
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: { materials: {$each: splitMaterials} }},{new: true, useFindAndModify: false})
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -1202,7 +1324,12 @@ module.exports = {
         const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: { materials: material }},{new: true, useFindAndModify: false})
         .populate('instructors')
         .populate('attendees')
-        .populate('reviews')
+        .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
         .populate('sessions.booked')
         .populate('sessions.attended')
         .populate({
@@ -1251,7 +1378,12 @@ module.exports = {
       const lesson = await Lesson.findOneAndUpdate({_id: args.lessonId},{$addToSet: {schedule: scheduleDate}},{new: true, useFindAndModify: false})
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -1306,7 +1438,12 @@ module.exports = {
         const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {schedule: scheduleDate}},{new: true, useFindAndModify: false})
         .populate('instructors')
         .populate('attendees')
-        .populate('reviews')
+        .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
         .populate('sessions.booked')
         .populate('sessions.attended')
         .populate({
@@ -1366,7 +1503,12 @@ module.exports = {
       const lesson = await Lesson.findOneAndUpdate({_id: args.lessonId},{$addToSet: {gallery: image}},{new: true, useFindAndModify: false})
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -1441,7 +1583,12 @@ module.exports = {
         const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {gallery: image}},{new: true, useFindAndModify: false})
         .populate('instructors')
         .populate('attendees')
-        .populate('reviews')
+        .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
         .populate('sessions.booked')
         .populate('sessions.attended')
         .populate({
@@ -1515,7 +1662,12 @@ module.exports = {
         )
         .populate('instructors')
         .populate('attendees')
-        .populate('reviews')
+        .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
         .populate('sessions.booked')
         .populate('sessions.attended')
         .populate({
@@ -1576,7 +1728,12 @@ module.exports = {
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: {files: file}},{new: true, useFindAndModify: false})
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -1652,7 +1809,12 @@ module.exports = {
         const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {files: file}},{new: true, useFindAndModify: false})
         .populate('instructors')
         .populate('attendees')
-        .populate('reviews')
+        .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
         .populate('sessions.booked')
         .populate('sessions.attended')
         .populate({
@@ -1719,7 +1881,12 @@ module.exports = {
           {new: true, useFindAndModify: false})
         .populate('instructors')
         .populate('attendees')
-        .populate('reviews')
+        .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
         .populate('sessions.booked')
         .populate('sessions.attended')
         .populate({
@@ -1831,7 +1998,12 @@ module.exports = {
         {new: true, useFindAndModify: false})
         .populate('instructors')
         .populate('attendees')
-        .populate('reviews')
+        .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
         .populate('sessions.booked')
         .populate('sessions.attended')
         .populate({
@@ -1898,7 +2070,12 @@ module.exports = {
       // }},{new: true, useFindAndModify: false})
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -1950,7 +2127,12 @@ module.exports = {
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: {instructors: instructor}},{new: true, useFindAndModify: false})
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -2000,7 +2182,12 @@ module.exports = {
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {instructors: instructor._id}},{new: true, useFindAndModify: false})
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -2046,7 +2233,12 @@ module.exports = {
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: {orders: order}},{new: true, useFindAndModify: false})
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -2096,7 +2288,12 @@ module.exports = {
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {orders: order}},{new: true, useFindAndModify: false})
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -2142,7 +2339,12 @@ module.exports = {
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: {promos: promo}},{new: true, useFindAndModify: false})
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -2192,7 +2394,12 @@ module.exports = {
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {promos: promo}},{new: true, useFindAndModify: false})
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -2238,7 +2445,12 @@ module.exports = {
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$addToSet: {promos: promo}},{new: true, useFindAndModify: false})
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -2288,7 +2500,12 @@ module.exports = {
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {reviews: review}},{new: true, useFindAndModify: false})
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -2390,7 +2607,12 @@ module.exports = {
         ,{new: true, useFindAndModify: false})
         .populate('instructors')
         .populate('attendees')
-        .populate('reviews')
+        .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
         .populate('sessions.booked')
         .populate('sessions.attended')
         .populate({
@@ -2470,7 +2692,12 @@ module.exports = {
       const lesson2 = await Lesson.findById({_id: lesson._id})
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -2582,7 +2809,12 @@ module.exports = {
           }
           ,{new: true, useFindAndModify: false});
         // .populate('instructors')
-        // .populate('reviews')
+        // .populate({
+  // path: 'reviews',
+  // populate: {
+  //     path: 'author',
+  //     model: 'User'
+  // }})
         // .populate('sessions.booked')
         // .populate('sessions.attended');
         // console.log(lesson.sessions);
@@ -2638,7 +2870,18 @@ module.exports = {
               path: 'receiver',
               model: 'User'
             }})
-          .populate('orders')
+          .populate({
+            path: 'orders',
+            populate: {
+              path: 'buyer',
+              model: 'User'
+            }})
+          .populate({
+            path: 'orders',
+            populate: {
+              path: 'receiver',
+              model: 'User'
+            }})
           .populate({
             path: 'reminders',
             populate: {
@@ -2738,7 +2981,18 @@ module.exports = {
           path: 'receiver',
           model: 'User'
         }})
-      .populate('orders')
+      .populate({
+        path: 'orders',
+        populate: {
+          path: 'buyer',
+          model: 'User'
+        }})
+      .populate({
+        path: 'orders',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
       .populate({
         path: 'notifications',
         populate: {
@@ -2800,7 +3054,12 @@ module.exports = {
         ,{new: true, useFindAndModify: false})
         .populate('instructors')
         .populate('attendees')
-        .populate('reviews')
+        .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
         .populate('sessions.booked')
         .populate('sessions.attended')
         .populate({
@@ -2888,7 +3147,12 @@ module.exports = {
       const lessonx = await Lesson.findById({_id: lesson._id})
       .populate('instructors')
       .populate('attendees')
-      .populate('reviews')
+      .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -2946,7 +3210,12 @@ module.exports = {
         ,{new: true, useFindAndModify: false})
         .populate('instructors')
         .populate('attendees')
-        .populate('reviews')
+        .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
         .populate('sessions.booked')
         .populate('sessions.attended')
         .populate({
@@ -3008,7 +3277,12 @@ module.exports = {
         ,{new: true, useFindAndModify: false})
         .populate('instructors')
         .populate('attendees')
-        .populate('reviews')
+        .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
         .populate('sessions.booked')
         .populate('sessions.attended')
         .populate({
@@ -3060,7 +3334,12 @@ module.exports = {
         {new: true, useFindAndModify: false})
         .populate('instructors')
         .populate('attendees')
-        .populate('reviews')
+        .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
         .populate('sessions.booked')
         .populate('sessions.attended')
         .populate({
@@ -3111,7 +3390,12 @@ module.exports = {
         {new: true, useFindAndModify: false})
         .populate('instructors')
         .populate('attendees')
-        .populate('reviews')
+        .populate({
+  path: 'reviews',
+  populate: {
+      path: 'author',
+      model: 'User'
+  }})
         .populate('sessions.booked')
         .populate('sessions.attended')
         .populate({

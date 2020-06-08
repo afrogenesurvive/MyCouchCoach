@@ -11,7 +11,12 @@ import "./AttachmentViewer.css"
 
 const SessionDetailViewer = (props) =>{
   const {...session} = props.session;
-  const {...lesson} = props.lesson;
+
+  let {...lesson} = {};
+  if (!props.meeting) {
+    lesson = props.lesson;
+  }
+
   // console.log('session.endDate',session);
   // console.log("beep",session, session.booked,props.sessionBookedState,session.attended);
   let sessionDate = new Date (session.date.substr(0,10)*1000).toLocaleDateString().slice(0,10);
@@ -37,13 +42,17 @@ const SessionDetailViewer = (props) =>{
   // let startTime = session date + session timeout
   // let endTime = session endDate + (session time + lesson duration)
 
-  let calEvent = {
-    title: lesson.title+': '+session.title,
-    description: lesson.description,
-    location: 'Earth',
-    startTime: session.date,
-    endTime: session.endDate
-}
+  let calEvent = null;
+  if (!props.meeting) {
+    calEvent = {
+      title: lesson.title+': '+session.title,
+      description: lesson.description,
+      location: 'Earth',
+      startTime: session.date,
+      endTime: session.endDate
+    }
+  }
+
 
 return (
   <div className="attachmentViewerBg">
@@ -290,70 +299,16 @@ return (
       />
     )}
 
-    {isInstructor === true && (
+    {isInstructor === true &&
+      !props.meeting && (
       <AddToCalendar event={calEvent} />
     )}
     {isInstructor !== true &&
-      hasBooked === true && (
+      hasBooked === true &&
+      !props.meeting && (
       <AddToCalendar event={calEvent} />
     )}
 
-
-    {
-
-      // <Button variant="info" onClick={props.shareCalendarEvent.bind(this, session)}>
-      //   Share Event
-      // </Button>
-
-      // {isInstructor == true &&
-      //   props.lesson.type === 'Recurring' && (
-      //     <Button variant="link" onClick={props.startRepeatSession.bind(this, props.session)}>
-      //       Repeat
-      //     </Button>
-      // )}
-
-      // <p>{props.authId}</p>
-
-    // {props.editSessionField && (
-    //   <Button variant="primary" onClick={props.editSessionField.bind(this, props.session)}>
-    //       Edit
-    //     </Button>
-    //   )}
-    // {props.editingSessionField === true && (
-    //   <UpdateSessionFieldForm
-    //     authId={props.authId}
-    //     session={props.session}
-    //     onConfirm={props.editSessionField}
-    //     onCancel={props.cancelEditSessionField}
-    //   />
-    // )}
-
-    // <Button variant="primary" onClick={props.showSessionBooked}>
-    //   Show Booked
-    // </Button>
-    // <Button variant="primary" onClick={props.hideSessionBooked}>
-    //   Hide Booked
-    // </Button>
-    // <Button variant="primary" onClick={props.showSessionAttended}>
-    //   Show Attended
-    // </Button>
-    // <Button variant="primary" onClick={props.hideSessionAttended}>
-    //   Hide Attended
-    // </Button>
-    //
-    // {props.sessionBookedState === true && (
-    //   <SessionBookedList
-    //   session={props.session}
-    //   isInstructor={props.isInstructor}
-    //   booked={props.booked}
-    //   attended={props.attended}
-    //   addSessionAttendance={props.addSessionAttendance}
-    // />)}
-    // {props.sessionAttendedState === true && (
-    //   <SessionAttendedList
-    //   attended={props.attended}
-    // />)}
-    }
 
     </div>
   </div>

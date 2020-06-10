@@ -60,8 +60,8 @@ const paymentInfoList = props => {
   }
 
   const paymentInfo = propsUserPaymentInfo.map(paymentInfoItem => {
-    const paymentInfoItemDate = new Date (paymentInfoItem.date.substr(0,10)*1000).toLocaleDateString().slice(0,10);
-    // console.log(paymentInfoItemDate);
+    const paymentInfoItemDate = new Date (paymentInfoItem.date.substr(0,10)*1000).toISOString().slice(0,10);
+    // console.log(paymentInfoItem);
     return (
       <UserPaymentInfoItem
         key={paymentInfoItem.description}

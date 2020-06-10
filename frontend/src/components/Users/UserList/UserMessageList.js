@@ -5,6 +5,7 @@ import './UserList.css';
 
 const userMessageList = props => {
 
+  let key = null;
   const {...filter} = props.filter;
   let userMessages2 = props.userMessages;
   let propsUserMessages = [];
@@ -76,9 +77,10 @@ const userMessageList = props => {
   const userMessages = propsUserMessages.map(message => {
     const messageDate = new Date (message.date.substr(0,10)*1000).toISOString().slice(0,10);;
       // console.log('msg',props.authId,message.sender._id,message.receiver._id);
+      key = message._id;
     return (
       <UserMessageItem
-        key={message.path}
+        key={key}
         authId={props.authId}
         _id={message._id}
         date={messageDate}

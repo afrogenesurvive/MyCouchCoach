@@ -10,14 +10,14 @@ const userInterestList = props => {
   let propsUserInterests = [];
 
   if (filter.field === 'interests' && filter.key === 'interest' && filter.value === 'Ascending') {
-    propsUserInterests = userInterests2.sort((a, b) => (a < b) ? 1 : -1);
+    propsUserInterests = userInterests2.sort((a, b) => (a > b) ? 1 : -1);
     // console.log('...no interest filter...'+filter.key+'...'+filter.value);
     // console.log('userInterests2',userInterests2);
     // console.log('propsUserInterests',propsUserInterests);
     // console.log('propsUserInterests',propsUserInterests);
   }
   if (filter.field === 'interests' && filter.key === 'interest' && filter.value === 'Descending') {
-    propsUserInterests = userInterests2.sort((a, b) => (a > b) ? 1 : -1);
+    propsUserInterests = userInterests2.sort((a, b) => (a < b) ? 1 : -1);
     // console.log('...no interest filter...'+filter.key+'...'+filter.value);
     // console.log('userInterests2',userInterests2);
     // console.log('propsUserInterests',propsUserInterests);

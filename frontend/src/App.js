@@ -66,6 +66,7 @@ class App extends Component {
       this.context.role = seshStore.role;
       this.setState({
         sessionCookiePresent: true,
+        activityId: seshStore.activityId,
         token: seshStore.token,
         });
     };
@@ -76,7 +77,7 @@ class App extends Component {
   }
 
   componentWillUnmount() {
-    // console.log('boop boop boop');
+    console.log('...app component un-mounting...');
   }
 
   logout2 () {
@@ -277,6 +278,9 @@ class App extends Component {
                     resetState={this.state.passwordResetState}
                     />}
                   />)}
+                  {
+
+                  }
                   {this.state.token && (<Route path="/userProfile" component={UserProfile} />)}
                   {this.state.token && (<Route path="/userProfile/LessonDetailViewer" component={ProfileLessonViewer} />)}
 

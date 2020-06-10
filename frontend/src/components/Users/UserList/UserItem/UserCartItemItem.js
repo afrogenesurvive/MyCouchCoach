@@ -19,7 +19,19 @@ const userCartItemItem = props => (
         sessionTitle: {props.sessionTitle}
       </Card.Text>
       <Card.Text>
-        Lesson ID: {props.lesson._id}
+        Lesson:
+      </Card.Text>
+      <Card.Text>
+        ID: {props.lesson._id}
+      </Card.Text>
+      <Card.Text>
+        Title: {props.lesson.title}
+      </Card.Text>
+      <Card.Text>
+        Price: $ {props.lesson.price}
+      </Card.Text>
+      <Card.Text>
+        Sku: {props.lesson.sku}
       </Card.Text>
 
 

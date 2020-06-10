@@ -89,6 +89,8 @@ let hasShippingAddress = user.addresses.filter(x => x.type === 'Shipping' && x.p
 // console.log(user.addresses,user.addresses.filter(x => x.type === 'Shipping'),hasShippingAddress);
 
 let userAddresses = user.addresses;
+let userCart = user.cart;
+let userBookedLessons = user.bookedLessons;
 
 const orderSubtotal = user.cart.map(x => x.lesson);
 const orderSubtotal2 = orderSubtotal.map(x => x.price )
@@ -612,6 +614,30 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
 
     <Tab eventKey="cart" title="Lessons: Cart">
 
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'cartLessons', key: 'lessonPrice', value: 'Ascending'})}>
+      Filter by Lesson price: Ascending
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'cartLessons', key: 'lessonPrice', value: 'Descending'})}>
+      Filter by Lesson price: Descending
+    </Button>
+      <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'cartLessons', key: 'lessonTitle', value: 'Ascending'})}>
+      Filter by Lesson title: Ascending
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'cartLessons', key: 'lessonTitle', value: 'Descending'})}>
+      Filter by Lesson title: Descending
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'cartLessons', key: 'sessionTitle', value: 'Ascending'})}>
+      Filter by Session title: Ascending
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'cartLessons', key: 'sessionTitle', value: 'Descending'})}>
+      Filter by Session title: Descending
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'cartLessons', key: 'sessionDate', value: 'Ascending'})}>
+      Filter by Session date: Ascending
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'cartLessons', key: 'sessionDate', value: 'Descending'})}>
+      Filter by Session date: Descending
+    </Button>
     <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'cartLessons', key: 'dateAdded', value: 'Ascending'})}>
       Filter by dateAdded: Ascending
     </Button>
@@ -651,7 +677,7 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
     {user.cart !== null &&
       user.cart !== [] && (
         <UserCartItemList
-          userCartItems={user.cart}
+          userCartItems={userCart}
           authId={props.authId}
           canDelete={true}
           onDelete={props.userDeleteCartItem}
@@ -707,22 +733,46 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
     <Tab eventKey="bookedLessons" title="Lessons: Booked">
 
     <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'bookedLessons', key: 'date', value: 'Ascending'})}>
-      Filter Date: Ascending
+      Filter Date Booked: Ascending
     </Button>
     <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'bookedLessons', key: 'date', value: 'Descending'})}>
-      Filter Date: Descending
+      Filter Date Booked: Descending
     </Button>
-    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'bookedLessons', key: 'title', value: 'Ascending'})}>
-      Filter Title: Ascending
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'bookedLessons', key: 'lesson.title', value: 'Ascending'})}>
+      Filter Lesson Title: Ascending
     </Button>
-    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'bookedLessons', key: 'title', value: 'Descending'})}>
-      Filter Title: Descending
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'bookedLessons', key: 'lesson.title', value: 'Descending'})}>
+      Filter Lesson Title: Descending
     </Button>
-    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'bookedLessons', key: 'public', value: true})}>
-      Filter Public: True
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'bookedLessons', key: 'lesson.type', value: 'OneTime'})}>
+      Filter Lesson Type: OneTime
     </Button>
-    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'bookedLessons', key: 'public', value: false})}>
-      Filter Public: False
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'bookedLessons', key: 'lesson.type', value: 'Recurring'})}>
+      Filter Lesson Type: Recurring
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'bookedLessons', key: 'lesson.subType', value: 'OneDay'})}>
+      Filter Lesson subType: OneDay
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'bookedLessons', key: 'lesson.subType', value: 'MultiDay'})}>
+      Filter Lesson subType: MultiDay
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'bookedLessons', key: 'lesson.public', value: true})}>
+      Filter lesson Public: True
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'bookedLessons', key: 'lesson.public', value: false})}>
+      Filter lesson Public: False
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'bookedLessons', key: 'session.title', value: 'Ascending'})}>
+      Filter Session Title: Ascending
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'bookedLessons', key: 'session.title', value: 'Descending'})}>
+      Filter Session Title: Descending
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'bookedLessons', key: 'session.date', value: 'Ascending'})}>
+      Filter Session Date: Ascending
+    </Button>
+    <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'bookedLessons', key: 'session.date', value: 'Descending'})}>
+      Filter Session Date: Descending
     </Button>
     <Button variant="danger" onClick={props.setFilter.bind(this, {field: null, key: null, value: null })}>
       clearFilter
@@ -731,7 +781,7 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
     {user.bookedLessons !== null &&
       user.bookedLessons!== [] && (
         <UserBookedLessonList
-          userBookedLessons={user.bookedLessons}
+          userBookedLessons={userBookedLessons}
           authId={props.authId}
           canDelete={props.canDelete}
           onDelete={props.userDeleteBookedLesson}
@@ -855,6 +905,41 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
     {user.role === "Instructor" ||
       user.role === 'Admin' && (
       <Tab eventKey="taughtLessons" title="Lessons: Taught">
+
+      <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'taughtLessons', key: 'date', value: 'Ascending'})}>
+        Filter by date: Ascending
+      </Button>
+      <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'taughtLessons', key: 'date', value: 'Descending'})}>
+        Filter by date: Descending
+      </Button>
+      <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'taughtLessons', key: 'lesson.title', value: 'Ascending'})}>
+        Filter by Lesson Title: Ascending
+      </Button>
+      <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'taughtLessons', key: 'lesson.title', value: 'Descending'})}>
+        Filter by Lesson Title: Descending
+      </Button>
+      <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'taughtLessons', key: 'type', value: 'OneTime'})}>
+        Filter by Lesson Type: OneTime
+      </Button>
+      <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'taughtLessons', key: 'type', value: 'Recurring'})}>
+        Filter by Lesson Type: Recurrung
+      </Button>
+      <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'taughtLessons', key: 'subType', value: 'OneDay'})}>
+        Filter by Lesson SubType: OneDay
+      </Button>
+      <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'taughtLessons', key: 'subType', value: 'MultiDay'})}>
+        Filter by Lesson SubType: MultiDay
+      </Button>
+      <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'taughtLessons', key: 'public', value: true})}>
+        Filter by Lesson Public: True
+      </Button>
+      <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'taughtLessons', key: 'public', value: false})}>
+        Filter by Lesson Public: False
+      </Button>
+      <Button variant="danger" onClick={props.setFilter.bind(this, {field: null, key: null, value: null })}>
+        clearFilter
+      </Button>
+
       {
         user.taughtLessons !== null &&
         user.taughtLessons!== [] && (

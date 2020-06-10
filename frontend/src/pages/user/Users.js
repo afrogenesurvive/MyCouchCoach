@@ -79,7 +79,10 @@ class UsersPage extends Component {
     this.fetchUsersBasic();
   }
 
-
+  componentWillUnmount() {
+    this.isActive = false;
+    console.log('...users component un-mounting...');
+  }
 
   modalConfirmSearchBasicHandler = (event) => {
     event.preventDefault();
@@ -544,9 +547,7 @@ closeAttachmentView = () => {
     }
   }
 
-  componentWillUnmount() {
-    this.isActive = false;
-  }
+
 
   render() {
     return (

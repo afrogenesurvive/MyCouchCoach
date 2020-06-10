@@ -4,13 +4,14 @@ import UserCancellationItem from './UserItem/UserCancellationItem';
 import './UserList.css';
 
 const userCancellationList = props => {
-
+  let key = null;
   const cancellations = props.userCancellations.map(cancellation => {
     // const cancellationDate = new Date (cancellation.date.substr(0,10)*1000).toLocaleDateString().slice(0,10);
     const sessionDate = new Date (cancellation.sessionDate.substr(0,10)*1000).toLocaleDateString().slice(0,10);
+    key = cancellation.lesson._id+cancellation.sessionTitle+cancellation.date;
     return (
       <UserCancellationItem
-        key={cancellation.lesson._id}
+        key={key}
         authId={props.authId}
         cancellation={cancellation}
         date={cancellation.date}

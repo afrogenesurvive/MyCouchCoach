@@ -315,6 +315,7 @@ module.exports = buildSchema(`
     sessionReminderTriggerValue: Float
     sessionQuery: String
     sessionField: String
+    cancellationDate: String
     cancellationReason: String
   }
 
@@ -805,6 +806,7 @@ module.exports = buildSchema(`
     deleteLessonReview(activityId: ID!, lessonId: ID!, reviewId: ID!): Lesson
     deleteLessonPromo(activityId: ID!, lessonId: ID!, promoId: ID!): Lesson
     deleteLessonReminder(activityId: ID!, lessonId: ID!, reminderId: ID!): Lesson
+    deleteLessonCancellation(activityId: ID!, lessonId: ID!, lessonInput: LessonInput!): Lesson
 
     createNotification(activityId: ID!, lessonId: ID!, userIds: String! ,notificationInput: NotificationInput!): Notification
     updateNotificationBasic(activityId: ID!, notificationId: ID!, notificationInput: NotificationInput!): Notification

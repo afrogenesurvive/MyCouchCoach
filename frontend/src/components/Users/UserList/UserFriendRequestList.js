@@ -5,6 +5,7 @@ import './UserList.css';
 
 const userFriendRequestList = props => {
 
+  let key = null;
   const {...filter} = props.filter;
   let userFriendRequests2 = props.userFriendRequests;
   let propsUserFriendRequests = [];
@@ -63,9 +64,10 @@ const userFriendRequestList = props => {
   const userFriendRequests = propsUserFriendRequests.map(friendRequest=> {
     const requestDate = new Date (friendRequest.date.substr(0,10)*1000).toLocaleDateString().slice(0,10);;
     // console.log(friendRequest.date,friendRequest.sender,friendRequest.receiver);
+    key = friendRequest.sender._id+friendRequest.receiver._id;
     return (
       <UserFriendRequestItem
-        key={friendRequest.sender._id}
+        key={key}
         friendRequest={friendRequest}
         date={requestDate}
         sender={friendRequest.sender}

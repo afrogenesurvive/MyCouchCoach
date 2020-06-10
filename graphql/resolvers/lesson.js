@@ -3430,6 +3430,63 @@ module.exports = {
       throw err;
     }
   },
+  deleteLessonCancellation: async (args, req) => {
+    console.log("Resolver: deleteLessonCancellation...");
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    try {
+      const cancellation = {
+        reason: args.lessonInput.cancellationReason,
+        sessionTitle: args.lessonInput.sessionTitle,
+      };
+      // const user = await User.findOneAndUpdate(
+      //   {
+      //     _id: args.activityId,
+      //     'cancellations.reason': cancellation.reason,
+      //     'cancellations.sessionTitle': cancellation.sessionTitle
+      //   },
+      //   {$pull:
+      //     {cancellations:
+      //       {
+      //         reason: cancellation.reason,
+      //         sessionTitle:cancellation.sessionTitle
+      //       }}},
+      //   {new: true, useFindAndModify: false}
+      // );
+      const user2 = await User.findOne(
+        {
+          _id: args.activityId,
+          'cancellations.reason': args.lessonInput.cancellationReason
+        });
+      console.log('user',user2);
+
+
+      // const lesson = await Lesson.findOneAndUpdate(
+      //   {
+      //     _id: args.activityId,
+      //     'cancellations.reason': cancellation.reason,
+      //     'cancellations.sessionTitle': cancellation.sessionTitle,
+      //     user: user
+      //   },
+      //   {$pull:
+      //     {cancellations:
+      //       {
+      //         reason: cancellation.reason,
+      //         sessionTitle:cancellation.sessionTitle,
+      //         user: user
+      //       }}},
+      //   {new: true, useFindAndModify: false})
+      //
+      // return {
+      //     ...lesson._doc,
+      //     _id: lesson.id,
+      //     title: lesson.title
+      // };
+    } catch (err) {
+      throw err;
+    }
+  },
   deleteLessonById: async (args, req) => {
     console.log("Resolver: deleteLessonById...");
     if (!req.isAuth) {

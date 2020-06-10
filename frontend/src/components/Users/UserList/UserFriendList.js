@@ -11,28 +11,28 @@ const userFriendList = props => {
   let propsUserFriends = [];
 
   if (filter.field === 'friends' && filter.key === 'username' && filter.value === 'Ascending') {
-    propsUserFriends = userFriends2.sort((a, b) => (a.username < b.username) ? 1 : -1);
-    // console.log('...filter friend by...'+filter.key+'...'+filter.value);
-    // console.log('userFriends2',userFriends2);
-    // console.log('propsUserFriends',propsUserFriends);
-    // console.log('propsUserFriends',props.userFriends);
-  }
-  if (filter.field === 'friends' && filter.key === 'username' && filter.value === 'Descending') {
     propsUserFriends = userFriends2.sort((a, b) => (a.username > b.username) ? 1 : -1);
     // console.log('...filter friend by...'+filter.key+'...'+filter.value);
     // console.log('userFriends2',userFriends2);
     // console.log('propsUserFriends',propsUserFriends);
     // console.log('propsUserFriends',props.userFriends);
   }
+  if (filter.field === 'friends' && filter.key === 'username' && filter.value === 'Descending') {
+    propsUserFriends = userFriends2.sort((a, b) => (a.username < b.username) ? 1 : -1);
+    // console.log('...filter friend by...'+filter.key+'...'+filter.value);
+    // console.log('userFriends2',userFriends2);
+    // console.log('propsUserFriends',propsUserFriends);
+    // console.log('propsUserFriends',props.userFriends);
+  }
   if (filter.field === 'friends' && filter.key === 'name' && filter.value === 'Ascending') {
-    propsUserFriends = userFriends2.sort((a, b) => (a.name < b.name) ? 1 : -1);
+    propsUserFriends = userFriends2.sort((a, b) => (a.name > b.name) ? 1 : -1);
     // console.log('...filter friend by...'+filter.key+'...'+filter.value);
     // console.log('userFriends2',userFriends2);
     // console.log('propsUserFriends',propsUserFriends);
     // console.log('propsUserFriends',props.userFriends);
   }
   if (filter.field === 'friends' && filter.key === 'name' && filter.value === 'Descending') {
-    propsUserFriends = userFriends2.sort((a, b) => (a.name > b.name) ? 1 : -1);
+    propsUserFriends = userFriends2.sort((a, b) => (a.name < b.name) ? 1 : -1);
     // console.log('...filter friend by...'+filter.key+'...'+filter.value);
     // console.log('userFriends2',userFriends2);
     // console.log('propsUserFriends',propsUserFriends);
@@ -76,6 +76,7 @@ const userFriendList = props => {
   }
 
   const userFriends = propsUserFriends.map(friend => {
+    // console.log(friend);
     const friendDob = new Date (friend.dob.substr(0,10)*1000).toISOString().slice(0,10);
     return (
       <UserFriendItem

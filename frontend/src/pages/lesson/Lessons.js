@@ -87,7 +87,7 @@ class LessonsPage extends Component {
   static contextType = AuthContext;
 
   componentDidMount() {
-    console.log('...lesson profile component mounted...');
+    console.log('...lessons component mounted...');
     if (this.context.role === "Admin"){
       this.setState({canDelete: true})
     }
@@ -97,6 +97,11 @@ class LessonsPage extends Component {
     }
 
     this.fetchLessonsBasic();
+  }
+
+  componentWillUnmount() {
+    this.isActive = false;
+    console.log('...lessons component un-mounting...');
   }
 
   modalConfirmSearchRegexHandler = (event) => {
@@ -875,7 +880,7 @@ class LessonsPage extends Component {
             userInput:{
               activityRequest:"${request}"
             })
-          {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price,requirementsg}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username}},orders{_id,date,time,type,buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+          {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,role,dob,public,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id,username},receiver{_id,username},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -1313,7 +1318,7 @@ class LessonsPage extends Component {
             activityId:"${activityId}",
             userId: "${userId}",
             lessonId:"${lessonId}",)
-            {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,category,price}},attendedLessons{date,ref{_id,title,category,price}},taughtLessons{date,ref{_id,title,category,price}},wishlist{date,ref{_id,title,category,price},booked},cart{dateAdded,sessionDate,lesson{_id,title,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id},receiver{_id},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}}}}
+            {_id,name,role,username,dob,public,age,addresses{type,number,street,town,city,country,postalCode,primary},contact{phone,phone2,email},bio,profileImages{name,type,path,public},socialMedia{platform,handle,link},interests,perks{_id},promos{_id},friends{_id,name,username,role,dob,public,loggedIn,clientConnected,contact{phone,phone2,email},profileImages{name,type,path,public},socialMedia{platform,handle,link}},points,tags,loggedIn,clientConnected,verification{verified,type,code},activity{date,request},likedLessons{_id,title,public,type,subType,category,price},bookedLessons{date,session{date,title,time},ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},attendedLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},toTeachLessons{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}},taughtLessons{date,ref{_id,title,public,type,subType,category,price,gallery{name,type,path,public},files{name,type,size,path,public}}},wishlist{date,ref{_id,title,public,type,subType,category,price},booked},cart{dateAdded,sessionDate,sessionTitle,lesson{_id,title,public,type,subType,sku,price}},reviews{_id,date,type,title,author{_id,username},lesson{_id,title},body,rating},comments{_id},messages{_id,date,time,type,sender{_id,username},receiver{_id,username},subject,message,read},orders{_id,date,time,type,totals{a,b,c},buyer{_id,username},receiver{_id,username},lessons{price,ref{_id}}},paymentInfo{date,type,description,body,valid,primary},friendRequests{date,sender{_id,username},receiver{_id,username}},cancellations{date,reason,sessionDate,sessionTitle,lesson{_id,title}},notifications{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title,public,type,subType,},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
         `};
 
     fetch('http://localhost:8088/graphql', {
@@ -1714,9 +1719,7 @@ class LessonsPage extends Component {
     }
   }
 
-  componentWillUnmount() {
-    this.isActive = false;
-  }
+
 
   render() {
     return (

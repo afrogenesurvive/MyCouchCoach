@@ -16,7 +16,7 @@ class SignupPage extends Component {
     userAlert: null,
     overlay: false,
     overlayStatus: "test",
-    creating: false,
+    creating: true,
   };
 
   modalConfirmUserHandler = (event) => {
@@ -114,9 +114,15 @@ class SignupPage extends Component {
           const newUser = resData.data.createUser;
           const errors = JSON.stringify({...resData.errors});
           if (JSON.stringify(resData).slice(2,7) === 'error') {
-            this.setState({success: "Something went wrong!!!", userAlert: "Something went wrong!!!"+errors+""  });
+            this.setState({
+              success: "Something went wrong!!!",
+              userAlert: "Something went wrong!!!"+errors+""
+             });
           } else {
-            this.setState({success: "Signup success...Proceed to login", userAlert: "Signup success...Proceed to login... your verification code is.."+newUser.verification.code+"" });
+            this.setState({
+              success: "Signup success...Proceed to login",
+              userAlert: "Signup success...Proceed to login... your verification code has been emailed to you...",
+              creating: false});
           }
         }
 
@@ -149,6 +155,7 @@ class SignupPage extends Component {
       <Row className="loginPageContainerRow2">
       <Col className="loginPageContainerCol2">
 
+        {this.state.creating === true && (
         <CreateUserForm
           canCancel
           canConfirm
@@ -158,6 +165,7 @@ class SignupPage extends Component {
           successText={this.state.success}
           onCancel={this.cancelSignup}
         />
+        )}
 
       </Col>
       </Row>

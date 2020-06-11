@@ -109,10 +109,12 @@ class AuthPage extends Component {
     if (email.trim().length === 0 || password.trim().length === 0) {
       return;
     }
-    let requestBody = null;
-      requestBody = {
+    let requestBody = {
         query: `
-          query {login(email:"${email}",password:"${password}")
+          query {login(
+            email:"${email}",
+            password:"${password}"
+          )
           {activityId,role,token,tokenExpiration,error}}
         `};
 
@@ -309,7 +311,7 @@ class AuthPage extends Component {
         return res.json();
       })
       .then(resData => {
-        console.log(resData.data.verifyUser);
+        // console.log(resData.data.verifyUser);
         this.setState({userAlert: 'Verified...Please try loggin in again..'});
       })
       .catch(err => {

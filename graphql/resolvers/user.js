@@ -481,9 +481,44 @@ module.exports = {
         }},
         {new: true, useFindAndModify: false}
       )
-      const resetUrl = 'localhost:8088/passwordReset/'+userExists._id+'@'+verificationCode+'';
+      const resetUrl = 'localhost:3000/passwordReset/'+userExists._id+'@'+verificationCode+'';
       const userEmail = user.contact.email;
-      console.log('resetUrl',resetUrl);
+      // console.log('resetUrl',resetUrl);
+
+      let sendStatus = null;
+
+      sgMail.setApiKey(process.env.SENDGRID_A);
+      const msg = {
+        to: userEmail,
+        from: 'african.genetic.survival@gmail.com',
+        subject: 'Password Reset',
+        text: `
+          ... use this url to reset your password...
+          ${resetUrl} ...
+        `,
+        html: `
+        <strong>
+        ... use this url to reset your password...
+        <a target="_blank">
+        ${resetUrl}
+        </a> ...
+        </strong>`,
+      };
+      sgMail
+        .send(msg)
+        .then(() => {
+          // console.log('Email Sent!');
+          sendStatus = 'Email Sent!';
+          console.log('sendStatus',sendStatus);
+        })
+        .catch(error => {
+          // console.error(error.toString());
+          const {message, code, response} = error;
+          const {headers, body} = response;
+          sendStatus = error.toString()+response;
+          console.log('sendStatus',sendStatus);
+        });
+        // console.log('Password reset: ',sendStatus);
 
       return {
           ...user._doc,
@@ -497,7 +532,6 @@ module.exports = {
   resetUserPassword: async (args) => {
     console.log('Resolver: resetUserPassword...');
     try {
-
       const verificationChallengeCode = args.verification;
       const preUser = await User.findById({_id: args.userId});
       const verificationResponse = preUser.verification;
@@ -516,17 +550,17 @@ module.exports = {
       const hashedPassword = await bcrypt.hash(password, 12);
       const user = await User.findOneAndUpdate(
         {_id: args.userId},
-        {
-          password: hashedPassword,
-          verification: {
-            verified: true,
-            type: null,
-            code: null
-          }
+        { $set:
+          {password: hashedPassword,
+            verification: {
+              verified: true,
+              type: null,
+              code: null
+          }}
         },
         {new: true, useFindAndModify: false}
       )
-
+      // console.log(user);
       return {
           ...user._doc,
           _id: user.id,
@@ -6456,7 +6490,7 @@ module.exports = {
       let ageDifMs = Date.now() - dob.getTime();
       let ageDate = new Date(ageDifMs);
       age =  Math.abs(ageDate.getUTCFullYear() - 1970);
-
+      let verfCode = null;
       const user = new User({
         password: hashedPassword,
         name: args.userInput.name,
@@ -6513,6 +6547,40 @@ module.exports = {
       });
 
       const result = await user.save();
+
+
+      let sendStatus = null;
+
+      sgMail.setApiKey(process.env.SENDGRID_A);
+      const msg = {
+        to: result.contact.email,
+        from: 'african.genetic.survival@gmail.com',
+        subject: 'Signup Verification',
+        text: `
+          Thanks for signing up... use this code to verify your account at login...
+          ${result.verification.code}...
+        `,
+        html: `
+        <strong>
+        Thanks for signing up... use this code to verify your account at login...
+        ${result.verification.code}...
+        </strong>`,
+      };
+      sgMail
+        .send(msg)
+        .then(() => {
+          // console.log('Email Sent!');
+          sendStatus = 'Email Sent!';
+          // console.log('sendStatus',sendStatus);
+        })
+        .catch(error => {
+          // console.error(error.toString());
+          const {message, code, response} = error;
+          const {headers, body} = response;
+          sendStatus = error.toString()+response;
+          // console.log('sendStatus',sendStatus);
+        });
+        console.log('verification: ',sendStatus);
 
       return {
         ...result._doc,

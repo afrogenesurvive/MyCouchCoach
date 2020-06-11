@@ -21,12 +21,26 @@ return (
       {props.resetState === 'complete' && (
         <p>Success...Password reset...</p>
       )}
+      {props.resetState === 'error' && (
+        <p>
+          An Error occured...
+          </p>
+      )}
       {props.resetState === 'cancelled' && (
         <p>Change your mind...? Request a new Password from the login page...</p>
       )}
 
-      {props.resetState === 'complete' ||
-        props.resetState === 'cancelled' && (
+
+      <p>{props.message}</p>
+
+      {props.resetState === 'complete' && (
+        <NavLink to="/auth">
+        <Button variant="secondary">
+          Login
+        </Button>
+        </NavLink>
+      )}
+      {props.resetState === 'cancelled' && (
         <NavLink to="/auth">
         <Button variant="secondary">
           Login

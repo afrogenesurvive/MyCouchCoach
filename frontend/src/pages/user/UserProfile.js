@@ -4512,6 +4512,7 @@ class UserProfile extends Component {
     let userIds4 = JSON.stringify(userIds2);
     console.log(`
       userIds:
+        b: ${session.booked}
         1: ${instructorIds},
         2: ${userIds},
         ...

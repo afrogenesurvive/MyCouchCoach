@@ -829,35 +829,37 @@ module.exports = {
         console.log('finally',arr4);
 
 
-        // const request = mailjet
-        // .post("send", {'version': 'v3.1'})
-        // .request({
-        //   "Messages":[
-        //     {
-        //       "From": {
-        //         "Email": "prof.black@africangeneticsurvival.net",
-        //         "Name": "Michael"
-        //       },
-        //       "To": [
-        //         {
-        //           "Email": "michael.grandison@gmail.com",
-        //           "Name": "Michael"
-        //         }
-        //       ],
-        //       "Subject": "toast.",
-        //       "TextPart": "My first Mailjet email",
-        //       "HTMLPart": "<h3>Dear passenger 1, welcome to <a href='https://www.mailjet.com/'>Mailjet</a>!</h3><br />May the delivery force be with you!",
-        //       "CustomID": "AppGettingStartedTest"
-        //     }
-        //   ]
-        // })
-        // request
-        //   .then((result) => {
-        //     console.log("here",result.body)
+        // Run in loop
+        // let sendStatus = null;
+        // sgMail.setApiKey(process.env.SENDGRID_A);
+        // const msg = {
+        //   to: result.contact.email,
+        //   from: 'african.genetic.survival@gmail.com',
+        //   subject: 'Signup Verification',
+        //   text: `
+        //     Thanks for signing up... use this code to verify your account at login...
+        //     ${result.verification.code}...
+        //   `,
+        //   html: `
+        //   <strong>
+        //   Thanks for signing up... use this code to verify your account at login...
+        //   ${result.verification.code}...
+        //   </strong>`,
+        // };
+        // sgMail
+        //   .send(msg)
+        //   .then(() => {
+        //     // console.log('Email Sent!');
+        //     sendStatus = 'Email Sent!';
+        //     // console.log('sendStatus',sendStatus);
         //   })
-        //   .catch((err) => {
-        //     console.log(err.statusCode)
-        //   })
+        //   .catch(error => {
+        //     // console.error(error.toString());
+        //     const {message, code, response} = error;
+        //     const {headers, body} = response;
+        //     sendStatus = error.toString()+response;
+        //     // console.log('sendStatus',sendStatus);
+        //   });
 
 
       // return lessons.map(lesson => {
@@ -1999,11 +2001,11 @@ module.exports = {
         .populate('instructors')
         .populate('attendees')
         .populate({
-  path: 'reviews',
-  populate: {
-      path: 'author',
-      model: 'User'
-  }})
+        path: 'reviews',
+        populate: {
+            path: 'author',
+            model: 'User'
+        }})
         .populate('sessions.booked')
         .populate('sessions.attended')
         .populate({
@@ -2608,11 +2610,11 @@ module.exports = {
         .populate('instructors')
         .populate('attendees')
         .populate({
-  path: 'reviews',
-  populate: {
-      path: 'author',
-      model: 'User'
-  }})
+        path: 'reviews',
+        populate: {
+            path: 'author',
+            model: 'User'
+        }})
         .populate('sessions.booked')
         .populate('sessions.attended')
         .populate({
@@ -3148,11 +3150,11 @@ module.exports = {
       .populate('instructors')
       .populate('attendees')
       .populate({
-  path: 'reviews',
-  populate: {
-      path: 'author',
-      model: 'User'
-  }})
+      path: 'reviews',
+      populate: {
+          path: 'author',
+          model: 'User'
+      }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -3211,11 +3213,11 @@ module.exports = {
         .populate('instructors')
         .populate('attendees')
         .populate({
-  path: 'reviews',
-  populate: {
-      path: 'author',
-      model: 'User'
-  }})
+          path: 'reviews',
+          populate: {
+              path: 'author',
+              model: 'User'
+          }})
         .populate('sessions.booked')
         .populate('sessions.attended')
         .populate({

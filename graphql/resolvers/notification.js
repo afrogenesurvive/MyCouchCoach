@@ -491,6 +491,38 @@ module.exports = {
       // get notifications for today and either now or within min span
       // send at intervals w/ chron
 
+      // let sendStatus = null;
+      //
+      // sgMail.setApiKey(process.env.SENDGRID_A);
+      // const msg = {
+      //   to: result.contact.email,
+      //   from: 'african.genetic.survival@gmail.com',
+      //   subject: 'Signup Verification',
+      //   text: `
+      //     Thanks for signing up... use this code to verify your account at login...
+      //     ${result.verification.code}...
+      //   `,
+      //   html: `
+      //   <strong>
+      //   Thanks for signing up... use this code to verify your account at login...
+      //   ${result.verification.code}...
+      //   </strong>`,
+      // };
+      // sgMail
+      //   .send(msg)
+      //   .then(() => {
+      //     // console.log('Email Sent!');
+      //     sendStatus = 'Email Sent!';
+      //     // console.log('sendStatus',sendStatus);
+      //   })
+      //   .catch(error => {
+      //     // console.error(error.toString());
+      //     const {message, code, response} = error;
+      //     const {headers, body} = response;
+      //     sendStatus = error.toString()+response;
+      //     // console.log('sendStatus',sendStatus);
+      //   });
+
     } catch (err) {
       throw err;
     }

@@ -26,7 +26,8 @@ class App extends Component {
     role: null,
     context: this.context,
     sessionCookiePresent: false,
-    passwordResetState: 'incomplete'
+    passwordResetState: 'incomplete',
+    passwordResetMessage: '...'
   };
 
   static contextType = AuthContext;
@@ -189,17 +190,17 @@ class App extends Component {
       const verificationCode = params[1];
       const userId = params[0];
       const password = event.target.formGridPassword.value;
-      // console.log(params);
+      // console.log('params',params);
 
       const requestBody = {
         query:`
           mutation {resetUserPassword(
             userId:"${userId}",
-            verification: "${verificationCode}"
+            verification:"${verificationCode}",
             userInput:{
               password:"${password}"
             })
-            {_id,password}}
+            {_id,password,verification{verified}}}
         `};
 
       fetch('http://localhost:8088/graphql', {
@@ -216,13 +217,19 @@ class App extends Component {
           return res.json();
         })
         .then(resData => {
-          console.log(resData);
+          console.log('passwordReset',resData);
+          if (resData.errors) {
+            this.setState({passwordResetState: 'error', passwordResetMessage: resData.errors[0].message+'..if not, try making a new reset request..' })
+          } else {
+            this.setState({passwordResetState: 'complete' })
+          }
 
         })
         .catch(err => {
           console.log(err);
+          this.setState({passwordResetState: 'error', passwordResetMessage: err })
         });
-        this.setState({passwordResetState: 'complete' })
+        // this.setState({passwordResetState: 'complete' })
   }
   cancelPasswordReset = () => {
     this.setState({passwordResetState: 'cancelled'})
@@ -276,6 +283,7 @@ class App extends Component {
                     passwordReset={this.passwordReset}
                     cancelPasswordReset={this.cancelPasswordReset}
                     resetState={this.state.passwordResetState}
+                    message={this.state.passwordResetMessage}
                     />}
                   />)}
                   {

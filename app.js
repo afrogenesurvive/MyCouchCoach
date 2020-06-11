@@ -21,7 +21,6 @@ const https = require("https");
 const io = require('socket.io')(server);
 const User = require('./models/user');
 
-// const MY_APP_SECRET = process.env.APP_SECRET;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -36,6 +35,11 @@ app.use((req, res, next) => {
   next();
 });
 
+if (process.env.APP_SECRET) {
+  console.log('...env vars present...');
+} else {
+  console.log('...env vars absent...');
+}
 // const url = 'https://mycouchcoachstorage.s3.amazonaws.com/assets/creds/sendgrid/sendGridApi.txt';
 // const url2 = 'https://mycouchcoachstorage.s3.amazonaws.com/assets/creds/s3/s3.txt';
 // const url3 = 'https://mycouchcoachstorage.s3.amazonaws.com/assets/creds/atlas/atlas.txt';

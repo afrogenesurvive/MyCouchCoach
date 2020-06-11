@@ -119,6 +119,9 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
             <span className="bold">Username:</span> {user.username}
           </Card.Text>
           <Card.Text>
+            <span className="bold">Role:</span> {user.role}
+          </Card.Text>
+          <Card.Text>
             <span className="bold">D.O.B:</span> {userDob}
           </Card.Text>
           <Card.Text>
@@ -857,8 +860,7 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
 
     </Tab>
 
-    {user.role === "Instructor" ||
-      user.role === 'Admin' && (
+    {user.role === "Instructor" && (
       <Tab eventKey="toTeachLessons" title="Lessons: Teaching">
 
       <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'toTeachLessons', key: 'title', value: 'Ascending'})}>
@@ -968,7 +970,7 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
           creator={user}
           canCancel
             canConfirm
-            onCancel={this.cancelProfileCreateLesson}
+            onCancel={props.cancelProfileCreateLesson}
             onConfirm={props.profileCreateLesson}
         />
       )}

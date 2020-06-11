@@ -17,6 +17,7 @@ const SessionDetailViewer = (props) =>{
     lesson = props.lesson;
   }
 
+  // console.log('session',session);
   // console.log('session.endDate',session);
   // console.log("beep",session, session.booked,props.sessionBookedState,session.attended);
   let sessionDate = new Date (session.date.substr(0,10)*1000).toLocaleDateString().slice(0,10);

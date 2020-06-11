@@ -7,7 +7,82 @@ import './UserList.css';
 
 const searchLessonList = props => {
 
-  const searchLessons = props.lessons.map(lesson => {
+  const {...filter} = props.filter;
+  let lessons2 = props.lessons;
+  let propsLessons = [];
+
+  if (filter.field === 'lessonSearchList' && filter.key === 'public') {
+    propsLessons = lessons2.filter(x => x.public === filter.value);
+    // console.log('...no lessons filter...'+filter.key+'...'+filter.value);
+    // console.log('lessons2',lessons2);
+    // console.log('propsLessons',propsLessons);
+    // console.log('props.lessons',props.lessons);
+  }
+  if (filter.field === 'lessonSearchList' && filter.key === 'title' && filter.value === 'Ascending') {
+    propsLessons = lessons2.sort((a, b) => (a.title > b.title) ? 1 : -1);
+    // console.log('...no lessons filter...'+filter.key+'...'+filter.value);
+    // console.log('lessons2',lessons2);
+    // console.log('propsLessons',propsLessons);
+    // console.log('props.lessons',props.lessons);
+  }
+  if (filter.field === 'lessonSearchList' && filter.key === 'title' && filter.value === 'Descending') {
+    propsLessons = lessons2.sort((a, b) => (a.title < b.title) ? 1 : -1);
+    // console.log('...no lessons filter...'+filter.key+'...'+filter.value);
+    // console.log('lessons2',lessons2);
+    // console.log('propsLessons',propsLessons);
+    // console.log('props.lessons',props.lessons);
+  }
+  if (filter.field === 'lessonSearchList' && filter.key === 'subtitle' && filter.value === 'Ascending') {
+    propsLessons = lessons2.sort((a, b) => (a.subtitle > b.subtitle) ? 1 : -1);
+    // console.log('...no lessons filter...'+filter.key+'...'+filter.value);
+    // console.log('lessons2',lessons2);
+    // console.log('propsLessons',propsLessons);
+    // console.log('props.lessons',props.lessons);
+  }
+  if (filter.field === 'lessonSearchList' && filter.key === 'subtitle' && filter.value === 'Descending') {
+    propsLessons = lessons2.sort((a, b) => (a.subtitle < b.subtitle) ? 1 : -1);
+    // console.log('...no lessons filter...'+filter.key+'...'+filter.value);
+    // console.log('lessons2',lessons2);
+    // console.log('propsLessons',propsLessons);
+    // console.log('props.lessons',props.lessons);
+  }
+  if (filter.field === 'lessonSearchList' && filter.key === 'category' && filter.value === 'Ascending') {
+    propsLessons = lessons2.sort((a, b) => (a.category > b.category) ? 1 : -1);
+    // console.log('...no lessons filter...'+filter.key+'...'+filter.value);
+    // console.log('lessons2',lessons2);
+    // console.log('propsLessons',propsLessons);
+    // console.log('props.lessons',props.lessons);
+  }
+  if (filter.field === 'lessonSearchList' && filter.key === 'category' && filter.value === 'Descending') {
+    propsLessons = lessons2.sort((a, b) => (a.category < b.category) ? 1 : -1);
+    // console.log('...no lessons filter...'+filter.key+'...'+filter.value);
+    // console.log('lessons2',lessons2);
+    // console.log('propsLessons',propsLessons);
+    // console.log('props.lessons',props.lessons);
+  }
+  if (filter.field === 'lessonSearchList' && filter.key === 'type') {
+    propsLessons = lessons2.filter(x => x.type === filter.value)
+    // console.log('...no lessons filter...'+filter.key+'...'+filter.value);
+    // console.log('lessons2',lessons2);
+    // console.log('propsLessons',propsLessons);
+    // console.log('props.lessons',props.lessons);
+  }
+  if (filter.field === 'lessonSearchList' && filter.key === 'subType') {
+    propsLessons = lessons2.filter(x => x.subType === filter.value)
+    // console.log('...no lessons filter...'+filter.key+'...'+filter.value);
+    // console.log('lessons2',lessons2);
+    // console.log('propsLessons',propsLessons);
+    // console.log('props.lessons',props.lessons);
+  }
+  if (filter.field !== 'lessonSearchList') {
+    propsLessons = lessons2;
+    // console.log('...no lessons filter...'+filter.key+'...'+filter.value);
+    // console.log('lessons2',lessons2);
+    // console.log('propsLessons',propsLessons);
+    // console.log('props.lessons',props.lessons);
+  }
+
+  const searchLessons = propsLessons.map(lesson => {
     return (
       <React.Fragment>
       <SearchLessonItem

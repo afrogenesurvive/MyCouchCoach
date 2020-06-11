@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-// import Button from 'react-bootstrap/Button';
+import Button from 'react-bootstrap/Button';
 import Accordion from 'react-bootstrap/Accordion';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
@@ -61,6 +61,11 @@ class UsersPage extends Component {
     mCol1Size: 3,
     mCol2Size: 11,
     activityA: null,
+    filter: {
+      field: null,
+      key: null,
+      value: null
+    },
   };
   isActive = true;
 
@@ -406,87 +411,86 @@ class UsersPage extends Component {
   this.context.selectedUser = user;
 }
 
-hideDetailHandler = () => {
-  this.setState({showDetail: false, overlay: false})
-}
+  hideDetailHandler = () => {
+    this.setState({showDetail: false, overlay: false})
+  }
 
+  onFriendRequest = (args) => {
+      console.log("sending friend request...",args._id);
+      this.setState({ userAlert: "sending friend request..."});
+      const activityId = this.context.activityId;
+      const senderId = activityId;
+      const receiverId = args._id;
 
-onFriendRequest = (args) => {
-    console.log("sending friend request...",args._id);
-    this.setState({ userAlert: "sending friend request..."});
-    const activityId = this.context.activityId;
-    const senderId = activityId;
-    const receiverId = args._id;
+      const requestBody = {
+        query: `
+            mutation {sendFriendRequest(
+              activityId:"${activityId}",
+              senderId:"${senderId}",
+              receiverId:"${receiverId}"
+            )
+            {_id,role,username,public,clientConnected,friendRequests{date,sender{_id},receiver{_id}}}}
+          `};
 
-    const requestBody = {
-      query: `
-          mutation {sendFriendRequest(
-            activityId:"${activityId}",
-            senderId:"${senderId}",
-            receiverId:"${receiverId}"
-          )
-          {_id,role,username,public,clientConnected,friendRequests{date,sender{_id},receiver{_id}}}}
-        `};
-
-    fetch('http://localhost:8088/graphql', {
-      method: 'POST',
-      body: JSON.stringify(requestBody),
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + this.context.token
-      }
-    })
-      .then(res => {
-        if (res.status !== 200 && res.status !== 201) {
-          this.setState({userAlert: 'Failed!'});
-          throw new Error('Failed!');
+      fetch('http://localhost:8088/graphql', {
+        method: 'POST',
+        body: JSON.stringify(requestBody),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + this.context.token
         }
-        return res.json();
       })
-      .then(resData => {
-        if (resData.errors) {
-          this.setState({userAlert: resData.errors[0].message})
-        } else {
-          // console.log(JSON.stringify(resData.data.sendFriendRequest.friendRequests));
-          const responseAlert = JSON.stringify(resData.data.sendFriendRequest).slice(0,8);
-          this.setState({userAlert: '...success! Friend request sent...', activityA: requestBody});
-        }
+        .then(res => {
+          if (res.status !== 200 && res.status !== 201) {
+            this.setState({userAlert: 'Failed!'});
+            throw new Error('Failed!');
+          }
+          return res.json();
+        })
+        .then(resData => {
+          if (resData.errors) {
+            this.setState({userAlert: resData.errors[0].message})
+          } else {
+            // console.log(JSON.stringify(resData.data.sendFriendRequest.friendRequests));
+            const responseAlert = JSON.stringify(resData.data.sendFriendRequest).slice(0,8);
+            this.setState({userAlert: '...success! Friend request sent...', activityA: requestBody});
+          }
 
-      })
-      .catch(err => {
-        this.setState({userAlert: err});
-        if (this.isActive) {
-          this.setState({ isLoading: false });
-        }
-      });
+        })
+        .catch(err => {
+          this.setState({userAlert: err});
+          if (this.isActive) {
+            this.setState({ isLoading: false });
+          }
+        });
 
 
-  }
+    }
 
-onViewAttachment = (attachment) => {
+  onViewAttachment = (attachment) => {
 
-      this.setState({showAttachment: true})
+        this.setState({showAttachment: true})
 
-      const file = "https://ent-emr-bucket.s3-us-east-2.amazonaws.com/"+attachment.path+"/"+attachment.name;
-      const type = attachment.format;
+        const file = "https://ent-emr-bucket.s3-us-east-2.amazonaws.com/"+attachment.path+"/"+attachment.name;
+        const type = attachment.format;
 
-      this.setState({showThisAttachmentFile: file, showThisAttachmentType: type, })
-  }
-closeAttachmentView = () => {
+        this.setState({showThisAttachmentFile: file, showThisAttachmentType: type, })
+    }
+  closeAttachmentView = () => {
 
-      this.setState({showAttachment: false})
-  }
+        this.setState({showAttachment: false})
+    }
 
   userSearchClearlHandler () {
-    this.setState({searchUsers: [], userAlert: "clearing user search results"});
-  }
+      this.setState({searchUsers: [], userAlert: "clearing user search results"});
+    }
 
   showSidebar = () => {
-      this.setState({
-        sidebarShow: true,
-        mCol2Size: 9
-      })
-  }
+        this.setState({
+          sidebarShow: true,
+          mCol2Size: 9
+        })
+    }
   hideSidebar = () => {
       this.setState({
         sidebarShow: false,
@@ -546,7 +550,14 @@ closeAttachmentView = () => {
       this.setState({overlay: true})
     }
   }
-
+  setFilter = (args) => {
+    // console.log('...set filter...',{...args});
+    this.setState({filter: {
+      field: args.field,
+      key: args.key,
+      value: args.value
+    }});
+  }
 
 
   render() {
@@ -630,6 +641,25 @@ closeAttachmentView = () => {
                       <Tab.Pane eventKey="MasterList">
                         <Row className="userListRow">
 
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'userMasterList', key: 'username', value: 'Ascending'})}>
+                          Filter Username: Ascending
+                        </Button>
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'userMasterList', key: 'username', value: 'Descending'})}>
+                          Filter Username: Descending
+                        </Button>
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'userMasterList', key: 'role', value: 'Admin'})}>
+                          Filter Role: Admin
+                        </Button>
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'userMasterList', key: 'role', value: 'User'})}>
+                          Filter Role: User
+                        </Button>
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'userMasterList', key: 'role', value: 'Instructor'})}>
+                          Filter Role: Instructor
+                        </Button>
+                        <Button variant="danger" onClick={this.setFilter.bind(this, {field: null, key: null, value: null })}>
+                          clearFilter
+                        </Button>
+
                          {this.state.isLoading ? (
                            <Spinner />
                          ) : (
@@ -640,7 +670,7 @@ closeAttachmentView = () => {
                              authId={this.context.activityId}
                              onViewDetail={this.showDetailHandler}
                              onSelectNoDetail={this.selectUserNoDetail}
-
+                             filter={this.state.filter}
                            />
                          )}
                         </Row>
@@ -689,6 +719,25 @@ closeAttachmentView = () => {
                         </Row>
                         <Row className="searchListRow1">
 
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'userSearchList', key: 'username', value: 'Ascending'})}>
+                          Filter Username: Ascending
+                        </Button>
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'userSearchList', key: 'username', value: 'Descending'})}>
+                          Filter Username: Descending
+                        </Button>
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'userSearchList', key: 'role', value: 'Admin'})}>
+                          Filter Role: Admin
+                        </Button>
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'userSearchList', key: 'role', value: 'User'})}>
+                          Filter Role: User
+                        </Button>
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'userSearchList', key: 'role', value: 'Instructor'})}>
+                          Filter Role: Instructor
+                        </Button>
+                        <Button variant="danger" onClick={this.setFilter.bind(this, {field: null, key: null, value: null })}>
+                          clearFilter
+                        </Button>
+
                         {this.state.searchUsers !== [] && (
                           <SearchUserList
                           canReport={this.state.canReport}
@@ -697,6 +746,7 @@ closeAttachmentView = () => {
                            authId={this.context.activityId}
                            onViewDetail={this.showDetailHandler}
                            onSelectNoDetail={this.selectUserNoDetail}
+                           filter={this.state.filter}
                           />
                         )}
                         </Row>

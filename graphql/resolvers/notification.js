@@ -545,10 +545,16 @@ module.exports = {
 
       // console.log('time',time);
       const creator = await User.findById({_id: args.activityId});
+      console.log("a",creator._id);
       let lesson = await Lesson.findById({_id: args.lessonId});
       const preRecipents = args.userIds.split(',');
       // console.log(args.userIds,preRecipents);
+      console.log("a1",args.userIds);
+      console.log("a2",preRecipents);
       let recipients = await User.find({_id: {$in: preRecipents}});
+      console.log("b",recipients.length);
+      console.log("c",recipients.map(x => x._id));
+      // console.log("d",recipients);
       // recipients.push(creator);
       // console.log('lessonId',lesson._id);
       // console.log('foo');

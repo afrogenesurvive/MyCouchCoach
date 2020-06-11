@@ -87,6 +87,8 @@ return (
       hideCalendarSessionDetail={props.hideCalendarSessionDetail}
 
       toggleSessions={props.toggleSessions}
+      filter={props.filter}
+      setFilter={props.setFilter}
     />
 
     </div>

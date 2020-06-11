@@ -178,9 +178,31 @@ const ProfileLessonViewer = (props) => {
             <Button variant="danger" onClick={props.toggleSchedule}>
               show/hide
             </Button>
+
+            {props.showScheduleState === true && (
+              <Row>
+                <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'schedule', value: 'dateAscending'})}>
+                  Filter Date: Ascending
+                </Button>
+                <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'schedule', value: 'dateDescending'})}>
+                  Filter Date: Descending
+                </Button>
+                <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'schedule', value: 'timeAscending'})}>
+                  Filter Time: Ascending
+                </Button>
+                <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'schedule', value: 'timeDescending'})}>
+                  Filter Time: Descending
+                </Button>
+                <Button variant="danger" onClick={props.setFilter.bind(this, {field: null, key: null, value: null })}>
+                  clearFilter
+                </Button>
+              </Row>
+            )}
+
             {props.showScheduleState === true && (
               <LessonScheduleList
                 lessonSchedule={lesson.schedule}
+                filter={props.filter}
               />
             )}
             </Col>
@@ -353,6 +375,7 @@ const ProfileLessonViewer = (props) => {
               {props.showReviewsState === true && (
                 <LessonReviewList
                   lessonReviews={lesson.reviews}
+                  filter={props.filter}
                 />
               )}
             </Col>
@@ -387,10 +410,24 @@ const ProfileLessonViewer = (props) => {
                 />
               )}
               {props.showRequirementsState === true && (
+                <Row>
+                  <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'requirements', value: 'Ascending'})}>
+                    Filter Ascending
+                  </Button>
+                  <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'requirements', value: 'Descending'})}>
+                    Filter Descending
+                  </Button>
+                  <Button variant="danger" onClick={props.setFilter.bind(this, {field: null, key: null, value: null })}>
+                    clearFilter
+                  </Button>
+                </Row>
+              )}
+              {props.showRequirementsState === true && (
                 <LessonRequirementList
                   lessonRequirements={lesson.requirements}
                   canDelete
                   onDelete={props.deleteLessonRequirement}
+                  filter={props.filter}
                 />
               )}
             </Col>
@@ -417,10 +454,24 @@ const ProfileLessonViewer = (props) => {
                 />
               )}
               {props.showMaterialsState === true && (
+                <Row>
+                  <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'materials', value: 'Ascending'})}>
+                    Filter Ascending
+                  </Button>
+                  <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'materials', value: 'Descending'})}>
+                    Filter Descending
+                  </Button>
+                  <Button variant="danger" onClick={props.setFilter.bind(this, {field: null, key: null, value: null })}>
+                    clearFilter
+                  </Button>
+                </Row>
+              )}
+              {props.showMaterialsState === true && (
                 <LessonMaterialList
                   lessonMaterials={lesson.materials}
                   canDelete
                   onDelete={props.deleteLessonMaterial}
+                  filter={props.filter}
                 />
               )}
             </Col>
@@ -455,11 +506,31 @@ const ProfileLessonViewer = (props) => {
                 />
               )}
               {props.showImagesState === true && (
+                <Row>
+                  <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'images', value: 'nameAscending'})}>
+                    Filter Name: Ascending
+                  </Button>
+                  <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'images', value: 'nameDescending'})}>
+                    Filter Name: Descending
+                  </Button>
+                  <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'images', value: 'publicTrue'})}>
+                    Filter Public: True
+                  </Button>
+                  <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'images', value: 'publicFalse'})}>
+                    Filter Public: False
+                  </Button>
+                  <Button variant="danger" onClick={props.setFilter.bind(this, {field: null, key: null, value: null })}>
+                    clearFilter
+                  </Button>
+                </Row>
+              )}
+              {props.showImagesState === true && (
                 <LessonImageList
                   lessonImages={lesson.gallery}
                   canDelete
                   onDelete={props.deleteLessonImage}
                   toggleLessonImagePublic={props.toggleLessonImagePublic}
+                  filter={props.filter}
                 />
               )}
             </Col>
@@ -494,11 +565,31 @@ const ProfileLessonViewer = (props) => {
                 />
               )}
               {props.showFilesState === true && (
+                <Row>
+                  <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'files', value: 'nameAscending'})}>
+                    Filter Name: Ascending
+                  </Button>
+                  <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'files', value: 'nameDescending'})}>
+                    Filter Name: Descending
+                  </Button>
+                  <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'files', value: 'publicTrue'})}>
+                    Filter Public: True
+                  </Button>
+                  <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'files', value: 'publicFalse'})}>
+                    Filter Public: False
+                  </Button>
+                  <Button variant="danger" onClick={props.setFilter.bind(this, {field: null, key: null, value: null })}>
+                    clearFilter
+                  </Button>
+                </Row>
+              )}
+              {props.showFilesState === true && (
                 <LessonFileList
                   lessonFiles={lesson.files}
                   canDelete
                   onDelete={props.deleteLessonFile}
                   toggleLessonFilePublic={props.toggleLessonFilePublic}
+                  filter={props.filter}
                 />
               )}
             </Col>
@@ -541,10 +632,36 @@ const ProfileLessonViewer = (props) => {
                 />
               )}
               {props.showInstructorsState === true && (
+                <Row>
+                  <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'instructors', value: 'nameAscending'})}>
+                    Filter Name: Ascending
+                  </Button>
+                  <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'instructors', value: 'nameDescending'})}>
+                    Filter Name: Descending
+                  </Button>
+                  <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'instructors', value: 'emailAscending'})}>
+                    Filter Email: Ascending
+                  </Button>
+                  <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'instructors', value: 'emailDescending'})}>
+                    Filter Email: Descending
+                  </Button>
+                  <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'instructors', value: 'socialPlatformAscending'})}>
+                    Filter SocialMedia - Platform: Ascending
+                  </Button>
+                  <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'instructors', value: 'socialPlatformDescending'})}>
+                    Filter SocialMedia - Platform: Ascending
+                  </Button>
+                  <Button variant="danger" onClick={props.setFilter.bind(this, {field: null, key: null, value: null })}>
+                    clearFilter
+                  </Button>
+                </Row>
+              )}
+              {props.showInstructorsState === true && (
                 <LessonInstructorList
                   lessonInstructors={lesson.instructors}
                   canDelete
                   onDelete={props.deleteLessonInstructor}
+                  filter={props.filter}
                 />
               )}
             </Col>
@@ -578,10 +695,24 @@ const ProfileLessonViewer = (props) => {
               />
             )}
             {props.showTagsState === true && (
+            <Row>
+              <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'tags', value: 'Ascending'})}>
+                Filter Ascending
+              </Button>
+              <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'tags', value: 'Descending'})}>
+                Filter Descending
+              </Button>
+              <Button variant="danger" onClick={props.setFilter.bind(this, {field: null, key: null, value: null })}>
+                clearFilter
+              </Button>
+            </Row>
+            )}
+            {props.showTagsState === true && (
               <LessonTagList
                 lessonTags={lesson.tags}
                 canDelete
                 onDelete={props.deleteLessonTag}
+                filter={props.filter}
               />
             )}
           </Col>
@@ -642,6 +773,7 @@ const ProfileLessonViewer = (props) => {
             <LessonCancellationList
               lessonCancellations={lesson.cancellations}
               authId={props.authId}
+              filter={props.filter}
             />
           )}
 
@@ -658,6 +790,7 @@ const ProfileLessonViewer = (props) => {
               authId={props.authId}
               isInstructor={isInstructor}
               deleteLessonReminder={props.deleteLessonReminder}
+              filter={props.filter}
             />
           )}
 

@@ -5,7 +5,40 @@ import './UserList.css';
 
 const userList = props => {
 
-  const users = props.users.map(user => {
+  const {...filter} = props.filter;
+  let users2 = props.users;
+  let propsUsers = [];
+
+  if (filter.field === 'userMasterList' && filter.key === 'username' && filter.value === 'Ascending') {
+    propsUsers = users2.sort((a, b) => (a.username > b.username) ? 1 : -1);
+    // console.log('...no users filter...'+filter.key+'...'+filter.value);
+    // console.log('user2',user2);
+    // console.log('propsUsers',propsUsers);
+    // console.log('props.users',props.users);
+  }
+  if (filter.field === 'userMasterList' && filter.key === 'username' && filter.value === 'Descending') {
+    propsUsers = users2.sort((a, b) => (a.username < b.username) ? 1 : -1);
+    // console.log('...no users filter...'+filter.key+'...'+filter.value);
+    // console.log('user2',user2);
+    // console.log('propsUsers',propsUsers);
+    // console.log('props.users',props.users);
+  }
+  if (filter.field === 'userMasterList' && filter.key === 'role') {
+    propsUsers = users2.filter(x => x.role === filter.value);
+    // console.log('...no users filter...'+filter.key+'...'+filter.value);
+    // console.log('user2',user2);
+    // console.log('propsUsers',propsUsers);
+    // console.log('props.users',props.users);
+  }
+  if (filter.field !== 'userMasterList') {
+    propsUsers = users2;
+    // console.log('...no users filter...'+filter.key+'...'+filter.value);
+    // console.log('user2',user2);
+    // console.log('propsUsers',propsUsers);
+    // console.log('props.users',props.users);
+  }
+
+  const users = propsUsers.map(user => {
     return (
       <UserItem
         key={user._id}

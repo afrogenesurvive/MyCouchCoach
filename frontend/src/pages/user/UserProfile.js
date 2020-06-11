@@ -57,8 +57,6 @@ class UserProfile extends Component {
     orderBillingAddress: null,
     orderShippingAddress: null,
     profileFriendViewer: false,
-    profileFriendViewer: false,
-    profileLessonViewerData: null,
     profileLessonViewerData: null,
     profileLessonType: null,
     showSessionState: false,
@@ -4508,10 +4506,19 @@ class UserProfile extends Component {
     const session = this.state.calendarSession;
     let userIds = session.booked;
     const instructorIds = this.state.profileLessonViewerData.instructors.map(x => x._id);
-    let userIds2 = userIds.concat(instructorIds);
+    let userIds2 = userIds.push(instructorIds);
+    // let userIds2 = userIds.concat(instructorIds);
     let userIds3 = userIds2.toString();
     let userIds4 = JSON.stringify(userIds2);
-    // console.log('instructorIds',instructorIds,'userIds: 1 ',userIds,'2',userIds2,'3',userIds3,'4',userIds4);
+    console.log(`
+      userIds:
+        1: ${instructorIds},
+        2: ${userIds},
+        ...
+        3: ${userIds2},
+        4: ${userIds3},
+        5: ${userIds4}
+      `);
     // console.log('profileLessonViewerData.instructors[0]',lesson.instructors[0]);
     const type = event.target.formGridTypeSelect.value;
     const title = event.target.formGridTitle.value;
@@ -4878,6 +4885,8 @@ class UserProfile extends Component {
             cancelRepeatSession={this.cancelRepeatSession}
 
             shareCalendarEvent={this.shareCalendarEvent}
+            filter={this.state.filter}
+            setFilter={this.setFilter}
           />
         )}
 

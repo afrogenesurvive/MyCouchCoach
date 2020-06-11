@@ -5,7 +5,28 @@ import './UserList.css';
 
 const lessonFileList = props => {
 
-  const files = props.lessonFiles.map(file => {
+  const {...filter} = props.filter;
+  let lessonFiles2 = props.lessonFiles;
+  let propsLessonFiles = [];
+
+  if (filter.field === 'lessonDetail' && filter.key === 'files' && filter.value === 'nameAscending') {
+    propsLessonFiles = lessonFiles2.sort((a, b) => (a.name > b.name) ? 1 : -1);
+  }
+  if (filter.field === 'lessonDetail' && filter.key === 'files' && filter.value === 'nameDescending') {
+    propsLessonFiles = lessonFiles2.sort((a, b) => (a.name < b.name) ? 1 : -1);
+  }
+  if (filter.field === 'lessonDetail' && filter.key === 'files' && filter.value === 'publicTrue') {
+    propsLessonFiles = lessonFiles2.filter(x => x.public === true);
+  }
+  if (filter.field === 'lessonDetail' && filter.key === 'files' && filter.value === 'publicFalse') {
+    propsLessonFiles = lessonFiles2.filter(x => x.public === false);
+  }
+  if (filter.field !== 'lessonDetail' && filter.key !== 'files') {
+    propsLessonFiles = lessonFiles2;
+  }
+
+  const files = propsLessonFiles.map(file => {
+    console.log('file',file);
     return (
       <LessonFileItem
         key={file}

@@ -5,7 +5,82 @@ import './UserList.css';
 
 const lessonList = props => {
 
-  const lessons = props.lessons.map(lesson => {
+  const {...filter} = props.filter;
+  let lessons2 = props.lessons;
+  let propsLessons = [];
+
+  if (filter.field === 'lessonMasterList' && filter.key === 'public') {
+    propsLessons = lessons2.filter(x => x.public === filter.value);
+    // console.log('...no lessons filter...'+filter.key+'...'+filter.value);
+    // console.log('lessons2',lessons2);
+    // console.log('propsLessons',propsLessons);
+    // console.log('props.lessons',props.lessons);
+  }
+  if (filter.field === 'lessonMasterList' && filter.key === 'title' && filter.value === 'Ascending') {
+    propsLessons = lessons2.sort((a, b) => (a.title > b.title) ? 1 : -1);
+    // console.log('...no lessons filter...'+filter.key+'...'+filter.value);
+    // console.log('lessons2',lessons2);
+    // console.log('propsLessons',propsLessons);
+    // console.log('props.lessons',props.lessons);
+  }
+  if (filter.field === 'lessonMasterList' && filter.key === 'title' && filter.value === 'Descending') {
+    propsLessons = lessons2.sort((a, b) => (a.title < b.title) ? 1 : -1);
+    // console.log('...no lessons filter...'+filter.key+'...'+filter.value);
+    // console.log('lessons2',lessons2);
+    // console.log('propsLessons',propsLessons);
+    // console.log('props.lessons',props.lessons);
+  }
+  if (filter.field === 'lessonMasterList' && filter.key === 'subtitle' && filter.value === 'Ascending') {
+    propsLessons = lessons2.sort((a, b) => (a.subtitle > b.subtitle) ? 1 : -1);
+    // console.log('...no lessons filter...'+filter.key+'...'+filter.value);
+    // console.log('lessons2',lessons2);
+    // console.log('propsLessons',propsLessons);
+    // console.log('props.lessons',props.lessons);
+  }
+  if (filter.field === 'lessonMasterList' && filter.key === 'subtitle' && filter.value === 'Descending') {
+    propsLessons = lessons2.sort((a, b) => (a.subtitle < b.subtitle) ? 1 : -1);
+    // console.log('...no lessons filter...'+filter.key+'...'+filter.value);
+    // console.log('lessons2',lessons2);
+    // console.log('propsLessons',propsLessons);
+    // console.log('props.lessons',props.lessons);
+  }
+  if (filter.field === 'lessonMasterList' && filter.key === 'category' && filter.value === 'Ascending') {
+    propsLessons = lessons2.sort((a, b) => (a.category > b.category) ? 1 : -1);
+    // console.log('...no lessons filter...'+filter.key+'...'+filter.value);
+    // console.log('lessons2',lessons2);
+    // console.log('propsLessons',propsLessons);
+    // console.log('props.lessons',props.lessons);
+  }
+  if (filter.field === 'lessonMasterList' && filter.key === 'category' && filter.value === 'Descending') {
+    propsLessons = lessons2.sort((a, b) => (a.category < b.category) ? 1 : -1);
+    // console.log('...no lessons filter...'+filter.key+'...'+filter.value);
+    // console.log('lessons2',lessons2);
+    // console.log('propsLessons',propsLessons);
+    // console.log('props.lessons',props.lessons);
+  }
+  if (filter.field === 'lessonMasterList' && filter.key === 'type') {
+    propsLessons = lessons2.filter(x => x.type === filter.value)
+    // console.log('...no lessons filter...'+filter.key+'...'+filter.value);
+    // console.log('lessons2',lessons2);
+    // console.log('propsLessons',propsLessons);
+    // console.log('props.lessons',props.lessons);
+  }
+  if (filter.field === 'lessonMasterList' && filter.key === 'subType') {
+    propsLessons = lessons2.filter(x => x.subType === filter.value)
+    // console.log('...no lessons filter...'+filter.key+'...'+filter.value);
+    // console.log('lessons2',lessons2);
+    // console.log('propsLessons',propsLessons);
+    // console.log('props.lessons',props.lessons);
+  }
+  if (filter.field !== 'lessonMasterList') {
+    propsLessons = lessons2;
+    // console.log('...no lessons filter...'+filter.key+'...'+filter.value);
+    // console.log('lessons2',lessons2);
+    // console.log('propsLessons',propsLessons);
+    // console.log('props.lessons',props.lessons);
+  }
+
+  const lessons = propsLessons.map(lesson => {
     return (
       <LessonItem
         key={lesson._id}

@@ -82,6 +82,11 @@ class LessonsPage extends Component {
     lessonAddField: null,
     sessionDetailViewer: false,
     calendarSession: null,
+    filter: {
+      field: null,
+      key: null,
+      value: null
+    },
   };
   isActive = true;
   static contextType = AuthContext;
@@ -1718,7 +1723,14 @@ class LessonsPage extends Component {
       this.setState({overlay: true})
     }
   }
-
+  setFilter = (args) => {
+    // console.log('...set filter...',{...args});
+    this.setState({filter: {
+      field: args.field,
+      key: args.key,
+      value: args.value
+    }});
+  }
 
 
   render() {
@@ -1815,6 +1827,8 @@ class LessonsPage extends Component {
           hideCalendarSessionDetail={this.hideCalendarSessionDetail}
 
           toggleSessions={this.toggleSessions}
+          filter={this.state.filter}
+          setFilter={this.setFilter}
         />
       )}
 
@@ -1871,6 +1885,46 @@ class LessonsPage extends Component {
                       <Tab.Pane eventKey="MasterList">
                         <Row className="userListRow">
 
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'lessonMasterList', key: 'public', value: true})}>
+                          Filter Public: true
+                        </Button>
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'lessonMasterList', key: 'public', value: false})}>
+                          Filter Public: false
+                        </Button>
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'lessonMasterList', key: 'title', value: 'Ascending'})}>
+                          Filter Title: Ascending
+                        </Button>
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'lessonMasterList', key: 'title', value: 'Descending'})}>
+                          Filter Title: Descending
+                        </Button>
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'lessonMasterList', key: 'subtitle', value: 'Ascending'})}>
+                          Filter Subtitle: Ascending
+                        </Button>
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'lessonMasterList', key: 'subtitle', value: 'Descending'})}>
+                          Filter Subtitle: Descending
+                        </Button>
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'lessonMasterList', key: 'category', value: 'Ascending'})}>
+                          Filter Category: Ascending
+                        </Button>
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'lessonMasterList', key: 'category', value: 'Descending'})}>
+                          Filter Category: Descending
+                        </Button>
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'lessonMasterList', key: 'type', value: 'OneTime'})}>
+                          Filter Type: OneTime
+                        </Button>
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'lessonMasterList', key: 'type', value: 'Recurring'})}>
+                          Filter Type: Recurring
+                        </Button>
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'lessonMasterList', key: 'subType', value: 'OneDay'})}>
+                          Filter Subtype: OneDay
+                        </Button>
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'lessonMasterList', key: 'subType', value: 'MultiDay'})}>
+                          Filter Subtype: MultiDay
+                        </Button>
+                        <Button variant="danger" onClick={this.setFilter.bind(this, {field: null, key: null, value: null })}>
+                          clearFilter
+                        </Button>
+
                          {this.state.isLoading ? (
                            <Spinner />
                          ) : (
@@ -1881,6 +1935,7 @@ class LessonsPage extends Component {
                              authId={this.context.activityId}
                              onViewDetail={this.showDetailHandler}
                              onSelectNoDetail={this.selectLessonNoDetail}
+                             filter={this.state.filter}
                            />
                          )}
                         </Row>
@@ -1921,8 +1976,8 @@ class LessonsPage extends Component {
 
                           {this.state.selectedLesson !== null && (
                             <SearchLessonSessionForm
-                          authId={this.context.activityId}
-                          canCancel
+                            authId={this.context.activityId}
+                            canCancel
                             canConfirm
                             onCancel={this.modalCancelHandler}
                             onConfirm={this.modalConfirmSearchSessionHandler}
@@ -1954,7 +2009,45 @@ class LessonsPage extends Component {
                         </Row>
                         <Row className="searchListRow1">
 
-
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'lessonSearchList', key: 'public', value: true})}>
+                          Filter Public: true
+                        </Button>
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'lessonSearchList', key: 'public', value: false})}>
+                          Filter Public: false
+                        </Button>
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'lessonSearchList', key: 'title', value: 'Ascending'})}>
+                          Filter Title: Ascending
+                        </Button>
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'lessonSearchList', key: 'title', value: 'Descending'})}>
+                          Filter Title: Descending
+                        </Button>
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'lessonSearchList', key: 'subtitle', value: 'Ascending'})}>
+                          Filter Subtitle: Ascending
+                        </Button>
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'lessonSearchList', key: 'subtitle', value: 'Descending'})}>
+                          Filter Subtitle: Descending
+                        </Button>
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'lessonSearchList', key: 'category', value: 'Ascending'})}>
+                          Filter Category: Ascending
+                        </Button>
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'lessonSearchList', key: 'category', value: 'Descending'})}>
+                          Filter Category: Descending
+                        </Button>
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'lessonSearchList', key: 'type', value: 'OneTime'})}>
+                          Filter Type: OneTime
+                        </Button>
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'lessonSearchList', key: 'type', value: 'Recurring'})}>
+                          Filter Type: Recurring
+                        </Button>
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'lessonSearchList', key: 'subType', value: 'OneDay'})}>
+                          Filter Subtype: OneDay
+                        </Button>
+                        <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'lessonSearchList', key: 'subType', value: 'MultiDay'})}>
+                          Filter Subtype: MultiDay
+                        </Button>
+                        <Button variant="danger" onClick={this.setFilter.bind(this, {field: null, key: null, value: null })}>
+                          clearFilter
+                        </Button>
 
                         {this.state.searchLessons !== [] && (
                           <SearchLessonList
@@ -1964,6 +2057,7 @@ class LessonsPage extends Component {
                              authId={this.context.activityId}
                              onViewDetail={this.showDetailHandler}
                              onSelectNoDetail={this.selectLessonNoDetail}
+                             filter={this.state.filter}
                           />
                         )}
                         </Row>

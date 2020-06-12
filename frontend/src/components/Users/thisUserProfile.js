@@ -33,6 +33,7 @@ import UserReviewList from './UserList/UserReviewList';
 import UserMessageList from './UserList/UserMessageList';
 import UserCancellationList from './UserList/UserCancellationList';
 import UserActivityList from './UserList/UserActivityList';
+import UserReminderList from './UserList/UserReminderList';
 
 import UpdateUserBasicForm from '../Forms/user/UpdateUserBasicForm';
 import UpdateUserFieldForm from '../Forms/user/UpdateUserFieldForm';
@@ -674,6 +675,9 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
         addAddressToOrder={props.addAddressToOrder}
         orderBillingAddress={props.orderBillingAddress}
         orderShippingAddress={props.orderShippingAddress}
+        stripePaid={props.stripePaid}
+        startStripeCheckout={props.startStripeCheckout}
+        cart={userCart}
       />
     )}
 
@@ -1182,6 +1186,27 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
 
     {user.orders !== null &&
       user.orders !== [] && (
+      <Row>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'orders', key: 'date', value: 'Ascending'})}>
+          Filter Date: Ascending
+        </Button>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'orders', key: 'date', value: 'Descending'})}>
+          Filter Date: Descending
+        </Button>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'orders', key: 'total', value: 'Ascending'})}>
+          Filter Total: Ascending
+        </Button>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'orders', key: 'total', value: 'Descending'})}>
+          Filter Total: Descending
+        </Button>
+        <Button variant="danger" onClick={props.setFilter.bind(this, {field: null, key: null, value: null })}>
+          clearFilter
+        </Button>
+      </Row>
+    )}
+
+    {user.orders !== null &&
+      user.orders !== [] && (
         <UserOrderList
           userOrders={user.orders}
           authId={props.authId}
@@ -1337,6 +1362,78 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
           authId={props.authId}
           canDelete={props.canDelete}
           onDelete={props.userDeleteActivity}
+        />
+      )}
+
+    </Tab>
+
+    <Tab eventKey="reminders" title="Reminders">
+
+    {user.notifications !== null &&
+      user.notifications !== [] && (
+      <Row>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'reminders', key: 'sendDate', value: 'Ascending'})}>
+          Filter Send date: Ascending
+        </Button>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'reminders', key: 'sendDate', value: 'Descending'})}>
+          Filter Send date: Descending
+        </Button>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'reminders', key: 'sendDateTime', value: 'Ascending'})}>
+          Filter Send dateTime: Ascending
+        </Button>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'reminders', key: 'sendDateTime', value: 'Descending'})}>
+          Filter Send dateTime: Descending
+        </Button>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'reminders', key: 'title', value: 'Ascending'})}>
+          Filter Title: Ascending
+        </Button>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'reminders', key: 'title', value: 'Descending'})}>
+          Filter Title: Descending
+        </Button>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'reminders', key: 'creatorUsername', value: 'Ascending'})}>
+          Filter Creator Username: Ascending
+        </Button>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'reminders', key: 'creatorUsername', value: 'Descending'})}>
+          Filter Creator Username: Descending
+        </Button>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'reminders', key: 'lessonTitle', value: 'Ascending'})}>
+          Filter Lesson Title: Ascending
+        </Button>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'reminders', key: 'lessonTitle', value: 'Descending'})}>
+          Filter Lesson Title: Descending
+        </Button>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'reminders', key: 'sessionTitle', value: 'Ascending'})}>
+          Filter Session Title: Ascending
+        </Button>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'reminders', key: 'sessionTitle', value: 'Descending'})}>
+          Filter Session Title: Descending
+        </Button>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'reminders', key: 'delivery', value: 'Email'})}>
+          Filter Delivery Type: Email
+        </Button>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'reminders', key: 'delivery', value: 'SMS'})}>
+          Filter Delivery Type: SMS
+        </Button>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'reminders', key: 'delivery', value: 'CouchCoachMSG'})}>
+          Filter Delivery Type: CouchCoachMSG
+        </Button>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'reminders', key: 'delivery', value: 'All'})}>
+          Filter Delivery Type: All
+        </Button>
+        <Button variant="danger" onClick={props.setFilter.bind(this, {field: null, key: null, value: null })}>
+          clearFilter
+        </Button>
+      </Row>
+    )}
+
+    {user.notifications !== null &&
+      user.notifications !== [] && (
+        <UserReminderList
+          userReminders={user.notifications}
+          authId={props.authId}
+          canDelete={props.canDelete}
+          onDelete={props.userDeleteReminder}
+          filter={props.filter}
         />
       )}
 

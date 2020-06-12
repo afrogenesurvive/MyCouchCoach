@@ -575,76 +575,87 @@ module.exports = {
       const date = new Date().toLocaleDateString().substr(0,10);
       let time = new Date().toLocaleDateString().substr(13,5);
 
+      // console.log('args.notificationInput.sessionTitle',args.notificationInput.sessionTitle);
       // console.log('time',time);
       const creator = await User.findById({_id: args.activityId});
-      console.log("a",creator._id);
+      // console.log("a",creator._id);
       let lesson = await Lesson.findById({_id: args.lessonId});
+
       const preRecipents = args.userIds.split(',');
       // console.log(args.userIds,preRecipents);
-      console.log("a1",args.userIds);
-      console.log("a2",preRecipents);
+      // console.log("a1",args.userIds);
+      // console.log("a2",preRecipents);
       let recipients = await User.find({_id: {$in: preRecipents}});
-      console.log("b",recipients.length);
-      console.log("c",recipients.map(x => x._id));
+      // console.log("b",recipients.length);
+      // console.log("c",recipients.map(x => x._id));
       // console.log("d",recipients);
       // recipients.push(creator);
       // console.log('lessonId',lesson._id);
       // console.log('foo');
-      const sessionBookedUsers = await Lesson.aggregate([
-              {$unwind: '$sessions'},
-              {$lookup:
-                {
-                   from: "users",
-                   localField: 'sessions.booked',
-                   foreignField: '_id',
-                   as: "sessions.booked"
-                 }
-               },
-              {$lookup:
-                {
-                   from: "users",
-                   localField: 'sessions.attended',
-                   foreignField: '_id',
-                   as: "sessions.attended"
-                 }
-               },
-              {$group: {_id:{
-                lessonId: '$_id',
-                lessonTitle: '$title',
-                lessonInstructors: '$instructors',
-                date:'$sessions.date',
-                endDate:'$sessions.endDate',
-                title:'$sessions.title',
-                time:'$sessions.time',
-                limit:'$sessions.limit',
-                bookedAmount: '$sessions.bookedAmount',
-                booked: '$sessions.booked',
-                attendedAmount: '$sessions.attendedAmount',
-                attended: '$sessions.attended',
-                full: '$sessions.full',
-                url: '$sessions.url',
-              }}},
-              // {$group: {_id:{date:'$sessions.date',title:'$sessions.title'},booked: { $addToSet: '$sessions.booked'}}},
-              {$match:
-                {
-                  // '_id.lessonId': {$ne: args.lessonId},
-                  '_id.lessonId': {$eq: args.lessonId},
-                  '_id.title': {$eq: args.notificationInput.sessionTitle }
-                }},
-              // {$match: {'_id.lessonId': args.lessonId, '_id.title': {$eq: args.lessonInput.sessionTitle }}}
-            ]);
-            // console.log('sessionBookedUsers',sessionBookedUsers);
-            let sessionBookedUsers2 = [];
-            let recipients2 = [];
-            // console.log('recipients',recipients,'sessionBookedUsers',sessionBookedUsers2);
-
-            if (sessionBookedUsers.length !== 0 &&
-            sessionBookedUsers2.length !== 0 ) {
-              sessionBookedUsers2 = sessionBookedUsers[0]._id.booked;
-             recipients2 = recipients.concat(sessionBookedUsers2);
-            }
+      // const sessionBookedUsers = await Lesson.aggregate([
+      //         {$unwind: '$sessions'},
+      //         {$lookup:
+      //           {
+      //              from: "users",
+      //              localField: 'sessions.booked',
+      //              foreignField: '_id',
+      //              as: "sessions.booked"
+      //            }
+      //          },
+      //         {$lookup:
+      //           {
+      //              from: "users",
+      //              localField: 'sessions.attended',
+      //              foreignField: '_id',
+      //              as: "sessions.attended"
+      //            }
+      //          },
+      //         {$group: {_id:{
+      //           lessonId: '$_id',
+      //           lessonTitle: '$title',
+      //           lessonInstructors: '$instructors',
+      //           date:'$sessions.date',
+      //           endDate:'$sessions.endDate',
+      //           title:'$sessions.title',
+      //           time:'$sessions.time',
+      //           limit:'$sessions.limit',
+      //           bookedAmount: '$sessions.bookedAmount',
+      //           booked: '$sessions.booked',
+      //           attendedAmount: '$sessions.attendedAmount',
+      //           attended: '$sessions.attended',
+      //           full: '$sessions.full',
+      //           url: '$sessions.url',
+      //         }}},
+      //         // {$group: {_id:{date:'$sessions.date',title:'$sessions.title'},booked: { $addToSet: '$sessions.booked'}}},
+      //         {$match:
+      //           {
+      //             // '_id.lessonId': {$ne: args.lessonId},
+      //             '_id.lessonId': {$eq: lesson._id},
+      //             // '_id.lessonId': {$eq: args.lessonId},
+      //             '_id.title': {$eq: args.notificationInput.sessionTitle }
+      //           }},
+      //         // {$match: {'_id.lessonId': args.lessonId, '_id.title': {$eq: args.lessonInput.sessionTitle }}}
+      //       ]);
+      //       console.log('sessionBookedUsers',sessionBookedUsers);
+      //       let sessionBookedUsers2 = [];
+      //       let recipients2 = [];
+      //       // console.log('recipients',recipients,'sessionBookedUsers',sessionBookedUsers2);
+      //
+      //       if (sessionBookedUsers.length !== 0
+      //         // &&
+      //         // sessionBookedUsers2.length !== 0
+      //       ) {
+      //         console.log('sessionBookedUsersx',sessionBookedUsers);
+      //         sessionBookedUsers2 = sessionBookedUsers[0]._id.booked;
+      //        recipients2 = recipients.concat(sessionBookedUsers2);
+      //       }
             // console.log('sessionBookedUsers',sessionBookedUsers[0]._id.booked.map(x => x._id),'recipients',recipients2);
             // recipients.map(x => x._id);
+            // console.log('recipients2',recipients2);
+            // if (recipients2.length === 0) {
+            //   throw new Error('...oops! something went wrong...');
+            //   console.log('...oops! something went wrong...');
+            // }
 
       let sendDate = null;
       let start = null;
@@ -666,6 +677,7 @@ module.exports = {
       // console.log(triggerValue,triggerUnit,'moment start',moment(start),'sendDate',sendDate);
       // console.log('start',start,'sendDate',sendDate,'time',time);
       // console.log("time",sendDate.toString().split(" ")[4].substr(0,5));
+      // console.log('time',time);
       const trigger = {
         unit: triggerUnit,
         value: triggerValue
@@ -705,7 +717,7 @@ module.exports = {
         trigger: trigger,
         lesson: lesson,
         session: session,
-        recipients: recipients2,
+        recipients: recipients,
         body: args.notificationInput.body,
         delivery: delivery
       })

@@ -392,6 +392,7 @@ module.exports = buildSchema(`
     date: String
     title: String
     ref: Lesson
+    sessionQty: Int
   }
   type OrderTotals {
     a: Float,
@@ -448,6 +449,7 @@ module.exports = buildSchema(`
     statusDate: String
     statusValue: Boolean
     feedback: String
+    sessionQty: Int
   }
 
   input BookingInput {

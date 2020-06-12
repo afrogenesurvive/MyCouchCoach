@@ -2160,6 +2160,13 @@ module.exports = {
       })
       .populate('cancellations.user');
 
+      const updateInstructor = await User.findOneAndUpdate(
+        {_id: instructor._id},
+        {$addToSet:
+          {toTeachLessons: lesson}},
+        {new: true, useFindAndModify: false}
+      )
+
         return {
             ...lesson._doc,
             _id: lesson.id,
@@ -2177,9 +2184,9 @@ module.exports = {
     try {
       const activityUser = await User.findById({_id: args.activityId});
       const preLesson = await Lesson.findById({_id: args.lessonId}).populate('instructors');
-      if (activityUser.role !== "Admin" && preLesson.instructors[0]._id !== activityUser._id) {
-        throw new Error("Yaah.. No! Only the lead Instructor of this Lesson or Admin can delete a User Address");
-      };
+      // if (activityUser.role !== "Admin" && preLesson.instructors[0]._id !== activityUser._id) {
+      //   throw new Error("Yaah.. No! Only the lead Instructor of this Lesson or Admin can delete a User Address");
+      // };
       const instructor = await User.findById({_id: args.instructorId});
       const lesson = await Lesson.findOneAndUpdate({_id:args.lessonId},{$pull: {instructors: instructor._id}},{new: true, useFindAndModify: false})
       .populate('instructors')
@@ -2214,6 +2221,13 @@ module.exports = {
         }
       })
       .populate('cancellations.user');
+
+      const updateInstructor = await User.findOneAndUpdate(
+        {_id: instructor._id},
+        {$pull:
+          {toTeachLessons: lesson}},
+        {new: true, useFindAndModify: false}
+      )
 
         return {
             ...lesson._doc,

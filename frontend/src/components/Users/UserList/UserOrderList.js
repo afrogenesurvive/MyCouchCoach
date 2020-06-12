@@ -5,16 +5,42 @@ import './UserList.css';
 
 const userOrderList = props => {
 
-  const userOrders = props.userOrders.map(order => {
+  let count = 0;
 
-    // console.log('order',order);
-    // console.log('order.date',order.date);
+  const {...filter} = props.filter;
+  let userOrders2 = props.userOrders;
+  let propsUserOrders = [];
+
+  if (filter.field === 'orders' && filter.key === 'date' && filter.value === 'Ascending') {
+    propsUserOrders = userOrders2.sort((a, b) => (a.date > b.date) ? 1 : -1);
+  }
+  if (filter.field === 'orders' && filter.key === 'date' && filter.value === 'Descending') {
+    propsUserOrders = userOrders2.sort((a, b) => (a.date < b.date) ? 1 : -1);
+  }
+  if (filter.field === 'orders' && filter.key === 'total' && filter.value === 'Ascending') {
+    propsUserOrders = userOrders2.sort((a, b) => (a.totals.a > b.totals.a) ? 1 : -1);
+  }
+  if (filter.field === 'orders' && filter.key === 'total' && filter.value === 'Descending') {
+    propsUserOrders = userOrders2.sort((a, b) => (a.totals.a < b.totals.a) ? 1 : -1);
+  }
+  if (filter.field !== 'orders') {
+    propsUserOrders = userOrders2;
+  }
+
+  const userOrders = propsUserOrders.map(order => {
+
+    count = props.userOrders.indexOf(order)+1;
+    // console.log(`
+    //     props.userOrders.length: ${props.userOrders.length},
+    //     count: ${count},
+    //   `);
+    console.log('order',order);
 
     const orderDate = new Date (order.date.substr(0,10)*1000).toLocaleDateString().slice(0,10);
-    // console.log(order.totals);
+    // console.log('order.lessons',order.lessons);
     return (
       <UserOrderItem
-        key={order._id}
+        key={count}
         order={order}
         _id={order._id}
         date={orderDate}

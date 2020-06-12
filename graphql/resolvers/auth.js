@@ -6,7 +6,7 @@ const { pocketVariables } = require('../../helpers/pocketVars');
 module.exports = {
   login: async ({ email, password }) => {
     console.log("Resolver: Login...");
-    console.log(email,password);
+    // console.log(email,password);
     const user = await User.findOne({ 'contact.email': email });
     if (!user) {
       // throw new Error('User does not exist!');
@@ -31,7 +31,7 @@ module.exports = {
         error: 'Password is incorrect!'
       }
     }
-    console.log("user.verification",user.verification);
+    // console.log("user.verification",user.verification);
     if (user.verification.verified !== true) {
 
       console.log('Please  verify user 1st!');

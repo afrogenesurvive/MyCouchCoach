@@ -56,7 +56,7 @@ return (
 <Form.Row>
   <h4>Delivery:</h4>
   <Form.Group as={Col} controlId="formGridDeliveryTypeSelect">
-  <Form.Label>Unit</Form.Label>
+  <Form.Label>Type</Form.Label>
   <Form.Control as="select">
     <option>Email</option>
     <option>SMS</option>
@@ -64,7 +64,7 @@ return (
     <option>All</option>
   </Form.Control>
   </Form.Group>
-  
+
   <Form.Group as={Col} controlId="formGridDeliveryParams">
     <Form.Label>Parameters</Form.Label>
     <Form.Control type="text" placeholder="Delivery Params"/>

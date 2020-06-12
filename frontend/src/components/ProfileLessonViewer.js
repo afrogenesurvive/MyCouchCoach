@@ -820,6 +820,63 @@ const ProfileLessonViewer = (props) => {
         </Tab>
 
         <Tab eventKey="reminders" title="reminders">
+
+        {isInstructor === true && (
+          <Row>
+            <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'reminders', value: 'sendDateAscending'})}>
+              Filter Send date: Ascending
+            </Button>
+            <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'reminders', value: 'sendDateDescending'})}>
+              Filter Send date: Descending
+            </Button>
+            <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'reminders', value: 'sendDateTimeAscending'})}>
+              Filter Send dateTime: Ascending
+            </Button>
+            <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'reminders', value: 'sendDateTimeDescending'})}>
+              Filter Send dateTime: Descending
+            </Button>
+            <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'reminders', value: 'titleAscending'})}>
+              Filter Title: Ascending
+            </Button>
+            <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'reminders', value: 'titleDescending'})}>
+              Filter Title: Descending
+            </Button>
+            <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'reminders', value: 'creatorUsernameAscending'})}>
+              Filter Creator Username: Ascending
+            </Button>
+            <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'reminders', value: 'creatorUsernameDescending'})}>
+              Filter Creator Username: Descending
+            </Button>
+            <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'reminders', value: 'lessonTitleAscending'})}>
+              Filter Lesson Title: Ascending
+            </Button>
+            <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'reminders', value: 'lessonTitleDescending'})}>
+              Filter Lesson Title: Descending
+            </Button>
+            <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'reminders', value: 'sessionTitleAscending'})}>
+              Filter Session Title: Ascending
+            </Button>
+            <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'reminders', value: 'sessionTitleDescending'})}>
+              Filter Session Title: Descending
+            </Button>
+            <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'reminders', value: 'deliveryEmail'})}>
+              Filter Delivery Type: Email
+            </Button>
+            <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'reminders', value: 'deliverySMS'})}>
+              Filter Delivery Type: SMS
+            </Button>
+            <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'reminders', value: 'deliveryCouchCoachMSG'})}>
+              Filter Delivery Type: CouchCoachMSG
+            </Button>
+            <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'reminders', value: 'deliveryAll'})}>
+              Filter Delivery Type: All
+            </Button>
+            <Button variant="danger" onClick={props.setFilter.bind(this, {field: null, key: null, value: null })}>
+              clearFilter
+            </Button>
+          </Row>
+        )}
+
         <Card className="UserDetailCard">
         <Card.Body>
           {isInstructor === true && (

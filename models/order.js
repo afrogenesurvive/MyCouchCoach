@@ -13,7 +13,8 @@ const orderSchema = new Schema({
     price: {type: Number},
     date: {type: Date},
     title: {type: String},
-    ref: {type: Schema.Types.ObjectId,ref: 'Lesson'}
+    ref: {type: Schema.Types.ObjectId,ref: 'Lesson'},
+    sessionQty: {type: Number}
   }],
   totals: {
     a: {type: Number},

@@ -21,6 +21,8 @@ const CreateOrderForm = (props) => {
     const primaryShippingAddress = primaryShippingAddresses[0];
     const primaryBillingAddress = primaryBillingAddresses[0];
 
+    // console.log('props.cart',props.cart);
+
 return (
 <div className="CreateFormContainer">
 <Form onSubmit={props.onConfirm}>
@@ -143,11 +145,19 @@ return (
   </Form.Row>
 
 <Form.Row>
+    <Button variant="primary" onClick={props.startStripeCheckout}>
+      Pay w/ Stripe
+    </Button>
+</Form.Row>
+
+<Form.Row>
   <Button variant="danger" className="formButton" onClick={props.onCancel}>Cancel</Button>
 
-  <Button variant="primary" className="formButton" type="submit">
-  Create
-  </Button>
+  {props.stripePaid === true && (
+    <Button variant="primary" className="formButton" type="submit">
+      Create
+    </Button>
+  )}
 </Form.Row>
 
 

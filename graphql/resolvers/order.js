@@ -549,18 +549,49 @@ module.exports = {
       if (preCart.length === 0) {
         throw new Error('Ummm just no! Your cart is empty...')
       }
-      const preOrderLessons = preCart.map(lesson => lesson.lesson);
-      const orderLessons = await Lesson.find({_id: {$in: preOrderLessons }});
-      const orderLessons2 = orderLessons.map(lesson => ({
-        sku: lesson.sku,
-        price: lesson.price,
-        date: lesson.sessionDate,
-        title: lesson.sessionTitle,
-        ref: lesson
-      }));
-      const orderLessons3 = orderLessons.map(x => x.price);
-      const orderLessons4 = orderLessons3.reduce((a, b) => a + b, 0);
+      let orderLessonsX = [];
+      for (let index = 0; index < preCart.length; index++) {
+        let preCartItem = preCart[index];
+        let lessonBeta = await Lesson.findById({_id: preCartItem.lesson});
+        let preCartItem2 = {
+          sku: lessonBeta.sku,
+          price: lessonBeta.price,
+          date: preCartItem.sessionDate,
+          title: preCartItem.sessionTitle,
+          ref: lessonBeta
+        }
+        orderLessonsX.push(preCartItem2);
+        // console.log(`
+        //     formatting order lessons stage 1:
+        //     index: ${index},
+        //     preCartItem2: ${preCartItem2},
+        //     orderLessonsX.lenght: ${orderLessonsX.length},
+        //     orderLessonsX: ${orderLessonsX}
+        //   `);
+      }
+
+
+      // const preOrderLessons = preCart.map(lesson => lesson.lesson);
+      // const orderLessons = await Lesson.find({_id: {$in: preOrderLessons }});
+
+
+      // const orderLessons2 = orderLessons.map(lesson => ({
+      //   sku: lesson.sku,
+      //   price: lesson.price,
+      //   date: lesson.sessionDate,
+      //   title: lesson.sessionTitle,
+      //   ref: lesson,
+      //   sessionQty: 0
+      // }));
+      // const orderLessons3 = orderLessons.map(x => x.price);
+      // const orderLessons4 = orderLessons3.reduce((a, b) => a + b, 0);
       // console.log(orderLessons2,orderLessons4);
+      // console.log('preCart',preCart);
+      // console.log('preOrderLessons',preOrderLessons);
+      // console.log('orderLessons2',orderLessons2);
+      // console.log('orderLessons3',orderLessons3);
+      // console.log('orderLessons4',orderLessons4);
+
 
       const order = new Order({
         date: date,
@@ -568,7 +599,7 @@ module.exports = {
         type: args.orderInput.type,
         buyer: buyer,
         receiver: receiver,
-        lessons: orderLessons2,
+        lessons: orderLessonsX,
         totals:{
           a: args.orderInput.totalA,
           b: args.orderInput.totalB,
@@ -599,80 +630,139 @@ module.exports = {
           postalCode: args.orderInput.shippingAddressPostalCode,
         },
         status: {
+          cancelled: {
+            value: false,
+            date: 0,
+          },
+          held: {
+            value: false,
+            date: 0,
+          },
           paid: {
             value: true,
-            date: date
+            date: date,
+          },
+          checkedOut: {
+            value: false,
+            date: 0,
+          },
+          emailSent: {
+            value: false,
+            date: 0,
+          },
+          confirmed: {
+            value: false,
+            date: 0,
+          },
+          packaged: {
+            value: false,
+            date: 0,
+          },
+          shipped: {
+            value: false,
+            date: 0,
+          },
+          delivered: {
+            value: false,
+            date: 0,
+          },
+          confirmedDelivery: {
+            value: false,
+            date: 0,
           }
         }
       });
 
+      // console.log('order',order);
+
       const result = await order.save();
-      console.log('result',result);
+      // console.log('result',result);
+
       user = await User.findOneAndUpdate(
         {_id: buyer._id},
-        {$addToSet: {orders: order}},
+        {
+          $addToSet: {orders: order},
+          cart: []
+        },
         {new: true, useFindAndModify: false})
-        .populate('perks')
-        .populate('promos')
-        .populate('friends')
-        .populate('likedLessons')
-        .populate('toTeachLessons')
-        .populate('bookedLessons.ref')
-        .populate('attendedLessons.ref')
-        .populate('taughtLessons.ref')
-        .populate('wishlist.ref')
-        .populate('cart.lesson')
-        .populate({
-          path:'reviews',
-          populate: {
-            path: 'author',
-            model: 'User'
-          }
-        })
-        .populate({
-          path:'reviews',
-          populate: {
-            path: 'lesson',
-            model: 'Lesson'
-          }
-        })
-        .populate({
-          path: 'messages',
-          populate: {
-            path: 'sender',
-            model: 'User'
-          }})
-        .populate({
-          path: 'messages',
-          populate: {
-            path: 'receiver',
-            model: 'User'
-          }})
-        .populate('orders')
-        .populate({
-          path: 'notifications',
-          populate: {
-            path: 'creator',
-            model: 'User'
-          }
-        })
-        .populate({
-          path: 'notifications',
-          populate: {
-            path: 'recipients',
-            model: 'User'
-          }
-        })
-        .populate({
-          path: 'notifications',
-          populate: {
-            path: 'lesson',
-            model: 'Lesson'
-          }
-        })
-        .populate('friendRequests.sender')
-        .populate('cancellations.lesson')
-        .populate('friendRequests.receiver');
+      .populate('perks')
+      .populate('promos')
+      .populate('friends')
+      .populate('likedLessons')
+      .populate('toTeachLessons')
+      .populate('bookedLessons.ref')
+      .populate('attendedLessons.ref')
+      .populate('taughtLessons.ref')
+      .populate('wishlist.ref')
+      .populate('cart.lesson')
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      })
+      .populate({
+        path:'reviews',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'sender',
+          model: 'User'
+        }})
+      .populate({
+        path: 'messages',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
+      .populate({
+  path: 'orders',
+  populate: {
+    path: 'buyer',
+    model: 'User'
+  }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'receiver',
+    model: 'User'
+  }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'creator',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'recipients',
+          model: 'User'
+        }
+      })
+      .populate({
+        path: 'notifications',
+        populate: {
+          path: 'lesson',
+          model: 'Lesson'
+        }
+      })
+      .populate('friendRequests.sender')
+      .populate('cancellations.lesson')
+      .populate('friendRequests.receiver');
 
       return {
         ...user._doc,

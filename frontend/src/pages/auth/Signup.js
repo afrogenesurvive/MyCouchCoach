@@ -22,7 +22,7 @@ class SignupPage extends Component {
   modalConfirmUserHandler = (event) => {
     event.preventDefault();
 
-    this.setState({ creating: false, userAlert: "Signing you up...." });
+    this.setState({ userAlert: "Signing you up...." });
     let contactEmail = event.target.formGridEmail.value;
     let password = event.target.formGridPassword.value;
     let name = event.target.formGridName.value;
@@ -116,7 +116,8 @@ class SignupPage extends Component {
           if (JSON.stringify(resData).slice(2,7) === 'error') {
             this.setState({
               success: "Something went wrong!!!",
-              userAlert: "Something went wrong!!!"+errors+""
+              userAlert: "Something went wrong!!!"+errors+"",
+              creating: false,
              });
           } else {
             this.setState({

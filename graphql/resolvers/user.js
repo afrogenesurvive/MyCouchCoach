@@ -119,6 +119,12 @@ module.exports = {
           path: 'receiver',
           model: 'User'
         }})
+        .populate({
+          path: 'orders',
+          populate: {
+            path: 'lessons.ref',
+            model: 'Lesson'
+          }})
       .populate({
         path: 'notifications',
         populate: {
@@ -209,6 +215,12 @@ module.exports = {
           model: 'User'
         }})
       .populate({
+        path: 'orders',
+        populate: {
+          path: 'lessons.ref',
+          model: 'Lesson'
+        }})
+      .populate({
         path: 'notifications',
         populate: {
           path: 'creator',
@@ -291,17 +303,23 @@ module.exports = {
           model: 'User'
         }})
       .populate({
-  path: 'orders',
-  populate: {
-    path: 'buyer',
-    model: 'User'
-  }})
-.populate({
-  path: 'orders',
-  populate: {
-    path: 'receiver',
-    model: 'User'
-  }})
+    path: 'orders',
+    populate: {
+      path: 'buyer',
+      model: 'User'
+    }})
+    .populate({
+      path: 'orders',
+      populate: {
+        path: 'receiver',
+        model: 'User'
+      }})
+    .populate({
+      path: 'orders',
+      populate: {
+        path: 'lessons.ref',
+        model: 'Lesson'
+      }})
       .populate({
         path: 'notifications',
         populate: {
@@ -396,6 +414,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
       .populate({
         path: 'notifications',
         populate: {
@@ -437,6 +461,7 @@ module.exports = {
     try {
 
       const pocketVars = process.env.CREDS;
+      // console.log('pocketVars',pocketVars);
       // const pocketVars = JSON.stringify(pocketVariables);
       // console.log(pocketVariables,pocketVars);
       return pocketVars;
@@ -644,6 +669,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
       .populate({
         path: 'notifications',
         populate: {
@@ -733,6 +764,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
       .populate({
         path: 'notifications',
         populate: {
@@ -820,6 +857,12 @@ module.exports = {
   populate: {
     path: 'receiver',
     model: 'User'
+  }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
   }})
       .populate({
         path: 'notifications',
@@ -910,6 +953,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
       .populate({
         path: 'notifications',
         populate: {
@@ -998,6 +1047,12 @@ module.exports = {
   populate: {
     path: 'receiver',
     model: 'User'
+  }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
   }})
       .populate({
         path: 'notifications',
@@ -1088,6 +1143,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
       .populate({
         path: 'notifications',
         populate: {
@@ -1174,6 +1235,12 @@ module.exports = {
   populate: {
     path: 'receiver',
     model: 'User'
+  }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
   }})
       .populate({
         path: 'notifications',
@@ -1344,6 +1411,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
         .populate({
           path: 'notifications',
           populate: {
@@ -1442,6 +1515,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
       .populate({
         path: 'notifications',
         populate: {
@@ -1539,6 +1618,12 @@ module.exports = {
   populate: {
     path: 'receiver',
     model: 'User'
+  }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
   }})
       .populate({
         path: 'notifications',
@@ -1643,6 +1728,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
       .populate({
         path: 'notifications',
         populate: {
@@ -1746,6 +1837,12 @@ module.exports = {
   populate: {
     path: 'receiver',
     model: 'User'
+  }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
   }})
         .populate({
           path: 'notifications',
@@ -1890,6 +1987,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
         .populate({
           path: 'notifications',
           populate: {
@@ -1995,6 +2098,12 @@ module.exports = {
   populate: {
     path: 'receiver',
     model: 'User'
+  }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
   }})
       .populate({
         path: 'notifications',
@@ -2117,6 +2226,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
         .populate({
           path: 'notifications',
           populate: {
@@ -2225,6 +2340,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
       .populate({
         path: 'notifications',
         populate: {
@@ -2321,6 +2442,12 @@ module.exports = {
   populate: {
     path: 'receiver',
     model: 'User'
+  }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
   }})
       .populate({
         path: 'notifications',
@@ -2421,6 +2548,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
         .populate({
           path: 'notifications',
           populate: {
@@ -2519,6 +2652,12 @@ module.exports = {
   populate: {
     path: 'receiver',
     model: 'User'
+  }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
   }})
       .populate({
         path: 'notifications',
@@ -2622,6 +2761,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
       .populate({
         path: 'notifications',
         populate: {
@@ -2723,6 +2868,12 @@ module.exports = {
   populate: {
     path: 'receiver',
     model: 'User'
+  }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
   }})
         .populate({
           path: 'notifications',
@@ -2862,6 +3013,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
         .populate({
           path: 'notifications',
           populate: {
@@ -2954,6 +3111,18 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
       .populate({
         path: 'notifications',
         populate: {
@@ -3044,6 +3213,12 @@ module.exports = {
   populate: {
     path: 'receiver',
     model: 'User'
+  }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
   }})
         .populate({
           path: 'notifications',
@@ -3137,6 +3312,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
       .populate({
         path: 'notifications',
         populate: {
@@ -3227,6 +3408,12 @@ module.exports = {
   populate: {
     path: 'receiver',
     model: 'User'
+  }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
   }})
         .populate({
           path: 'notifications',
@@ -3319,6 +3506,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
       .populate({
         path: 'notifications',
         populate: {
@@ -3409,6 +3602,12 @@ module.exports = {
   populate: {
     path: 'receiver',
     model: 'User'
+  }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
   }})
         .populate({
           path: 'notifications',
@@ -3501,6 +3700,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
       .populate({
         path: 'notifications',
         populate: {
@@ -3591,6 +3796,12 @@ module.exports = {
   populate: {
     path: 'receiver',
     model: 'User'
+  }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
   }})
         .populate({
           path: 'notifications',
@@ -3686,6 +3897,12 @@ module.exports = {
   populate: {
     path: 'receiver',
     model: 'User'
+  }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
   }})
         .populate({
           path: 'notifications',
@@ -3804,6 +4021,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
         .populate({
           path: 'notifications',
           populate: {
@@ -3902,6 +4125,12 @@ module.exports = {
   populate: {
     path: 'receiver',
     model: 'User'
+  }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
   }})
       .populate({
         path: 'notifications',
@@ -4006,6 +4235,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
         .populate({
           path: 'notifications',
           populate: {
@@ -4082,6 +4317,12 @@ module.exports = {
   populate: {
     path: 'receiver',
     model: 'User'
+  }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
   }})
         .populate({
           path: 'notifications',
@@ -4181,6 +4422,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
       .populate({
         path: 'notifications',
         populate: {
@@ -4279,6 +4526,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
         .populate({
           path: 'notifications',
           populate: {
@@ -4370,6 +4623,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
       .populate({
         path: 'notifications',
         populate: {
@@ -4460,6 +4719,12 @@ module.exports = {
   populate: {
     path: 'receiver',
     model: 'User'
+  }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
   }})
         .populate({
           path: 'notifications',
@@ -4562,6 +4827,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
       .populate({
         path: 'notifications',
         populate: {
@@ -4655,6 +4926,12 @@ module.exports = {
   populate: {
     path: 'receiver',
     model: 'User'
+  }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
   }})
         .populate({
           path: 'notifications',
@@ -4753,6 +5030,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
       .populate({
         path: 'notifications',
         populate: {
@@ -4845,6 +5128,12 @@ module.exports = {
   populate: {
     path: 'receiver',
     model: 'User'
+  }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
   }})
       .populate({
         path: 'notifications',
@@ -4943,6 +5232,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
       .populate({
         path: 'notifications',
         populate: {
@@ -5035,6 +5330,12 @@ module.exports = {
   populate: {
     path: 'receiver',
     model: 'User'
+  }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
   }})
       .populate({
         path: 'notifications',
@@ -5131,6 +5432,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
       .populate({
         path: 'notifications',
         populate: {
@@ -5225,6 +5532,12 @@ module.exports = {
   populate: {
     path: 'receiver',
     model: 'User'
+  }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
   }})
       .populate({
         path: 'notifications',
@@ -5325,6 +5638,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
       .populate({
         path: 'notifications',
         populate: {
@@ -5420,6 +5739,12 @@ module.exports = {
   populate: {
     path: 'receiver',
     model: 'User'
+  }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
   }})
       .populate({
         path: 'notifications',
@@ -5519,6 +5844,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
       .populate({
         path: 'notifications',
         populate: {
@@ -5614,6 +5945,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
       .populate({
         path: 'notifications',
         populate: {
@@ -5704,6 +6041,12 @@ module.exports = {
   populate: {
     path: 'receiver',
     model: 'User'
+  }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
   }})
       .populate({
         path: 'notifications',
@@ -5796,6 +6139,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
         .populate({
           path: 'notifications',
           populate: {
@@ -5887,6 +6236,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
       .populate({
         path: 'notifications',
         populate: {
@@ -5968,17 +6323,23 @@ module.exports = {
             model: 'User'
           }})
         .populate({
-  path: 'orders',
-  populate: {
-    path: 'buyer',
-    model: 'User'
-  }})
-.populate({
-  path: 'orders',
-  populate: {
-    path: 'receiver',
-    model: 'User'
-  }})
+          path: 'orders',
+          populate: {
+            path: 'buyer',
+            model: 'User'
+          }})
+        .populate({
+          path: 'orders',
+          populate: {
+            path: 'receiver',
+            model: 'User'
+          }})
+        .populate({
+          path: 'orders',
+          populate: {
+            path: 'lessons.ref',
+            model: 'Lesson'
+          }})
         .populate({
           path: 'notifications',
           populate: {
@@ -6069,6 +6430,12 @@ module.exports = {
   populate: {
     path: 'receiver',
     model: 'User'
+  }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
   }})
       .populate({
         path: 'notifications',
@@ -6161,6 +6528,12 @@ module.exports = {
     path: 'receiver',
     model: 'User'
   }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
+  }})
         .populate({
           path: 'notifications',
           populate: {
@@ -6251,6 +6624,12 @@ module.exports = {
   populate: {
     path: 'receiver',
     model: 'User'
+  }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
   }})
       .populate({
         path: 'notifications',
@@ -6343,6 +6722,12 @@ module.exports = {
   populate: {
     path: 'receiver',
     model: 'User'
+  }})
+.populate({
+  path: 'orders',
+  populate: {
+    path: 'lessons.ref',
+    model: 'Lesson'
   }})
         .populate({
           path: 'notifications',

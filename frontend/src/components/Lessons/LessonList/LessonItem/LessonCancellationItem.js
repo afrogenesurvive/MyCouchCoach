@@ -22,7 +22,7 @@ const lessonCancellationItem = props => (
         sessionTitle: {props.sessionTitle}
       </Card.Text>
       <Card.Text>
-        Lesson:
+        User:
       </Card.Text>
       <Card.Text>
         ID: {props.user._id}

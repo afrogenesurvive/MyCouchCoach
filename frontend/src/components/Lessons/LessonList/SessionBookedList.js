@@ -5,8 +5,12 @@ import './UserList.css';
 
 const sessionBookedList = props => {
 
+  let canCancel = false;
   const booked = props.booked.map(user => {
 
+    if (props.authId === user._id) {
+      canCancel = true;
+    }
     let userAttended = false;
     const userAttended2 = props.attended.filter(x => x._id === user._id);
     if (userAttended2.length === 0) {
@@ -34,6 +38,7 @@ const sessionBookedList = props => {
         isInstructor={props.isInstructor}
         userAttended={userAttended}
         addSessionAttendance={props.addSessionAttendance}
+        canCancel={canCancel}
         cancelSessionBooking={props.cancelSessionBooking}
       />
     );

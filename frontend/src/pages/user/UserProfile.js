@@ -4243,7 +4243,7 @@ class UserProfile extends Component {
   }
 
   cancelSessionBooking = (args) => {
-    console.log('...cancelling session booking...',args);
+    console.log('...cancelling session booking...');
 
     this.setState({userAlert: '...cancelling lesson booking ...' });
     const activityId = this.context.activityId;
@@ -4286,7 +4286,7 @@ class UserProfile extends Component {
           this.setState({userAlert: resData.errors[0].message})
         } else {
           const responseAlert = JSON.stringify(resData.data).slice(0,8);
-          this.setState({userAlert: responseAlert, profileLessonViewerData: resData.data.deleteLessonBooking, activityA: requestBody});
+          this.setState({userAlert: '...success! Booking cancelled...', profileLessonViewerData: resData.data.deleteLessonBooking, activityA: requestBody});
         }
 
         // this.logUserActivity();

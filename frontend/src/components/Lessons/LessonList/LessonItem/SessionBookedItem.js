@@ -15,9 +15,11 @@ const sessionBookedItem = props => (
       <Card.Text>
         username: {props.username}
       </Card.Text>
-      <Card.Text>
-        attended {props.userAttended.toString()}
-      </Card.Text>
+      {
+      // <Card.Text>
+      //   attended {props.userAttended.toString()}
+      // </Card.Text>
+      }
       {props.addSessionAttendance &&
         props.isInstructor === true &&
         props.userAttended === false &&
@@ -35,7 +37,7 @@ const sessionBookedItem = props => (
           Add Attendance
         </Button>
       )}
-      {props.isInstructor === true && (
+      {props.canCancel === true && (
         <Button variant="danger" onClick={props.cancelSessionBooking.bind(this, {session: props.session, user: props.user})}>
           Cancel Booking
         </Button>

@@ -1280,6 +1280,45 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
 
     {user.cancellations !== null &&
       user.cancellations !== [] && (
+      <Row>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'cancellations', key: 'date', value: 'Ascending'})}>
+          Filter Date: Ascending
+        </Button>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'cancellations', key: 'date', value: 'Descending'})}>
+          Filter Date: Descending
+        </Button>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'cancellations', key: 'reason', value: 'Ascending'})}>
+          Filter Reson: Ascending
+        </Button>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'cancellations', key: 'reason', value: 'Descending'})}>
+          Filter Reason: Descending
+        </Button>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'cancellations', key: 'sessionDate', value: 'Ascending'})}>
+          Filter sessionDate: Ascending
+        </Button>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'cancellations', key: 'sessionDate', value: 'Descending'})}>
+          Filter sessionDate: Descending
+        </Button>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'cancellations', key: 'sessionTitle', value: 'Ascending'})}>
+          Filter sessionTitle: Ascending
+        </Button>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'cancellations', key: 'sessionTitle', value: 'Descending'})}>
+          Filter sessionTitle: Descending
+        </Button>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'cancellations', key: 'lessonTitle', value: 'Ascending'})}>
+          Filter Lesson Title: Ascending
+        </Button>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'cancellations', key: 'lessonTitle', value: 'Descending'})}>
+          Filter Lesson Title: Descending
+        </Button>
+        <Button variant="danger" onClick={props.setFilter.bind(this, {field: null, key: null, value: null })}>
+          clearFilter
+        </Button>
+      </Row>
+    )}
+
+    {user.cancellations !== null &&
+      user.cancellations !== [] && (
         <UserCancellationList
           userCancellations={user.cancellations}
           authId={props.authId}

@@ -104,9 +104,9 @@ const ProfileLessonViewer = (props) => {
         <Tab eventKey="Basic" title="Basic">
         <Card className="UserDetailCard">
         <Card.Body>
-          <Card.Title><span className="ul">Lesson Details</span></Card.Title>
-
-
+          <Card.Title>
+            <span className="ul">Lesson Details</span>
+          </Card.Title>
 
           <Row className="detailCardRow">
             <Col className="detailCardCol">
@@ -767,6 +767,44 @@ const ProfileLessonViewer = (props) => {
         </Tab>
 
         <Tab eventKey="cancellations" title="cancellations">
+
+        {isInstructor === true && (
+          <Row>
+            <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'cancellations', value: 'dateAscending'})}>
+              Filter Date: Ascending
+            </Button>
+            <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'cancellations', value: 'dateDescending'})}>
+              Filter Date: Descending
+            </Button>
+            <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'cancellations', value: 'reasonAscending'})}>
+              Filter Reson: Ascending
+            </Button>
+            <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'cancellations', value: 'reasonDescending'})}>
+              Filter Reason: Descending
+            </Button>
+            <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'cancellations', value: 'sessionDateAscending'})}>
+              Filter sessionDate: Ascending
+            </Button>
+            <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'cancellations', value: 'sessionDateDescending'})}>
+              Filter sessionDate: Descending
+            </Button>
+            <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'cancellations', value: 'sessionTitleAscending'})}>
+              Filter sessionTitle: Ascending
+            </Button>
+            <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'cancellations', value: 'sessionTitleDescending'})}>
+              Filter sessionTitle: Descending
+            </Button>
+            <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'cancellations', value: 'usernameAscending'})}>
+              Filter Username: Ascending
+            </Button>
+            <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'lessonDetail', key: 'cancellations', value: 'usernameDescending'})}>
+              Filter Username: Descending
+            </Button>
+            <Button variant="danger" onClick={props.setFilter.bind(this, {field: null, key: null, value: null })}>
+              clearFilter
+            </Button>
+          </Row>
+        )}
         <Card className="UserDetailCard">
         <Card.Body>
           {isInstructor === true && (

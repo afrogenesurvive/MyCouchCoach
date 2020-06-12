@@ -238,6 +238,7 @@ return (
 
     {props.sessionBookedState === true && (
       <SessionBookedList
+        authId={props.authId}
         meeting={props.meeting}
         lessonType={props.lessonType}
         session={props.session}
@@ -249,6 +250,7 @@ return (
       />)}
     {props.sessionAttendedState === true && (
       <SessionAttendedList
+      authId={props.authId}
       attended={session.attended}
     />)}
 

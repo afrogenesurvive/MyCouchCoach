@@ -1199,6 +1199,12 @@ const orderSubtotal3 = orderSubtotal2.reduce((a, b) => a + b, 0).toFixed(2);
         <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'orders', key: 'total', value: 'Descending'})}>
           Filter Total: Descending
         </Button>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'orders', key: 'status', value: 'Paid'})}>
+          Filter Status: Paid
+        </Button>
+        <Button variant="primary" onClick={props.setFilter.bind(this, {field: 'orders', key: 'status', value: 'Delivered'})}>
+          Filter Status: Delivered
+        </Button>
         <Button variant="danger" onClick={props.setFilter.bind(this, {field: null, key: null, value: null })}>
           clearFilter
         </Button>

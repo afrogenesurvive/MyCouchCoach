@@ -1,6 +1,7 @@
 import S3 from 'react-aws-s3';
 import React, { Component } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
+import _ from 'agile';
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -2081,10 +2082,42 @@ class UserProfile extends Component {
   startStripeCheckout = async () => {
 
     let cart = this.state.user.cart;
-    console.log('...startStripeCheckout...',cart, this.state.stripePromise);
+    console.log('...startStripeCheckout...',);
 
-    // const stripePromise = loadStripe('pk_test_TYooMQauvdEDq54NiTphI7jx');
-    const stripe = await this.stripePromise;
+    let stripeItems = cart.map(x => x.lesson.sku)
+    let stripeItems2 = stripeItems.reduce(function (acc, curr) {
+      if (typeof acc[curr] == 'undefined') {
+        acc[curr] = 1;
+      } else {
+        acc[curr] += 1;
+      }
+      return acc;
+    }, {});
+    console.log('stripeItems',stripeItems2);
+    // console.log('stripeItems',_.countBy(stripeItems));
+    let itemKeys = [];
+    let itemValues = [];
+
+    Object.keys(stripeItems2).forEach((item, i) => {
+      // console.log(item,i);
+      itemKeys.push(item);
+    });
+    Object.values(stripeItems2).forEach((item, i) => {
+      // console.log(item,i);
+      itemValues.push(item);
+    });
+    console.log(itemKeys,itemValues);
+    let itemObjectArray = [];
+    itemKeys.forEach((item, i) => {
+      let itemObject = {
+        price: item,
+        quantity: itemValues[i]
+      };
+      itemObjectArray.push(itemObject);
+    });
+    console.log("beep",itemObjectArray);
+
+    // const stripe = await this.stripePromise;
     // const { error } = await stripe.redirectToCheckout({
     //   lineItems: [
     //     // Replace with the ID of your price
@@ -2230,9 +2263,15 @@ class UserProfile extends Component {
       })
       .then(resData => {
         if (resData.errors) {
-          this.setState({userAlert: resData.errors[0].message})
+          this.setState({
+            userAlert: resData.errors[0].message,
+            stripePaid: false
+          })
         } else {
-          this.setState({userAlert: '...success! Order created...'})
+          this.setState({
+            userAlert: '...success! Order created...',
+            stripePaid: false
+        })
           this.addMultipleBookings();
         }
         // console.log(resData);

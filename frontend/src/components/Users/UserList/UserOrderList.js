@@ -23,6 +23,12 @@ const userOrderList = props => {
   if (filter.field === 'orders' && filter.key === 'total' && filter.value === 'Descending') {
     propsUserOrders = userOrders2.sort((a, b) => (a.totals.a < b.totals.a) ? 1 : -1);
   }
+  if (filter.field === 'orders' && filter.key === 'status' && filter.value === 'Paid') {
+    propsUserOrders = userOrders2.filter(x => x.status.paid.value === true);
+  }
+  if (filter.field === 'orders' && filter.key === 'status' && filter.value === 'Delivered') {
+    propsUserOrders = userOrders2.filter(x => x.status.delivered.value === true);
+  }
   if (filter.field !== 'orders') {
     propsUserOrders = userOrders2;
   }
@@ -34,7 +40,7 @@ const userOrderList = props => {
     //     props.userOrders.length: ${props.userOrders.length},
     //     count: ${count},
     //   `);
-    console.log('order',order);
+    // console.log('order',order);
 
     const orderDate = new Date (order.date.substr(0,10)*1000).toLocaleDateString().slice(0,10);
     // console.log('order.lessons',order.lessons);

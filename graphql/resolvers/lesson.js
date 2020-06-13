@@ -55,11 +55,11 @@ module.exports = {
       const lessons = await Lesson.find(query)
       .populate('instructors')
       .populate({
-  path: 'reviews',
-  populate: {
-      path: 'author',
-      model: 'User'
-  }});
+        path: 'reviews',
+        populate: {
+            path: 'author',
+            model: 'User'
+        }});
 
       lessons2 = lessons.filter(x => x.public === true);
       return lessons2.map(lesson => {
@@ -488,11 +488,11 @@ module.exports = {
       .populate('instructors')
       .populate('attendees')
       .populate({
-  path: 'reviews',
-  populate: {
-      path: 'author',
-      model: 'User'
-  }})
+        path: 'reviews',
+        populate: {
+            path: 'author',
+            model: 'User'
+        }})
       .populate('sessions.booked')
       .populate('sessions.attended')
       .populate({
@@ -2290,7 +2290,6 @@ module.exports = {
     }
   },
   deleteLessonOrder: async (args, req) => {
-    console.log("Resolver: deleteLessonOrder...");
     if (!req.isAuth) {
       throw new Error('Unauthenticated!');
     }
@@ -2760,6 +2759,7 @@ module.exports = {
       let bookedLessons = [];
 
       const user = await User.findById({_id: args.activityId});
+      // console.log(user.cart);
       let bookingArray = user.cart.map(x => ({
         userId: user._id,
         lessonId: x.lesson,
@@ -2771,7 +2771,7 @@ module.exports = {
       console.log('start');
       for (let index = 0; index < bookingArray.length; index++) {
         let booking = bookingArray[index];
-
+        console.log('loop',index);
         const user = await User.findById({_id: booking.userId});
         const preLesson = await Lesson.findById({_id: booking.lessonId});
         const userBookings = user.bookedLessons.map(x => x.ref);
@@ -2956,6 +2956,12 @@ module.exports = {
       }
       console.log('end');
 
+      console.log('bookedLessons',bookedLessons);
+      if (bookedLessons.length === 0) {
+        console.log('...all of your requested sessions are either full or youve already booked them...');
+        throw new Error('...all of your requested sessions are either full or youve already booked them...')
+      }
+
       const user2 = await User.findOneAndUpdate(
         {_id: user._id},
         {cart: []},
@@ -3034,10 +3040,10 @@ module.exports = {
       .populate('cancellations.lesson')
       .populate('friendRequests.receiver');
 
-      if (bookedLessons.length === 0) {
-        console.log('...all of your requested sessions are either full or youve already booked them...');
-        throw new Error('...all of your requested sessions are either full or youve already booked them...')
-      }
+      // if (bookedLessons.length === 0) {
+      //   console.log('...all of your requested sessions are either full or youve already booked them...');
+      //   throw new Error('...all of your requested sessions are either full or youve already booked them...')
+      // }
       // console.log('bookedLessons',bookedLessons);
 
       return {

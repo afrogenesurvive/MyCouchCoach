@@ -144,15 +144,16 @@ return (
   </Form.Group>
   </Form.Row>
 
-<Form.Row>
-    <Button variant="primary" onClick={props.startStripeCheckout}>
-      Pay w/ Stripe
-    </Button>
-</Form.Row>
+{props.stripePaid === false && (
+  <Form.Row>
+      <Button variant="primary" onClick={props.startStripeCheckout}>
+        Pay w/ Stripe
+      </Button>
+  </Form.Row>
+)}
 
 <Form.Row>
   <Button variant="danger" className="formButton" onClick={props.onCancel}>Cancel</Button>
-
   {props.stripePaid === true && (
     <Button variant="primary" className="formButton" type="submit">
       Create

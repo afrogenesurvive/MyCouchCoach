@@ -643,8 +643,8 @@ module.exports = {
             date: date,
           },
           checkedOut: {
-            value: false,
-            date: 0,
+            value: true,
+            date: date,
           },
           emailSent: {
             value: false,
@@ -682,7 +682,6 @@ module.exports = {
         {_id: buyer._id},
         {
           $addToSet: {orders: order},
-          cart: []
         },
         {new: true, useFindAndModify: false})
       .populate('perks')
@@ -722,23 +721,23 @@ module.exports = {
           model: 'User'
         }})
       .populate({
-  path: 'orders',
-  populate: {
-    path: 'buyer',
-    model: 'User'
-  }})
-.populate({
-  path: 'orders',
-  populate: {
-    path: 'receiver',
-    model: 'User'
-  }})
-.populate({
-  path: 'orders',
-  populate: {
-    path: 'lessons.ref',
-    model: 'Lesson'
-  }})
+        path: 'orders',
+        populate: {
+          path: 'buyer',
+          model: 'User'
+        }})
+      .populate({
+        path: 'orders',
+        populate: {
+          path: 'receiver',
+          model: 'User'
+        }})
+      .populate({
+        path: 'orders',
+        populate: {
+          path: 'lessons.ref',
+          model: 'Lesson'
+        }})
       .populate({
         path: 'notifications',
         populate: {

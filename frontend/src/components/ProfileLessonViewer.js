@@ -55,7 +55,7 @@ const ProfileLessonViewer = (props) => {
   // if (isInstructor === true ) {
   //   canDelete = true
   // }
-  // console.log(lesson.sessions);
+  // console.log(lesson.sku);
   // console.log('props.creatingSession',props.creatingSession);
 
   let lessonCalendarSessions = [];

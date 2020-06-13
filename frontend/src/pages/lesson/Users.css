@@ -166,3 +166,6 @@
 .searchInput {
   margin: 1.5rem;
 }
+.filterRow {
+  height: fit-content;
+}

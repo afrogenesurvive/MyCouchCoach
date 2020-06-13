@@ -1,7 +1,7 @@
 import S3 from 'react-aws-s3';
 import React, { Component } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
-import _ from 'agile';
+// import _ from 'agile';
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -115,10 +115,27 @@ class UserProfile extends Component {
       super(props);
       this.socket = io('http://localhost:9099');
       this.userCopy = null;
+      this.completeCheckout = false;
+      this.passedProps = {};
     }
 
   componentDidMount() {
     console.log('...user profile component mounted...');
+    // if (this.completeCheckout === true) {
+    //   console.log(`
+    //     ...returning to complete checkout...
+    //     this component's props wer set thru a custom url...
+    //     ...a stripe success url...
+    //     if you're reading this, then get token, activityid,
+    //     ...set them to context
+    //     set required states and call required functions:
+    //     a.getThisUser()
+    //     b.profileTabSelected: 'cart'
+    //     c.creatingOrder: true
+    //     d.stripePaid: true
+    //     `);
+    // }
+
     this.getThisUser();
 
     this.socket.emit('msg_subscribe', {user: this.context.activityId, room:'msg'+this.context.activityId});
@@ -137,11 +154,25 @@ class UserProfile extends Component {
 
     this.userOnline();
 
+    if (sessionStorage.getItem('completeCheckout')) {
+      this.completeCheckoutX();
+    }
+
   };
 
   componentWillUnmount() {
     this.isActive = false;
     console.log('...user profile component un-mounting...');
+  }
+
+  completeCheckoutX = () => {
+      console.log('....completeing checkout... ');
+      this.setState({
+        profileTabSelected: 'cart',
+        creatingOrder: true,
+        stripePaid: true
+      })
+      sessionStorage.removeItem('completeCheckout');
   }
 
   getPocketVars () {
@@ -2093,20 +2124,14 @@ class UserProfile extends Component {
       }
       return acc;
     }, {});
-    console.log('stripeItems',stripeItems2);
-    // console.log('stripeItems',_.countBy(stripeItems));
     let itemKeys = [];
     let itemValues = [];
-
     Object.keys(stripeItems2).forEach((item, i) => {
-      // console.log(item,i);
       itemKeys.push(item);
     });
     Object.values(stripeItems2).forEach((item, i) => {
-      // console.log(item,i);
       itemValues.push(item);
     });
-    console.log(itemKeys,itemValues);
     let itemObjectArray = [];
     itemKeys.forEach((item, i) => {
       let itemObject = {
@@ -2115,20 +2140,23 @@ class UserProfile extends Component {
       };
       itemObjectArray.push(itemObject);
     });
-    console.log("beep",itemObjectArray);
+    // console.log("beep",itemObjectArray);
 
-    // const stripe = await this.stripePromise;
-    // const { error } = await stripe.redirectToCheckout({
-    //   lineItems: [
-    //     // Replace with the ID of your price
-    //     {price: '{PRICE_ID}', quantity: 1}
-    //   ],
-    //   mode: 'payment',
-    //   successUrl: 'https://example.com/success',
-    //   cancelUrl: 'https://example.com/cancel',
-    // });
+    sessionStorage.setItem('completeCheckout', true)
 
-    // this.setState({stripePaid: true})
+    const stripe = await this.state.stripePromise;
+    const { error } = stripe.redirectToCheckout({
+      lineItems: itemObjectArray,
+      mode: 'payment',
+      successUrl: 'http://localhost:3000/',
+      cancelUrl: 'http://localhost:3000',
+      customerEmail: this.state.user.contact.email
+    })
+    .
+    then(function (result) {
+      // console.log('result',result)
+    });
+    // console.log('stripe1',stripe);
   }
   addMultipleBookings = () => {
     console.log("...adding multiple bookings...");
@@ -2674,7 +2702,7 @@ class UserProfile extends Component {
           activityId:"${activityId}",
           lessonId:"${lessonId}"
         )
-        {_id,title,subtitle,type,subType,public,category,price,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{email,phone,phone2},profileImages{name,type,path,public},socialMedia{handle,platform,link}},gallery{name,type,path,public},requirements,materials,files{name,type,size,path,public},reviews{_id},tags,sessions{title,date,endDate,time,limit,amount,booked{_id,username},bookedAmount,attended{_id,username},attendedAmount,inProgress,full,url},promos{_id},reviews{date,type,title,body,author{_id,username},body,rating},cancellations{date,reason,sessionDate,sessionTitle,user{_id,username}},reminders{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
+        {_id,title,subtitle,sku,type,subType,public,category,price,points,description,notes,duration,schedule{date,time},instructors{_id,username,contact{email,phone,phone2},profileImages{name,type,path,public},socialMedia{handle,platform,link}},gallery{name,type,path,public},requirements,materials,files{name,type,size,path,public},reviews{_id},tags,sessions{title,date,endDate,time,limit,amount,booked{_id,username},bookedAmount,attended{_id,username},attendedAmount,inProgress,full,url},promos{_id},reviews{date,type,title,body,author{_id,username},body,rating},cancellations{date,reason,sessionDate,sessionTitle,user{_id,username}},reminders{_id,createDate,sendDate,creator{_id,username,contact{email,phone}},type,title,time,trigger{unit,value},lesson{_id,title},session{title,date,endDate,time},recipients{_id,username,contact{email,phone}},body,delivery{type,params,sent}}}}
       `};
 
     fetch('http://localhost:8088/graphql', {
@@ -4979,7 +5007,9 @@ class UserProfile extends Component {
         <Col className="MasterCol2">
           <div className="containerProfile">
           {this.state.isLoading ? (
-            <Spinner />
+            <LoadingOverlay
+              status='profile'
+            />
           ) : (
             <Row>
               <Col>

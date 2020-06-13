@@ -151,6 +151,14 @@ return (
       </Button>
   </Form.Row>
 )}
+{props.stripePaid === true && (
+  <Form.Row>
+      <Button variant="primary" onClick={props.startStripeCheckout}>
+        Stripe Payment: Complete!
+      </Button>
+  </Form.Row>
+)}
+
 
 <Form.Row>
   <Button variant="danger" className="formButton" onClick={props.onCancel}>Cancel</Button>

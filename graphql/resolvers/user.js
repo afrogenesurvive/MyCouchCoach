@@ -23,6 +23,7 @@ const { pocketVariables } = require('../../helpers/pocketVars');
 const sgMail = require('@sendgrid/mail');
 // const S3 = require('aws-sdk/clients/s3');
 const AWS = require('aws-sdk');
+const stripe = require('stripe')(process.env.STRIPE_B);
 
 module.exports = {
   testEmail: async () => {
@@ -465,6 +466,63 @@ module.exports = {
       // const pocketVars = JSON.stringify(pocketVariables);
       // console.log(pocketVariables,pocketVars);
       return pocketVars;
+    } catch (err) {
+      throw err;
+    }
+  },
+  stripeCreatePaymentIntent: async (args, req) => {
+    console.log('Resolver: stripeCreatePaymentIntent...');
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated!');
+    }
+    const stripe = require('stripe')(process.env.STRIPE_B);
+    try {
+
+      const preUser = await User.findById({_id: args.activityId})
+      // console.log('preUser.contact.email',preUser.contact.email);
+      // const stripe = require('stripe')(process.env.STRIPE_B);
+      // console.log(stripe);
+
+      let response = null;
+      let x = await stripe.paymentIntents.create(
+      // let x =  stripe.paymentIntents.create(
+        {
+          amount: args.amount,
+          currency: args.currency,
+          payment_method_types: ['card'],
+          receipt_email: preUser.contact.email
+        },
+        function(err, paymentIntent) {
+          if (err) {
+            console.log('err',err);
+            // setResponse(err)
+            response = err;
+            return response;
+          } else {
+            // console.log('x2',x);
+            // console.log('paymentIntent',paymentIntent.client_secret);
+            // return 'x';
+            // setResponse(paymentIntent)
+            response = paymentIntent;
+            console.log(response);
+            return response;
+          }
+        })
+        // .then((res) => {
+        //   console.log('finish line?',res);
+        // })
+
+      // function setResponse (args) {
+      //   // response = JSON.stringify(args);
+      //   response = args.client_secret;
+      //   console.log('x3',x);
+      //   console.log("boop",response);
+      //   return response;
+      // }
+
+      // console.log('brap',x);
+      // console.log('brip',response);
+      // return response;
     } catch (err) {
       throw err;
     }

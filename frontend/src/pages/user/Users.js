@@ -639,8 +639,8 @@ class UsersPage extends Component {
                     <Tab.Content>
 
                       <Tab.Pane eventKey="MasterList">
-                        <Row className="userListRow">
 
+                      <Row className="filterRow">
                         <Button variant="primary" onClick={this.setFilter.bind(this, {field: 'userMasterList', key: 'username', value: 'Ascending'})}>
                           Filter Username: Ascending
                         </Button>
@@ -659,9 +659,14 @@ class UsersPage extends Component {
                         <Button variant="danger" onClick={this.setFilter.bind(this, {field: null, key: null, value: null })}>
                           clearFilter
                         </Button>
+                      </Row>
+
+                        <Row className="userListRow">
 
                          {this.state.isLoading ? (
-                           <Spinner />
+                           <LoadingOverlay
+                             status='users'
+                           />
                          ) : (
                            <UserList
                             canReport={this.state.canReport}

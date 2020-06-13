@@ -576,6 +576,8 @@ module.exports = buildSchema(`
 
     getPocketVars(activityId: ID!): String
 
+    stripeCreatePaymentIntent(activityId: ID!, amount: Float! currency: String!): String
+
     getPublicUserById(userId: ID!): User
 
     getAllUsers(activityId: ID!): [User]

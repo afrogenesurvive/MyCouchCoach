@@ -26,6 +26,14 @@ const AWS = require('aws-sdk');
 const stripe = require('stripe')(process.env.STRIPE_B);
 
 module.exports = {
+  cronTest: async (args) => {
+    console.log("Resolver: cronTest...",args);
+    // try {
+    //   return
+    // } catch (err) {
+    //   throw err;
+    // }
+  },
   testEmail: async () => {
     console.log("Resolver: test email...");
     try {

@@ -19,6 +19,8 @@ const app = express();
 const server = require('http').Server(app);
 const https = require("https");
 const io = require('socket.io')(server);
+var cron = require('node-cron');
+
 const User = require('./models/user');
 
 
@@ -40,28 +42,16 @@ if (process.env.APP_SECRET) {
 } else {
   console.log('...env vars absent...');
 }
-// const url = 'https://mycouchcoachstorage.s3.amazonaws.com/assets/creds/sendgrid/sendGridApi.txt';
-// const url2 = 'https://mycouchcoachstorage.s3.amazonaws.com/assets/creds/s3/s3.txt';
-// const url3 = 'https://mycouchcoachstorage.s3.amazonaws.com/assets/creds/atlas/atlas.txt';
 
-// request.get(url, ( error, response, body) => {
-//   if (body) {
-//     if (body.slice(0,3) === '{"a') {
-//       pocketVariables.sendGrid = JSON.parse(body);
-//       // console.log('pocketVars',pocketVariables);
-//     }}});
-// request.get(url2, ( error, response, body) => {
-//   if (body) {
-//     if (body.slice(0,3) === '{"a') {
-//       pocketVariables.s3 = JSON.parse(body);
-//       // console.log('pocketVars',pocketVariables);
-//     }}});
-// request.get(url3, ( error, response, body) => {
-//   if (body) {
-//     if (body.slice(0,3) === '{"a') {
-//       pocketVariables.atlas = JSON.parse(body);
-//       // console.log('pocketVars',pocketVariables);
-//     }}});
+// cron.schedule('*/5 * * * * *', () => {
+//   let cronExp = 'every 5 seconds..';
+//   graphQlResolvers.cronTest(cronExp);
+// });
+// cron.schedule(' */1 * * * *', () => {
+//   let cronExp = 'every 1 Minute...'
+//   graphQlResolvers.cronTest(cronExp);
+// });
+
 
 app.use(isAuth);
 
@@ -73,6 +63,7 @@ app.use(
     graphiql: true
   })
 );
+
 // mongoose.connect(`mongodb+srv://${process.env.ATLAS_A}:${process.env.ATLAS_B}@{process.env.ATLAS_C}/test?retryWrites=true&w=majority`,
 mongoose.connect('mongodb://localhost:27017/my_couch_coach',
 {useNewUrlParser: true, useUnifiedTopology: true})

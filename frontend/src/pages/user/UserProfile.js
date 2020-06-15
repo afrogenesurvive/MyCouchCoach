@@ -203,12 +203,8 @@ class UserProfile extends Component {
         if (resData.errors) {
           this.setState({userAlert: resData.errors[0].message})
         } else {
-          // console.log('pocketVars', resData.data.getPocketVars);
-          // console.log('pocketVarsParsed', JSON.parse(resData.data.getPocketVars));
           let pocketVarsParsed = JSON.parse(resData.data.getPocketVars)
-          // console.log('pocketVars', JSON.parse(resData.data.getPocketVars.pocketVariables));
-          // console.log('beep',resData.data.getPocketVars.pocketVariables,JSON.parse(resData.data.getPocketVars.pocketVariables));
-          // this.setState({userAlert: '...success! retrieved pocketVars...', pocketVars: pocketVarsParsed})
+          // console.log('pocketVarsParsed',pocketVarsParsed);
           this.setState({
             pocketVars: pocketVarsParsed
           })

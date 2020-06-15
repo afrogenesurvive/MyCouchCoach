@@ -38,7 +38,7 @@ app.use((req, res, next) => {
 });
 
 if (process.env.APP_SECRET) {
-  console.log('...env vars present...');
+  console.log('...env vars present...',process.env.APP_SECRET);
 } else {
   console.log('...env vars absent...');
 }

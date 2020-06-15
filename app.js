@@ -51,14 +51,14 @@ if (process.env.APP_SECRET) {
 //   let cronExp = 'every 1 Minute...'
 //   graphQlResolvers.cronTest(cronExp);
 // });
-cron.schedule('21 13 15 6 1', () => {
-  let cronExp = 'Monday 15/06, 13:21...'
-  graphQlResolvers.cronTest(cronExp);
-},
-{
-   scheduled: true,
-   timezone: "America/Bogota"
- });
+// cron.schedule('21 13 15 6 1', () => {
+//   let cronExp = 'Monday 15/06, 13:21...'
+//   graphQlResolvers.cronTest(cronExp);
+// },
+// {
+//    scheduled: true,
+//    timezone: "America/Bogota"
+//  });
 
 
 app.use(isAuth);

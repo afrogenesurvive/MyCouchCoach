@@ -23,7 +23,7 @@ const { pocketVariables } = require('../../helpers/pocketVars');
 const sgMail = require('@sendgrid/mail');
 // const S3 = require('aws-sdk/clients/s3');
 const AWS = require('aws-sdk');
-const stripe = require('stripe')(process.env.STRIPE_B);
+// const stripe = require('stripe')(process.env.STRIPE_B);
 
 module.exports = {
   cronTest: async (args) => {

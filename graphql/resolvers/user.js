@@ -1,7 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const DataLoader = require('dataloader');
-// const nodemailer = require('nodemailer');
 const User = require('../../models/user');
 const Lesson = require('../../models/lesson');
 const Order = require('../../models/order');
@@ -13,12 +12,9 @@ const Message = require('../../models/message');
 const Notification = require('../../models/notification');
 const util = require('util');
 
-const { transformUser, transformMessage } = require('./merge');
+const { transformUser } = require('./merge');
 const { dateToString } = require('../../helpers/date');
 const { pocketVariables } = require('../../helpers/pocketVars');
-
-// const mailjet = require ('node-mailjet')
-// .connect(pocketVariables.mailjet.a, pocketVariables.mailjet.b)
 
 const sgMail = require('@sendgrid/mail');
 // const S3 = require('aws-sdk/clients/s3');
